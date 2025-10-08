@@ -1,8 +1,3 @@
-# kvc-manager
-<hr>
+# Documentation
 
-This project was written by:
-- Sabrina Robinnson
--
--
--
+Your documentation should be placed in this directory.

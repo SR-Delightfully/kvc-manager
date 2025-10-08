@@ -1,27 +1,42 @@
-- [Starter Template](#starter-template)
-  - [How Do I Use/Deploy this Template?](#how-do-i-usedeploy-this-template)
-  - [How Do I Configure My Database Connection?](#how-do-i-configure-my-database-connection)
-  - [On Using Environment Variables](#on-using-environment-variables)
-  - [Useful VS Code Keybindings](#useful-vs-code-keybindings)
-  - [Adding Fira Code Font to VS Code Portable](#adding-fira-code-font-to-vs-code-portable)
-  
+# Slim Framework Starter Template
 
-# Starter Template
+A lightweight MVC web application starter template built on top of the Slim PHP microframework. Ideal for projects that require Slim's simplicity without sacrificing the benefits of a clean MVC architecture.
 
-This repository contains an application skeleton for creating REST-based Web services using the latest version of the [**Slim micro framework**](https://www.slimframework.com/).
+## Why Using this Template?
+
+This template provides a starting point for building web applications with the Slim 4 framework using the classic MVC (Model–View–Controller) pattern. It includes everything you need to get started, without the extra complexity of larger frameworks.
+
+## What's Included
+
+This starter template follows best practices and adheres to industry standards:
+
+- **Slim 4**: The "slim" PHP microframework
+- **Routing**: Slim's custom routing based on [FastRoute](https://github.com/nikic/FastRoute)
+- **Dependency injection container** (PSR-11)
+- **HTTP message interfaces** (PSR-7)
+- **HTTP Server Request Handlers**, Middleware (PSR-15)
+- **Autoloader** (PSR-4)
+- **Logger** (PSR-3)
+- **Code styles** (PSR-12)
+- **Composer** - Dependency management
+
+## Requirements
+
+- PHP 8.2 or higher
+- Composer (for dependency management)
+- A web server (Apache, Nginx)
 
 ## How Do I Use/Deploy this Template?
 
 Follow the instructions below in the specified order:
 
-1. Download this repository as a `.zip` file.
-2. Extract the downloaded `slim-template-main.zip` file locally.
-3. Copy the `slim-template-main` folder into your web server's **document root** (i.e., `htdocs`).
-4. Rename the `slim-template-main` folder to `[project_name]-api` (for example, `worldcup-api`).
-5. Open your `[project_name]-api` folder in VS Code.
-6. If you are using Wampoon, open a terminal window in VS Code (press `Ctrl+`\`) and select the `Command Prompt`from the dropdown menu in the upper-right corner. Then run`"../../composer.bat" update` (**NOTE**: double quotes are required) to install or update the required dependencies.
-
-   * If you are not using Wampoon, just run Composer from the command line.
+1. Download this repository as `.zip` file.
+2. Extract the downloaded `slim-mvc-main.zip` file locally.
+3. Copy the `slim-mvc-main` folder into your Web server's **document root** (that is, `htdocs`)
+4. Rename the `slim-mvc-main` folder to, for example, `[project_name]-app`. For example, `worldcup-app`
+5. Open your `[project_name]-app` folder in VS Code
+6. If you are using Wampoon, open a terminal window in VS Code (hit ``` Ctrl+` ```) and select `Command Prompt` dropdown menu in the upper-right corner. Then run `"../../composer.bat" update` (**NOTE**:  double quotes are required) command to install or update the required dependencies. 
+   - If you are not using Wampoon to develop your app, just run composer from the command line.
 7. In the `config` folder, make a copy of `env.example.php` and rename it to `env.php`.
 8. Adjust your database credentials (**see below**).
 
@@ -45,93 +60,93 @@ Alternatively, you can visit the following link: [Google env search](https://www
 
 Instead, follow the instructions that are detailed in [config/env.example.php](config/env.example.php)
 
+## Installation
 
-## Useful VS Code Keybindings
+1. **Clone this repository** or download this repository.
+   ```bash
+   git clone https://github.com/frostybee/slim-mvc.git your-project-name
+   cd your-project-name
+   ```
 
-Below are keybindings that speeds up the insertion of special characters and keywords while editing a `.php` file. These bindings need to be added to your VS Code's keybindings.json
+2. **Install dependencies**
+   ```bash
+   composer install
+   ```
+   
+   Or if you don't have Composer globally installed, use the included `composer.bat` (you might need to adjust the PHP path):
+   ```bash
+   composer.bat install
+   ```
 
-```json
-  {
-    "key": "alt+shift+p",
-    "command": "type",
-    "args": {
-      "text": "=>"
-    },
-    "when": "textInputFocus && editorLangId == php"
-  },
-  {
-    "key": "ctrl+shift+j",
-    "command": "type",
-    "args": {
-      "text": "$this->"
-    },
-    "when": "textInputFocus && editorLangId == php"
-  },
-  {
-    "key": "ctrl+shift+k",
-    "command": "type",
-    "args": {
-      "text": "->"
-    },
-    "when": "textInputFocus && editorLangId == php"
-  },
-  {
-    "key": "ctrl+shift+l",
-    "command": "type",
-    "args": {
-      "text": "<?php"
-    },
-    "when": "textInputFocus && editorLangId == php"
-  },
-  {
-    "key": "shift+enter",
-    "command": "type",
-    "args": {
-      "text": "$"
-    },
-    "when": "textInputFocus && editorLangId == php"
-  },
-  {
-    "key": "shift+space",
-    "command": "type",
-    "args": {
-      "text": "_"
-    },
-    "when": "textInputFocus && editorLangId == php"
-  }
-  ```
+## Project Structure
 
-## Adding Fira Code Font to VS Code Portable
+Here's how everything is organized:
 
-1. Open your VS Code installation folder,
-2. Navigate to:
-    ```batch 
-    resources > app > out > vs >code > electron-sandbox > workbench
-    ```
+```plaintext
+slim-mvc/
+├── app/
+│   ├── Controllers/    # Your controllers live here
+│   ├── Domain/         # Domain logic and business rules
+│   ├── Helpers/        # Utility classes and helpers
+│   ├── Middleware/     # Custom middleware
+│   ├── Models/         # Data models and entities
+│   ├── Routes/         # Route definitions (web & API)
+│   ├── Utils/          # General utility functions
+│   └── Views/          # Your view templates
+├── config/             # Configuration files and bootstrap
+├── data/               # Database files, uploads, etc.
+├── docs/               # Documentation
+├── public/             # Web-accessible files
+│   ├── assets/         # Static assets (CSS, JS, images)
+│   │   ├── css/        # Stylesheets
+│   │   └── js/         # JavaScript files
+│   ├── index.php       # Application entry point
+│   └── .htaccess       # Apache rewrite rules
+├── var/                # Runtime files
+│   └── logs/           # Application logs
+└── vendor/             # Composer dependencies
+```
 
-3. Open `workbench.js` in a text editor,
-4. Add the following to the end of `workbench.js` then save it,
+## Quick Development Tips
 
-    ```javascript
-    var styleNode = document.createElement('style'); 
-    styleNode.type = "text/css"; 
-    var styleText = document.createTextNode(`
-        @font-face{
-            font-family: 'Fira Code';
-            src: url('https://raw.githubusercontent.com/tonsky/FiraCode/master/distr/eot/FiraCode-Regular.eot') format('embedded-opentype'),
-                url('https://raw.githubusercontent.com/tonsky/FiraCode/master/distr/woff2/FiraCode-Regular.woff2') format('woff2'),
-                url('https://raw.githubusercontent.com/tonsky/FiraCode/master/distr/woff/FiraCode-Regular.woff') format('woff'),
-                url('https://raw.githubusercontent.com/tonsky/FiraCode/master/distr/ttf/FiraCode-Regular.ttf') format('truetype');
-            font-weight: normal;
-            font-style: normal;
-        }`); 
-    styleNode.appendChild(styleText); 
-    document.getElementsByTagName('head')[0].appendChild(styleNode);
-    ```
-5. Open VS Code
-6. Open `settings.json` then add the following:
-    ```json
-    "editor.fontFamily": "Fira Code",
-    "editor.fontLigatures": true,
-    "editor.fontWeight": "400" // normal
-    ```
+### Adding Routes
+
+Routes are defined in the `app/Routes/` directory. Check out the existing route files to see how it's done.
+
+### Creating Controllers
+
+Controllers go in `app/Controllers/`. They should extend the base controller class and follow PSR-4 autoloading.
+
+### Views and Templates
+
+Templates are stored in `app/Views/`. The template engine is already configured and ready to use.
+
+### Configuration
+
+App configuration lives in `config/`. Modify these files to customize your application settings.
+
+### Logging
+
+Logs are written to the `var/logs/` directory. Use the injected logger in your controllers to track what's happening.
+
+## Need Help?
+
+- Check out the [Slim documentation](https://www.slimframework.com/docs/v4/) for framework-specific questions.
+- Look at the example controllers and routes to see how everything fits together.
+- The code is pretty well commented, so don't hesitate to explore it well.
+
+## Contributing
+
+Got ideas for improvements? Found a bug? Pull requests are welcome!
+
+- [Issues](https://github.com/frostybee/slim-mvc/issues)
+
+## Acknowledgments
+
+The application's bootstrap process and structure of this starter template is based on [slim4-skeleton](https://github.com/odan/slim4-skeleton) by [@odan](https://github.com/odan).  Many thanks to the original developers for their work!
+
+## License
+
+This project is open-sourced under the MIT License. See the `LICENSE` file for the full details.
+
+---

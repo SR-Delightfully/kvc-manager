@@ -22,6 +22,7 @@ declare(strict_types=1);
  * never have to be shared with all project collaborators.
  */
 
+
 return function (array $settings): array {
     // Database credentials
     $settings['db']['username'] = 'root';
