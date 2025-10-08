@@ -1,0 +1,322 @@
+<?php
+
+declare(strict_types=1);
+
+namespace App\Domain\Models;
+
+use PDO;
+use App\Helpers\Core\PDOService;
+use Exception;
+
+/**
+ * A wrapper class for interacting with a MySQL DB using the PDO API.
+ * This class can be extended for further customization.
+ */
+abstract class BaseModel
+{
+
+    /**
+     * holds a handle to a database connection.
+     */
+    private ?PDO $db = null;
+
+    /**
+     * The index of the current page.
+     */
+    private int $current_page = 1;
+
+    /**
+     * Holds the number of records to include per page.
+     */
+    private int $records_per_page = 5;
+
+    /**
+     * Instantiates the PDO wrapper.
+     *
+     * @param PDOService $pdo A helper object that contains the
+     *                        established DB connection.
+     */
+    public function __construct(PDOService $pdo)
+    {
+        $this->db = $pdo->getPDO();
+    }
+
+    /**
+     * Validates a table name to prevent SQL injection.
+     *
+     * @param string $table The table name to validate
+     * @throws InvalidArgumentException If table name is invalid
+     */
+    private function validateTableName(string $table): void
+    {
+        if (empty($table)) {
+            throw new \InvalidArgumentException("Table name cannot be empty. Please provide a valid table name.");
+        }
+
+        if (!preg_match('/^[a-zA-Z_][a-zA-Z0-9_]*$/', $table)) {
+            throw new \InvalidArgumentException(
+                "Invalid table name: '$table'. " .
+                    "Table names can only contain letters, numbers, and underscores, " .
+                    "and must start with a letter or underscore. " .
+                    "Example: 'users', 'user_profiles', 'Product_Categories'"
+            );
+        }
+    }
+
+    /**
+     * Executes a SQL query with the provided arguments.
+     *
+     * This method prepares and executes a SQL statement, binding parameters appropriately
+     * whether they are provided as an associative or indexed array.
+     *
+     * @param string $sql The SQL query to be executed.
+     * @param array $args An optional array of parameters to bind to the SQL query.
+     *                     If empty, the query is executed directly without parameter binding.
+     * @return PDOStatement The PDOStatement object representing the prepared statement.
+     */
+    private function run(string $sql, array $args = [])
+    {
+        try {
+            if (empty($args)) {
+                $stmt = $this->db->query($sql);
+                if ($stmt === false) {
+                    throw new Exception("Query execution failed. Check your SQL syntax and table/column names.");
+                }
+                return $stmt;
+            }
+
+            $stmt = $this->db->prepare($sql);
+            if ($stmt === false) {
+                throw new Exception("SQL statement preparation failed. This usually means there's a syntax error in your query.");
+            }
+
+            //check if args is associative or sequential?
+            $is_assoc = !empty($args) && array_keys($args) !== range(0, count($args) - 1);
+            if ($is_assoc) {
+                foreach ($args as $key => $value) {
+                    if (is_int($value)) {
+                        $stmt->bindValue(":$key", $value, PDO::PARAM_INT);
+                    } else {
+                        $stmt->bindValue(":$key", $value);
+                    }
+                }
+                if (!$stmt->execute()) {
+                    throw new Exception("Statement execution failed. Check your parameter bindings and data types.");
+                }
+            } else {
+                if (!$stmt->execute($args)) {
+                    throw new Exception("Statement execution failed. Make sure your parameter array matches the number of placeholders in your query.");
+                }
+            }
+            return $stmt;
+        } catch (Exception $e) {
+            throw new \RuntimeException(
+                "Database operation failed: " . $e->getMessage() . ". " .
+                    "This usually indicates a problem with your SQL query, database connection, or data types. " .
+                    "Check your query syntax and ensure the database is accessible."
+            );
+        }
+    }
+
+    /**
+     * Fetches all results from a SQL query as an array.
+     *
+     * This method executes a SQL query and returns the results in the specified fetch mode.
+     *
+     * @param string $sql The SQL query to be executed.
+     * @param array $args An optional array of parameters to bind to the SQL query.
+     * @param int $fetchMode The PDO fetch mode to use for the results. Defaults to PDO::FETCH_ASSOC.
+     * @return array An array of results from the query, formatted according to the specified fetch mode.
+     */
+    protected function fetchAll(string $sql, array $args = [], $fetchMode = PDO::FETCH_ASSOC): array
+    {
+        return (array) $this->run($sql, $args)->fetchAll($fetchMode);
+    }
+
+    /**
+     * Fetches a single result from a SQL query.
+     *
+     * This method executes a SQL query and returns a single result in the specified fetch mode.
+     *
+     * @param string $sql The SQL query to be executed.
+     * @param array $conditions An optional array of parameters to bind to the SQL query.
+     *                          It should contain the filtering options.
+     * @param int $fetchMode The PDO fetch mode to use for the result. Defaults to PDO::FETCH_ASSOC.
+     * @return mixed The result of the query, formatted according to the specified fetch mode, or false if no result is found.
+     */
+    protected function fetchSingle(string $sql, array $conditions = [], $fetchMode = PDO::FETCH_ASSOC)
+    {
+        return $this->run($sql, $conditions)->fetch($fetchMode);
+    }
+
+
+    /**
+     * Counts the number of rows affected by a SQL query.
+     *
+     * This method executes a SQL query and returns the count of rows that were affected.
+     *
+     * @param string $sql The SQL query to be executed, typically a SELECT query.
+     * @param array $args An optional array of parameters to bind to the SQL query.
+     * @return int The number of rows affected by the query.
+     */
+    protected function count(string $sql, array $args = []): int
+    {
+        return $this->run($sql, $args)->rowCount();
+    }
+
+    /**
+     * Retrieves the ID of the last inserted record.
+     *
+     * This method returns the ID generated by the last INSERT operation
+     * performed by the current database connection.
+     *
+     * @return string The ID of the last inserted record, or an empty string if no record was inserted.
+     */
+    protected function lastInsertId(): string
+    {
+        return $this->db->lastInsertId();
+    }
+
+    /**
+     * Inserts a new record into the specified table with the provided data.
+     *
+     * @param string $table The name of the table to insert the record into.
+     * @param array $data An associative array of column-value pairs to insert
+     *              (e.g., ["username"=>"frostybee", "email" =>"frostybee@me.com"]).
+     * @return mixed The ID of the last inserted record or other relevant value,
+     *               depending on the implementation.
+     */
+    protected function insert(string $table, array $data): mixed
+    {
+        $this->validateTableName($table);
+
+        if (empty($data)) {
+            throw new \InvalidArgumentException(
+                "No data provided for insert operation. " .
+                    "Please provide an associative array of column-value pairs. " .
+                    "Example: ['name' => 'John', 'email' => 'john@example.com']"
+            );
+        }
+
+        //add columns into comma separated string
+        $columns = implode(',', array_keys($data));
+
+        //get values
+        $values = array_values($data);
+
+        $placeholders = str_repeat('?,', count($data));
+        $placeholders = rtrim($placeholders, ',');
+
+        $this->run("INSERT INTO $table ($columns) VALUES ($placeholders)", $values);
+
+        return $this->lastInsertId();
+    }
+
+    /**
+     * Updates record(s) in the specified table based on the provided data and conditions.
+     *
+     * @param string $table The name of the table to update.
+     * @param array $data An associative array of table column-value pairs to update (e.g.,
+     *              ["username"=>"frostybee", "email" =>"frostybee@me.com"]).
+     * @param array $where_conditions An associative array of conditions for the update
+     *              (e.g., ["user_id"=> 3]).
+     * @return int The number of rows affected by the update operation.
+     */
+    protected function update(string $table, array $data, array $where_conditions): int
+    {
+        $this->validateTableName($table);
+
+        if (empty($data)) {
+            throw new \InvalidArgumentException(
+                "No data provided for update operation. " .
+                    "Please provide an associative array of column-value pairs to update. " .
+                    "Example: ['name' => 'Jane', 'email' => 'jane@example.com']"
+            );
+        }
+
+        if (empty($where_conditions)) {
+            throw new \InvalidArgumentException(
+                "No WHERE conditions provided for update operation. " .
+                    "This prevents accidental updates to all records. " .
+                    "Please provide conditions like: ['id' => 5] or ['status' => 'active']"
+            );
+        }
+
+        //merge data and where together
+        $collection = array_merge($data, $where_conditions);
+
+        //collect the values from collection
+        $values = array_values($collection);
+
+        //setup fields
+        $field_parts = [];
+        foreach ($data as $key => $value) {
+            $field_parts[] = "$key = ?";
+        }
+        $field_details = implode(', ', $field_parts);
+
+        //setup where
+        $where_parts = [];
+        foreach ($where_conditions as $key => $value) {
+            $where_parts[] = "$key = ?";
+        }
+        $where_details = implode(' AND ', $where_parts);
+
+        $stmt = $this->run("UPDATE $table SET $field_details WHERE $where_details", $values);
+
+        return $stmt->rowCount();
+    }
+
+    /**
+     * Deletes record(s) from the specified table based on the given conditions.
+     *
+     * @param string $table The name of the table from which to delete records.
+     * @param array $where_conditions An associative array of conditions for the deletion
+     * in the form of ['table_column' => 'value'] (e.g., ['user_id' => 3]).
+     * @param int $limit The maximum number of records to delete. Default is 1.
+     *
+     * @return int The number of rows affected by the delete operation.
+     */
+    protected function delete(string $table, array $where_conditions, int $limit = 1): int
+    {
+        $this->validateTableName($table);
+
+        if (empty($where_conditions)) {
+            throw new \InvalidArgumentException(
+                "No WHERE conditions provided for delete operation. " .
+                    "This prevents accidental deletion of all records. " .
+                    "Please provide conditions like: ['id' => 5] or ['status' => 'inactive']"
+            );
+        }
+
+        //collect the values from collection
+        $values = array_values($where_conditions);
+
+        //setup where
+        $where_parts = [];
+        foreach ($where_conditions as $key => $value) {
+            $where_parts[] = "$key = ?";
+        }
+        $where_details = implode(' AND ', $where_parts);
+
+        //if limit is a number use a limit on the query
+        $limit_clause = is_numeric($limit) && $limit > 0 ? " LIMIT $limit" : "";
+
+        $stmt = $this->run("DELETE FROM $table WHERE $where_details$limit_clause", $values);
+
+        return $stmt->rowCount();
+    }
+
+    /**
+     * Sets the pagination options for the current instance.
+     *
+     * @param int $current_page The current page number.
+     * @param int $records_per_page The number of records to include per page.
+     * @return void
+     */
+    public function setPaginationOptions(int $current_page, int $records_per_page): void
+    {
+        $this->current_page = $current_page;
+        $this->records_per_page = $records_per_page;
+    }
+}
