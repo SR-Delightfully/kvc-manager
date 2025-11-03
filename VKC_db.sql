@@ -1,13 +1,13 @@
 CREATE TABLE users(
 	user_id INT PRIMARY KEY AUTO_INCREMENT,
 	user_role ENUM('employee', 'admin') DEFAULT 'employee',
-	fName VARCHAR(50) NOT NULL,
-	lName VARCHAR(50) NOT NULL,
+	fist_name VARCHAR(50) NOT NULL,
+	last_name VARCHAR(50) NOT NULL,
 	email VARCHAR(50) NOT NULL,
 	phone INT(10) NOT NULL,
 	password VARCHAR(50) NOT NULL,
-	date_created DATE NOT NULL,
-	status ENUM('active', 'leave' 'terminated') DEFAULT 'active',
+	user_dc DATE NOT NULL,
+	user_status ENUM('active', 'leave' 'terminated') DEFAULT 'active',
 );
 
 CREATE TABLE shift(
@@ -18,6 +18,13 @@ CREATE TABLE shift(
     break_minutes INT,
     shift_date DATE NOT NULL,
     FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE
+);
+
+CREATE TABLE schedule(
+    schedule_id INT PRIMARY KEY AUTO_INCREMENT,
+    week_start DATE NOT NULL,
+    shift_id INT NOT NULL,
+    
 );
 
 CREATE TABLE station(
