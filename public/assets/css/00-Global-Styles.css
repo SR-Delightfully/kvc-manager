@@ -1,0 +1,294 @@
+/* ? Declaring root variables and website's color palette */
+:root {
+    /* Website's Color Palette */
+    /* Tones - Shades of Grey */
+    --tone-00: #000;
+    --tone-01: #0f0f0f;
+    --tone-02: #202020;
+    --tone-03: #303030;
+    --tone-04: #484848;
+    --tone-05: #606060;
+    --tone-06: #909090;
+    --tone-07: #b0b0b0;
+    --tone-08: #d0d0d0;
+    --tone-09: #e0e0e0;
+    --tone-10: #fff;
+
+    /* Colors - Varying hues and shades */
+    /* Shades of red: */
+    --color-red-01: #1b0101;
+    --color-red-02: #360202;
+    --color-red-03: #510303;
+    --color-red-04: #7b0404;
+    --color-red-05: #a40605;
+    --color-red-06: #e51b1b;
+    --color-red-07: #e51b1b;
+    --color-red-08: #ed5c5c;
+    --color-red-09: #f4a1a1;
+
+    /* Shades of blue: */
+    --color-blue-01: #020210;
+    --color-blue-02: #040420;
+    --color-blue-03: #060731;
+    --color-blue-04: #0a0a4a;
+    --color-blue-05: #0d0d63;
+    --color-blue-06: #272795;
+    --color-blue-07: #6364b2;
+    --color-blue-08: #a6a6d3;
+    --color-blue-09: #c1c1df;
+
+    /* ! Component variables */
+    /* ? to be used to allow different themes*/
+    --background-color: var(--tone-05);
+    --body-color: var(--tone-05);
+    --h1-color: var(--tone-00);
+    --h2-color: var(--tone-02);
+    --h3-color: var(--tone-03);
+    --h4-color: var(--tone-03);
+    --h5-color: var(--tone-03);
+    --h6-color: var(--tone-03);
+    --hr-color: var(--tone-00);
+    --padding-h-3: 0vh 3vw;
+    --padding-h-2: 0vh 2vw;
+    --padding-h-1: 0vh 1vw;
+    --padding-v-3: 3vh 0vw;
+    --padding-v-2: 2vh 0vw;
+    --padding-v-1: 1vh 0vw;
+    --padding-3: 3rem;
+    --padding-2: 2rem;
+    --padding-1: 1rem;
+}
+
+/* Themes: */
+/* ? Feel free to add additional themes if you want to! :D */
+:root[data-theme="dark-mode"] {
+    --background-color: var(--tone-00);
+    --body-color: var(--tone-00);
+    --h1-color: var(--tone-10);
+    --h2-color: var(--tone-08);
+    --h3-color: var(--tone-06);
+    --h4-color: var(--tone-06);
+    --h5-color: var(--tone-06);
+    --h6-color: var(--tone-06);
+    --hr-color: var(--tone-08);
+}
+:root[data-theme="light-mode"] {
+    --background-color: var(--tone-08);
+    --body-color: var(--tone-08);
+    --h1-color: var(--tone-01);
+    --h2-color: var(--tone-02);
+    --h3-color: var(--tone-03);
+    --h4-color: var(--tone-04);
+    --h5-color: var(--tone-04);
+    --h6-color: var(--tone-04);
+    --hr-color: var(--tone-10);
+}
+:root[data-theme="dark-red"] {
+    --background-color: var(--tone-00);
+    --body-color: var(--tone-00);
+    --h1-color: var(--tone-10);
+    --h2-color: var(--tone-08);
+    --h3-color: var(--tone-06);
+    --h4-color: var(--tone-06);
+    --h5-color: var(--tone-06);
+    --h6-color: var(--tone-06);
+    --hr-color: var(--tone-08);
+}
+:root[data-theme="light-red"] {
+    --background-color: var(--tone-08);
+    --body-color: var(--tone-08);
+    --h1-color: var(--tone-01);
+    --h2-color: var(--tone-02);
+    --h3-color: var(--tone-03);
+    --h4-color: var(--tone-04);
+    --h5-color: var(--tone-04);
+    --h6-color: var(--tone-04);
+    --hr-color: var(--tone-10);
+}
+:root[data-theme="dark-blue"] {
+    --background-color: var(--tone-00);
+    --body-color: var(--tone-00);
+    --h1-color: var(--tone-10);
+    --h2-color: var(--tone-08);
+    --h3-color: var(--tone-06);
+    --h4-color: var(--tone-06);
+    --h5-color: var(--tone-06);
+    --h6-color: var(--tone-06);
+    --hr-color: var(--tone-08);
+}
+:root[data-theme="light-blue"] {
+    --background-color: var(--tone-08);
+    --body-color: var(--tone-08);
+    --h1-color: var(--tone-01);
+    --h2-color: var(--tone-02);
+    --h3-color: var(--tone-03);
+    --h4-color: var(--tone-04);
+    --h5-color: var(--tone-04);
+    --h6-color: var(--tone-04);
+    --hr-color: var(--tone-10);
+}
+/* * Setting colors for website elements */
+/* ! to change color of element, please change color in the themes ⬆ ABOVE ⬆ */
+body {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    background-color: var(--body-color);
+    overflow-x: hidden;
+    overflow-y: scroll;
+    min-height: 100vh;
+    max-height: 100%;
+    position: relative;
+    top: 0;
+    left: 0;
+    background-image: url("https://i.imgur.com/WcN2rM3.png");
+    background-size: 325%;
+    background-position: 96.3% 40%;
+    & h1 {
+        color: var(--h1-color);
+    }
+    & h2 {
+        color: var(--h2-color);
+    }
+    & h3 {
+        color: var(--h3-color);
+    }
+    & h4 {
+        color: var(--h4-color);
+    }
+    & h5 {
+        color: var(--h5-color);
+    }
+    & h6 {
+        color: var(--h6-color);
+    }
+}
+/* ? Useful classes to reduce code repetition */
+
+/* positions */
+/* center */
+.center-h {
+    position: relative;
+    left: 50%;
+    transform: translate(-50%, 0);
+}
+.center-v {
+    position: absolute;
+    top: 50%;
+    transform: translate(0, -50%);
+}
+
+.left {
+    position: relative;
+    left: 0;
+    transform: translate(-50%, 0);
+}
+.right {
+    position: relative;
+    right: 0;
+    transform: translate(-50%, 0);
+}
+
+.full-width {
+    min-width: 100vh;
+    max-width: 100%;
+}
+
+/* Div Layouts */
+.display-flex-row {
+    display: flex;
+    flex-flow: row nowrap;
+}
+.display-flex-center {
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: center;
+    align-items: center;
+}
+.display-flex-col {
+    display: flex;
+    flex-flow: column nowrap;
+}
+
+/* Rounded Borders */
+.rounded-border-3 {
+    border-radius: 2rem;
+}
+.rounded-border-2 {
+    border-radius: 1rem;
+}
+.rounded-border-1 {
+    border-radius: 0.5rem;
+}
+/* Border styles */
+.border-3 {
+    border: 3px solid hotpink;
+}
+.border-2 {
+    border: 2px solid hotpink;
+}
+.border-1 {
+    border: 1dvi solid hotpink;
+}
+
+.page {
+    min-height: 100vh;
+    min-width: 90%;
+    max-width: 90vw;
+    padding: var(--padding-3);
+    overflow-x: hidden;
+    overflow-y: scroll;
+    scrollbar-width: none;
+}
+
+/*  Media Queries: */
+/*  Setting break points for different screen sizes */
+/* Default State - Will effect all queries */
+@media screen and (min-width: 300px) {
+}
+
+/* Extra Small Screens */
+@media screen and (max-width: 720px) {
+}
+
+/* Small Screens */
+@media screen and (min-width: 721px) and (max-width: 1280px) {
+}
+
+/* Medium Screens */
+@media screen and (min-width: 1281px) and (max-width: 1440px) {
+}
+
+/* Large Screens */
+@media screen and (min-width: 1441px) and (max-width: 1920px) {
+}
+
+/* Extra Large Screens */
+@media screen and (min-width: 1921px) {
+}
+
+#page-wrapper {
+    border: 2px solid rebeccapurple;
+    min-height: 100vh;
+    max-height: 100%;
+    min-width: 100vw;
+    position: absolute;
+    top: 0;
+    left: 0;
+    overflow: hidden;
+}
+
+@media screen and (max-width: 1280px) {
+    body {
+        background-position: 82% 135vh;
+        background-size: 550%;
+    }
+}
+
+/* Extra Small Screens */
+@media screen and (max-width: 720px) {
+    body {
+        background-position: 95.25% 124svh;
+        background-size: 1300%;
+    }
+}

@@ -1,0 +1,8 @@
+#dashboard {
+    background-color: #00ff0080;
+    height: 80vh;
+    width: 72vw;
+    position: absolute;
+    right: 3vw;
+    margin-top: 5rem;
+}

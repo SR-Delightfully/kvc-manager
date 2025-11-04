@@ -1,8 +1,12 @@
+-- ! TODO: Rework Tables to match the updated diagram
+-- ! TODO: Rename file to match the company name (Files should be consistent)
+-- ! TODO: Remove database file from git repo when project is finalized (Security Risk)
+
 CREATE TABLE users(
 	user_id INT PRIMARY KEY AUTO_INCREMENT,
 	user_role ENUM('employee', 'admin') DEFAULT 'employee',
-	fName VARCHAR(50) NOT NULL,
-	lName VARCHAR(50) NOT NULL,
+	fName VARCHAR(50) NOT NULL, -- TODO: Maintain a consistent name convention for all records
+	lName VARCHAR(50) NOT NULL, -- ? EX: if user_id (snake case) use first_name or user_fname
 	email VARCHAR(50) NOT NULL,
 	phone INT(10) NOT NULL,
 	password VARCHAR(50) NOT NULL,
