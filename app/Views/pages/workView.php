@@ -5,11 +5,4 @@ use App\Helpers\ViewHelper;
 $page_title = 'Welcome to KVC Manager!';
 ViewHelper::loadHeader($page_title);
 ?>
-
-
-
-<?php
-
-ViewHelper::loadJsScripts();
-ViewHelper::loadFooter();
-?>
+<p>Hello Work log page! :)</p>
