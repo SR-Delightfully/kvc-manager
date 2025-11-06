@@ -7,15 +7,7 @@ CREATE TABLE users(
 	phone INT(10) NOT NULL,
 	password VARCHAR(50) NOT NULL,
 	user_dc DATE NOT NULL,
-	user_status ENUM('active', 'leave' 'terminated') DEFAULT 'active',
-);
-
-CREATE TABLE shift(
-    shift_id INT PRIMARY KEY AUTO_INCREMENT,
-    schedule_id INT NOT NULL,
-    shift_start DATETIME NOT NULL,
-    shift_end DATETIME NULL,
-    FOREIGN KEY (schedule_id) REFERENCES schedule(schedule_id),
+	user_status ENUM('active', 'leave', 'terminated') DEFAULT 'active'
 );
 
 CREATE TABLE schedule(
@@ -24,39 +16,47 @@ CREATE TABLE schedule(
     start_time DATETIME NOT NULL,
     end_time DATETIME NOT NULL,
     schedule_status ENUM('pending','confirmed','rejected') NOT NULL DEFAULT 'pending',
-    FOREIGN KEY (user_id) REFERENCES users(user_id),
+    FOREIGN KEY (user_id) REFERENCES users(user_id)
+);
+
+CREATE TABLE shift(
+    shift_id INT PRIMARY KEY AUTO_INCREMENT,
+    schedule_id INT NOT NULL,
+    shift_start DATETIME NOT NULL,
+    shift_end DATETIME NULL,
+    FOREIGN KEY (schedule_id) REFERENCES schedule(schedule_id)
 );
 
 CREATE TABLE station(
     station_id INT PRIMARY KEY AUTO_INCREMENT,
-    station_description VARCHAR(100),
+    station_description VARCHAR(100)
 );
 
 CREATE TABLE team(
     team_id INT PRIMARY KEY AUTO_INCREMENT,
     station_id INT NOT NULL,
     team_creation_date DATE NOT NULL,
-    FOREIGN KEY (station_id) REFERENCES station(station_id),
+    FOREIGN KEY (station_id) REFERENCES station(station_id)
 );
 
 CREATE TABLE team_members(
     team_id INT NOT NULL,
     user_id INT NOT NULL,
     FOREIGN KEY (team_id) REFERENCES team(team_id),
-    FOREIGN KEY (user_id) REFERENCES users(user_id),
+    FOREIGN KEY (user_id) REFERENCES users(user_id)
 );
 
 CREATE TABLE product(
     product_id INT PRIMARY KEY AUTO_INCREMENT,
     product_category ENUM('SCI', 'U-BASE', '100-BASE'),
     product_code VARCHAR(50) NOT NULL,
-    product_name VARCHAR(50) NOT NULL,
+    product_name VARCHAR(50) NOT NULL
 );
 
 CREATE TABLE colour(
     colour_id INT PRIMARY KEY AUTO_INCREMENT,
     colour_code INT(3) UNIQUE,
-    colour_name VARCHAR(20) NOT NULL,
+    colour_name VARCHAR(20) NOT NULL
 );
 
 CREATE TABLE product_variant(
@@ -77,11 +77,11 @@ CREATE TABLE tote(
 );
 
 CREATE TABLE pallet(
-    pallet_id INT PRIMARY AUTO_INCREMENT,
+    pallet_id INT PRIMARY KEY AUTO_INCREMENT,
     tote_id INT NOT NULL,
     station_id INT NOT NULL,
     FOREIGN KEY (tote_id) REFERENCES tote(tote_id),
-    FOREIGN KEY (station_id) REFERENCES station(station_id),
+    FOREIGN KEY (station_id) REFERENCES station(station_id)
 );
 
 CREATE TABLE palletize_session(
@@ -94,5 +94,5 @@ CREATE TABLE palletize_session(
     break_time INT NULL,
     mess BOOLEAN NULL,
     notes VARCHAR(100) NULL,
-    FOREIGN KEY (pallet_id) REFERENCES pallet(pallet_id),
+    FOREIGN KEY (pallet_id) REFERENCES pallet(pallet_id)
 );
