@@ -16,7 +16,7 @@ ViewHelper::loadHeader($page_title);
 
 
 <?php
-
+var_dump($data['message']);
 ViewHelper::loadJsScripts();
 ViewHelper::loadFooter();
 ?>
