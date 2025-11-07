@@ -9,3 +9,7 @@
 </head>
 
 <body>
+    <div class="lang-switch">
+        <a href="">EN</a>
+        <a href="">FR</a>
+    </div>
