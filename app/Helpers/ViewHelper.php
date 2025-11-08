@@ -38,6 +38,7 @@ class ViewHelper
     {
         require_once APP_VIEWS_PATH . '/common/footer.php';
     }
+    
 
     /**
      * Generates HTML option elements for a select dropdown with secure output.
