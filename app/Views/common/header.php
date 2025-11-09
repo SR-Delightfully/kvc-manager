@@ -6,10 +6,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?= $page_title ?></title>
     <!-- TODO: include your CSS files here -->
+    <link rel="stylesheet" href="assets/css/style.css">
+
 </head>
 
 <body>
-    <div class="lang-switch">
-        <a href="">EN</a>
-        <a href="">FR</a>
-    </div>
+   

@@ -1,11 +1,13 @@
 <?php
 use App\Helpers\ViewHelper;
-$page_title ='Registration page';
+$page_title = 'Registration Page';
 ViewHelper::loadHeader($page_title);
 ?>
-<form method="POST"
-//TODO: to add the action
-action="">
+
+<div class="register-container">
+  <h1>Registration</h1>
+
+  <form method="POST" action="">
     <label for="user_role">User Role</label>
     <select id="user_role" name="user_role">
       <option value="">-- Select Role --</option>
@@ -31,7 +33,7 @@ action="">
 
     <label for="user_dc">Date Created</label>
     <input type="date" id="user_dc" name="user_dc">
-//TODO: im not sure about the types of user status i just put common ones
+
     <label for="user_status">User Status</label>
     <select id="user_status" name="user_status">
       <option value="">-- Select Status --</option>
@@ -40,9 +42,14 @@ action="">
       <option value="suspended">Suspended</option>
     </select>
 
-    <button type="submit">Sign In</button>
-    <button type="submit">Sign Up</button>
-</form>
+    <div>
+      <button type="submit">Sign In</button>
+      <button type="submit">Sign Up</button>
+    </div>
+  </form>
+</div>
+
 <?php
 ViewHelper::loadJsScripts();
 ViewHelper::loadFooter();
+?>

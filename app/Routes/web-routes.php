@@ -20,6 +20,10 @@ return static function (Slim\App $app): void {
 
     $app->get('/home', [HomeController::class, 'index'])
         ->setName('home.index');
+  $app->get('/auth', function ($request, $response, $args) {
+    include __DIR__ . '/../Views/auth/registrationView.php';
+    return $response;
+});
 
 
 
