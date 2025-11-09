@@ -6,12 +6,14 @@ declare(strict_types=1);
  * This file contains the routes for the web application.
  */
 
-use App\Controllers\ProgressController;
-use App\Controllers\UsersController;
-use App\Controllers\ColourController;
-use App\Controllers\ProductVariantController;
-use App\Controllers\AdminDashboardController;
-use App\Controllers\ProductController;
+use App\Controllers\admin\ProgressController;
+use App\Controllers\admin\UsersController;
+use App\Controllers\admin\ColourController;
+use App\Controllers\admin\ProductVariantController;
+use App\Controllers\admin\AdminDashboardController;
+use App\Controllers\AuthController;
+use App\Controllers\admin\ProductController;
+use App\Controllers\WorkLogController;
 use App\Controllers\HomeController;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
@@ -19,6 +21,15 @@ use Psr\Http\Message\ServerRequestInterface as Request;
 
 return static function (Slim\App $app): void {
 
+    $app->group('/auth', function ($auth) {
+        $auth->get('/login', [AuthController::class, 'showLoginForm'])->setName('auth.login');
+        $auth->post('/login', [AuthController::class, 'login']);
+        $auth->get('/register', [AuthController::class, 'showRegisterForm'])->setName('auth.register');
+        $auth->post('/register', [AuthController::class, 'register']);
+        $auth->get('/2fa', [AuthController::class, 'showTwoFactorForm'])->setName('auth.2fa');
+        $auth->post('/2fa', [AuthController::class, 'verifyTwoFactor']);
+        $auth->get('/logout', [AuthController::class, 'logout'])->setName('auth.logout');
+    });
 
     $app->group('/admin', function ($admin) {
         $admin->get('/dashboard', [AdminDashboardController::class, 'index'])->setName("adminDashboard.index");
@@ -74,6 +85,17 @@ return static function (Slim\App $app): void {
         });
     });
 
+
+    $app->group('/employee', function ($employee) {
+        $employee->get('/dashboard', [AdminDashboardController::class, 'index'])->setName("employeeDashboard.index");
+
+        $employee->group('/work-log', function ($workLog) {
+            $workLog->get('/', [WorkLogController::class, 'index'])->setName("employee.workLog.index");
+            $workLog->get('{id}/edit', [WorkLogController::class, 'edit'])->setName("employee.workLog.edit");
+            $workLog->post('{id}', [WorkLogController::class, 'update']);
+            $workLog->post('', [WorkLogController::class, 'store']);
+        });
+    });
 
 
     //* NOTE: Route naming pattern: [controller_name].[method_name]

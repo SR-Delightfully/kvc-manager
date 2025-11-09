@@ -2,18 +2,19 @@
 
 declare(strict_types=1);
 
-namespace App\Controllers;
-
+namespace App\Controllers\admin;
+use App\Controllers\BaseController;
+use App\Domain\Models\ColourModel;
 use DI\Container;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use App\Domain\Models\ProductModel;
 
-class ProductController extends BaseController
+class ColourController extends BaseController
 {
     public function __construct(
         Container $container,
-    private ProductModel $ordersModel)
+    private ColourModel $colourModel)
     {
         parent:: __construct($container);
     }

@@ -2,19 +2,20 @@
 
 declare(strict_types=1);
 
-namespace App\Controllers;
+namespace App\Controllers\admin;
+use App\Controllers\BaseController;
 
 use DI\Container;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use App\Domain\Models\ProductModel;
-use App\Domain\Models\UserModel;
+use App\Domain\Models\ScheduleModel;
 
-class UsersController extends BaseController
+class ScheduleController extends BaseController
 {
     public function __construct(
         Container $container,
-    private UserModel $userModel)
+    private ScheduleModel $scheduleModel)
     {
         parent:: __construct($container);
     }

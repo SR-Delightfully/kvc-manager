@@ -2,19 +2,20 @@
 
 declare(strict_types=1);
 
-namespace App\Controllers;
+namespace App\Controllers\admin;
+use App\Controllers\BaseController;
 
 use DI\Container;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use App\Domain\Models\ProductModel;
-use App\Domain\Models\ProductVariantModel;
+use App\Domain\Models\UserModel;
 
-class ProductVariantController extends BaseController
+class UsersController extends BaseController
 {
     public function __construct(
         Container $container,
-    private ProductVariantModel $productVariantModel)
+    private UserModel $userModel)
     {
         parent:: __construct($container);
     }
