@@ -19,11 +19,19 @@ abstract class BaseController
 
     //NOTE: Passing the entire DI container violates the Dependency Inversion Principle and creates a service locator anti-pattern.
     // However, it is a simple and effective way to pass the container to the controller given the small scope of the application and the fact that this application is to be used in a classroom setting where students are not yet familiar with the Dependency Inversion Principle.
-    public function __construct(Container $container)
+    public function __construct() {}
+    protected function renderJson(Container $container, Response $response, array $data, int $status_code = 200): Response
     {
+        // var_dump($data);
+
         $this->container = $container;
         $this->settings = $container->get(AppSettings::class);
         $this->view = $container->get(PhpRenderer::class);
+
+        $payload = json_encode($data, JSON_UNESCAPED_SLASHES |    JSON_PARTIAL_OUTPUT_ON_ERROR);
+        //-- Write JSON data into the response's body.
+        $response->getBody()->write($payload);
+        return $response->withStatus($status_code)->withAddedHeader(HEADERS_CONTENT_TYPE, APP_MEDIA_TYPE_JSON);
     }
 
     /**

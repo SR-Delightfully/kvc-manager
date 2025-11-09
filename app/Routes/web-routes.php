@@ -20,12 +20,13 @@ use Psr\Http\Message\ServerRequestInterface as Request;
 
 
 return static function (Slim\App $app): void {
+    // Author: Sabrina
     // Routes________________________________//
-    
     // 'Home' routes:
     /** This route uses the HomeController to display the homeView. This page is used to display a dashboard of widgets that will lead to other pages in the application. */
     $app->get('/', [HomeController::class, 'index'])
         ->setName('home.index');
+    //  $app->get('/', [AboutController::class, 'handleAboutWebService']); // From Aya's version
 
     /** ⬆ SEE ABOVE ⬆*/
     $app->get('/home', [HomeController::class, 'index'])
@@ -66,6 +67,22 @@ return static function (Slim\App $app): void {
         ->setName('admin.index');
 
     /** This route is used to display error messages if the user goes to the wrong sub-directory.*/
+    $app->get('/error', function (Request $request, Response $response, $args) {
+        throw new \Slim\Exception\HttpNotFoundException($request, "Something went wrong");
+    });
+
+    // Author: Aya
+     //* ROUTE: GET /ping
+    $app->get('/ping', function (Request $request, Response $response, $args) {
+
+        $payload = [
+            "greetings" => "Reporting! Hello there!",
+            "now" => DateTimeHelper::now(DateTimeHelper::Y_M_D_H_M),
+        ];
+        $response->getBody()->write(json_encode($payload, JSON_UNESCAPED_SLASHES | JSON_PARTIAL_OUTPUT_ON_ERROR));
+        return $response;
+    });
+    // Example route to test error handling.
     $app->get('/error', function (Request $request, Response $response, $args) {
         throw new \Slim\Exception\HttpNotFoundException($request, "Something went wrong");
     });
