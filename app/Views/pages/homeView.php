@@ -11,6 +11,6 @@ ViewHelper::loadHeader($page_title);
 
 ViewHelper::loadJsScripts();
 ViewHelper::loadFooter();
-ViewHelper::loadNavbar();
+// ViewHelper::loadNavbar();
 
 ?>

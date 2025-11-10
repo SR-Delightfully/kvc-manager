@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?= $page_title ?></title>
+    <link rel="stylesheet" href="assets/css/style.css">
     <link rel="stylesheet" href="./public/assets/css/00-Global-Styles.css">
     <link rel="stylesheet" href="./public/assets/css/01-Navbar-Styles.css">
     <link rel="stylesheet" href="./public/assets/css/02-Header-Styles.css">

@@ -46,6 +46,9 @@ $settings['logger'] = [
 // Database settings.
 $settings['db'] = [
     'host' => 'localhost',
+    'database' => "kvc_manager_db",
+    'username' => 'root',
+    'password' => '',
     'encoding' => 'utf8mb4',
     'options' => [
         // Turn off persistent connections

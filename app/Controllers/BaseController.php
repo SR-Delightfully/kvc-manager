@@ -19,15 +19,15 @@ abstract class BaseController
 
     //NOTE: Passing the entire DI container violates the Dependency Inversion Principle and creates a service locator anti-pattern.
     // However, it is a simple and effective way to pass the container to the controller given the small scope of the application and the fact that this application is to be used in a classroom setting where students are not yet familiar with the Dependency Inversion Principle.
-    public function __construct() {}
-    protected function renderJson(Container $container, Response $response, array $data, int $status_code = 200): Response
+    public function __construct(Container $container)
     {
-        // var_dump($data);
-
         $this->container = $container;
         $this->settings = $container->get(AppSettings::class);
         $this->view = $container->get(PhpRenderer::class);
-
+    }
+    protected function renderJson(Container $container, Response $response, array $data, int $status_code = 200): Response
+    {
+        // var_dump($data);
         $payload = json_encode($data, JSON_UNESCAPED_SLASHES |    JSON_PARTIAL_OUTPUT_ON_ERROR);
         //-- Write JSON data into the response's body.
         $response->getBody()->write($payload);
@@ -51,12 +51,19 @@ abstract class BaseController
      * @throws \Slim\Exception\HttpInternalServerErrorException If the view cannot be rendered.
      *
      */
-    protected function render(Response $response, string $view_name, array $data = []): Response
-    {
-        $response = $response->withHeader('Content-Type', 'text/html; charset=utf-8');
-        //dd($data);
-        return $this->view->render($response, $view_name, $data);
+protected function render(Response $response, string $view_name, array $data = []): Response
+{
+    $response = $response->withHeader('Content-Type', 'text/html; charset=utf-8');
+
+    if (!isset($this->view)) {
+        global $app;
+        $this->container = $app->getContainer();
+        $this->settings = $this->container->get(AppSettings::class);
+        $this->view = $this->container->get(PhpRenderer::class);
     }
+
+    return $this->view->render($response, $view_name, $data);
+}
 
     /**
      * Redirects the client to a named route with optional route parameters and query strings.

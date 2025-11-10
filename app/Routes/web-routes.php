@@ -31,6 +31,10 @@ return static function (Slim\App $app): void {
     /** ⬆ SEE ABOVE ⬆*/
     $app->get('/home', [HomeController::class, 'index'])
         ->setName('home.index');
+  $app->get('/auth', function ($request, $response, $args) {
+    include __DIR__ . '/../Views/auth/registrationView.php';
+    return $response;
+});
 
     // 'Login'/'Signup' routes:
     /** This route uses the LoginController to display the loginView. This page is used for existing users to login and access the web application.*/
@@ -66,10 +70,10 @@ return static function (Slim\App $app): void {
     $app->get('/admin', [AdminController::class, 'index'])
         ->setName('admin.index');
 
-    /** This route is used to display error messages if the user goes to the wrong sub-directory.*/
-    $app->get('/error', function (Request $request, Response $response, $args) {
-        throw new \Slim\Exception\HttpNotFoundException($request, "Something went wrong");
-    });
+    // /** This route is used to display error messages if the user goes to the wrong sub-directory.*/
+    // $app->get('/error', function (Request $request, Response $response, $args) {
+    //     throw new \Slim\Exception\HttpNotFoundException($request, "Something went wrong");
+    // });
 
     // Author: Aya
      //* ROUTE: GET /ping

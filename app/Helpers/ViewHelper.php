@@ -18,7 +18,17 @@ class ViewHelper
         $page_title = $page_title ?? 'Default Title';
         require_once APP_VIEWS_PATH . '/common/header.php';
     }
-
+    
+ /**
+  * Load the employee sidebar for the page.
+  * @param string $page_title the title of the page
+  * @return void
+  */
+ public static function loadSideBar(): void
+    {
+       
+        require_once APP_VIEWS_PATH . '/employee/sidebar.php';
+    }
     /**
      * Load the common JavaScript scripts for the page.
      *

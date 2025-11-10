@@ -38,7 +38,7 @@ return function (array $settings): array {
     $settings['error']['display_error_details'] = true;
 
     // Database
-    $settings['db']['database'] = 'worldcup';
+    $settings['db']['database'] = 'kvc_manager_db';
     $settings['db']['hostname'] = 'localhost';
     $settings['db']['port'] = '3306';
 

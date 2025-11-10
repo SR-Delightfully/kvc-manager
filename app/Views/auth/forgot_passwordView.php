@@ -1,0 +1,27 @@
+<?php
+use App\Helpers\ViewHelper;
+$page_title = 'Password Reset';
+ViewHelper::loadHeader($page_title);
+?>
+
+<div class="reset-container">
+  <h1>Password Reset</h1>
+
+  <form method="POST" action="">
+    <label for="current_password">Current Password</label>
+    <input type="password" name="current_password" id="current_password" required>
+
+    <label for="new_password">New Password</label>
+    <input type="password" name="new_password" id="new_password" required>
+
+    <label for="confirm_password">Confirm Password</label>
+    <input type="password" name="confirm_password" id="confirm_password" required>
+
+    <button type="submit">RESET PASSWORD</button>
+  </form>
+</div>
+
+<?php
+ViewHelper::loadJsScripts();
+ViewHelper::loadFooter();
+?>
