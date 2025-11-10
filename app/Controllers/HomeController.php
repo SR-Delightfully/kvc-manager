@@ -22,18 +22,21 @@ class HomeController extends BaseController
 
     public function index(Request $request, Response $response, array $args): Response
     {
-        //$data['flash'] = $this->flash->getFlashMessage();
-        //echo $data['message'] ;exit;
         $data = $this->userModel->getTeamMembersByStation(2);
 
-        $data['data'] = [
-            'title' => 'Home',
-            'message' => $data,
+        $data = [
+            'page_title' => 'Welcome to KVC Manager',
+            'contentView' => APP_VIEWS_PATH . '/pages/homeView.php',
+            'isSideBarShown' => true,
+            'data' => [
+                'title' => 'Home',
+                'message' => $data,
+            ]
         ];
 
         //dd($data);
         //var_dump($this->session); exit;
-        return $this->render($response, 'pages/homeView.php', $data);
+        return $this->render($response, 'common/layout.php', $data);
     }
 
     public function error(Request $request, Response $response, array $args): Response

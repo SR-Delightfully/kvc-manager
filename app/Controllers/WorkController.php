@@ -17,12 +17,17 @@ class WorkController extends BaseController
 
     public function index(Request $request, Response $response, array $args): Response
     {
-        $data['data'] = [
-            'title' => 'Work',
-            'message' => 'Welcome to the work page',
+        $data = [
+            'page_title' => 'Welcome to KVC Manager',
+            'contentView' => APP_VIEWS_PATH . '/pages/workView.php',
+            'isSideBarShown' => true,
+            'data' => [
+                'title' => 'Work',
+                'message' => 'Work Page',
+            ]
         ];
 
-        return $this->render($response, 'pages/workView.php', $data);
+        return $this->render($response, 'common/layout.php', $data);
     }
 
     public function error(Request $request, Response $response, array $args): Response

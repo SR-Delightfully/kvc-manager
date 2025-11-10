@@ -17,13 +17,19 @@ class TimeController extends BaseController
 
     public function index(Request $request, Response $response, array $args): Response
     {
-        $data['data'] = [
-            'title' => 'Time',
-            'message' => 'Welcome to the time page',
+       $data = [
+            'page_title' => 'Welcome to KVC Manager',
+            'contentView' => APP_VIEWS_PATH . '/pages/timeView.php',
+            'isSideBarShown' => true,
+            'data' => [
+                'title' => 'Time',
+                'message' => 'Time Page',
+            ]
         ];
 
-        return $this->render($response, 'pages/timeView.php', $data);
+        return $this->render($response, 'common/layout.php', $data);
     }
+
 
     public function error(Request $request, Response $response, array $args): Response
     {

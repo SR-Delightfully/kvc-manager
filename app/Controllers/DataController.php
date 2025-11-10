@@ -17,12 +17,17 @@ class DataController extends BaseController
 
     public function index(Request $request, Response $response, array $args): Response
     {
-        $data['data'] = [
-            'title' => 'Data',
-            'message' => 'Welcome to the data page',
+       $data = [
+            'page_title' => 'Welcome to KVC Manager',
+            'contentView' => APP_VIEWS_PATH . '/pages/dataView.php',
+            'isSideBarShown' => true,
+            'data' => [
+                'title' => 'Data',
+                'message' => 'Data Page',
+            ]
         ];
 
-        return $this->render($response, 'pages/dataView.php', $data);
+        return $this->render($response, 'common/layout.php', $data);
     }
 
     public function error(Request $request, Response $response, array $args): Response

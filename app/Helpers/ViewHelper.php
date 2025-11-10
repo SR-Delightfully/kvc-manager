@@ -20,14 +20,14 @@ class ViewHelper
     }
     
  /**
-  * Load the employee sidebar for the page.
+  * Load the sidebar for the page.
   * @param string $page_title the title of the page
   * @return void
   */
  public static function loadSideBar(): void
     {
        
-        require_once APP_VIEWS_PATH . '/employee/sidebar.php';
+        require_once APP_VIEWS_PATH . '/common/sidebar.php';
     }
     /**
      * Load the common JavaScript scripts for the page.

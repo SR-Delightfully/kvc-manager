@@ -17,12 +17,17 @@ class LoginController extends BaseController
 
     public function index(Request $request, Response $response, array $args): Response
     {
-        $data['data'] = [
-            'title' => 'Login',
-            'message' => 'Welcome to the login page',
+       $data = [
+            'page_title' => 'Welcome to KVC Manager',
+            'contentView' => APP_VIEWS_PATH . '/pages/loginView.php',
+            'isSideBarShown' => false,
+            'data' => [
+                'title' => 'Login',
+                'message' => 'Login Page',
+            ]
         ];
 
-        return $this->render($response, 'pages/loginView.php', $data);
+        return $this->render($response, 'common/layout.php', $data);
     }
 
     public function error(Request $request, Response $response, array $args): Response
