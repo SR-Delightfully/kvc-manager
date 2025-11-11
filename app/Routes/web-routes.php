@@ -52,29 +52,36 @@ return static function (Slim\App $app): void {
     $app->get('/logout', [AuthController::class, 'logout'])->setName('auth.logout');
 
     // 'Work Log' routes:
-    /** This route uses the WorkController to display the workView. This page is used to display components necessary for the employee to input their data. */
-    $app->get('/work', [WorkController::class, 'index'])
-        ->setName('work.index');
+    /** This route s used to display components necessary for the employee to input their data. */
+    $app->group('/work', function($work){
+        $work->get('', [WorkController::class, 'index'])->setName('work.index');
+        $work->post('', [WorkController::class, 'store']);
+        $work->get('{id}', [WorkController::class, 'edit'])->setName('work.edit');
+        $work->post('{id}', [WorkController::class, 'update']);
+    });
 
     // 'Data & Progress' routes:
-    /** This route uses the DataController to display the dataView. This page is used to display various widgets to show various data visually. */
-    $app->get('/progress', [DataController::class, 'index'])->setName('data.index');
+    /** This route uses the ProgressController to display the dataView. This page is used to display various widgets to show various data visually. */
+    $app->get('/progress', [ProgressController::class, 'today'])->setName('data.index');
     $app->get('/progress/all-time', [ProgressController::class, 'allTime'])->setName('admin.db.progress.allTime');
 
     // 'Time & Attendance' routes:
-    /** This route uses the TimeController to display the TimeView. This page is used to keep track of the employes scheduling.*/
-    $app->get('/time', [TimeController::class, 'index'])
-        ->setName('time.index');
+    /** This route uses the TimeController to display the TimeView. This page is used to keep track of the employees scheduling.*/
+    $app->get('/time', [TimeController::class, 'index'])->setName('time.index');
 
     // 'Settings' routes:
     /** This route uses the SettingsController to display the SettingsView. This page will offer various settings for the user to customize their experience. */
-     $app->get('/settings', [SettingsController::class, 'index'])
-        ->setName('settings.index');
+    $app->group('/settings', function ($settings) {
+        $settings->get('', [SettingsController::class, 'index'])->setName('settings.index');
+        $settings->post('', [SettingsController::class, 'store']);
+        $settings->get('/edit', [SettingsController::class, 'edit'])->setName('settings.edit');
+        $settings->post('/edit', [SettingsController::class, 'update']);
+    });
 
     /** This route uses the AdmimnController to display the adminView.
      * This view consists of the admin panel, where oly users with the admin role can go to interact with the database and manage their employees.  */
     $app->group('/admin', function ($admin) {
-        $admin->get('', [ProductController::class, 'index'])->setName('admin.db.index');
+        $admin->get('', [AdminController::class, 'index'])->setName('admin.index');
 
             $admin->group('/product', function ($product) {
                 $product->get('', [ProductController::class, 'index'])->setName('admin.db.product.index');
