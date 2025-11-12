@@ -43,8 +43,9 @@ return static function (Slim\App $app): void {
     $app->post('/login', [AuthController::class, 'login']);
 
     /** This route uses the RegisterController to display the registerView. This page is used to display the form in which a user can use to sign up to the web application */
-    $app->get('/register', [RegisterController::class, 'index'])->setName('register.index');
-    $app->post('/register', [AuthController::class, 'register']);
+    $app->get('/register', [AuthController::class, 'showRegister'])->setName('auth.register');
+    
+$app->post('/register', [AuthController::class, 'register'])->setName('auth.register.post');
 
     /** Routing for 2FA and logout */
     $app->get('/2fa', [AuthController::class, 'showTwoFactorForm'])->setName('auth.2fa');

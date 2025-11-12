@@ -6,6 +6,7 @@ use App\Helpers\Core\PDOService;
 
 class UserModel extends BaseModel
 {
+
     public function __construct(PDOService $pDOService) {
         parent:: __construct($pDOService);
     }
@@ -16,13 +17,14 @@ class UserModel extends BaseModel
         return $users;
     }
 
-    public function register(array $data): void {
+    //i change the name of the function bc i find that 'register' doesnt represent correctly the function
+    public function createUser(array $data): void {
         $stmt = "INSERT INTO users(first_name, last_name, email, phone, password) VALUES
             (:fName,:lName,:email,:phone,:pass)";
 
         $params = [':fName'=>$data['first_name'], ':lName'=>$data['last_name'], ':email'=>$data['email'],
                     ':phone'=>$data['phone'], ':pass'=>$data['password']];
-        $this->execute($stmt);
+        $this->execute($stmt,$params);
     }
 
     //TODO: Should login return boolean to indicate if successful login or array of information of logged in user to store in session array
