@@ -5,4 +5,4 @@ use App\Helpers\ViewHelper;
 $page_title = 'Welcome to KVC Manager!';
 ViewHelper::loadHeader($page_title);
 ?>
-<p>Hello Time & Attendance page! :)</p>
+<p>Hello Schedule page! :)</p>

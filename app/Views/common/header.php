@@ -10,6 +10,8 @@
     <link rel="stylesheet" href="./public/assets/css/01-Navbar-Styles.css">
     <link rel="stylesheet" href="./public/assets/css/02-Header-Styles.css">
     <link rel="stylesheet" href="./public/assets/css/03-Dashboard-Styles.css">
+    <!-- bootstrap -->
+     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
 </head>
 
 <body>

@@ -51,19 +51,25 @@ return static function (Slim\App $app): void {
         
         /** These routes use the HomeController to display the homeView. This page displays a dashboard that consistes of many widgets that will help the user navigate to other pages in the application. */
         $app->get('', [HomeController::class, 'index'])->setName('dashboard.index');
-        $app->get('/home', [HomeController::class, 'index']);
+
+        $app->get('home', [HomeController::class, 'index']);
 
         /** This route uses the WorkController to display the workView. This page is used to display components necessary for the employee to interact with the database indirectly. */
-        $app->get('/work', [WorkController::class, 'index'])->setName('work.index');
+        $app->get('work', [WorkController::class, 'index']);
+        $app->get('work/create', [WorkController::class, 'store']);  
+        $app->post('work/update[/{id}]', [WorkController::class, 'update']); 
+        $app->get('work/{id}/edit', [WorkController::class, 'edit']); 
+        $app->get('work/{id}/delete', [WorkController::class, 'delete']); 
+
 
         /** This route uses the ScheduleController to display the scheduleView. This page is used to keep track of the employes shifts and teams.*/
-        $app->get('/schedule', [ScheduleController::class, 'index'])->setName('schedule.index');
+        $app->get('schedule', [ScheduleController::class, 'index'])->setName('schedule.index');
 
         /** This route uses the ReportsController to display the reportsView. This page is used to display various widgets to show various data visually. */
-        $app->get('/reports', [ReportsController::class, 'index'])->setName('reports.index');
+        $app->get('reports', [ReportsController::class, 'index'])->setName('reports.index');
 
         /** This route uses the SettingsController to display the SettingsView. This page will offer various settings for the user to customize their experience. */
-        $app->get('/settings', [SettingsController::class, 'index'])->setName('settings.index');
+        $app->get('settings', [SettingsController::class, 'index'])->setName('settings.index');
     });
 
     // Admin Routes (User must be signed in, and have an admin role to access these routes):
