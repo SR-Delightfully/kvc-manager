@@ -6,4 +6,4 @@ $page_title = 'Welcome to KVC Manager!';
 ViewHelper::loadHeader($page_title);
 
 ?>
-<p>Hello Data & Progress page! :)</p>
+<p>Hello Reports page! :)</p>

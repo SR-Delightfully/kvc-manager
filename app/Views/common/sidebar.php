@@ -11,42 +11,49 @@ $currentUser = UserContext::getCurrentUser();
 
 $currentLang = $_SESSION['lang'] ?? 'en';
 LocalizationHelper::setLanguage($currentLang);
-
-$tabs = [
-    "tab1" => ["key" => "time_attendance", "icon" => "🕓"],
-    "tab2" => ["key" => "work_log",       "icon" => "🔧"],
-];
+$langs = ['en','fr'];
+$tabs = [];
 
 if (UserContext::isLoggedIn() && UserContext::isAdmin()) {
-    $tabs['tab3'] = ["key" => "admin_panel", "icon" => "🛠️"];
+    $tabs['tab1'] = ["key" => "Admin", "icon" => "🛠️"];
 }
 
-$tabs['tab4'] = ["key" => "settings", "icon" => "⚙️"];
+$tabs['tab2'] = ["key" => "home", "icon" => "<i class='bi bi-columns-gap'></i>"];
+$tabs['tab3'] = ["key" => "products", "icon" => "<i class='bi bi-box-seam'></i>"];
+$tabs['tab4'] = ["key" => "schedule", "icon" => "<i class='bi bi-calendar-week'></i>"];
+$tabs['tab5'] = ["key" => "reports", "icon" => "<i class='bi bi-file-earmark-bar-graph'></i>"];
+$tabs['tab6'] = ["key" => "work", "icon" => "<i class='bi bi-wrench'></i>"];
+$tabs['tab7'] = ["key" => "settings", "icon" => "<i class='bi bi-gear'></i>"];
+
 ?>
 
-<nav id="nav-bar" class="border-3 center-v display-flex-col">
-    <div id="nav-bar-inner" class="display-flex-col">
-        <!-- Replace with img when logo is received:<img src=""> -->
-        <div id="logo">
+<nav id="nav-bar" >
+     <div id="logo">
             <p>KVC</p>
         </div>
+    <div id="nav-bar-inner" >
+        <!-- Replace with img when logo is received:<img src=""> -->
+       
 
-        <ol id="tabs" class="display-flex-col">
+        <ul id="tabs" >
             <?php foreach ($tabs as $key => $tab) { ?>
                 <li id="<?= $key ?>" class="tab">
-                    <span class="tab-icon"><?= $tab['icon'] ?></span>
-                    <span class="tab-label"><?= LocalizationHelper::get("sidebar_content." . $tab['key']) ?></span>
+                    <a href="./<?= $tab['key'] ?>">
+                        <span class="tab-icon"><?= $tab['icon'] ?></span>
+                        <span class="tab-label"><?= LocalizationHelper::get("sidebar_content." . $tab['key']) ?></span>
+                        <span class="tab-dropdown-btn"><i class="bi bi-chevron-down"></i></span>
+                    </a>
                 </li>
             <?php } ?>
-        </ol>
-        <button id="btn-quit"><?= LocalizationHelper::get('sidebar_content.quit') ?></button>
-
-        <div id="language-switcher" class="mt-2 display-flex">
-            <?php foreach (['en','fr'] as $lang): ?>
-                <a href="?lang=<?= $lang ?>" 
-                class="<?= $currentLang === $lang ? 'active-lang' : '' ?>">
-                    <?= strtoupper($lang) ?>
-                </a>
-            <?php endforeach; ?>
-        </div>
+        </ul>
+    </div>
+    <div id="language-control" class="mt-2 display-flex">
+        <?php foreach ($langs as $lang): ?>
+            <a href="?lang=<?= $lang ?>" 
+            class="<?= $currentLang === $lang ? 'active-lang' : '' ?>">
+                <?= strtoupper($lang) ?>
+            </a>
+            
+        <?php endforeach; ?>
+    </div>
 </nav>
