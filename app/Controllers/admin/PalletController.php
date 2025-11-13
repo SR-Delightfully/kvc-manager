@@ -2,8 +2,9 @@
 
 declare(strict_types=1);
 
-namespace App\Controllers;
+namespace App\Controllers\admin;
 
+use App\Controllers\BaseController;
 use App\Domain\Models\PalletModel;
 use DI\Container;
 use Psr\Http\Message\ResponseInterface as Response;

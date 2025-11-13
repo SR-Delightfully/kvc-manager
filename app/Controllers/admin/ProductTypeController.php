@@ -4,18 +4,16 @@ declare(strict_types=1);
 
 namespace App\Controllers\admin;
 use App\Controllers\BaseController;
-
 use DI\Container;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use App\Domain\Models\ProductModel;
-use App\Domain\Models\ScheduleModel;
 
-class ScheduleController extends BaseController
+class ProductTypeController extends BaseController
 {
     public function __construct(
         Container $container,
-    private ScheduleModel $scheduleModel)
+    private ProductModel $productModel)
     {
         parent:: __construct($container);
     }
