@@ -10,10 +10,27 @@ class ProductModel extends BaseModel
         parent:: __construct($pDOService);
     }
 
+    public function getProductById($id): ?array {
+        $stmt = "SELECT * FROM products WHERE product_id = :id";
+        $params = [':id'=>$id];
+        $product = $this->selectOne($stmt,$params);
+        return $product;
+    }
     public function getAllProducts(): ?array {
         $stmt = "SELECT * FROM products";
         $products = $this->selectAll($stmt);
         return $products;
+    }
+
+    public function getAllProductTypes() {
+        $stmt = "SELECT COLUMN_TYPE FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = 'product' AND COLUMN_NAME = 'product_category'";
+        $productTypes = $this->selectAll($stmt);
+        //productTypes is an array holding 1 string "enum('sci', '100-base')" in a literal string
+        //convert that string to array
+        $enumString = $productTypes['COLUMN_TYPE'];
+        $enumString = str_replace(["enum(", ")", "'"], "", $enumString);
+
+        return explode(",", $enumString);
     }
 
     public function createProduct(array $data): void {
@@ -24,7 +41,20 @@ class ProductModel extends BaseModel
     }
 
     public function deleteProduct(int $productId){
-        
+        $stmt = "DELETE FROM products WHERE id = :id";
+        $params = ['id'=>$productId];
+        $this->execute($stmt,$params);
+    }
+
+    public function updateProduct($id, $data) {
+        $stmt = "UPDATE products SET
+                    product_category = :cat,
+                    product_code = :code,
+                    product_name = :name
+                    WHERE product_id = :id";
+
+        $params = [':cat'=>$data['product_category'],':code'=>$data['product_code'],':name'=>$data['product_name'],':id'=>$id];
+        $this->execute($stmt,$params);
     }
 
 }

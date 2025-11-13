@@ -93,9 +93,7 @@ return static function (Slim\App $app): void {
 
             $admin->group('/product', function ($product) {
                 $product->get('', [ProductController::class, 'index'])->setName('admin.product.index');
-                $product->get('/create', [ProductController::class, 'create'])->setName('admin.product.create');
                 $product->post('', [ProductController::class, 'store'])->setName('admin.product.store');
-                $product->get('{id}', [ProductController::class, 'show'])->setName('admin.product.show');
                 $product->get('{id}/edit', [ProductController::class, 'edit'])->setName('admin.product.edit');
                 $product->get('{id}/delete', [ProductController::class, 'delete'])->setName('admin.product.delete');
                 $product->post('{id}', [ProductController::class, 'update'])->setName('admin.product.update');
@@ -103,9 +101,7 @@ return static function (Slim\App $app): void {
 
             $admin->group('/variant', function ($variant) {
                 $variant->get('', [ProductVariantController::class, 'index'])->setName('admin.variant.index');
-                $variant->get('/create', [ProductVariantController::class, 'create'])->setName('admin.variant.create');
                 $variant->post('', [ProductVariantController::class, 'store'])->setName('admin.variant.store');
-                $variant->get('{id}', [ProductVariantController::class, 'show'])->setName('admin.variant.show');
                 $variant->get('{id}/edit', [ProductVariantController::class, 'edit'])->setName('admin.variant.edit');
                 $variant->get('{id}/delete', [ProductVariantController::class, 'delete'])->setName('admin.variant.delete');
                 $variant->post('{id}', [ProductVariantController::class, 'update'])->setName('admin.variant.update');
@@ -113,9 +109,7 @@ return static function (Slim\App $app): void {
 
             $admin->group('/colour', function($colour) {
                 $colour->get('', [ColourController::class, 'index'])->setName('admin.colour.index');
-                $colour->get('/create', [ColourController::class, 'create'])->setName('admin.colour.create');
                 $colour->post('', [ColourController::class, 'store'])->setName('admin.colour.store');
-                $colour->get('{id}', [ColourController::class, 'show'])->setName('admin.colour.show');
                 $colour->get('{id}/edit', [ColourController::class, 'edit'])->setName('admin.colour.edit');
                 $colour->get('{id}/delete', [ColourController::class, 'delete'])->setName('admin.colour.delete');
                 $colour->post('{id}', [ColourController::class, 'update'])->setName('admin.colour.update');
@@ -123,7 +117,6 @@ return static function (Slim\App $app): void {
 
             $admin->group('/users', function($users) {
                 $users->get('', [UsersController::class, 'index'])->setName('admin.users.index');
-                $users->get('/create', [UsersController::class, 'create'])->setName('admin.users.create');
                 $users->post('', [UsersController::class, 'store'])->setName('admin.users.store');
                 $users->get('{id}', [UsersController::class, 'show'])->setName('admin.users.show');
                 $users->get('{id}/edit', [UsersController::class, 'edit'])->setName('admin.users.edit');
@@ -133,9 +126,7 @@ return static function (Slim\App $app): void {
 
             $admin->group('/type', function($type) {
                 $type->get('', [ProductTypeController::class, 'index'])->setName('admin.type.index');
-                $type->get('/create', [ProductTypeController::class, 'create'])->setName('admin.type.create');
                 $type->post('', [ProductTypeController::class, 'store'])->setName('admin.type.store');
-                $type->get('{id}', [ProductTypeController::class, 'show'])->setName('admin.type.show');
                 $type->get('{id}/edit', [ProductTypeController::class, 'edit'])->setName('admin.type.edit');
                 $type->get('{id}/delete', [ProductTypeController::class, 'delete'])->setName('admin.type.delete');
                 $type->post('{id}', [ProductTypeController::class, 'update'])->setName('admin.type.update');
@@ -143,9 +134,7 @@ return static function (Slim\App $app): void {
 
             $admin->group('/pallet', function($pallet) {
                 $pallet->get('', [PalletController::class, 'index'])->setName('admin.pallet.index');
-                $pallet->get('/create', [PalletController::class, 'create'])->setName('admin.pallet.create');
                 $pallet->post('', [PalletController::class, 'store'])->setName('admin.pallet.store');
-                $pallet->get('{id}', [PalletController::class, 'show'])->setName('admin.pallet.show');
                 $pallet->get('{id}/edit', [PalletController::class, 'edit'])->setName('admin.pallet.edit');
                 $pallet->get('{id}/delete', [PalletController::class, 'delete'])->setName('admin.pallet.delete');
                 $pallet->post('{id}', [PalletController::class, 'update'])->setName('admin.pallet.update');
@@ -153,9 +142,7 @@ return static function (Slim\App $app): void {
 
             $admin->group('/shift', function($shift) {
                 $shift->get('', [ShiftController::class, 'index'])->setName('admin.shift.index');
-                $shift->get('/create', [ShiftController::class, 'create'])->setName('admin.shift.create');
                 $shift->post('', [ShiftController::class, 'store'])->setName('admin.shift.store');
-                $shift->get('{id}', [ShiftController::class, 'show'])->setName('admin.shift.show');
                 $shift->get('{id}/edit', [ShiftController::class, 'edit'])->setName('admin.shift.edit');
                 $shift->get('{id}/delete', [ShiftController::class, 'delete'])->setName('admin.shift.delete');
                 $shift->post('{id}', [ShiftController::class, 'update'])->setName('admin.shift.update');
