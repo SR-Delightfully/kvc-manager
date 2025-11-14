@@ -11,13 +11,13 @@ class ProductModel extends BaseModel
     }
 
     public function getProductById($id): ?array {
-        $stmt = "SELECT * FROM products WHERE product_id = :id";
+        $stmt = "SELECT * FROM product WHERE product_id = :id";
         $params = [':id'=>$id];
         $product = $this->selectOne($stmt,$params);
         return $product;
     }
     public function getAllProducts(): ?array {
-        $stmt = "SELECT * FROM products";
+        $stmt = "SELECT * FROM product";
         $products = $this->selectAll($stmt);
         return $products;
     }
@@ -41,13 +41,13 @@ class ProductModel extends BaseModel
     }
 
     public function deleteProduct(int $productId){
-        $stmt = "DELETE FROM products WHERE id = :id";
+        $stmt = "DELETE FROM product WHERE product_id = :id";
         $params = ['id'=>$productId];
         $this->execute($stmt,$params);
     }
 
     public function updateProduct($id, $data) {
-        $stmt = "UPDATE products SET
+        $stmt = "UPDATE product SET
                     product_category = :cat,
                     product_code = :code,
                     product_name = :name
@@ -57,4 +57,7 @@ class ProductModel extends BaseModel
         $this->execute($stmt,$params);
     }
 
+    public function createProductType($data) {
+        $stmt = "ALTER TABLE product MODIFY COLUMN product_category ENUM";
+    }
 }
