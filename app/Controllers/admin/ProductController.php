@@ -40,6 +40,13 @@ class ProductController extends BaseController
     }
 
     public function show(Request $request, Response $response, array $args): Response {
+        $pallet_id = $args['id'];
+        $product = $this->productModel->getProductById($pallet_id);
+
+        $data['data'] = [
+            'title' => 'Product Info',
+            'product' => $product,
+        ];
         return $this->render($response, 'admin/orderShowView.php');
     }
 

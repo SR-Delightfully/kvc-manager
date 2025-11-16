@@ -10,15 +10,21 @@ class PalletModel extends BaseModel
         parent:: __construct($pDOService);
     }
 
-    public function getPalletById($id){
+    public function getPalletCompleteById($id){
         $stmt = "SELECT pallet.*, palletize_session.* FROM pallet LEFT JOIN palletize_session ON pallet.pallet_id =  palletize_session.pallet_id WHERE pallet.pallet_id = :id";
         $params = [':id'=>$id];
         $pallet = $this->selectOne($stmt,$params);
         return $pallet;
     }
 
-    public function getAllPallets(): ?array {
+    public function getAllPalletsComplete(): ?array {
         $stmt = "SELECT pallet.*, palletize_session.* FROM pallet LEFT JOIN palletize_session ON pallet.pallet_id =  palletize_session.pallet_id";
+        $pallets = $this->selectAll($stmt);
+        return $pallets;
+    }
+
+    public function getAllPalletsSimple(): ?array {
+        $stmt = "SELECT * FROM pallet";
         $pallets = $this->selectAll($stmt);
         return $pallets;
     }
