@@ -10,15 +10,40 @@ class ProductVariantModel extends BaseModel
         parent:: __construct($pDOService);
     }
 
+public function getVariantById($id): ?array {
+        $stmt = "SELECT * FROM product_variant WHERE variant_id = :id";
+        $params = [':id'=>$id];
+        $variant = $this->selectOne($stmt,$params);
+        return $variant;
+    }
     public function getAllVariants(): ?array {
-        return null;
+        $stmt = "SELECT * FROM product_variant";
+        $variants = $this->selectAll($stmt);
+        return $variants;
     }
 
     public function createVariant(array $data): void {
-
+        $stmt = "INSERT INTO product_variant(product_id, colour_id, unit_size, variant_description) VALUES
+        (:pId, :cId, :uSize, :vDesc)";
+        $params = [':pId'=>$data['product_id'],':cId'=>$data['colour_id'],':uSize'=>$data['unit_size'], ':vDesc'=>$data['variant_description']];
+        $this->execute($stmt, $params);
     }
 
-    public function deleteVariant(int $variantId){
+    public function deleteVariant(int $id){
+        $stmt = "DELETE FROM product_variant WHERE variant_id = :id";
+        $params = ['id'=>$id];
+        $this->execute($stmt,$params);
+    }
 
+    public function updateVariant($id, $data) {
+        $stmt = "UPDATE product_variant SET
+                    product_id = :pId,
+                    colour_id = :cId,
+                    unit_size = :uSize,
+                    variant_description = :vDesc
+                    WHERE variant_id = :id";
+
+        $params = [':type'=>$data['product_type_id'],':code'=>$data['product_code'],':name'=>$data['product_name'],':id'=>$id];
+        $this->execute($stmt,$params);
     }
 }

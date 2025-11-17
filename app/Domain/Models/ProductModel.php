@@ -22,42 +22,55 @@ class ProductModel extends BaseModel
         return $products;
     }
 
-    public function getAllProductTypes() {
-        $stmt = "SELECT COLUMN_TYPE FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = 'product' AND COLUMN_NAME = 'product_category'";
-        $productTypes = $this->selectAll($stmt);
-        //productTypes is an array holding 1 string "enum('sci', '100-base')" in a literal string
-        //convert that string to array
-        $enumString = $productTypes['COLUMN_TYPE'];
-        $enumString = str_replace(["enum(", ")", "'"], "", $enumString);
-
-        return explode(",", $enumString);
-    }
-
     public function createProduct(array $data): void {
-        $stmt = "INSERT INTO product(product_category, product_code, product_name) VALUES
-        (:pCat, :pCode, :pName)";
-        $params = [':pCat'=>$data['product_category'],':pCode'=>$data['product_code'],':pName'=>$data['product_name']];
+        $stmt = "INSERT INTO product(product_type_id, product_code, product_name) VALUES
+        (:pType, :pCode, :pName)";
+        $params = [':pType'=>$data['product_type_id'],':pCode'=>$data['product_code'],':pName'=>$data['product_name']];
         $this->execute($stmt, $params);
     }
 
-    public function deleteProduct(int $productId){
+    public function deleteProduct($productId){
         $stmt = "DELETE FROM product WHERE product_id = :id";
-        $params = ['id'=>$productId];
+        $params = [':id'=>$productId];
         $this->execute($stmt,$params);
     }
 
     public function updateProduct($id, $data) {
         $stmt = "UPDATE product SET
-                    product_category = :cat,
+                    product_type_id = :type,
                     product_code = :code,
                     product_name = :name
                     WHERE product_id = :id";
 
-        $params = [':cat'=>$data['product_category'],':code'=>$data['product_code'],':name'=>$data['product_name'],':id'=>$id];
+        $params = [':type'=>$data['product_type_id'],':code'=>$data['product_code'],':name'=>$data['product_name'],':id'=>$id];
         $this->execute($stmt,$params);
     }
 
+    public function getAllProductTypes() {
+        $stmt = "SELECT * FROM product_type";
+        $productTypes = $this->selectAll($stmt);
+        return $productTypes;
+    }
+
     public function createProductType($data) {
-        $stmt = "ALTER TABLE product MODIFY COLUMN product_category ENUM";
+        $stmt = "INSERT INTO product_type (product_type_name) VALUES
+        (:pName)";
+        $params = [':pName'=>$data['product_type_name']];
+        $this->execute($stmt,$params);
+    }
+
+    public function deleteProductType($productId){
+        $stmt = "DELETE FROM product_type WHERE product_type_id = :id";
+        $params = ['id'=>$productId];
+        $this->execute($stmt,$params);
+    }
+
+    public function updateProductType($id, $data) {
+        $stmt = "UPDATE product_type SET
+                    product_type_name = :name,
+                    WHERE product_type_id = :id";
+
+        $params = [':name'=>$data['product_type_name'],':id'=>$id];
+        $this->execute($stmt,$params);
     }
 }
