@@ -80,12 +80,36 @@ class TeamModel extends BaseModel
     }
 
 
-    //TODO: refine this method since it can't be possible with update statement
-    public function updateTeamMember($user_id, $team_id) {
-        $stmt = "UPDATE team_members SET
-                    $user_id = :$team_id,
-                    product_code = :code,
-                    product_name = :name
-                    WHERE product_id = :id";
+    public function updateTeamMember($user_id, $data) {
+        //check if there is existing team with specified id
+        $stmt = "SELECT team_id FROM team WHERE station_id = :new_station AND team_date = :team_date";
+        $params = [':new_station'=>$data['station_id'],':team_date'=>$data['team_date']];
+        $teamCheck = $this->selectOne($stmt, $params);
+
+        //if there is then store that team id in a variable
+        if ($teamCheck) {
+            $newTeam = $teamCheck['team_id'];
+        } else {
+            //else, create new row for that new team
+            $stmt = "INSERT INTO team (station_id, team_date) VALUES
+            (:sId, :team_date)";
+            $params = [':sId'=>$data['station_id'],':team_date'=>$data['station_id']];
+            $this->execute($stmt, $params);
+
+            $newTeam = $this->lastInsertId();
+        }
+
+        //remove old station for that employee
+        $stmt = "DELETE FROM team_members WHERE user_id = :user_id AND team_id IN (SELECT team_id FROM team WHERE team_date = :team_date)";
+
+        $params = [':user_id'=>$user_id,':team_date'=>$data['team_date']];
+        $this->execute($stmt, $params);
+
+        //insert new team_member row for employee
+        $stmt = "INSERT INTO team_members (team_id, user_id) VALUES
+                (:team_id, :user_id)";
+
+        $params = [':team_id'=>$data['team_id'],':user_id'=>$user_id];
+        $this->execute($stmt,$params);
     }
 }
