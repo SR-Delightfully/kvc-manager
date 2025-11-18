@@ -2,6 +2,8 @@
 -- ! TODO: Rename file to match the company name (Files should be consistent)
 -- ! TODO: Remove database file from git repo when project is finalized (Security Risk)
 
+-- ! TODO:
+
 CREATE TABLE users(
 	user_id INT PRIMARY KEY AUTO_INCREMENT,
 	user_role ENUM('employee', 'admin') DEFAULT 'employee',
@@ -97,8 +99,8 @@ CREATE TABLE pallet(
 CREATE TABLE palletize_session(
     session_id INT PRIMARY KEY AUTO_INCREMENT,
     pallet_id INT NOT NULL,
-    start_time DATE NOT NULL,
-    end_time DATE NULL,
+    start_time DATETIME NOT NULL,
+    end_time DATETIME NULL,
     units INT NULL,
     breaks BOOLEAN NULL,
     break_time INT NULL,
@@ -138,7 +140,7 @@ INSERT INTO team_members(team_id, user_id) VALUES
 INSERT INTO product_type(product_type_id, product_type_name) VALUES
 ('1','SCI'),
 ('2','U-BASE'),
-('3','100-BASE'),
+('3','100-BASE');
 
 INSERT INTO product(product_type_id, product_code, product_name) VALUES
 ('2','pods','pods'),
