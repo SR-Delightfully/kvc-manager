@@ -21,7 +21,6 @@ use App\Controllers\ReportsController;
 use App\Controllers\ScheduleController;
 use App\Controllers\admin\PalletController;
 use App\Controllers\admin\ShiftController;
-
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 
@@ -37,16 +36,28 @@ return static function (Slim\App $app): void {
 
     // 'Login'/'Signup' routes:
     /** This route uses the LoginController to display the loginView. This page is used for existing users to login and access the web application.*/
-    $app->get('/login', [AuthController::class, 'index'])->setName('login.index');
+    $app->get('/login', [AuthController::class, 'showLoginForm'])->setName('login.index');
     $app->post('/login', [AuthController::class, 'login']);
 
+    $app->post('login/2fa', [AuthController::class, 'verifyTwoFactor']);
+
+    $app->get('login/forgot-password', [AuthController::class, 'showForgotPasswordForm'])->setName('login.2fa');
+    $app->post('login/forgot-password', [AuthController::class, 'verifyForgotPassword']);
+
+    $app->get('login/new-password', [AuthController::class, 'showNewPasswordForm'])->setName('login.new-password');
+    $app->post('login/new-password', [AuthController::class, 'verifyNewPassword']);
+
+    $app->get('login/forgot-email', [AuthController::class, 'showForgotEmail'])->setName('login.forgot-email');
+    $app->post('login/forgot-email', [AuthController::class, 'verifyForgotEmail']);
+
+    $app->get('login/new-email', [AuthController::class, 'showNewEmail'])->setName('login.new-email');
+    $app->post('login/new-email', [AuthController::class, 'verifyNewEmail']);
+
     /** This route uses the RegisterController to display the registerView. This page is used to display the form in which a user can use to sign up to the web application */
-    $app->get('/register', [AuthController::class, 'index'])->setName('register.index');
+    $app->get('/register', [AuthController::class, 'showRegisterForm'])->setName('register.index');
     $app->post('/register', [AuthController::class, 'register']);
 
     /** Routing for 2FA and logout */
-    $app->get('/2fa', [AuthController::class, 'showTwoFactorForm'])->setName('auth.2fa');
-    $app->post('/2fa', [AuthController::class, 'verifyTwoFactor']);
     $app->get('/logout', [AuthController::class, 'logout'])->setName('auth.logout');
 
     // 'Work Log' routes:
