@@ -4,29 +4,28 @@ declare(strict_types=1);
 
 namespace App\Controllers;
 
-use App\Domain\Models\PalletModel;
 use DI\Container;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
-use App\Domain\Models\ProductModel;
 use App\Domain\Models\UserModel;
 use App\Helpers\FlashMessage;
 use App\Helpers\RegistrationCodeHelper;
-use App\Helpers\SMSHelper;
+use App\Helpers\SmsHelper;
+use App\Helpers\SessionManager;
+use App\Helpers\UserContext;
 
 class AuthController extends BaseController
 {
     public function __construct(
         Container $container,
-    private UserModel $userModel)
+    private UserModel $userModel,
+    private SmsHelper $smsHelper
+    )
     {
         parent:: __construct($container);
     }
 
     public function showLoginForm(Request $request, Response $response, array $args): Response {
-        $sms = new \App\Helpers\SmsHelper($this->settings);
-
-        $sms->send("5149920406", "TESTING TWILIO");
         return $this->render($response, 'pages/loginView.php');
     }
 
@@ -51,7 +50,22 @@ class AuthController extends BaseController
             $user = $this->userModel->login($data['email'], $data['password']);
             //if login is correct then redirect to 2fa
             if ($user) {
-                //TODO SEND_2FA CODE_HERE -----------------------------------------------------------
+                $phone = $user['phone'];
+                $phoneFormat = '+1' . $phone;
+
+                $sms = new SmsHelper();
+                $sent = $sms->sendVerificationCode($phoneFormat);
+
+                if (!$sent) {
+                    FlashMessage::error("Failed to send SMS message");
+                    return $this->render($response, 'pages/loginView.php');
+                }
+
+                SessionManager::set('pending_2fa', [
+                    'user'       => $user,
+                    'phone'      => $phoneFormat,
+                ]);
+
                 $render = [
                     'show2fa' => true,
                 ];
@@ -130,10 +144,50 @@ class AuthController extends BaseController
     }
 
     public function verifyTwoFactor(Request $request, Response $response, array $args): Response {
-        //TODO 2FA CODE_VERIFICATION
+        //get inputted code from post form
+        $data = $request->getParsedBody();
+        $code = trim($data['code'] ?? '');
 
-        //TODO STORE_USER_INFORMATION_IN_USER_CONTEXT
+        $pending = SessionManager::get('pending_2fa');
+
+        if (!$pending || empty($pending['user']) || empty($pending['phone'])) {
+            FlashMessage::error("2FA Session Expired. Login again");
+            SessionManager::remove('pending_2fa');
+            return $this->render($response, 'pages/loginView.php');
+        }
+
+        $phoneFormat = $pending['phone'];
+
+        try {
+        $sms = new SmsHelper();
+
+        $ok = $sms->checkVerificationCode($phoneFormat, $code);
+
+        //if code is incorrect
+        if (!$ok) {
+            FlashMessage::error("Invalid or expired verification code.");
+            return $this->render($response, 'pages/loginView.php', ['show2fa' => true]);
+        }
+
+        //2fa code is correct
+        $user = $pending['user'];
+
+        unset($_SESSION['pending_2fa']);
+
+        UserContext::login($user);
+
         return $this->render($response, 'pages/homeView.php');
+
+    } catch (\Throwable $e) {
+        error_log("2FA verify error: " . $e->getMessage());
+        FlashMessage::error("There was a problem verifying your code. Try again.");
+
+        $render = [
+            'show2fa' => true,
+        ];
+
+        return $this->render($response, 'pages/loginView.php', $render);
+        }
     }
 
     public function showForgotPasswordForm(Request $request, Response $response, array $args): Response {
