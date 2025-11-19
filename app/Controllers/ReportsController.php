@@ -15,11 +15,19 @@ class ReportsController extends BaseController
         parent::__construct($container);
     }
 
-    public function today(Request $request, Response $response, array $args): Response {
+    public function today(Request $request, Response $response, array $args): Response
+    {
         return $this->render($response, 'admin/orderIndexView.php');
     }
 
-    public function allTime(Request $request, Response $response, array $args): Response {
+    public function allTime(Request $request, Response $response, array $args): Response
+    {
         return $this->render($response, 'admin/orderShowView.php');
+    }
+
+    public function adminReportsView(Request $request, Response $response, array $args): Response
+    {
+        $data = [""];
+        return $this->render($response, 'admin/adminReportsView.php', $data);
     }
 }

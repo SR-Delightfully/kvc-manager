@@ -45,13 +45,19 @@ class KpiModel extends BaseModel
     }
 
     /**
-     * Calculates the 
-     * @param mixed $date
-     * @return int
+     * Summary of getTeamDailyProduction
+     * @param mixed $teamId
+     * @param mixed $date by default, it's the current time.
+     * @return int total units produced that day  y the team
      */
-    public function getTeamDailyProduction($date) : int
+    public function getTeamDailyProduction($teamId, $date = date('Y-m-d H:i:s')) : int
     {
+        //? 1) Find the team
+        //? 2) Count all the units produced that day
+        //? 3)
+        //? 4)
 
         return 300;
     }
 }
+
