@@ -10,7 +10,7 @@ use Psr\Http\Message\ServerRequestInterface as Request;
 use App\Domain\Models\UserModel;
 use App\Helpers\FlashMessage;
 use App\Helpers\RegistrationCodeHelper;
-use App\Helpers\SmsHelper;
+use App\Helpers\SMSHelper;
 use App\Helpers\SessionManager;
 use App\Helpers\UserContext;
 
@@ -19,16 +19,21 @@ class AuthController extends BaseController
     public function __construct(
         Container $container,
     private UserModel $userModel,
-    private SmsHelper $smsHelper
+    private SMSHelper $smsHelper
     )
     {
         parent:: __construct($container);
     }
 
     public function showLoginForm(Request $request, Response $response, array $args): Response {
+        if (UserContext::isLoggedIn()) {
+            return $this->render($response, 'pages/homeView.php');
+        }
+
         return $this->render($response, 'pages/loginView.php');
     }
 
+    //for logging the user in when pressing sign in button, if login successful send 2fa code and load 2fa form
     public function login(Request $request, Response $response, array $args): Response {
         $data = $request->getParsedBody();
         $isValid = true;
@@ -45,16 +50,28 @@ class AuthController extends BaseController
             $isValid = false;
         }
 
+        $specialChars = "/[!@#$%^&*()_\-+=}{\][?><,.]/";
+        if (!preg_match($specialChars, $data['password'])) {
+            FlashMessage::error("Password must contain a Special Character");
+            $isValid = false;
+        }
+
+        if (!preg_match('/\d/', $data['password'])) {
+            FlashMessage::error("Password must contain at least 1 number");
+            $isValid = false;
+        }
+
+
         //if validation is correct then check if the user exists/login
         if ($isValid) {
             $user = $this->userModel->login($data['email'], $data['password']);
             //if login is correct then redirect to 2fa
             if ($user) {
+
+                //* SENDING_2FA_CODE
                 $phone = $user['phone'];
                 $phoneFormat = '+1' . $phone;
-
-                $sms = new SmsHelper();
-                $sent = $sms->sendVerificationCode($phoneFormat);
+                $sent = $this->smsHelper->sendVerificationCode($phoneFormat);
 
                 if (!$sent) {
                     FlashMessage::error("Failed to send SMS message");
@@ -67,7 +84,7 @@ class AuthController extends BaseController
                 ]);
 
                 $render = [
-                    'show2fa' => true,
+                    'show2fa_login' => true,
                 ];
                 return $this->render($response, 'pages/loginView.php', $render);
             } else {
@@ -81,10 +98,15 @@ class AuthController extends BaseController
         }
     }
 
+    //used when pressing sign up button
     public function showRegisterForm(Request $request, Response $response, array $args): Response {
+        if (UserContext::isLoggedIn()) {
+            return $this->render($response, 'pages/homeView.php');
+        }
         return $this->render($response, 'pages/registerView.php');
     }
 
+    //register method used when submitting register form
     public function register(Request $request, Response $response, array $args): Response {
         //get data from form
         $data = $request->getParsedBody();
@@ -116,8 +138,8 @@ class AuthController extends BaseController
             FlashMessage::error("Email invalid format");
             $isValid = false;
         }
-        //if password and confirmation password match
-        if (true) {
+        //if password and confirmation password don't match
+        if ($data['password'] !== $data['conf_password']) {
             FlashMessage::error("Password and Confirm Password Do Not Match");
             $isValid = false;
         }
@@ -128,14 +150,38 @@ class AuthController extends BaseController
             $isValid = false;
         }
 
+        $specialChars = "/[!@#$%^&*()_\-+=}{\][?><,.]/";
+        if (!preg_match($specialChars, $data['password'])) {
+            FlashMessage::error("Password must contain a Special Character");
+            $isValid = false;
+        }
+
+        if (!preg_match('/\d/', $data['password'])) {
+            FlashMessage::error("Password must contain at least 1 number");
+            $isValid = false;
+        }
+
         //* validate registration code
         if ($data['registration_code'] !== RegistrationCodeHelper::getWeeklyCode()) {
             FlashMessage::error("Registration code invalid");
             $isValid = false;
         }
+        //if there is already user with that email or phone
+        $userPhone = $this->userModel->getUserByPhone($data['phone']);
+        if ($userPhone) {
+            FlashMessage::error("Phone number already in use");
+            $isValid = false;
+        }
 
-        //if isvalid render 2fa Page or just render signIn page
+        $userEmail = $this->userModel->getUserByEmail($data['email']);
+        if ($userEmail) {
+            FlashMessage::error("Email already in use");
+            $isValid = false;
+        }
+
+        //if is valid render 2fa Page or just render signIn page
         if ($isValid) {
+            $this->userModel->register($data);
             return $this->render($response, 'pages/loginView.php');
         } else {
             //else render page again with flash messages
@@ -143,6 +189,7 @@ class AuthController extends BaseController
         }
     }
 
+    //controller used when the 2fa form is submitted, checks if codes match if correct set currentUser to user and render dashboard
     public function verifyTwoFactor(Request $request, Response $response, array $args): Response {
         //get inputted code from post form
         $data = $request->getParsedBody();
@@ -159,20 +206,18 @@ class AuthController extends BaseController
         $phoneFormat = $pending['phone'];
 
         try {
-        $sms = new SmsHelper();
-
-        $ok = $sms->checkVerificationCode($phoneFormat, $code);
+        $ok = $this->smsHelper->checkVerificationCode($phoneFormat, $code);
 
         //if code is incorrect
         if (!$ok) {
             FlashMessage::error("Invalid or expired verification code.");
-            return $this->render($response, 'pages/loginView.php', ['show2fa' => true]);
+            return $this->render($response, 'pages/loginView.php', ['show2fa_login' => true]);
         }
 
         //2fa code is correct
         $user = $pending['user'];
 
-        unset($_SESSION['pending_2fa']);
+        SessionManager::remove('pending_2fa');
 
         UserContext::login($user);
 
@@ -183,80 +228,361 @@ class AuthController extends BaseController
         FlashMessage::error("There was a problem verifying your code. Try again.");
 
         $render = [
-            'show2fa' => true,
+            'show2fa_login' => true,
         ];
 
         return $this->render($response, 'pages/loginView.php', $render);
         }
     }
 
+    //loads forgot password form
     public function showForgotPasswordForm(Request $request, Response $response, array $args): Response {
+        if (UserContext::isLoggedIn()) {
+            return $this->render($response, 'pages/homeView.php');
+        }
         $render = [
             'show_forgot_password' => true,
         ];
         return $this->render($response, 'pages/loginView.php', $render);
     }
 
+
+    //used when send sms code button is pressed from forgot password form, sends sms code to user's phone
     public function sendForgotPassword(Request $request, Response $response, array $args) {
         $data = $request->getParsedBody();
-        $render = [
-            'show_forgot_password' => true,
-        ];
+        $render = ['show_forgot_password' => true,];
 
-        if (!preg_match('/^[0-9]{10}$/', $data['phone'])) {
-            FlashMessage::error("Phone number must be 10 digits");
-            return $this->render($response, 'pages/loginView.php', $render);
-        } else {
-            $user = $this->userModel->getUserByPhone($data['phone']);
+        //* Check if data is a phone number
+        $userPhone = $this->userModel->getUserByPhone($data['contact']);
+        $userEmail = $this->userModel->getUserByEmail($data['contact']);
+        if ($userPhone) {
+            //format phone for twilio
+            $phone = $userPhone['phone'];
+            $phoneFormat = '+1' . $phone;
+            $sent = $this->smsHelper->sendVerificationCode($phoneFormat);
 
-            if ($user) {
-                //TODO SEND_VERIFICATION_CODE_HERE
+            if (!$sent) {
+                FlashMessage::error("Failed to send SMS message");
                 return $this->render($response, 'pages/loginView.php', $render);
             }
 
+            //store in session storage so that next step know which user we are resetting
+            SessionManager::set('pending_2fa', [
+                'user'=> $userPhone,
+                'phone'=> $phoneFormat,
+            ]);
+
+            $discreteNum = substr($phone, -2);
+            FlashMessage::success("Verification code Sent to Phone number ending with $discreteNum");
+            $render = ['show_forgot_password_2fa' => true];
+
+            return $this->render($response, 'pages/loginView.php', $render);
+        } elseif ($userEmail) {
+            //TODO SEND_EMAIL_VERIFICATION
+        } else {
+            FlashMessage::error("User with that phone number or email does not exist");
             return $this->render($response, 'pages/loginView.php', $render);
         }
     }
 
+
+    //used when user fills out 2fa code for password change and submits form by pressing change password.
+    //if code is correct then render change password popup
     public function verifyForgotPassword(Request $request, Response $response, array $args): Response {
-        return $this->render($response, 'pages/loginView.php');
+        $data = $request->getParsedBody();
+        $code = trim($data['code'] ?? '');
+        $render = ['show_forgot_password_2fa' => true];
+
+        $pending = SessionManager::get('pending_2fa');
+
+        if (!$pending || empty($pending['user']) || empty($pending['phone'])) {
+            FlashMessage::error("2FA Session Expired. Login again");
+            SessionManager::remove('pending_2fa');
+            return $this->render($response, 'pages/loginView.php', $render);
+        }
+
+        $phoneFormat = $pending['phone'];
+
+        try {
+            $ok = $this->smsHelper->checkVerificationCode($phoneFormat, $code);
+
+            //if code is incorrect
+            if (!$ok) {
+                FlashMessage::error("Invalid or expired verification code.");
+                return $this->render($response, 'pages/loginView.php', ['show2fa_login' => true]);
+            }
+
+            //2fa code is correct
+            $user = $pending['user'];
+            //making new session array in case user forcefully navigates to new password without inserting 2fa code
+            SessionManager::set('temp_user', ['user' => $user,]);
+            SessionManager::remove("pending_2fa");
+
+            $renderNewPass = ['show_new_password' => true];
+
+            return $this->render($response, 'pages/loginView.php', $renderNewPass);
+        } catch (\Throwable $e) {
+            error_log("2FA verify error: " . $e->getMessage());
+            FlashMessage::error("There was a problem verifying your code. Try again.");
+
+            return $this->render($response, 'pages/loginView.php', $render);
+        }
     }
 
+    //* probably useless since verifyForgotPassword already renders it
     public function showNewPasswordForm(Request $request, Response $response, array $args): Response {
+        if (UserContext::isLoggedIn()) {
+            return $this->render($response, 'pages/homeView.php');
+        }
         $render = [
             'show_new_password' => true,
         ];
-
-        return $this->render($response, 'pages/loginView.php');
+        return $this->render($response, 'pages/loginView.php', $render);
     }
 
+    //used when change password form is submitted, if correct then changes user's password
     public function verifyNewPassword(Request $request, Response $response, array $args): Response {
-        return $this->render($response, 'pages/loginView.php');
+        //* 1. get data from post form
+        $data = $request->getParsedBody();
+        $pass = $data['password'];
+        $conf_pass = $data['conf_password'];
+        $render = ['show_new_password' => true];
+
+        //* check if user navigated here from 2fa code
+        $pending = SessionManager::get("temp_user") ?? null;
+
+        if (!$pending || empty($pending['user'])) {
+            FlashMessage::error("2FA Session Expired. try again");
+            SessionManager::remove('temp_user');
+            return $this->render($response, 'pages/loginView.php', $render);
+        }
+
+        //* 2. validate password requirements
+        //if password is less than 8 chars
+        if (!preg_match('/^.{8,}$/', $pass)) {
+            FlashMessage::error("Password must be at least 8 characters");
+            return $this->render($response, 'pages/loginView.php', $render);
+        }
+        //if password contains at least 1 number
+        if (!preg_match('/\d/', $pass)) {
+            FlashMessage::error("Password must contain at least 1 number");
+            return $this->render($response, 'pages/loginView.php', $render);
+        }
+        //if password and confirm password match
+        if ($pass !== $conf_pass) {
+            FlashMessage::error("Password does not match with Confirm Password");
+            return $this->render($response, 'pages/loginView.php', $render);
+        }
+
+        //* change password
+        if ($pending) {
+            $user = $pending['user'];
+            $this->userModel->changePassword($user, $pass);
+            SessionManager::remove("temp_user");
+            return $this->render($response, 'pages/loginView.php');
+        } else {
+            FlashMessage::error("Error loading user. Try Again");
+            return $this->render($response, 'pages/loginView.php');
+        }
     }
 
+    //loads forgot email popup in loginView
     public function showForgotEmail(Request $request, Response $response, array $args): Response {
+        if (UserContext::isLoggedIn()) {
+            return $this->render($response, 'pages/homeView.php');
+        }
         $render = [
             'show_forgot_email' => true,
         ];
 
         return $this->render($response, 'pages/loginView.php', $render);
     }
-    public function verifyForgotEmail(Request $request, Response $response, array $args): Response {
-        return $this->render($response, 'pages/loginView.php');
+
+    //sends sms code to specified phone number verify user before resetting email
+    public function sendForgotEmail(Request $request, Response $response, array $args): Response {
+        if (UserContext::isLoggedIn()) {
+            return $this->render($response, 'pages/homeView.php');
+        }
+        $data = $request->getParsedBody();
+        $render = ['show_forgot_email' => true,];
+        $isValid = true;
+
+        //if phone number is only numbers
+        if (!is_numeric($data['phone'])) {
+            FlashMessage::error("Phone number must only contain numbers");
+            $isValid = false;
+        }
+        //if phone number is 10 digits
+        if (!preg_match('/^[0-9]{10}$/', $data['phone'])) {
+            FlashMessage::error("Phone number must be 10 digits");
+            $isValid = false;
+        }
+
+        if (!$isValid) {
+            return $this->render($response, 'pages/loginView.php', $render);
+        }
+
+        //* check if phone number exists
+        $user = $this->userModel->getUserByPhone($data['phone']);
+        if ($user) {
+            //format phone for twilio
+            $phone = $user['phone'];
+            $phoneFormat = '+1' . $phone;
+            $sent = $this->smsHelper->sendVerificationCode($phoneFormat);
+
+            if (!$sent) {
+                FlashMessage::error("Failed to send SMS message");
+                return $this->render($response, 'pages/loginView.php', $render);
+            }
+
+            //store in session storage so that next step know which user we are resetting
+            SessionManager::set('pending_2fa', [
+                'user'=> $user,
+                'phone'=> $phoneFormat,
+            ]);
+
+            //get last 2 digits of phone number
+            $discreteNum = substr($phone, -2);
+            FlashMessage::success("Verification code Sent to Phone number ending with $discreteNum");
+            $render = ['show_forgot_email_2fa' => true];
+
+            return $this->render($response, 'pages/loginView.php', $render);
+        } else {
+            FlashMessage::error("User with that phone number does not exist");
+            return $this->render($response, 'pages/loginView.php', $render);
+        }
     }
 
-    public function showNewEmail(Request $request, Response $response, array $args): Response {
-        $render = [
-            'show_new_email' => true,
-        ];
+    //for verifying 2fa code from authentication form, check 2fa codes if match
+    public function verifyForgotEmail(Request $request, Response $response, array $args): Response {
+        if (UserContext::isLoggedIn()) {
+            return $this->render($response, 'pages/homeView.php');
+        }
 
+        $data = $request->getParsedBody();
+        $code = $data['code'] ?? null;
+        $render = ['show_forgot_email_2fa' => true,];
+
+        if (is_null($code)) {
+            FlashMessage::error("Insert Verification Code");
+            return $this->render($response, 'pages/loginView.php', $render);
+        }
+
+        if (!preg_match('/^[0-9]{6}$/', $data['code'])) {
+            FlashMessage::error("Verification Code must only contain numbers");
+            return $this->render($response, 'pages/loginView.php', $render);
+        }
+
+        $pending = SessionManager::get('pending_2fa');
+
+        if (!$pending || empty($pending['user']) || empty($pending['phone'])) {
+            FlashMessage::error("2FA Session Expired. Try process again");
+            SessionManager::remove('pending_2fa');
+            return $this->render($response, 'pages/loginView.php', $render);
+        }
+
+        //no need to add +1 since pending['phone'] is already formatted for twilio
+        $phoneFormat = $pending['phone'];
+
+        try {
+            $ok = $this->smsHelper->checkVerificationCode($phoneFormat, $code);
+
+            //if code is incorrect
+            if (!$ok) {
+                FlashMessage::error("Invalid or expired verification code.");
+                return $this->render($response, 'pages/loginView.php', ['show_forgot_email_2fa' => true]);
+            }
+
+            //2fa code is correct
+            //* EXPLANATION_FOR_NEW_SESSION_KEY
+            // instead of keeping pending_2fa and having it in verifyNewEmail i made new session with new key
+            // since someone can send the code which makes session manager create the pending_2fa then they can
+            // forcefully navigate to set new email skipping 2fa.
+            SessionManager::set('change_pass', ['user' => $pending['user'],]);
+            SessionManager::remove("pending_2fa");
+
+            $render = ['show_new_email' => true];
+            return $this->render($response, 'pages/loginView.php', $render);
+        } catch (\Throwable $e) {
+            error_log("2FA verify error: " . $e->getMessage());
+            FlashMessage::error("There was a problem verifying your code. Try again.");
+            $render = ['show_forgot_password' => true,];
+
+            return $this->render($response, 'pages/loginView.php', $render);
+        }
+    }
+
+
+
+    //displays show new email form
+    public function showNewEmail(Request $request, Response $response, array $args): Response {
+        if (UserContext::isLoggedIn()) {
+            return $this->render($response, 'pages/homeView.php');
+        }
+
+        $user = SessionManager::get("change_pass");
+        //redirect to login view if someone navigates to this page without going through 2fa
+        if (is_null($user)) {
+            return $this->render($response, 'pages/loginView.php');
+        }
+
+        $render = ['show_new_email' => true,];
         return $this->render($response, 'pages/loginView.php', $render);
     }
+
+    //validation of new email form when new email form is submitted
     public function verifyNewEmail(Request $request, Response $response, array $args): Response {
+        if (UserContext::isLoggedIn()) {
+            return $this->render($response, 'pages/homeView.php');
+        }
+
+        $user = SessionManager::get("change_pass");
+        //redirect to login view if someone navigates to this page without going through 2fa
+        if (is_null($user)) {
+            return $this->render($response, 'pages/loginView.php');
+        }
+
+        $data = $request->getParsedBody();
+        $render = ['show_new_email' => true];
+        $email = $data['email'];
+        $confEmail = $data['conf_email'];
+        $isValid = true;
+
+        if (empty($email || $confEmail)) {
+            FlashMessage::error("Fill out both fields");
+            $isValid = false;
+        }
+
+        if (!filter_var($email, FILTER_VALIDATE_EMAIL) || !filter_var($confEmail, FILTER_VALIDATE_EMAIL)) {
+            FlashMessage::error("Emails do not follow email format");
+            $isValid = false;
+        }
+
+        //check if emails match
+        if ($email !== $confEmail) {
+            FlashMessage::error("Emails do not Match");
+            $isValid = false;
+        }
+
+        //check if email is already in use
+        $checkEmail = $this->userModel->getUserByEmail($email);
+        if ($checkEmail) {
+            FlashMessage::error("Email already in use");
+            $isValid = false;
+        }
+
+        if (!$isValid) {
+            return $this->render($response, 'pages/loginView.php', $render);
+        }
+
+        //email is correct, update email
+        $this->userModel->changeEmail($user, $email);
+        SessionManager::remove("change_pass");
         return $this->render($response, 'pages/loginView.php');
     }
 
     public function logout(Request $request, Response $response, array $args): Response {
+        UserContext::logout();
         return $this->render($response, 'pages/loginView.php');
     }
 }
