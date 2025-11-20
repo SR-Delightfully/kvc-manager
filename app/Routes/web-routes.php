@@ -39,19 +39,28 @@ return static function (Slim\App $app): void {
     $app->get('/login', [AuthController::class, 'showLoginForm'])->setName('login.index');
     $app->post('/login', [AuthController::class, 'login']);
 
-    $app->post('login/2fa', [AuthController::class, 'verifyTwoFactor']);
+    $app->post('/login/2fa', [AuthController::class, 'verifyTwoFactor']);
 
-    $app->get('login/forgot-password', [AuthController::class, 'showForgotPasswordForm'])->setName('login.2fa');
-    $app->post('login/forgot-password', [AuthController::class, 'verifyForgotPassword']);
 
-    $app->get('login/new-password', [AuthController::class, 'showNewPasswordForm'])->setName('login.new-password');
-    $app->post('login/new-password', [AuthController::class, 'verifyNewPassword']);
+    //FORGOT_PASSWORD_FLOW
+    $app->get('/login/forgot-password', [AuthController::class, 'showForgotPasswordForm'])->setName('login.2fa');
+    $app->post('/login/forgot-password', [AuthController::class, 'sendForgotPassword']);
 
-    $app->get('login/forgot-email', [AuthController::class, 'showForgotEmail'])->setName('login.forgot-email');
-    $app->post('login/forgot-email', [AuthController::class, 'verifyForgotEmail']);
+    $app->post('/login/forgot-password-code', [AuthController::class, 'verifyForgotPassword']);
 
-    $app->get('login/new-email', [AuthController::class, 'showNewEmail'])->setName('login.new-email');
-    $app->post('login/new-email', [AuthController::class, 'verifyNewEmail']);
+    $app->get('/login/new-password', [AuthController::class, 'showNewPasswordForm'])->setName('login.new-password');
+    $app->post('/login/new-password', [AuthController::class, 'verifyNewPassword']);
+    //END_OF_FORGOT_PASSWORD_FLOW
+
+    //FORGOT_EMAIL_FLOW
+    $app->get('/login/forgot-email', [AuthController::class, 'showForgotEmail'])->setName('login.forgot-email');
+    $app->post('/login/forgot-email', [AuthController::class, 'sendForgotEmail']);
+
+    $app->post('/login/forgot-email-code', [AuthController::class, 'verifyForgotEmail']);
+
+    $app->get('/login/new-email', [AuthController::class, 'showNewEmail'])->setName('login.new-email');
+    $app->post('/login/new-email', [AuthController::class, 'verifyNewEmail']);
+    //END_OF_FORGOT_EMAIL_FLOW
 
     /** This route uses the RegisterController to display the registerView. This page is used to display the form in which a user can use to sign up to the web application */
     $app->get('/register', [AuthController::class, 'showRegisterForm'])->setName('register.index');

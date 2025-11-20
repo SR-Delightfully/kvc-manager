@@ -3,22 +3,29 @@
 namespace App\Domain\Models;
 
 use App\Helpers\Core\PDOService;
-
 class UserModel extends BaseModel
 {
+    private const COLUMNS = "user_id, user_role, first_name, last_name, email, phone, user_dc, user_status";
     public function __construct(PDOService $pDOService) {
         parent:: __construct($pDOService);
     }
 
-    public function getAllEmployees(): ?array {
-        $stmt = "SELECT user_id, user_role, first_name, last_name, email, phone, user_dc, user_status FROM users";
+    public function getAllUsers(): ?array {
+        $stmt = "SELECT ". self::COLUMNS ." FROM users";
         $users = $this->selectAll($stmt);
         return $users;
     }
 
     public function getUserByPhone($phone): ?array {
-        $stmt = "SELECT * FROM users WHERE phone = :phone";
+        $stmt = "SELECT ". self::COLUMNS ." FROM users WHERE phone = :phone";
         $params = [':phone'=>$phone];
+        $user = $this->selectOne($stmt,$params);
+        return $user;
+    }
+
+    public function getUserByEmail($email): ?array {
+        $stmt = "SELECT ". self::COLUMNS ." FROM users WHERE email = :email";
+        $params = [':email'=>$email];
         $user = $this->selectOne($stmt,$params);
         return $user;
     }
@@ -32,12 +39,28 @@ class UserModel extends BaseModel
         $this->execute($stmt);
     }
 
-    
+
     public function login($email, $password): ?array {
         $stmt = "SELECT * FROM users WHERE email = :email AND password = :pass AND user_status = 'active'";
         $params = [':email'=>$email, ':pass'=>$password];
         $user = $this->selectOne($stmt,$params);
         return $user;
+    }
+
+    public function changePassword($user, $password) {
+        $stmt = "UPDATE users SET
+            password = :password
+            WHERE user_id = :user_id";
+        $params = [':password'=>$password, 'user_id'=>$user['user_id']];
+        $this->execute($stmt,$params);
+    }
+
+    public function changeEmail($user, $email) {
+        $stmt = "UPDATE users SET
+            email = :email,
+            WHERE user_id = :user_id";
+        $params = [':email'=>$email, 'user_id'=>$user['user_id']];
+        $this->execute($stmt,$params);
     }
 
     public function updateInformation($user_id, $data): void {
@@ -83,4 +106,6 @@ class UserModel extends BaseModel
         $date = is_array($row) ? ($row['target_date'] ?? null) : $row;
         return $date;
     }
+
+
 }
