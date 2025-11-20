@@ -35,7 +35,7 @@ CREATE TABLE shift(
 
 CREATE TABLE station(
     station_id INT PRIMARY KEY AUTO_INCREMENT,
-    station_description VARCHAR(100)
+    station_name VARCHAR(100)
 );
 
 CREATE TABLE team(
@@ -117,7 +117,7 @@ INSERT INTO users (user_role, first_name, last_name, email, phone, password) VAL
 ('employee','employee3','emp','employee3@email.com','5142223333','password'),
 ('employee','employee4','emp','employee4@email.com','5143334444','password');
 
-INSERT INTO station (station_description) VALUES
+INSERT INTO station (station_name) VALUES
 ('station 1'),
 ('station 2'),
 ('station 3'),
