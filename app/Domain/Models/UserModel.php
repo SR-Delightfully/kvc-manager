@@ -6,6 +6,7 @@ use App\Helpers\Core\PDOService;
 class UserModel extends BaseModel
 {
     private const COLUMNS = "user_id, user_role, first_name, last_name, email, phone, user_dc, user_status";
+
     public function __construct(PDOService $pDOService) {
         parent:: __construct($pDOService);
     }
@@ -36,7 +37,7 @@ class UserModel extends BaseModel
 
         $params = [':fName'=>$data['first_name'], ':lName'=>$data['last_name'], ':email'=>$data['email'],
                     ':phone'=>$data['phone'], ':pass'=>$data['password']];
-        $this->execute($stmt);
+        $this->execute($stmt,$params);
     }
 
 

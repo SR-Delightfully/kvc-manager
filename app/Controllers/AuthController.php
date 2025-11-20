@@ -16,6 +16,8 @@ use App\Helpers\UserContext;
 
 class AuthController extends BaseController
 {
+    private UserModel $user_model;
+    private PalletModel $pallet_model;
     public function __construct(
         Container $container,
     private UserModel $userModel,
@@ -23,6 +25,8 @@ class AuthController extends BaseController
     )
     {
         parent:: __construct($container);
+        $this->user_model=$user_model;
+        $this->pallet_model=$pallet_model;
     }
 
     public function showLoginForm(Request $request, Response $response, array $args): Response {
