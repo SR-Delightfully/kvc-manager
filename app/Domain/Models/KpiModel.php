@@ -11,7 +11,7 @@ class KpiModel extends BaseModel
     }
 
     /**
-     *      * The function scans the progress of all teams and it
+     * The function scans the progress of all teams and it
      *  returns an array that represents the leaderboard of th teams, from best to worst performance. The performance is based on units produced per minute on average.
      * The calculation only takes into account the records that match the input dates     *
      * @param mixed $startDate start date to start calculations
@@ -34,6 +34,13 @@ class KpiModel extends BaseModel
 
     //! teams have names or colors or just ID? Maybe update the db to add team names/color codes
 
+    /**
+     * Calculates a team's performance by
+     * @param mixed $teamId
+     * @param mixed $startDate
+     * @param mixed $endDate
+     * @return array
+     */
     public function getTeamPerformance($teamId, $startDate, $endDate) : array
     {
         //? 1) Get all the pelletize sessions of the team
