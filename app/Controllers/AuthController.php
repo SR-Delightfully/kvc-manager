@@ -10,7 +10,7 @@ use Psr\Http\Message\ServerRequestInterface as Request;
 use App\Domain\Models\UserModel;
 use App\Helpers\FlashMessage;
 use App\Helpers\RegistrationCodeHelper;
-use App\Helpers\SMSHelper;
+use App\Helpers\AuthHelper;
 use App\Helpers\SessionManager;
 use App\Helpers\UserContext;
 
@@ -19,7 +19,7 @@ class AuthController extends BaseController
     public function __construct(
         Container $container,
     private UserModel $userModel,
-    private SMSHelper $smsHelper
+    private AuthHelper $smsHelper
     )
     {
         parent:: __construct($container);
