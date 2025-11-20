@@ -1,9 +1,12 @@
 <?php
 return [
     'sidebar_content' => [
-        'time_attendance' => 'Time & Attendance',
-        'work_log' => 'Work Log',
-        'admin_panel' => 'Admin Panel',
+        'admin' => 'Admin',
+        'home' => 'Dashboard',
+        'products' => 'Products',
+        'schedule' => 'Schedule',
+        'reports' => 'Reports',
+        'work' => 'Work Log',
         'settings' => 'Settings',
         'quit' => 'Quit',
     ]

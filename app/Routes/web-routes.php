@@ -6,24 +6,21 @@ declare(strict_types=1);
  * This file contains the routes for the web application.
  */
 
+use App\Controllers\admin\ProductTypeController;
 use App\Helpers\DateTimeHelper;
-use App\Controllers\admin\ProgressController;
 use App\Controllers\admin\UsersController;
 use App\Controllers\admin\ColourController;
 use App\Controllers\admin\ProductVariantController;
-use App\Controllers\admin\AdminDashboardController;
 use App\Controllers\AuthController;
 use App\Controllers\admin\ProductController;
-use App\Controllers\WorkLogController;
 use App\Controllers\HomeController;
-use App\Controllers\LoginController;
-use App\Controllers\RegisterController;
 use App\Controllers\WorkController;
-use App\Controllers\DataController;
-use App\Controllers\TimeController;
 use App\Controllers\SettingsController;
 use App\Controllers\AdminController;
-
+use App\Controllers\ReportsController;
+use App\Controllers\ScheduleController;
+use App\Controllers\admin\PalletController;
+use App\Controllers\admin\ShiftController;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 
@@ -39,82 +36,127 @@ return static function (Slim\App $app): void {
 
     // 'Login'/'Signup' routes:
     /** This route uses the LoginController to display the loginView. This page is used for existing users to login and access the web application.*/
-    $app->get('/login', [LoginController::class, 'index'])->setName('login.index');
+    $app->get('/login', [AuthController::class, 'showLoginForm'])->setName('login.index');
     $app->post('/login', [AuthController::class, 'login']);
 
+    $app->post('login/2fa', [AuthController::class, 'verifyTwoFactor']);
+
+    $app->get('login/forgot-password', [AuthController::class, 'showForgotPasswordForm'])->setName('login.2fa');
+    $app->post('login/forgot-password', [AuthController::class, 'verifyForgotPassword']);
+
+    $app->get('login/new-password', [AuthController::class, 'showNewPasswordForm'])->setName('login.new-password');
+    $app->post('login/new-password', [AuthController::class, 'verifyNewPassword']);
+
+    $app->get('login/forgot-email', [AuthController::class, 'showForgotEmail'])->setName('login.forgot-email');
+    $app->post('login/forgot-email', [AuthController::class, 'verifyForgotEmail']);
+
+    $app->get('login/new-email', [AuthController::class, 'showNewEmail'])->setName('login.new-email');
+    $app->post('login/new-email', [AuthController::class, 'verifyNewEmail']);
+
     /** This route uses the RegisterController to display the registerView. This page is used to display the form in which a user can use to sign up to the web application */
-    $app->get('/register', [AuthController::class, 'showRegister'])->setName('auth.register');
-    
-$app->post('/register', [AuthController::class, 'register'])->setName('auth.register.post');
+    $app->get('/register', [AuthController::class, 'showRegisterForm'])->setName('register.index');
+    $app->post('/register', [AuthController::class, 'register']);
 
     /** Routing for 2FA and logout */
-    $app->get('/2fa', [AuthController::class, 'showTwoFactorForm'])->setName('auth.2fa');
-    $app->post('/2fa', [AuthController::class, 'verifyTwoFactor']);
     $app->get('/logout', [AuthController::class, 'logout'])->setName('auth.logout');
 
     // 'Work Log' routes:
-    /** This route uses the WorkController to display the workView. This page is used to display components necessary for the employee to input their data. */
-    $app->get('/work', [WorkController::class, 'index'])
-        ->setName('work.index');
+    /** This route s used to display components necessary for the employee to input their data. */
+    $app->group('/work', function($work){
+        $work->get('', [WorkController::class, 'index'])->setName('work.index');
+        $work->post('', [WorkController::class, 'store']);
+        $work->get('{id}', [WorkController::class, 'edit'])->setName('work.edit');
+        $work->post('{id}', [WorkController::class, 'update']);
+    });
 
-    // 'Data & Progress' routes:
-    /** This route uses the DataController to display the dataView. This page is used to display various widgets to show various data visually. */
-    $app->get('/progress', [DataController::class, 'index'])->setName('data.index');
-    $app->get('/progress/all-time', [ProgressController::class, 'allTime'])->setName('admin.db.progress.allTime');
+    // 'Reports' routes:
+    /** This route uses the ProgressController to display the dataView. This page is used to display various widgets to show various data visually. */
+    $app->get('/reports', [ReportsController::class, 'today'])->setName('data.index');
+    $app->get('/reports/all-time', [ReportsController::class, 'allTime'])->setName('admin.db.progress.allTime');
 
-    // 'Time & Attendance' routes:
-    /** This route uses the TimeController to display the TimeView. This page is used to keep track of the employes scheduling.*/
-    $app->get('/time', [TimeController::class, 'index'])
-        ->setName('time.index');
+    // 'Scheduling' routes:
+    /** This route uses the ScheduleController to display the Scheduling for admins. This page is used to keep track of the employees scheduling.*/
+    $app->group('/schedule', function ($schedule) {
+        $schedule->get('', [ScheduleController::class, 'index'])->setName('schedule.index');
+        $schedule->get('/data', [ScheduleController::class, 'fetchForDate'])->setName('schedule.data');
+        $schedule->post('', [ScheduleController::class, 'store']);
+        $schedule->get('/message', [ScheduleController::class, 'message'])->setName('schedule.message');
+        $schedule->post('/message', [ScheduleController::class, 'sendSMS']);
+    });
+
+    $app->group('/report', function ($report) {
+        $report->get('', [ReportsController::class, 'index'])->setName('reports.index');
+    });
 
     // 'Settings' routes:
     /** This route uses the SettingsController to display the SettingsView. This page will offer various settings for the user to customize their experience. */
-     $app->get('/settings', [SettingsController::class, 'index'])
-        ->setName('settings.index');
+    $app->group('/settings', function ($settings) {
+        $settings->get('', [SettingsController::class, 'index'])->setName('settings.index');
+        $settings->post('', [SettingsController::class, 'store']);
+        $settings->get('/edit', [SettingsController::class, 'edit'])->setName('settings.edit');
+        $settings->post('/edit', [SettingsController::class, 'update']);
+    });
 
     /** This route uses the AdmimnController to display the adminView.
      * This view consists of the admin panel, where oly users with the admin role can go to interact with the database and manage their employees.  */
     $app->group('/admin', function ($admin) {
-        $admin->get('', [ProductController::class, 'index'])->setName('admin.db.index');
+        $admin->get('', [AdminController::class, 'index'])->setName('admin.index');
 
             $admin->group('/product', function ($product) {
-                $product->get('', [ProductController::class, 'index'])->setName('admin.db.product.index');
-                $product->get('/create', [ProductController::class, 'create'])->setName('admin.db.product.create');
-                $product->post('', [ProductController::class, 'store'])->setName('admin.db.product.store');
-                $product->get('{id}', [ProductController::class, 'show'])->setName('admin.db.product.show');
-                $product->get('{id}/edit', [ProductController::class, 'edit'])->setName('admin.db.product.edit');
-                $product->get('{id}/delete', [ProductController::class, 'delete'])->setName('admin.db.product.delete');
-                $product->post('{id}', [ProductController::class, 'update'])->setName('admin.db.product.update');
+                $product->get('', [ProductController::class, 'index'])->setName('admin.product.index');
+                $product->post('', [ProductController::class, 'store'])->setName('admin.product.store');
+                $product->get('{id}/edit', [ProductController::class, 'edit'])->setName('admin.product.edit');
+                $product->get('{id}/delete', [ProductController::class, 'delete'])->setName('admin.product.delete');
+                $product->post('{id}', [ProductController::class, 'update'])->setName('admin.product.update');
             });
 
             $admin->group('/variant', function ($variant) {
-                $variant->get('', [ProductVariantController::class, 'index'])->setName('admin.db.variant.index');
-                $variant->get('/create', [ProductVariantController::class, 'create'])->setName('admin.db.variant.create');
-                $variant->post('', [ProductVariantController::class, 'store'])->setName('admin.db.variant.store');
-                $variant->get('{id}', [ProductVariantController::class, 'show'])->setName('admin.db.variant.show');
-                $variant->get('{id}/edit', [ProductVariantController::class, 'edit'])->setName('admin.db.variant.edit');
-                $variant->get('{id}/delete', [ProductVariantController::class, 'delete'])->setName('admin.db.variant.delete');
-                $variant->post('{id}', [ProductVariantController::class, 'update'])->setName('admin.db.variant.update');
+                $variant->get('', [ProductVariantController::class, 'index'])->setName('admin.variant.index');
+                $variant->post('', [ProductVariantController::class, 'store'])->setName('admin.variant.store');
+                $variant->get('{id}/edit', [ProductVariantController::class, 'edit'])->setName('admin.variant.edit');
+                $variant->get('{id}/delete', [ProductVariantController::class, 'delete'])->setName('admin.variant.delete');
+                $variant->post('{id}', [ProductVariantController::class, 'update'])->setName('admin.variant.update');
             });
 
             $admin->group('/colour', function($colour) {
-                $colour->get('', [ColourController::class, 'index'])->setName('admin.db.colour.index');
-                $colour->get('/create', [ColourController::class, 'create'])->setName('admin.db.colour.create');
-                $colour->post('', [ColourController::class, 'store'])->setName('admin.db.colour.store');
-                $colour->get('{id}', [ColourController::class, 'show'])->setName('admin.db.colour.show');
-                $colour->get('{id}/edit', [ColourController::class, 'edit'])->setName('admin.db.colour.edit');
-                $colour->get('{id}/delete', [ColourController::class, 'delete'])->setName('admin.db.colour.delete');
-                $colour->post('{id}', [ColourController::class, 'update'])->setName('admin.db.colour.update');
+                $colour->get('', [ColourController::class, 'index'])->setName('admin.colour.index');
+                $colour->post('', [ColourController::class, 'store'])->setName('admin.colour.store');
+                $colour->get('{id}/edit', [ColourController::class, 'edit'])->setName('admin.colour.edit');
+                $colour->get('{id}/delete', [ColourController::class, 'delete'])->setName('admin.colour.delete');
+                $colour->post('{id}', [ColourController::class, 'update'])->setName('admin.colour.update');
             });
 
             $admin->group('/users', function($users) {
-                $users->get('', [UsersController::class, 'index'])->setName('admin.db.users.index');
-                $users->get('/create', [UsersController::class, 'create'])->setName('admin.db.users.create');
-                $users->post('', [UsersController::class, 'store'])->setName('admin.db.users.store');
-                $users->get('{id}', [UsersController::class, 'show'])->setName('admin.db.users.show');
-                $users->get('{id}/edit', [UsersController::class, 'edit'])->setName('admin.db.users.edit');
-                $users->get('{id}/delete', [UsersController::class, 'delete'])->setName('admin.db.users.delete');
-                $users->post('{id}', [UsersController::class, 'update'])->setName('admin.db.users.update');
+                $users->get('', [UsersController::class, 'index'])->setName('admin.users.index');
+                $users->post('', [UsersController::class, 'store'])->setName('admin.users.store');
+                $users->get('{id}', [UsersController::class, 'show'])->setName('admin.users.show');
+                $users->get('{id}/edit', [UsersController::class, 'edit'])->setName('admin.users.edit');
+                $users->get('{id}/delete', [UsersController::class, 'delete'])->setName('admin.users.delete');
+                $users->post('{id}', [UsersController::class, 'update'])->setName('admin.users.update');
+            });
+
+            $admin->group('/type', function($type) {
+                $type->get('', [ProductTypeController::class, 'index'])->setName('admin.type.index');
+                $type->post('', [ProductTypeController::class, 'store'])->setName('admin.type.store');
+                $type->get('{id}/edit', [ProductTypeController::class, 'edit'])->setName('admin.type.edit');
+                $type->get('{id}/delete', [ProductTypeController::class, 'delete'])->setName('admin.type.delete');
+                $type->post('{id}', [ProductTypeController::class, 'update'])->setName('admin.type.update');
+            });
+
+            $admin->group('/pallet', function($pallet) {
+                $pallet->get('', [PalletController::class, 'index'])->setName('admin.pallet.index');
+                $pallet->post('', [PalletController::class, 'store'])->setName('admin.pallet.store');
+                $pallet->get('{id}/edit', [PalletController::class, 'edit'])->setName('admin.pallet.edit');
+                $pallet->get('{id}/delete', [PalletController::class, 'delete'])->setName('admin.pallet.delete');
+                $pallet->post('{id}', [PalletController::class, 'update'])->setName('admin.pallet.update');
+            });
+
+            $admin->group('/shift', function($shift) {
+                $shift->get('', [ShiftController::class, 'index'])->setName('admin.shift.index');
+                $shift->post('', [ShiftController::class, 'store'])->setName('admin.shift.store');
+                $shift->get('{id}/edit', [ShiftController::class, 'edit'])->setName('admin.shift.edit');
+                $shift->get('{id}/delete', [ShiftController::class, 'delete'])->setName('admin.shift.delete');
+                $shift->post('{id}', [ShiftController::class, 'update'])->setName('admin.shift.update');
             });
     });
 

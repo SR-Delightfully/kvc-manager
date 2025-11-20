@@ -129,21 +129,32 @@
 }
 /* * Setting colors for website elements */
 /* ! to change color of element, please change color in the themes ⬆ ABOVE ⬆ */
+body::before {
+    content: "";
+    /* background-color: hotpink; */
+    background-image: linear-gradient(255deg, #9FA7BC 33%,  #495A74 67%, #313E4F 77%, #181F28 87%, #11161A 100%);
+    opacity: 50%;
+    height: 100vh;
+    width: min(100%,100vw);
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1;
+}
 body {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    background-color: var(--body-color);
+    /* background-color: var(--body-color); */
+    background-color: #20262B; /* TODO: update body-color */ 
     overflow-x: hidden;
     overflow-y: scroll;
     min-height: 100vh;
     max-height: 100%;
     position: relative;
-    top: 0;
-    left: 0;
-    background-image: url("https://i.imgur.com/WcN2rM3.png");
-    background-size: 325%;
-    background-position: 96.3% 40%;
+    top: -1.5rem;
+    overflow: hidden;
     & h1 {
         color: var(--h1-color);
     }
@@ -265,30 +276,4 @@ body {
 
 /* Extra Large Screens */
 @media screen and (min-width: 1921px) {
-}
-
-#page-wrapper {
-    border: 2px solid rebeccapurple;
-    min-height: 100vh;
-    max-height: 100%;
-    min-width: 100vw;
-    position: absolute;
-    top: 0;
-    left: 0;
-    overflow: hidden;
-}
-
-@media screen and (max-width: 1280px) {
-    body {
-        background-position: 82% 135vh;
-        background-size: 550%;
-    }
-}
-
-/* Extra Small Screens */
-@media screen and (max-width: 720px) {
-    body {
-        background-position: 95.25% 124svh;
-        background-size: 1300%;
-    }
 }

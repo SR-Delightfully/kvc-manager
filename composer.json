@@ -25,7 +25,8 @@
         "fig/http-message-util": "^1.1",
         "monolog/monolog": "^3.9",
         "nyholm/psr7": "^1.8",
-        "nyholm/psr7-server": "^1.1"
+        "nyholm/psr7-server": "^1.1",
+        "twilio/sdk": "^8.8"
     },
     "autoload": {
         "psr-4": {

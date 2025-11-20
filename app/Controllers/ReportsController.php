@@ -2,22 +2,17 @@
 
 declare(strict_types=1);
 
-namespace App\Controllers\admin;
+namespace App\Controllers;
 
 use DI\Container;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
-use App\Domain\Models\ProductModel;
-use App\Domain\Models\ScheduleModel;
-use App\Controllers\BaseController;
 
-class ProgressController extends BaseController
+class ReportsController extends BaseController
 {
-    public function __construct(
-        Container $container,
-    private ScheduleModel $scheduleModel)
+    public function __construct(Container $container)
     {
-        parent:: __construct($container);
+        parent::__construct($container);
     }
 
     public function today(Request $request, Response $response, array $args): Response {
@@ -28,5 +23,3 @@ class ProgressController extends BaseController
         return $this->render($response, 'admin/orderShowView.php');
     }
 }
-
-?>

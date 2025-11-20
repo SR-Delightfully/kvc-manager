@@ -8,7 +8,7 @@ use DI\Container;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 
-class DataController extends BaseController
+class ScheduleController extends BaseController
 {
     public function __construct(Container $container)
     {
@@ -19,16 +19,17 @@ class DataController extends BaseController
     {
        $data = [
             'page_title' => 'Welcome to KVC Manager',
-            'contentView' => APP_VIEWS_PATH . '/pages/dataView.php',
+            'contentView' => APP_VIEWS_PATH . '/pages/scheduleView.php',
             'isSideBarShown' => true,
             'data' => [
-                'title' => 'Data',
-                'message' => 'Data Page',
+                'title' => 'Schedule',
+                'message' => 'Schedule Page',
             ]
         ];
 
         return $this->render($response, 'common/layout.php', $data);
     }
+
 
     public function error(Request $request, Response $response, array $args): Response
     {

@@ -50,11 +50,17 @@ CREATE TABLE team_members(
     FOREIGN KEY (user_id) REFERENCES users(user_id)
 );
 
+CREATE TABLE product_type(
+    product_type_id INT PRIMARY KEY AUTO_INCREMENT,
+    product_type_name VARCHAR(15)
+)
+
 CREATE TABLE product(
     product_id INT PRIMARY KEY AUTO_INCREMENT,
-    product_category ENUM('SCI', 'U-BASE', '100-BASE'),
+    product_type_id INT NOT NULL,
     product_code VARCHAR(50) NOT NULL,
-    product_name VARCHAR(50) NOT NULL
+    product_name VARCHAR(50) NOT NULL,
+    FOREIGN KEY (product_type_id) REFERENCES product_type(product_type_id)
 );
 
 CREATE TABLE colour(
@@ -129,11 +135,16 @@ INSERT INTO team_members(team_id, user_id) VALUES
 ('2','4'),
 ('2','5');
 
-INSERT INTO product(product_category, product_code, product_name) VALUES
-('U-BASE','pods','pods'),
-('100-BASE', 'pods', 'pods'),
-('SCI', '4400R', 'Solution A'),
-('SCI', '4405FCB', 'Solution B');
+INSERT INTO product_type(product_type_id, product_type_name) VALUES
+('1','SCI'),
+('2','U-BASE'),
+('3','100-BASE'),
+
+INSERT INTO product(product_type_id, product_code, product_name) VALUES
+('2','pods','pods'),
+('3', 'pods', 'pods'),
+('1', '4400R', 'Solution A'),
+('1', '4405FCB', 'Solution B');
 
 INSERT INTO colour(colour_code, colour_name) VALUES
 ('433', 'Super White'),

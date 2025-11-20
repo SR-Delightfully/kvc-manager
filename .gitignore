@@ -1,5 +1,6 @@
 env.php
 config/env.php
+SMSHelper.php
 
 # Composer and dependencies
 vendor/

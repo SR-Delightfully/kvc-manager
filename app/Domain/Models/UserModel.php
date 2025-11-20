@@ -17,8 +17,14 @@ class UserModel extends BaseModel
         return $users;
     }
 
-    //i change the name of the function bc i find that 'register' doesnt represent correctly the function
-    public function createUser(array $data): void {
+    public function getUserByPhone($phone): ?array {
+        $stmt = "SELECT * FROM users WHERE phone = :phone";
+        $params = [':phone'=>$phone];
+        $user = $this->selectOne($stmt,$params);
+        return $user;
+    }
+
+    public function register($data): void {
         $stmt = "INSERT INTO users(first_name, last_name, email, phone, password) VALUES
             (:fName,:lName,:email,:phone,:pass)";
 
@@ -27,15 +33,15 @@ class UserModel extends BaseModel
         $this->execute($stmt,$params);
     }
 
-    //TODO: Should login return boolean to indicate if successful login or array of information of logged in user to store in session array
-    public function login(string $email, string $password): ?array {
-        $stmt = "SELECT * FROM users WHERE email = :email AND password = :pass";
+
+    public function login($email, $password): ?array {
+        $stmt = "SELECT * FROM users WHERE email = :email AND password = :pass AND user_status = 'active'";
         $params = [':email'=>$email, ':pass'=>$password];
         $user = $this->selectOne($stmt,$params);
         return $user;
     }
 
-    public function updateInformation(int $user_id,string $data): void {
+    public function updateInformation($user_id, $data): void {
         $stmt = "UPDATE users SET
             first_name = :first_name,
             last_name = :last_name,
@@ -45,12 +51,12 @@ class UserModel extends BaseModel
             WHERE user_id = :user_id";
 
         $params = [':first_name'=>$data['first_name'],':last_name'=>$data['last_name'],':email'=>$data['email'],':phone'=>$data['phone'],
-                    ':password'=>$data['password'], 'user_id'=>$data['user_id']];
+                    ':password'=>$data['password'], 'user_id'=>$user_id];
         $this->execute($stmt,$params);
     }
 
     //returns list of first names of nearest team_date team members of given user_id
-    public function getTeamMembersByStation(int $userId): ?array {
+    public function getTeamMembersByStation($userId): ?array {
         $date = $this->getNearestTeamCreated($userId);
 
         if (!$date) {
@@ -68,7 +74,7 @@ class UserModel extends BaseModel
     }
 
     //helper method for getting team members for nearest team_date
-    private function getNearestTeamCreated(int $userId): ?string {
+    private function getNearestTeamCreated($userId): ?string {
         $stmt = "SELECT MIN(team_date) AS target_date FROM team WHERE team_id IN
             (SELECT team_id FROM team_members WHERE user_id = :id) AND team_date >= CURDATE()";
 
