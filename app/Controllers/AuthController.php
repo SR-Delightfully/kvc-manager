@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controllers;
 
+use App\Domain\Models\PalletModel;
 use DI\Container;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
@@ -14,23 +15,28 @@ use App\Helpers\SmsHelper;
 use App\Helpers\SessionManager;
 use App\Helpers\UserContext;
 
+
 class AuthController extends BaseController
 {
     private UserModel $user_model;
     private PalletModel $pallet_model;
+    private SmsHelper $smsHelper;
     public function __construct(
         Container $container,
-    private UserModel $userModel,
-    private SmsHelper $smsHelper
+     UserModel $userModel,
+     PalletModel $palletModel,
+    SmsHelper $smsHelper
     )
     {
         parent:: __construct($container);
-        $this->user_model=$user_model;
-        $this->pallet_model=$pallet_model;
+        $this->user_model=$userModel;
+        $this->pallet_model=$palletModel;
+        $this->smsHelper=$smsHelper;
+
     }
 
     public function showLoginForm(Request $request, Response $response, array $args): Response {
-        return $this->render($response, 'pages/loginView.php');
+        return $this->render($response, 'auth/loginView.php');
     }
 
     public function login(Request $request, Response $response, array $args): Response {
@@ -51,18 +57,18 @@ class AuthController extends BaseController
 
         //if validation is correct then check if the user exists/login
         if ($isValid) {
-            $user = $this->userModel->login($data['email'], $data['password']);
+            $user = $this->user_model->login($data['email'], $data['password']);
             //if login is correct then redirect to 2fa
             if ($user) {
                 $phone = $user['phone'];
                 $phoneFormat = '+1' . $phone;
 
-                $sms = new SmsHelper();
-                $sent = $sms->sendVerificationCode($phoneFormat);
+                // $sms = new SmsHelper();
+                $sent = $this->smsHelper->sendVerificationCode($phoneFormat);
 
                 if (!$sent) {
                     FlashMessage::error("Failed to send SMS message");
-                    return $this->render($response, 'pages/loginView.php');
+                    return $this->render($response, 'auth/loginView.php');
                 }
 
                 SessionManager::set('pending_2fa', [
@@ -73,20 +79,20 @@ class AuthController extends BaseController
                 $render = [
                     'show2fa' => true,
                 ];
-                return $this->render($response, 'pages/loginView.php', $render);
+                return $this->render($response, 'auth/loginView.php', $render);
             } else {
                 //else display flash message and render same page
                 FlashMessage::error("Incorrect Credentials");
-                return $this->render($response, 'pages/loginView.php');
+                return $this->render($response, 'auth/loginView.php');
             }
         } else {
             //else data is not valid render same page and display flash messages
-            return $this->render($response, 'pages/loginView.php');
+            return $this->render($response, 'auth/loginView.php');
         }
     }
 
     public function showRegisterForm(Request $request, Response $response, array $args): Response {
-        return $this->render($response, 'pages/registerView.php');
+        return $this->render($response, 'auth/registerView.php');
     }
 
     public function register(Request $request, Response $response, array $args): Response {
@@ -140,10 +146,10 @@ class AuthController extends BaseController
 
         //if isvalid render 2fa Page or just render signIn page
         if ($isValid) {
-            return $this->render($response, 'pages/loginView.php');
+            return $this->render($response, 'auth/loginView.php');
         } else {
             //else render page again with flash messages
-            return $this->render($response, 'pages/registerView.php');
+            return $this->render($response, 'auth/registerView.php');
         }
     }
 
@@ -157,20 +163,20 @@ class AuthController extends BaseController
         if (!$pending || empty($pending['user']) || empty($pending['phone'])) {
             FlashMessage::error("2FA Session Expired. Login again");
             SessionManager::remove('pending_2fa');
-            return $this->render($response, 'pages/loginView.php');
+            return $this->render($response, 'auth/loginView.php');
         }
 
         $phoneFormat = $pending['phone'];
 
         try {
-        $sms = new SmsHelper();
+        // $sms = new SmsHelper();
 
-        $ok = $sms->checkVerificationCode($phoneFormat, $code);
+        $ok = $this->smsHelper->checkVerificationCode($phoneFormat, $code);
 
         //if code is incorrect
         if (!$ok) {
             FlashMessage::error("Invalid or expired verification code.");
-            return $this->render($response, 'pages/loginView.php', ['show2fa' => true]);
+            return $this->render($response, 'auth/loginView.php', ['show2fa' => true]);
         }
 
         //2fa code is correct
@@ -190,7 +196,7 @@ class AuthController extends BaseController
             'show2fa' => true,
         ];
 
-        return $this->render($response, 'pages/loginView.php', $render);
+        return $this->render($response, 'auth/loginView.php', $render);
         }
     }
 
@@ -198,7 +204,7 @@ class AuthController extends BaseController
         $render = [
             'show_forgot_password' => true,
         ];
-        return $this->render($response, 'pages/loginView.php', $render);
+        return $this->render($response, 'auth/loginView.php', $render);
     }
 
     public function sendForgotPassword(Request $request, Response $response, array $args) {
@@ -209,21 +215,21 @@ class AuthController extends BaseController
 
         if (!preg_match('/^[0-9]{10}$/', $data['phone'])) {
             FlashMessage::error("Phone number must be 10 digits");
-            return $this->render($response, 'pages/loginView.php', $render);
+            return $this->render($response, 'auth/loginView.php', $render);
         } else {
-            $user = $this->userModel->getUserByPhone($data['phone']);
+            $user = $this->user_model->getUserByPhone($data['phone']);
 
             if ($user) {
                 //TODO SEND_VERIFICATION_CODE_HERE
-                return $this->render($response, 'pages/loginView.php', $render);
+                return $this->render($response, 'auth/loginView.php', $render);
             }
 
-            return $this->render($response, 'pages/loginView.php', $render);
+            return $this->render($response, 'auth/loginView.php', $render);
         }
     }
 
     public function verifyForgotPassword(Request $request, Response $response, array $args): Response {
-        return $this->render($response, 'pages/loginView.php');
+        return $this->render($response, 'auth/loginView.php');
     }
 
     public function showNewPasswordForm(Request $request, Response $response, array $args): Response {
@@ -231,11 +237,11 @@ class AuthController extends BaseController
             'show_new_password' => true,
         ];
 
-        return $this->render($response, 'pages/loginView.php');
+        return $this->render($response, 'auth/loginView.php');
     }
 
     public function verifyNewPassword(Request $request, Response $response, array $args): Response {
-        return $this->render($response, 'pages/loginView.php');
+        return $this->render($response, 'auth/loginView.php');
     }
 
     public function showForgotEmail(Request $request, Response $response, array $args): Response {
@@ -243,10 +249,10 @@ class AuthController extends BaseController
             'show_forgot_email' => true,
         ];
 
-        return $this->render($response, 'pages/loginView.php', $render);
+        return $this->render($response, 'auth/loginView.php', $render);
     }
     public function verifyForgotEmail(Request $request, Response $response, array $args): Response {
-        return $this->render($response, 'pages/loginView.php');
+        return $this->render($response, 'auth/loginView.php');
     }
 
     public function showNewEmail(Request $request, Response $response, array $args): Response {
@@ -254,14 +260,14 @@ class AuthController extends BaseController
             'show_new_email' => true,
         ];
 
-        return $this->render($response, 'pages/loginView.php', $render);
+        return $this->render($response, 'auth/loginView.php', $render);
     }
     public function verifyNewEmail(Request $request, Response $response, array $args): Response {
-        return $this->render($response, 'pages/loginView.php');
+        return $this->render($response, 'auth/loginView.php');
     }
 
     public function logout(Request $request, Response $response, array $args): Response {
-        return $this->render($response, 'pages/loginView.php');
+        return $this->render($response, 'auth/loginView.php');
     }
 }
 
