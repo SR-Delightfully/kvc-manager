@@ -24,7 +24,7 @@ ViewHelper::loadHeader($page_title,false);
 
 
     <div class="form-panel">
-      
+
     <div class="center-logo">
         <div class="logo-circle">VKC</div>
     </div>
@@ -45,6 +45,10 @@ ViewHelper::loadHeader($page_title,false);
         </form>
     </div>
 
+
+
+
+</div>
     <!-- FOOTER BAR BUT only for the login page so idk if we should have a separate file/footer for it -->
 <div class="lang-switch">
     <div class="left">
@@ -56,9 +60,6 @@ ViewHelper::loadHeader($page_title,false);
     <div class="right">
         <span id="datetime-display"></span>
     </div>
-</div>
-
-
 </div>
 
 <?php
