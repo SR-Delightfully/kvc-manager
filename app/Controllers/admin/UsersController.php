@@ -10,28 +10,35 @@ use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use App\Domain\Models\ProductModel;
 use App\Domain\Models\UserModel;
+use App\Helpers\AdminDataHelper;
+use App\Helpers\UserContext;
+use App\Helpers\FlashMessage;
 
 class UsersController extends BaseController
 {
     public function __construct(
         Container $container,
+        private AdminDataHelper $adminDataHelper,
     private UserModel $userModel)
     {
         parent:: __construct($container);
     }
 
+    //useless
     public function index(Request $request, Response $response, array $args): Response {
         return $this->render($response, 'admin/orderIndexView.php');
     }
 
+    //useless
     public function show(Request $request, Response $response, array $args): Response {
         return $this->render($response, 'admin/orderShowView.php');
     }
-
+    //useless
     public function create(Request $request, Response $response, array $args): Response {
         return $this->render($response, 'admin/categoryCreateView.php');
     }
 
+    //useless?
     public function store(Request $request, Response $response, array $args): Response {
         return $this->render($response, 'admin/categoryCreateView.php');
     }
@@ -44,8 +51,14 @@ class UsersController extends BaseController
         return $this->render($response, 'admin/categoryEditView.php');
     }
 
+    //sets the user status to terminated
     public function delete(Request $request, Response $response, array $args): Response {
-        return $this->render($response, 'admin/categoryIndexView.php');
+        $id = $args['id'];
+
+        $this->userModel->terminateUser($id);
+        FlashMessage::success("Successfully Terminated User With ID: $id");
+
+        return $this->redirect($request, $response, 'admin.index');
     }
 }
 
