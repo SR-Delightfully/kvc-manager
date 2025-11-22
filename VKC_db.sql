@@ -58,7 +58,7 @@ CREATE TABLE product_type(
 CREATE TABLE product(
     product_id INT PRIMARY KEY AUTO_INCREMENT,
     product_type_id INT NOT NULL,
-    product_code VARCHAR(20) NOT NULL,
+    product_code VARCHAR(20) NULL,
     product_name VARCHAR(50) NOT NULL,
     FOREIGN KEY (product_type_id) REFERENCES product_type(product_type_id)
 );

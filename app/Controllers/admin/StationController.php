@@ -4,73 +4,43 @@ declare(strict_types=1);
 
 namespace App\Controllers\admin;
 use App\Controllers\BaseController;
+
 use DI\Container;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use App\Domain\Models\ProductModel;
+use App\Domain\Models\StationModel;
+use App\Helpers\AdminDataHelper;
 use App\Helpers\UserContext;
 use App\Helpers\FlashMessage;
-use App\Helpers\AdminDataHelper;
 
-class ProductController extends BaseController
+class StationController extends BaseController
 {
     public function __construct(
         Container $container,
-    private ProductModel $productModel,
-    private AdminDataHelper $adminDataHelper)
+        private AdminDataHelper $adminDataHelper,
+    private StationModel $stationModel)
     {
         parent:: __construct($container);
     }
 
-    //probably useless since AdminController index method loads all information
-    //going to keep this just in case
     public function index(Request $request, Response $response, array $args): Response {
-        $products = $this->productModel->getAllProducts();
-        $types = $this->productModel->getAllProductTypes();
-
-        $data = [
-                'page_title' => 'Welcome to KVC Manager',
-                'contentView' => APP_VIEWS_PATH . '/pages/adminView.php',
-                'isSideBarShown' => true,
-                'isAdmin' => UserContext::isAdmin(),
-                'data' => [
-                    'title' => 'Admin Products',
-                    'products' => $products,
-                    'types' => $types,
-                ]
-            ];
-        return $this->render($response, 'pages/adminView.php', $data);
+        return $this->render($response, 'admin/orderIndexView.php');
     }
 
-    //get request
-    //gets product's id then renders same page with show product popup
     public function show(Request $request, Response $response, array $args): Response {
-        $product_id = $args['id'];
-        $product = $this->productModel->getProductById($product_id);
-
-        $data = [
-                'page_title' => 'Welcome to KVC Manager',
-                'contentView' => APP_VIEWS_PATH . '/pages/adminView.php',
-                'isSideBarShown' => true,
-                'isAdmin' => UserContext::isAdmin(),
-                'show_product_show' => true,
-                'data' => array_merge($this->adminDataHelper->adminPageData(),
-                        ['product_to_show' => $product]),
-            ];
-        return $this->render($response, 'pages/adminView.php', $data);
+        return $this->render($response, 'admin/orderShowView.php');
     }
 
-    //useless since create option is already in the widget view
     public function create(Request $request, Response $response, array $args): Response {
-        return $this->render($response, 'pages/adminView.php');
+        return $this->render($response, 'admin/categoryCreateView.php');
     }
 
-    //post method for creating product
     public function store(Request $request, Response $response, array $args): Response {
         $data = $request->getParsedBody();
         $errors = [];
 
-        if (empty($data['product_type_id']) || empty($data['product_name'])) {
+        if (empty($data['station_description'])) {
             $errors[] = "Product Type and Product Name are required";
         }
 
@@ -79,8 +49,8 @@ class ProductController extends BaseController
             return $this->redirect($request, $response, 'admin.index');
         }
         try {
-            $this->productModel->createProduct($data);
-            FlashMessage::success("Successfully created product");
+            $this->stationModel->createStation($data);
+            FlashMessage::success("Successfully created station");
             return $this->redirect($request, $response, 'admin.index');
         } catch (\Throwable $th) {
             FlashMessage::error("Insert failed. Please try again");
@@ -88,29 +58,27 @@ class ProductController extends BaseController
         }
     }
 
-    //gets product's information, renders page again but display edit popup
     public function edit(Request $request, Response $response, array $args): Response {
         $product_id = $args['id'];
 
-        $product = $this->productModel->getProductById($product_id);
+        $product = $this->stationModel->getStationById($product_id);
 
         $data = [
                 'contentView' => APP_VIEWS_PATH . '/pages/adminView.php',
                 'isSideBarShown' => true,
                 'isAdmin' => UserContext::isAdmin(),
-                'show_product_edit' => true,
+                'show_station_edit' => true,
                 'data' => array_merge($this->adminDataHelper->adminPageData(),
-                        ['product_to_edit' => $product]),
+                        ['station_to_edit' => $product]),
             ];
         return $this->render($response, 'pages/adminView.php', $data);
     }
 
-    //post method for updating specified product
     public function update(Request $request, Response $response, array $args): Response {
         $data = $request->getParsedBody();
         $errors = [];
 
-        if (empty($data['product_type_id']) || empty($data['product_name'])) {
+        if (empty($data['station_description'])) {
             $errors[] = "Product type and name must be filled out";
         }
 
@@ -119,8 +87,8 @@ class ProductController extends BaseController
             return $this->redirect($request, $response, 'admin.index');
         }
         try {
-            $this->productModel->updateProduct($data['product_id'], $data);
-            FlashMessage::success("Successfully updated product");
+            $this->stationModel->updateStation($data['station_id'], $data);
+            FlashMessage::success("Successfully updated station");
             return $this->redirect($request, $response, 'admin.index');
         } catch (\Throwable $th) {
             FlashMessage::error("Update failed. Please try again");
@@ -128,12 +96,11 @@ class ProductController extends BaseController
         }
     }
 
-    //get method deleting specified product
     public function delete(Request $request, Response $response, array $args): Response {
         $id = $args['id'];
 
-        $this->productModel->deleteProduct($id);
-        FlashMessage::success("Successfully Deleted Product With ID: $id");
+        $this->stationModel->deleteStation($id);
+        FlashMessage::success("Successfully Deleted Station With ID: $id");
 
         return $this->redirect($request, $response, 'admin.index');
     }

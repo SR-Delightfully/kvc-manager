@@ -11,17 +11,20 @@ use Psr\Http\Message\ServerRequestInterface as Request;
 use App\Domain\Models\ProductModel;
 use App\Helpers\UserContext;
 use App\Helpers\FlashMessage;
+use App\Helpers\AdminDataHelper;
 
 
 class ColourController extends BaseController
 {
     public function __construct(
         Container $container,
+        private AdminDataHelper $adminDataHelper,
     private ColourModel $colourModel)
     {
         parent:: __construct($container);
     }
 
+    //probably useless
     public function index(Request $request, Response $response, array $args): Response {
         $colours = $this->colourModel->getAllColours();
 
@@ -35,43 +38,63 @@ class ColourController extends BaseController
                     'colours' => $colours,
                 ]
             ];
-        return $this->render($response, 'admin/coloursIndexView.php', $data);
+        return $this->render($response, 'pages/adminView.php', $data);
     }
 
     //useless for now
     public function show(Request $request, Response $response, array $args): Response {
-        return $this->render($response, 'admin/orderShowView.php');
-    }
-    public function create(Request $request, Response $response, array $args): Response {
-        return $this->render($response, 'admin/categoryCreateView.php');
+        $colour_id = $args['id'];
+        $colour = $this->colourModel->getColourById($colour_id);
+
+        $data = [
+                'page_title' => 'Welcome to KVC Manager',
+                'contentView' => APP_VIEWS_PATH . '/pages/adminView.php',
+                'isSideBarShown' => true,
+                'isAdmin' => UserContext::isAdmin(),
+                'show_colour_show' => true,
+                'data' => array_merge($this->adminDataHelper->adminPageData(),
+                        ['colour_to_show' => $colour]),
+            ];
+        return $this->render($response, 'pages/adminView.php', $data);
     }
 
+    //useless
+    public function create(Request $request, Response $response, array $args): Response {
+        return $this->render($response, 'pages/adminView.php');
+    }
+
+    //post method to add a new colour
     public function store(Request $request, Response $response, array $args): Response {
         $data = $request->getParsedBody();
-        $isValid = true;
+        $errors = [];
 
-        if (empty($data['name'] || $data['code'])) {
-            FlashMessage::error("Fill out All fields");
-            $isValid = false;
+        if (empty($data['colour_name'] || $data['colour_code'])) {
+            $errors[] = "Fill out All fields";
         }
 
-        if (!is_numeric($data['code'])) {
-            FlashMessage::error("Colour Code must be a number");
-            $isValid = false;
+        if (!is_numeric($data['colour_code'])) {
+            $errors[] = "Colour Code must be a number";
         }
 
-        if (strlen($data['code']) !== 3) {
-            FlashMessage::error("Colour Code must be 3 digits long");
-            $isValid = false;
+        if (strlen($data['colour_code']) !== 3) {
+            $errors[] = "Colour Code must be 3 digits long";
         }
 
-        if ($isValid) {
+        if (!empty($errors)) {
+            FlashMessage::error($errors[0]);
+            return $this->redirect($request, $response, 'admin.index');
+        }
+        try {
             $this->colourModel->createColour($data);
-            FlashMessage::success("Successfully Created Colour!");
+            FlashMessage::success("Successfully created colour");
+            return $this->redirect($request, $response, 'admin.index');
+        } catch (\Throwable $th) {
+            FlashMessage::error("Insert failed. Please try again");
+            return $this->render($response, 'pages/adminView.php');
         }
-        return $this->redirect($request, $response, 'admin/ColourIndexView.php');
     }
 
+    //gets product's information, render page again but displays edit popup
     public function edit(Request $request, Response $response, array $args): Response {
         $colour_id = $args['id'];
 
@@ -82,47 +105,52 @@ class ColourController extends BaseController
                 'contentView' => APP_VIEWS_PATH . '/pages/admin/colours.php',
                 'isSideBarShown' => true,
                 'isAdmin' => UserContext::isAdmin(),
-                'data' => [
-                    'title' => 'Admin Colours',
-                    'colour' => $colour,
-                ]
+                'show_colour_edit' => true,
+                'data' => array_merge($this->adminDataHelper->adminPageData(),
+                        ['colour_to_edit' => $colour]),
             ];
-        return $this->render($response, 'admin/ColourEditView.php', $data);
+        return $this->render($response, 'pages/adminView.php', $data);
     }
 
+    //post method for updating specified product
     public function update(Request $request, Response $response, array $args): Response {
         $data = $request->getParsedBody();
-        $isValid = true;
+        $errors = [];
 
-        if (empty($data['code'] || $data['name'])) {
-            FlashMessage::error("Fill out All fields");
-            $isValid = false;
+        if (empty($data['colour_name'] || $data['colour_code'])) {
+            $errors[] = "Fill out All fields";
         }
 
-        if (!is_numeric($data['code'])) {
-            FlashMessage::error("Colour Code must be a number");
-            $isValid = false;
+        if (!is_numeric($data['colour_code'])) {
+            $errors[] = "Colour Code must be a number";
         }
 
-        if (strlen($data['code']) !== 3) {
-            FlashMessage::error("Colour Code must be 3 digits long");
-            $isValid = false;
+        if (strlen($data['colour_code']) !== 3) {
+            $errors[] = "Colour Code must be 3 digits long";
         }
 
-        if ($isValid) {
-            $this->colourModel->updateColour($data['id'], $data);
-            FlashMessage::success("Successfully Created Colour!");
+        if (!empty($errors)) {
+            FlashMessage::error($errors[0]);
+            return $this->redirect($request, $response, 'admin.index');
         }
-        return $this->redirect($request, $response, 'admin/colourIndexView.php');
+        try {
+            $this->colourModel->updateColour($data['colour_id'], $data);
+            FlashMessage::success("Successfully updated colour");
+            return $this->redirect($request, $response, 'admin.index');
+        } catch (\Throwable $th) {
+            FlashMessage::error("Insert failed. Please try again");
+            return $this->render($response, 'pages/adminView.php');
+        }
     }
 
+    //get method for deleting specified product
     public function delete(Request $request, Response $response, array $args): Response {
         $id = $args['id'];
 
         $this->colourModel->deleteColour($id);
-        FlashMessage::success("Successfully Deleted Product With ID: $id");
+        FlashMessage::success("Successfully Deleted Colour With ID: $id");
 
-        return $this->redirect($request, $response, 'admin/colourIndexView.php');
+        return $this->redirect($request, $response, 'admin.index');
     }
 }
 

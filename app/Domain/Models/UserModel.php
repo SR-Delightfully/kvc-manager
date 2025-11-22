@@ -123,4 +123,12 @@ class UserModel extends BaseModel
         return null;
     }
 
+    public function terminateUser($id) {
+        $stmt = "UPDATE users SET
+            user_status = 'terminated'
+            WHERE user_id = :user_id";
+        $params = [':user_id'=>$id];
+        $this->execute($stmt, $params);
+    }
+
 }
