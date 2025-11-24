@@ -11,7 +11,7 @@ CREATE TABLE users(
 	phone CHAR(10) NOT NULL UNIQUE,
 	password VARCHAR(50) NOT NULL,
 	user_dc DATETIME DEFAULT CURRENT_TIMESTAMP,
-	user_status ENUM('active', 'leave', 'terminated') DEFAULT 'active',
+	user_status ENUM('active', 'leave', 'terminated') DEFAULT 'active'
 );
 
 CREATE TABLE schedule(
@@ -53,7 +53,7 @@ CREATE TABLE team_members(
 CREATE TABLE product_type(
     product_type_id INT PRIMARY KEY AUTO_INCREMENT,
     product_type_name VARCHAR(15)
-)
+);
 
 CREATE TABLE product(
     product_id INT PRIMARY KEY AUTO_INCREMENT,
@@ -97,7 +97,7 @@ CREATE TABLE pallet(
 CREATE TABLE palletize_session(
     session_id INT PRIMARY KEY AUTO_INCREMENT,
     pallet_id INT NOT NULL,
-    start_time DATE NOT DEFAULT CURRENT_TIMESTAMP,
+    start_time DATE NOT NULL DEFAULT CURRENT_TIMESTAMP,
     end_time DATE NULL,
     units INT NULL,
     break_start DATETIME NULL,
@@ -138,7 +138,7 @@ INSERT INTO team_members(team_id, user_id) VALUES
 INSERT INTO product_type(product_type_id, product_type_name) VALUES
 ('1','SCI'),
 ('2','U-BASE'),
-('3','100-BASE'),
+('3','100-BASE');
 
 INSERT INTO product(product_type_id, product_code, product_name) VALUES
 ('2','pods','pods'),
