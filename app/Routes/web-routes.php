@@ -6,6 +6,11 @@ declare(strict_types=1);
  * This file contains the routes for the web application.
  */
 
+//middlewares
+use App\Middleware\AdminAuthMiddleware;
+use App\Middleware\AuthMiddleware;
+use App\Middleware\GuestAuthMiddleware;
+
 use App\Controllers\admin\ProductTypeController;
 use App\Helpers\DateTimeHelper;
 use App\Controllers\admin\UsersController;
@@ -36,26 +41,35 @@ return static function (Slim\App $app): void {
 
     // 'Login'/'Signup' routes:
     /** This route uses the LoginController to display the loginView. This page is used for existing users to login and access the web application.*/
-    $app->get('/login', [AuthController::class, 'showLoginForm'])->setName('login.index');
-    $app->post('/login', [AuthController::class, 'login']);
+    $app->get('/login', [AuthController::class, 'showLoginForm'])->setName('login.index')->add(GuestAuthMiddleware::class);
+    $app->post('/login', [AuthController::class, 'login'])->add(GuestAuthMiddleware::class);
 
-    $app->post('login/2fa', [AuthController::class, 'verifyTwoFactor']);
+    $app->post('/login/2fa', [AuthController::class, 'verifyTwoFactor'])->add(GuestAuthMiddleware::class);
 
-    $app->get('login/forgot-password', [AuthController::class, 'showForgotPasswordForm'])->setName('login.2fa');
-    $app->post('login/forgot-password', [AuthController::class, 'verifyForgotPassword']);
 
-    $app->get('login/new-password', [AuthController::class, 'showNewPasswordForm'])->setName('login.new-password');
-    $app->post('login/new-password', [AuthController::class, 'verifyNewPassword']);
+    //FORGOT_PASSWORD_FLOW
+    $app->get('/login/forgot-password', [AuthController::class, 'showForgotPasswordForm'])->setName('login.2fa')->add(GuestAuthMiddleware::class);
+    $app->post('/login/forgot-password', [AuthController::class, 'sendForgotPassword'])->add(GuestAuthMiddleware::class);
 
-    $app->get('login/forgot-email', [AuthController::class, 'showForgotEmail'])->setName('login.forgot-email');
-    $app->post('login/forgot-email', [AuthController::class, 'verifyForgotEmail']);
+    $app->post('/login/forgot-password-code', [AuthController::class, 'verifyForgotPassword'])->add(GuestAuthMiddleware::class);
 
-    $app->get('login/new-email', [AuthController::class, 'showNewEmail'])->setName('login.new-email');
-    $app->post('login/new-email', [AuthController::class, 'verifyNewEmail']);
+    $app->get('/login/new-password', [AuthController::class, 'showNewPasswordForm'])->setName('login.new-password')->add(GuestAuthMiddleware::class);
+    $app->post('/login/new-password', [AuthController::class, 'verifyNewPassword'])->add(GuestAuthMiddleware::class);
+    //END_OF_FORGOT_PASSWORD_FLOW
+
+    //FORGOT_EMAIL_FLOW
+    $app->get('/login/forgot-email', [AuthController::class, 'showForgotEmail'])->setName('login.forgot-email')->add(GuestAuthMiddleware::class);
+    $app->post('/login/forgot-email', [AuthController::class, 'sendForgotEmail'])->add(GuestAuthMiddleware::class);
+
+    $app->post('/login/forgot-email-code', [AuthController::class, 'verifyForgotEmail'])->add(GuestAuthMiddleware::class);
+
+    $app->get('/login/new-email', [AuthController::class, 'showNewEmail'])->setName('login.new-email')->add(GuestAuthMiddleware::class);
+    $app->post('/login/new-email', [AuthController::class, 'verifyNewEmail'])->add(GuestAuthMiddleware::class);
+    //END_OF_FORGOT_EMAIL_FLOW
 
     /** This route uses the RegisterController to display the registerView. This page is used to display the form in which a user can use to sign up to the web application */
-    $app->get('/register', [AuthController::class, 'showRegisterForm'])->setName('register.index');
-    $app->post('/register', [AuthController::class, 'register']);
+    $app->get('/register', [AuthController::class, 'showRegisterForm'])->setName('register.index')->add(GuestAuthMiddleware::class);
+    $app->post('/register', [AuthController::class, 'register'])->add(GuestAuthMiddleware::class);
 
     /** Routing for 2FA and logout */
     $app->get('/logout', [AuthController::class, 'logout'])->setName('auth.logout');
