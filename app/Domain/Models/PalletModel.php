@@ -161,20 +161,21 @@ class PalletModel extends BaseModel
      * @param int $session_id the ID of the session to edit
      * @return void updates the record of the palletize_session with break_start
      */
-    public function breakStart(int $session_id) {
+    public function breakStart(int $session_id)
+    {
         $sql = "SELECT * FROM palletize_session WHERE session_id = :id";
         $palletize_session = $this->selectOne($sql, ["id" => $session_id]);
 
-        if($palletize_session == null) {
+        if ($palletize_session == null) {
             return "Session not found";
         }
 
-        $sql2 = "Update palletize_session SET break_start = GETDATE()
+        $sql2 = "UPDATE palletize_session SET break_start = GETDATE()
         WHERE session_id = :id";
 
         $update = $this->execute($sql, ["id" => $session_id]);
 
-        if(!$update)
+        if (!$update)
             return "Failed to update palletize session break start";
     }
 
@@ -186,11 +187,33 @@ class PalletModel extends BaseModel
      */
     public function breakStop(int $session_id)
     {
-        //? 1) verify session_id in db
+        try {
+            //? 1) verify session_id in db
+            $sql = "SELECT * FROM palletize_session WHERE session_id = :id";
+            $palletize_session = $this->selectOne($sql, ["id" => $session_id]);
 
-        //? 2) retrieve the start_time and break_time
+            if ($palletize_session == null) {
+                return "Session not found";
+            }
 
+            //? 2) retrieve the start_time and break_time
+            $breakStart = $palletize_session["break_start"];
+            $breakTime = $palletize_session["break_time"] ?? 0;
 
+            $sql2 = "SELECT DATEDIFF(MINUTE, :start, GETDATE())";
+            $breakTime += $this->selectOne($sql2, ["start" => $breakStart]);
+
+            //? 3) update row to reset the break start to nothing and add to the break time
+
+            $sql3 = "UPDATE palletize_session
+                SET break_start = NULL, break_time = :time
+                WHERE session_id = :id";
+
+            $this->execute($sql3, ["time" => $breakTime, "id" => $session_id]);
+            
+        } catch (Exception $e) {
+            return "Cannot Stop the break: {$e->getMessage()}";
+        }
     }
 
     // /**
