@@ -115,31 +115,32 @@ class PalletModel extends BaseModel
      * @throws Exception if the insertion failed
      * @return int the id of the newly inserted row, if something went wrong, it's -1
      */
-    public function insertPalletizeSession(int $pallet_id, String $start_time, int $units = 0, bool $mess = false, String $notes): int
+    public function insertPalletizeSession(int $pallet_id, $batch_num): int
     {
         try {
             //? 1) Sanitize Data and convert Php->Sql format
             // $start_time = new DateTime($start_time);
-            $dt = DateTime::createFromFormat("d.m.Y H:i:s", $start_time);
-            if ($dt === false) {
-                //TODO fix the way to output the error to the user
-                throw new Exception("Invalid date");
-            }
-            $sqlStartTime = $dt->format("Y-m-d H:i:s");
+            // $dt = DateTime::createFromFormat("d.m.Y H:i:s", $start_time);
+            // if ($dt === false) {
+            //     //TODO fix the way to output the error to the user
+            //     throw new Exception("Invalid date");
+            // }
+            // $sqlStartTime = $dt->format("Y-m-d H:i:s");
 
-            if (strlen($notes) > 100) {
-                throw new Exception("Notes are too long.");
-            }
+            // if (strlen($notes) > 100) {
+            //     throw new Exception("Notes are too long.");
+            // }
 
             //? 2) Insert
             $sql = "INSERT INTO palletize_session(pallet_id, start_time) VALUE(
             :pallet_id,
-            :start_time)";
+            GETDATE())
+            ";
 
             //? 3) Execute
             $this->execute($sql, [
                 "pallet_id" => $pallet_id,
-                "start_time" => $sqlStartTime,
+                // "start_time" => $sqlStartTime,
                 // "units" => $units,
                 // "break_start" => $break_start,
                 // "break_time" => $break_time,
@@ -160,7 +161,22 @@ class PalletModel extends BaseModel
      * @param int $session_id the ID of the session to edit
      * @return void updates the record of the palletize_session with break_start
      */
-    public function breakStart(int $session_id) {}
+    public function breakStart(int $session_id) {
+        $sql = "SELECT * FROM palletize_session WHERE session_id = :id";
+        $palletize_session = $this->selectOne($sql, ["id" => $session_id]);
+
+        if($palletize_session == null) {
+            return "Session not found";
+        }
+
+        $sql2 = "Update palletize_session SET break_start = GETDATE()
+        WHERE session_id = :id";
+
+        $update = $this->execute($sql, ["id" => $session_id]);
+
+        if(!$update)
+            return "Failed to update palletize session break start";
+    }
 
     /**
      * Records the end of a break in a palletize_session
