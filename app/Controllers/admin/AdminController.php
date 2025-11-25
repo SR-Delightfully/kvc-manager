@@ -16,20 +16,15 @@ use App\Domain\Models\ScheduleModel;
 use App\Domain\Models\StationModel;
 use App\Domain\Models\ShiftModel;
 use App\Domain\Models\TeamModel;
+use App\Helpers\UserContext;
+use App\Helpers\AdminDataHelper;
 
 
 class AdminController extends BaseController
 {
     public function __construct(Container $container,
-    private ColourModel $colourModel,
-    private PalletModel $palletModel,
-    private UserModel $userModel,
-    private ProductModel $productModel,
-    private ProductVariantModel $productVariantModel,
-    private ScheduleModel $scheduleModel,
-    private StationModel $stationModel,
-    private ShiftModel $shiftModel,
-    private TeamModel $teamModel)
+    private AdminDataHelper $adminDataHelper
+    )
     {
         parent::__construct($container);
     }
@@ -39,16 +34,10 @@ class AdminController extends BaseController
         $data = [
             'title' => "Admin",
             'message' => "Welcome to the admin page",
-            'products' => $this->productModel->getAllProducts(),
-            'product_types' => $this->productModel->getAllProductTypes(),
-            'colours' => $this->colourModel->getAllColours(),
-            'variants' => $this->productVariantModel->getAllVariants(),
-            'users' => $this->userModel->getAllUsers(),
-            'schedules' => $this->scheduleModel->getAllSchedules(),
-            'shifts' => $this->shiftModel->getAllShifts(),
-            'stations' => $this->stationModel->getAllStations(),
-            'pallets' => $this->palletModel->getAllPalletsComplete(),
-            'teams' => $this->teamModel->getAllTeams(),
+            'contentView' => APP_VIEWS_PATH . '/pages/adminView.php',
+            'isSideBarShown' => true,
+            'isAdmin' => UserContext::isAdmin(),
+            'data' => $this->adminDataHelper->adminPageData(),
         ];
 
         return $this->render($response, 'pages/adminView.php', $data);

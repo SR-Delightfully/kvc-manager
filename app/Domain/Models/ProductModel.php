@@ -46,7 +46,16 @@ class ProductModel extends BaseModel
         $this->execute($stmt,$params);
     }
 
-    public function getAllProductTypes() {
+    //* FOR_PRODUCT_TYPES
+
+    public function getProductTypeById($id): ?array {
+        $stmt = "SELECT * FROM product_type WHERE product_type_id = :id";
+        $params = [':id'=>$id];
+        $productTypes = $this->selectAll($stmt, $params);
+        return $productTypes;
+    }
+
+    public function getAllProductTypes(): ?array {
         $stmt = "SELECT * FROM product_type";
         $productTypes = $this->selectAll($stmt);
         return $productTypes;

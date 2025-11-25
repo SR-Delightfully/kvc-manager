@@ -32,12 +32,14 @@ class UserModel extends BaseModel
     }
 
     public function register($data): void {
+        $passwordHash = password_hash($data['password'], PASSWORD_BCRYPT);
+
         $stmt = "INSERT INTO users(first_name, last_name, email, phone, password) VALUES
             (:fName,:lName,:email,:phone,:pass)";
 
         $params = [':fName'=>$data['first_name'], ':lName'=>$data['last_name'], ':email'=>$data['email'],
-                    ':phone'=>$data['phone'], ':pass'=>$data['password']];
-        $this->execute($stmt,$params);
+                    ':phone'=>$data['phone'], ':pass'=>$passwordHash];
+        $this->execute($stmt);
     }
 
 
@@ -108,5 +110,26 @@ class UserModel extends BaseModel
         return $date;
     }
 
+    public function verifyCredentials($id, $password): ?array {
+        $user = $this->getUserByEmail($id);
+
+        if (!$user) {
+            return null;
+        }
+
+        if (password_verify($password, $user['password'])) {
+            return $user;
+        }
+
+        return null;
+    }
+
+    public function terminateUser($id) {
+        $stmt = "UPDATE users SET
+            user_status = 'terminated'
+            WHERE user_id = :user_id";
+        $params = [':user_id'=>$id];
+        $this->execute($stmt, $params);
+    }
 
 }
