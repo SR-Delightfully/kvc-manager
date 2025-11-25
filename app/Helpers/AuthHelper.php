@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Helpers;
 
 use Twilio\Rest\Client;
@@ -31,7 +32,6 @@ class AuthHelper
                 'body' => $message
             ]);
             return true;
-
         } catch (RestException $e) {
             error_log("Twilio SMS Error: " . $e->getMessage());
             return false;
@@ -48,7 +48,6 @@ class AuthHelper
                 ->create($to, "sms");
 
             return true;
-
         } catch (RestException $e) {
             error_log("Twilio Verify Send Error: " . $e->getMessage());
             return false;
@@ -65,7 +64,6 @@ class AuthHelper
                 ->create($email, "email");
 
             return true;
-
         } catch (RestException $e) {
             error_log("Twilio Verify Email Send Error: " . $e->getMessage());
             return false;
@@ -85,7 +83,6 @@ class AuthHelper
                 ]);
 
             return $result->status === "approved";
-
         } catch (RestException $e) {
             error_log("Twilio Verify Check Error: " . $e->getMessage());
             return false;

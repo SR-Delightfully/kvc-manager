@@ -1,4 +1,5 @@
 <?php
+
 use App\Helpers\LocalizationHelper;
 use App\Helpers\UserContext;
 
@@ -11,7 +12,7 @@ $currentUser = UserContext::getCurrentUser();
 
 $currentLang = $_SESSION['lang'] ?? 'en';
 LocalizationHelper::setLanguage($currentLang);
-$langs = ['en','fr'];
+$langs = ['en', 'fr'];
 $tabs = [];
 
 if (UserContext::isLoggedIn() && UserContext::isAdmin()) {
@@ -19,7 +20,7 @@ if (UserContext::isLoggedIn() && UserContext::isAdmin()) {
 }
 
 $tabs['tab2'] = ["key" => "home", "icon" => "<i class='bi bi-columns-gap'></i>"];
-$tabs['tab3'] = ["key" => "products", "icon" => "<i class='bi bi-box-seam'></i>"];
+// $tabs['tab3'] = ["key" => "products", "icon" => "<i class='bi bi-box-seam'></i>"];
 $tabs['tab4'] = ["key" => "schedule", "icon" => "<i class='bi bi-calendar-week'></i>"];
 $tabs['tab5'] = ["key" => "reports", "icon" => "<i class='bi bi-file-earmark-bar-graph'></i>"];
 $tabs['tab6'] = ["key" => "work", "icon" => "<i class='bi bi-wrench'></i>"];
@@ -27,15 +28,15 @@ $tabs['tab7'] = ["key" => "settings", "icon" => "<i class='bi bi-gear'></i>"];
 
 ?>
 
-<nav id="nav-bar" >
-     <div id="logo">
-            <p>KVC</p>
-        </div>
-    <div id="nav-bar-inner" >
+<nav id="nav-bar">
+    <div id="logo">
+        <p>KVC</p>
+    </div>
+    <div id="nav-bar-inner">
         <!-- Replace with img when logo is received:<img src=""> -->
-       
 
-        <ul id="tabs" >
+
+        <ul id="tabs">
             <?php foreach ($tabs as $key => $tab) { ?>
                 <li id="<?= $key ?>" class="tab">
                     <a href="./<?= $tab['key'] ?>">
@@ -49,11 +50,11 @@ $tabs['tab7'] = ["key" => "settings", "icon" => "<i class='bi bi-gear'></i>"];
     </div>
     <div id="language-control" class="mt-2 display-flex">
         <?php foreach ($langs as $lang): ?>
-            <a href="?lang=<?= $lang ?>" 
-            class="<?= $currentLang === $lang ? 'active-lang' : '' ?>">
+            <a href="?lang=<?= $lang ?>"
+                class="<?= $currentLang === $lang ? 'active-lang' : '' ?>">
                 <?= strtoupper($lang) ?>
             </a>
-            
+
         <?php endforeach; ?>
     </div>
 </nav>
