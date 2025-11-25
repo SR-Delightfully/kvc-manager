@@ -16,6 +16,18 @@ class UserModel extends BaseModel
         return $users;
     }
 
+    public function getAllEmployees(): ?array {
+        $stmt = "SELECT user_id, user_role, first_name, last_name, email, phone, user_dc, user_status FROM users WHERE user_role LIKE 'EMPLOYEE'";
+        $users = $this->selectAll($stmt);
+        return $users;
+    }
+
+    public function getAllAdmins(): ?array {
+        $stmt = "SELECT user_id, user_role, first_name, last_name, email, phone, user_dc, user_status FROM users WHERE user_role LIKE 'ADMIN'";
+        $users = $this->selectAll($stmt);
+        return $users;
+    }
+
     public function getUserByPhone($phone): ?array {
         $stmt = "SELECT ". self::COLUMNS ." FROM users WHERE phone = :phone";
         $params = [':phone'=>$phone];
@@ -38,8 +50,9 @@ class UserModel extends BaseModel
 
         $params = [':fName'=>$data['first_name'], ':lName'=>$data['last_name'], ':email'=>$data['email'],
                     ':phone'=>$data['phone'], ':pass'=>$passwordHash];
-        $this->execute($stmt);
+        $this->execute($stmt,$params);
     }
+
 
 
     public function login($email, $password): ?array {

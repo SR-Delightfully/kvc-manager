@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controllers;
 
+use App\Domain\Models\PalletModel;
 use DI\Container;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
@@ -14,15 +15,24 @@ use App\Helpers\AuthHelper;
 use App\Helpers\SessionManager;
 use App\Helpers\UserContext;
 
+
 class AuthController extends BaseController
 {
+    private UserModel $user_model;
+    private PalletModel $pallet_model;
+    private SmsHelper $smsHelper;
     public function __construct(
         Container $container,
-    private UserModel $userModel,
-    private AuthHelper $smsHelper
+     UserModel $userModel,
+     PalletModel $palletModel,
+    SmsHelper $smsHelper
     )
     {
         parent:: __construct($container);
+        $this->user_model=$userModel;
+        $this->pallet_model=$palletModel;
+        $this->smsHelper=$smsHelper;
+
     }
 
     public function showLoginForm(Request $request, Response $response, array $args): Response {
@@ -76,10 +86,10 @@ class AuthController extends BaseController
             $phoneFormat = '+1' . $phone;
             $sent = $this->smsHelper->sendVerificationCode($phoneFormat);
 
-            if (!$sent) {
-                FlashMessage::error("Failed to send SMS message");
-                return $this->render($response, 'pages/loginView.php');
-            }
+                if (!$sent) {
+                    FlashMessage::error("Failed to send SMS message");
+                    return $this->render($response, 'auth/loginView.php');
+                }
 
             SessionManager::set('pending_2fa', [
                 'user'       => $user,
@@ -93,7 +103,7 @@ class AuthController extends BaseController
             return $this->render($response, 'pages/loginView.php', $render);
         } catch (\Throwable $th) {
             FlashMessage::error("2FA Failed. Please try again.");
-            return $this->redirect($request, $response, 'pages/loginView.php');
+            return $this->redirect($request, $response, 'auth/loginView.php');
         }
     }
 
@@ -101,7 +111,7 @@ class AuthController extends BaseController
     //used when pressing sign up button
     public function showRegisterForm(Request $request, Response $response, array $args): Response {
         $data = ['title' => 'Registration'];
-        return $this->render($response, 'pages/registerView.php', $data);
+        return $this->render($response, 'auth/registerView.php', $data);
     }
 
     //register method used when submitting register form
@@ -167,7 +177,7 @@ class AuthController extends BaseController
 
         if (!empty($errors)) {
             FlashMessage::error($errors[0]);
-            return $this->redirect($request, $response, 'pages/registerView.php');
+            return $this->redirect($request, $response, 'auth/registerView.php');
         }
 
         //errors is empty then is true, register user
@@ -184,10 +194,10 @@ class AuthController extends BaseController
             $this->userModel->register($user);
 
             FlashMessage::success("Registration successful");
-            return $this->redirect($request, $response, 'pages/loginView.php');
+            return $this->redirect($request, $response, 'auth/loginView.php');
         } catch (\Throwable $th) {
             FlashMessage::error("Registration failed. Please try again.");
-            return $this->redirect($request, $response, 'pages/registerView.php');
+            return $this->redirect($request, $response, 'auth/registerView.php');
         }
     }
 
@@ -202,18 +212,20 @@ class AuthController extends BaseController
         if (!$pending || empty($pending['user']) || empty($pending['phone'])) {
             FlashMessage::error("2FA Session Expired. Login again");
             SessionManager::remove('pending_2fa');
-            return $this->render($response, 'pages/loginView.php');
+            return $this->render($response, 'auth/loginView.php');
         }
 
         $phoneFormat = $pending['phone'];
 
         try {
+        // $sms = new SmsHelper();
+
         $ok = $this->smsHelper->checkVerificationCode($phoneFormat, $code);
 
         //if code is incorrect
         if (!$ok) {
             FlashMessage::error("Invalid or expired verification code.");
-            return $this->render($response, 'pages/loginView.php', ['show2fa_login' => true]);
+            return $this->render($response, 'auth/loginView.php', ['show2fa' => true]);
         }
 
         //2fa code is correct
@@ -233,7 +245,7 @@ class AuthController extends BaseController
             'show2fa_login' => true,
         ];
 
-        return $this->render($response, 'pages/loginView.php', $render);
+        return $this->render($response, 'auth/loginView.php', $render);
         }
     }
 
@@ -242,7 +254,7 @@ class AuthController extends BaseController
         $render = [
             'show_forgot_password' => true,
         ];
-        return $this->render($response, 'pages/loginView.php', $render);
+        return $this->render($response, 'auth/loginView.php', $render);
     }
 
 
@@ -333,6 +345,8 @@ class AuthController extends BaseController
         $render = [
             'show_new_password' => true,
         ];
+
+        return $this->render($response, 'auth/loginView.php');
         return $this->render($response, 'pages/loginView.php', $render);
     }
 
@@ -378,7 +392,7 @@ class AuthController extends BaseController
             return $this->render($response, 'pages/loginView.php');
         } else {
             FlashMessage::error("Error loading user. Try Again");
-            return $this->render($response, 'pages/loginView.php');
+            return $this->render($response, 'auth/loginView.php');
         }
     }
 
@@ -388,7 +402,7 @@ class AuthController extends BaseController
             'show_forgot_email' => true,
         ];
 
-        return $this->render($response, 'pages/loginView.php', $render);
+        return $this->render($response, 'auth/loginView.php', $render);
     }
 
     //sends sms code to specified phone number verify user before resetting email

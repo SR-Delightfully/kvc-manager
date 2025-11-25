@@ -1,0 +1,108 @@
+/* needs to be updated to the figma design */
+
+.twofactor-container {
+  width: 100%;
+  min-height: 100vh;
+  border: 2px solid #000;
+  background: #fff;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  box-sizing: border-box;
+  text-align: center;
+  overflow: auto;
+}
+
+
+.twofactor-container::before,
+.twofactor-container::after {
+  content: "";
+  position: absolute;
+  width: 60px;
+  height: 60px;
+  border: 2px solid #000;
+}
+.twofactor-container::before {
+  top: 0;
+  left: 0;
+  border-right: none;
+  border-bottom: none;
+}
+.twofactor-container::after {
+  bottom: 0;
+  right: 0;
+  border-left: none;
+  border-top: none;
+}
+
+
+.twofactor-container .close-btn {
+  position: absolute;
+  top: 15px;
+  right: 25px;
+  color: red;
+  font-size: 24px;
+  font-weight: bold;
+  text-decoration: none;
+}
+.twofactor-container .close-btn:hover {
+  color: darkred;
+}
+
+
+.twofactor-container h1 {
+  margin: 0 0 10px 0;
+}
+.twofactor-container p {
+  color: #333;
+  font-size: 16px;
+  margin-bottom: 30px;
+  max-width: 500px;
+}
+
+
+.twofactor-container input[type="text"] {
+  border: 2px dashed green;
+  border-radius: 4px;
+  padding: 14px;
+  font-size: 22px;
+  letter-spacing: 4px;
+  text-align: center;
+  width: 280px;
+  margin-bottom: 30px;
+  outline: none;
+}
+
+
+.twofactor-container button {
+  padding: 10px 25px;
+  font-size: 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  border: none;
+  margin: 0 10px;
+}
+
+.twofactor-container .verify {
+  background-color: #9ac9f5;
+  color: #000;
+  border: 2px solid #007bff;
+}
+
+.twofactor-container .resend {
+  background-color: #ccc;
+  color: #000;
+}
+
+
+@media (max-width: 600px) {
+  .twofactor-container input[type="text"] {
+    width: 80%;
+  }
+
+  .twofactor-container button {
+    margin-top: 10px;
+  }
+}

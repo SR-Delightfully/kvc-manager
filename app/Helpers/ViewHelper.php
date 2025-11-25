@@ -13,20 +13,27 @@ class ViewHelper
      * @param string $page_title The title of the page.
      * @return void
      */
-    public static function loadHeader(string $page_title): void
+    // public static function loadHeader(string $page_title): void
+    // {
+    //     $page_title = $page_title ?? 'Default Title';
+    //     require_once APP_VIEWS_PATH . '/common/header.php';
+    // }
+    public static function loadHeader(string $page_title, bool $showHeader = true): void
+{
+    $page_title = $page_title ?? 'Default Title';
+    $GLOBALS['SHOW_HEADER'] = $showHeader;
+    require_once APP_VIEWS_PATH . '/common/header.php';
+}
+
+
+    /**
+     * Load the sidebar for the page.
+     * @param string $page_title the title of the page
+     * @return void
+     */
+    public static function loadSideBar(): void
     {
-        $page_title = $page_title ?? 'Default Title';
-        require_once APP_VIEWS_PATH . '/common/header.php';
-    }
-    
- /**
-  * Load the sidebar for the page.
-  * @param string $page_title the title of the page
-  * @return void
-  */
- public static function loadSideBar(): void
-    {
-       
+
         require_once APP_VIEWS_PATH . '/common/sidebar.php';
     }
     /**
@@ -48,7 +55,7 @@ class ViewHelper
     {
         require_once APP_VIEWS_PATH . '/common/footer.php';
     }
-    
+
 
     /**
      * Generates HTML option elements for a select dropdown with secure output.
