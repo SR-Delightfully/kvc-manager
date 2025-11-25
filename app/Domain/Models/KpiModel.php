@@ -27,8 +27,8 @@ class KpiModel extends BaseModel
         //? 5) return the result array
 
         $stmt = "SELECT ";
-        $params = [':id'=>$id];
-        $sessions = $this->selectOne($stmt,$params);
+        // $params = [':id'=>$id];
+        // $sessions = $this->selectOne($stmt,$params);
         return [];
     }
 

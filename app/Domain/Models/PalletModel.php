@@ -35,7 +35,19 @@ class PalletModel extends BaseModel
         return $pallets;
     }
 
-    public function insertPalletizeSession(int $pallet_id, String $start_time, String $end_time, int $units, bool $breaks, int $break_time, bool $mess, String $notes): int
+    /*
+    session_id INT PRIMARY KEY AUTO_INCREMENT,
+    pallet_id INT NOT NULL,
+    start_time DATETIME NOT NULL,
+    end_time DATETIME NULL,
+    units INT NULL,
+    break_start DATETIME NULL,
+    break_time INT NULL,
+    mess BOOLEAN NULL,
+    notes VARCHAR(100) NULL,
+    FOREIGN KEY (pallet_id) REFERENCES pallet(pallet_id)
+    */
+    public function insertFullPalletizeSession(int $pallet_id, String $start_time, String $end_time, int $units, String $break_start, int $break_time, bool $mess, String $notes): int
     {
         //? 1) Sanitize Data and convert Php->Sql format
         // $start_time = new DateTime($start_time);
@@ -69,7 +81,7 @@ class PalletModel extends BaseModel
             "start_time" => $sqlStartTime,
             "end_time" => $sqlEndTime,
             "units" => $units,
-            "breaks" => $breaks,
+            // "breaks" => $breaks,
             "break_time" => $break_time,
             "mess" => $mess,
             "notes" => $notes
@@ -78,4 +90,100 @@ class PalletModel extends BaseModel
         //? 4) return row id
         return (int)$this->lastInsertId();
     }
+
+        /*
+    session_id INT PRIMARY KEY AUTO_INCREMENT,
+    pallet_id INT NOT NULL,
+    //! I want to add batch_num the table
+    start_time DATETIME NOT NULL,
+    end_time DATETIME NULL,
+    units INT NULL,
+    break_start DATETIME NULL,
+    break_time INT NULL,
+    mess BOOLEAN NULL,
+    notes VARCHAR(100) NULL,
+    FOREIGN KEY (pallet_id) REFERENCES pallet(pallet_id)
+    */
+
+    /**
+     *
+     * @param integer $pallet_id
+     * @param String $start_time
+     * @param integer $units, by default it's 0
+     * @param bool $mess, default is false
+     * @param string $notes
+     * @throws Exception if the insertion failed
+     * @return int the id of the newly inserted row, if something went wrong, it's -1
+     */
+    public function insertPalletizeSession(int $pallet_id, String $start_time, int $units = 0, bool $mess = false, String $notes): int
+    {
+        try {
+            //? 1) Sanitize Data and convert Php->Sql format
+            // $start_time = new DateTime($start_time);
+            $dt = DateTime::createFromFormat("d.m.Y H:i:s", $start_time);
+            if ($dt === false) {
+                //TODO fix the way to output the error to the user
+                throw new Exception("Invalid date");
+            }
+            $sqlStartTime = $dt->format("Y-m-d H:i:s");
+
+            if (strlen($notes) > 100) {
+                throw new Exception("Notes are too long.");
+            }
+
+            //? 2) Insert
+            $sql = "INSERT INTO palletize_session(pallet_id, start_time) VALUE(
+            :pallet_id,
+            :start_time)";
+
+            //? 3) Execute
+            $this->execute($sql, [
+                "pallet_id" => $pallet_id,
+                "start_time" => $sqlStartTime,
+                // "units" => $units,
+                // "break_start" => $break_start,
+                // "break_time" => $break_time,
+                // "mess" => $mess,
+                // "notes" => $notes
+            ]);
+        } catch (Exception $e) {
+            print($e->getMessage());
+            return -1;
+        }
+
+        //? 4) return row id
+        return (int)$this->lastInsertId() ?? -1;
+    }
+
+    /**
+     * Records the start of a break in a palletize_session
+     * @param int $session_id the ID of the session to edit
+     * @return void updates the record of the palletize_session with break_start
+     */
+    public function breakStart(int $session_id) {}
+
+    /**
+     * Records the end of a break in a palletize_session
+     * and calculates the total break time, then resets the break_start
+     * @param int $session_id the ID of the session to edit
+     * @return void updates the record of the palletize_session
+     */
+    public function breakStop(int $session_id)
+    {
+        //? 1) verify session_id in db
+
+        //? 2) retrieve the start_time and break_time
+
+
+    }
+
+    // /**
+    //  * Edits the palletize_session record to decalre a mess
+    //  *
+    //  * @param [type] $session_id
+    //  * @return void
+    //  */
+    // public function signalSessionMess($session_id) {
+
+    // }
 }
