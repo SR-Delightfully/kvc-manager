@@ -47,49 +47,49 @@ class PalletModel extends BaseModel
     notes VARCHAR(100) NULL,
     FOREIGN KEY (pallet_id) REFERENCES pallet(pallet_id)
     */
-    public function insertFullPalletizeSession(int $pallet_id, String $start_time, String $end_time, int $units, String $break_start, int $break_time, bool $mess, String $notes): int
-    {
-        //? 1) Sanitize Data and convert Php->Sql format
-        // $start_time = new DateTime($start_time);
-        $dt = DateTime::createFromFormat("d.m.Y H:i:s", $start_time);
-        if ($dt === false) {
-            //TODO fix the way to output the error to the user
-            throw new Exception("Invalid date");
-        }
-        $sqlStartTime = $dt->format("Y-m-d H:i:s");
+    // public function insertFullPalletizeSession(int $pallet_id, String $start_time, String $end_time, int $units, String $break_start, int $break_time, bool $mess, String $notes): int
+    // {
+    //     //? 1) Sanitize Data and convert Php->Sql format
+    //     // $start_time = new DateTime($start_time);
+    //     $dt = DateTime::createFromFormat("d.m.Y H:i:s", $start_time);
+    //     if ($dt === false) {
+    //         //TODO fix the way to output the error to the user
+    //         throw new Exception("Invalid date");
+    //     }
+    //     $sqlStartTime = $dt->format("Y-m-d H:i:s");
 
-        $dt = DateTime::createFromFormat("d.m.Y H:i:s", $end_time);
-        if ($dt === false) {
-            //TODO fix the way to output the error to the user
-            throw new Exception("Invalid date");
-        }
-        $sqlEndTime = $dt->format("Y-m-d H:i:s");
+    //     $dt = DateTime::createFromFormat("d.m.Y H:i:s", $end_time);
+    //     if ($dt === false) {
+    //         //TODO fix the way to output the error to the user
+    //         throw new Exception("Invalid date");
+    //     }
+    //     $sqlEndTime = $dt->format("Y-m-d H:i:s");
 
-        //? 2) Insert
-        $sql = "INSERT INTO palletize_session(pallet_id, start_time, end_time, units, breaks, break_time, mess, notes) VALUE(
-        :pallet_id,
-        :start_time,
-        :end_time, units,
-        :breaks,
-        :break_time,
-        :mess,
-        :notes)";
+    //     //? 2) Insert
+    //     $sql = "INSERT INTO palletize_session(pallet_id, start_time, end_time, units, breaks, break_time, mess, notes) VALUE(
+    //     :pallet_id,
+    //     :start_time,
+    //     :end_time, units,
+    //     :breaks,
+    //     :break_time,
+    //     :mess,
+    //     :notes)";
 
-        //? 3) Execute
-        $this->execute($sql, [
-            "pallet_id" => $pallet_id,
-            "start_time" => $sqlStartTime,
-            "end_time" => $sqlEndTime,
-            "units" => $units,
-            // "breaks" => $breaks,
-            "break_time" => $break_time,
-            "mess" => $mess,
-            "notes" => $notes
-        ]);
+    //     //? 3) Execute
+    //     $this->execute($sql, [
+    //         "pallet_id" => $pallet_id,
+    //         "start_time" => $sqlStartTime,
+    //         "end_time" => $sqlEndTime,
+    //         "units" => $units,
+    //         // "breaks" => $breaks,
+    //         "break_time" => $break_time,
+    //         "mess" => $mess,
+    //         "notes" => $notes
+    //     ]);
 
-        //? 4) return row id
-        return (int)$this->lastInsertId();
-    }
+    //     //? 4) return row id
+    //     return (int)$this->lastInsertId();
+    // }
 
         /*
     session_id INT PRIMARY KEY AUTO_INCREMENT,
@@ -108,14 +108,15 @@ class PalletModel extends BaseModel
     /**
      *
      * @param integer $pallet_id
-     * @param String $start_time
+    //  param String $start_time
      * @param integer $units, by default it's 0
      * @param bool $mess, default is false
      * @param string $notes
      * @throws Exception if the insertion failed
      * @return int the id of the newly inserted row, if something went wrong, it's -1
      */
-    public function insertPalletizeSession(int $pallet_id, $batch_num): int
+    
+    public function insertPalletizeSessionStart(int $pallet_id, $batch_num): int
     {
         try {
             //? 1) Sanitize Data and convert Php->Sql format
@@ -155,6 +156,33 @@ class PalletModel extends BaseModel
         return (int)$this->lastInsertId() ?? -1;
     }
 
+    public function insertPalletizeSessionEnd(int $session_id, String $notes = "", int $units)
+    {
+        //? Input Validation:
+        if ($session_id == null || $session_id <= 0) {
+            print("Invalid session id.");
+            return;
+        }
+
+        if ($units == null || $units <= 0) {
+            print("Units count needed to complete session!");
+            return;
+        }
+
+        if(strlen($notes) > 100) {
+            print("Notes are too long.");
+            return;
+        }
+
+        try {
+            $sql = "UPDATE palletize_session
+                SET end_time = CURRENT_TIMESTAMP,
+                units = :units, notes = :notes";
+            $update = $this->execute($sql, ['units' => $units, 'notes' => $notes]);
+        } catch (Exception $e) {
+            print("Could not complete palletize session: " . $e->getMessage());
+        }
+    }
     /**
      * Records the start of a break in a palletize_session
      * @param int $session_id the ID of the session to edit
@@ -209,7 +237,6 @@ class PalletModel extends BaseModel
                 WHERE session_id = :id";
 
             $this->execute($sql3, ["time" => $breakTime, "id" => $session_id]);
-
         } catch (Exception $e) {
             return "Cannot Stop the break: {$e->getMessage()}.";
         }

@@ -98,7 +98,7 @@ CREATE TABLE pallet(
 
 CREATE TABLE palletize_session(
     session_id INT PRIMARY KEY AUTO_INCREMENT,
-    pallet_id INT NOT NULL,
+    pallet_id INT NOT NULL, 
     start_time DATETIME NOT NULL,
     end_time DATETIME NULL,
     units INT NULL,
