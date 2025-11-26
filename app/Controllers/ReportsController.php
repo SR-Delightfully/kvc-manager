@@ -31,6 +31,7 @@ class ReportsController extends BaseController
     }
 
     public function today(Request $request, Response $response, array $args): Response
+   
     {
         return $this->render($response, 'admin/orderIndexView.php');
     }

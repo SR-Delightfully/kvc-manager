@@ -3,6 +3,8 @@
 namespace App\Domain\Models;
 
 use App\Helpers\Core\PDOService;
+use DateTime;
+use Exception;
 
 class PalletModel extends BaseModel
 {

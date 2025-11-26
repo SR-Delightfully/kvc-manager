@@ -2,6 +2,8 @@
 -- ! TODO: Rename file to match the company name (Files should be consistent)
 -- ! TODO: Remove database file from git repo when project is finalized (Security Risk)
 
+-- ! TODO:
+
 CREATE TABLE users(
 	user_id INT PRIMARY KEY AUTO_INCREMENT,
 	user_role ENUM('employee', 'admin') DEFAULT 'employee',
@@ -11,7 +13,7 @@ CREATE TABLE users(
 	phone CHAR(10) NOT NULL UNIQUE,
 	password VARCHAR(50) NOT NULL,
 	user_dc DATETIME DEFAULT CURRENT_TIMESTAMP,
-	user_status ENUM('active', 'leave', 'terminated') DEFAULT 'active',
+	user_status ENUM('active', 'leave', 'terminated') DEFAULT 'active'
 );
 
 CREATE TABLE schedule(
@@ -33,7 +35,7 @@ CREATE TABLE shift(
 
 CREATE TABLE station(
     station_id INT PRIMARY KEY AUTO_INCREMENT,
-    station_description VARCHAR(100)
+    station_name VARCHAR(100)
 );
 
 CREATE TABLE team(
@@ -53,7 +55,7 @@ CREATE TABLE team_members(
 CREATE TABLE product_type(
     product_type_id INT PRIMARY KEY AUTO_INCREMENT,
     product_type_name VARCHAR(15)
-)
+);
 
 CREATE TABLE product(
     product_id INT PRIMARY KEY AUTO_INCREMENT,
@@ -97,8 +99,8 @@ CREATE TABLE pallet(
 CREATE TABLE palletize_session(
     session_id INT PRIMARY KEY AUTO_INCREMENT,
     pallet_id INT NOT NULL,
-    start_time DATE NOT DEFAULT CURRENT_TIMESTAMP,
-    end_time DATE NULL,
+    start_time DATETIME NOT NULL,
+    end_time DATETIME NULL,
     units INT NULL,
     break_start DATETIME NULL,
     break_time INT NULL,
@@ -115,7 +117,7 @@ INSERT INTO users (user_role, first_name, last_name, email, phone, password) VAL
 ('employee','employee3','emp','employee3@email.com','5142223333','password'),
 ('employee','employee4','emp','employee4@email.com','5143334444','password');
 
-INSERT INTO station (station_description) VALUES
+INSERT INTO station (station_name) VALUES
 ('station 1'),
 ('station 2'),
 ('station 3'),
@@ -138,7 +140,7 @@ INSERT INTO team_members(team_id, user_id) VALUES
 INSERT INTO product_type(product_type_id, product_type_name) VALUES
 ('1','SCI'),
 ('2','U-BASE'),
-('3','100-BASE'),
+('3','100-BASE');
 
 INSERT INTO product(product_type_id, product_code, product_name) VALUES
 ('2','pods','pods'),

@@ -1,6 +1,5 @@
-<?php
-
-declare(strict_types=1);
+<?php 
+declare(strict_types=1); 
 
 namespace App\Controllers;
 
@@ -8,14 +7,13 @@ use DI\Container;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use App\Domain\Models\PalletModel;
+use App\Domain\Models\ProductModel;
 use App\Helpers\UserContext;
 
-class WorkController extends BaseController
-{
-    public function __construct(Container $container, private PalletModel $palletModel)
-    {
+class WorkController extends BaseController {
+    public function __construct( Container $container, private PalletModel $palletModel) {
         parent::__construct($container);
-    }
+        }
 
     public function index(Request $request, Response $response, array $args): Response
     {
@@ -56,7 +54,7 @@ class WorkController extends BaseController
             throw new \Slim\Exception\HttpNotFoundException($request, "Log not found");
         }
 
-        if (!UserContext::isAdmin() && $log->user_id !== $userId) {
+        if (!UserContext::isAdmin() && $log->user_id !== $userId->id) {
             return $response->withStatus(403, 'Forbidden');
         }
 
