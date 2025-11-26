@@ -27,7 +27,7 @@ ViewHelper::loadHeader($page_title,false);
           <!-- [insert social media links here] -->
         </div>
     </div>
-    <div id="registration-form-wrapper" class="auth-form-wrapper">
+    <div id="registration-form-wrapper" class="auth-form-wrapper metallic">
       <form id="registration-form" method="POST" action="<?= APP_BASE_URL ?>/register">
           <!-- <h1>Register</h1> -->
           <!-- Any user signing up should be an employee role. -->
@@ -42,18 +42,18 @@ ViewHelper::loadHeader($page_title,false);
 
           <div id="registration-form-names">
             <span>
-              <label for="first_name">First Name</label>
+              <label for="first_name">First Name:</label>
               <input type="text" id="first_name" name="first_name" placeholder="Enter first name" required>
             </span>
             <span>
-              <label for="last_name">Last Name</label>
+              <label for="last_name">Last Name:</label>
             <input type="text" id="last_name" name="last_name" placeholder="Enter last name" required>
             </span>
           </div>
 
           <div id="registration-form-contact">
             <span>
-              <label for="email">Email</label>
+              <label for="email">Email:</label>
               <input type="email" id="email" name="email" placeholder="Enter email address" required>
             </span>
             <span>
@@ -64,14 +64,14 @@ ViewHelper::loadHeader($page_title,false);
 
           <div id="registration-form-password">
             <span>
-              <label for="password">Password</label>
+              <label for="password">Password:</label>
               <input type="password" id="password" name="password" placeholder="Enter password" required>
             </span>
             <!-- When Registering a user, it is important to ensure that the user -->
             <!-- did not make any mistakes in their password, to do so a password -->
             <!-- confirmation is required to verify that the user will remember it -->
             <span>
-              <label for="password-confirm">Password Confirmation</label>
+              <label for="password-confirm">Password Confirmation:</label>
               <input type="password" id="password-confirm" name="password-confirm" placeholder="Re-enter password" required>
             </span>
           </div>

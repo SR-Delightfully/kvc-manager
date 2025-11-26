@@ -10,8 +10,8 @@ You can also user rem(px = root font size) or em (px = parent container font siz
     color: var(--tone-08);
     font-family: Arial, sans-serif;
     padding: 0;
-    background: linear-gradient(45deg, var(--tone-01) 0%, var(--tone-05) 100%);
-
+    background: linear-gradient(45deg, var(--tone-01) 0%, var(--color-blue-04) 100%);
+    filter: saturate(0.75);
 }
 #registration-page-content   {
     min-width: 100%;
@@ -81,6 +81,8 @@ You can also user rem(px = root font size) or em (px = parent container font siz
     flex-flow: column nowrap;
     justify-content: center;
     align-items: center;
+    padding: 0rem 1.25rem;
+    gap: 1rem;
     & > div {
         min-width: calc(100% - 8rem);
     }
@@ -97,6 +99,11 @@ You can also user rem(px = root font size) or em (px = parent container font siz
     flex-flow: row nowrap;
     justify-content: space-between;
 }
+#registration-form-names > span, 
+#registration-form-password > span {
+    min-width: calc(49% - 1.5rem);
+}
+
 
 #registration-form-password {
     margin-bottom: 3rem;
@@ -108,18 +115,9 @@ You can also user rem(px = root font size) or em (px = parent container font siz
     display: block;
 }
 
-#registration-form input,
-#registration-form select {
-    padding:0.75rem 0.5 rem;
-    margin-top:0.5rem;
-    margin-bottom:1rem;
-    border-radius:0.3rem;
-    border: 1px solid var(--tone-05);
-    background: var(--tone-02);
-    color: var(--tone-08);
-    width: 100%;
-    min-width: 18.5rem;
-    }
+
+
+ 
 
 
 #registration-form-buttons {
