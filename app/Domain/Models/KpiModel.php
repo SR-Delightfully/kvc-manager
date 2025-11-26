@@ -20,8 +20,33 @@ class KpiModel extends BaseModel
      */
     public function getTeamLeaderboard($startDate, $endDate) : array
     {
+        //? 0) Validate input
+
         //? 1) Find all pelletize sessions in the date range
-        //? 2) Calculate the units/minute worked for every fund session
+        $sql = "SELECT * FROM palletize_session
+        WHERE start_time BETWEEN :start AND :end";
+
+        // $sessions = [];
+        $sessions = $this->selectAll($sql, ["start" => $startDate, "end" => $endDate]);
+
+        //? 2) Calculate the units/minute worked for every found session
+        $teamPerformance = [];
+
+        foreach($sessions as $session) {
+            $sql2 = "SELECT * FROM palletize_session WHERE session_id = :id";
+
+            //sessions still ongoing won't have units set, so skip those:
+            $units = $session["units"];
+            if($units == null || $units <= 0) {
+                continue;
+            }
+
+            
+
+
+            $this->selectOne($sql2, ["id" => $session["session_id"]]);
+        }
+
         //? 3) Calculate the avg for the team
         //? 4) Compare and sort
         //? 5) return the result array

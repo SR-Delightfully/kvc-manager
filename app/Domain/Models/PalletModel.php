@@ -134,8 +134,7 @@ class PalletModel extends BaseModel
             //? 2) Insert
             $sql = "INSERT INTO palletize_session(pallet_id, start_time) VALUE(
             :pallet_id,
-            GETDATE())
-            ";
+            GETDATE())";
 
             //? 3) Execute
             $this->execute($sql, [
@@ -167,7 +166,7 @@ class PalletModel extends BaseModel
         $palletize_session = $this->selectOne($sql, ["id" => $session_id]);
 
         if ($palletize_session == null) {
-            return "Session not found";
+            return "Session not found.";
         }
 
         $sql2 = "UPDATE palletize_session SET break_start = GETDATE()
@@ -176,7 +175,7 @@ class PalletModel extends BaseModel
         $update = $this->execute($sql, ["id" => $session_id]);
 
         if (!$update)
-            return "Failed to update palletize session break start";
+            return "Failed to update palletize session break start.";
     }
 
     /**
@@ -200,24 +199,24 @@ class PalletModel extends BaseModel
             $breakStart = $palletize_session["break_start"];
             $breakTime = $palletize_session["break_time"] ?? 0;
 
-            $sql2 = "SELECT DATEDIFF(MINUTE, :start, GETDATE())";
+            // $sql2 = "SELECT DATEDIFF(MINUTE, :start, GETDATE())";
+            $sql2 = "SELECT TIMESTAMPDIFF(MINUTE, :start, GETDATE())";
             $breakTime += $this->selectOne($sql2, ["start" => $breakStart]);
 
             //? 3) update row to reset the break start to nothing and add to the break time
-
             $sql3 = "UPDATE palletize_session
                 SET break_start = NULL, break_time = :time
                 WHERE session_id = :id";
 
             $this->execute($sql3, ["time" => $breakTime, "id" => $session_id]);
-            
+
         } catch (Exception $e) {
-            return "Cannot Stop the break: {$e->getMessage()}";
+            return "Cannot Stop the break: {$e->getMessage()}.";
         }
     }
 
     // /**
-    //  * Edits the palletize_session record to decalre a mess
+    //  * Edits the palletize_session record to declare a mess
     //  *
     //  * @param [type] $session_id
     //  * @return void
