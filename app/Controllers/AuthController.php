@@ -10,7 +10,7 @@ use App\Helpers\FlashMessage;
 use App\Helpers\RegistrationCodeHelper;
 use App\Helpers\SessionManager;
 use App\Helpers\UserContext;
-use App\Helpers\SmsHelper;
+// use App\Helpers\SmsHelper;
 use DI\Container;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
@@ -24,32 +24,32 @@ class AuthController extends BaseController
 {
     private UserModel $userModel;
     private PalletModel $palletModel;
-    private SmsHelper $smsHelper;
+    // private SmsHelper $smsHelper;
 
     public function __construct(
         Container $container,
         UserModel $userModel,
         PalletModel $palletModel,
-        SmsHelper $smsHelper
+        // SmsHelper $smsHelper
     ) {
         parent::__construct($container);
 
         // Normalize property names to camelCase and assign
         $this->userModel   = $userModel;
         $this->palletModel = $palletModel;
-        $this->smsHelper   = $smsHelper;
+        // $this->smsHelper   = $smsHelper;
     }
 
     public function showLoginForm(Request $request, Response $response, array $args): Response
     {
         $data = ['title' => 'Login'];
-        return $this->render($response, 'pages/loginView.php', $data);
+        return $this->render($response, 'auth/loginView.php', $data);
     }
 
     public function showRegisterForm(Request $request, Response $response, array $args): Response
     {
         $data = ['title' => 'Registration'];
-        return $this->render($response, 'pages/registerView.php', $data);
+        return $this->render($response, 'auth/registerView.php', $data);
     }
 
     public function login(Request $request, Response $response, array $args): Response
@@ -103,12 +103,12 @@ class AuthController extends BaseController
             }
 
             $phoneFormat = '+1' . preg_replace('/\D+/', '', $phone); // ensure numeric only
-            $sent = $this->smsHelper->sendVerificationCode($phoneFormat);
+            // $sent = $this->smsHelper->sendVerificationCode($phoneFormat);
 
-            if (!$sent) {
-                FlashMessage::error("Failed to send SMS message");
-                return $this->render($response, 'pages/loginView.php');
-            }
+            // if (!$sent) {
+            //     FlashMessage::error("Failed to send SMS message");
+            //     return $this->render($response, 'pages/loginView.php');
+            // }
 
             // Store pending 2FA session state
             SessionManager::set('pending_2fa', [
@@ -243,7 +243,7 @@ class AuthController extends BaseController
         $phoneFormat = $pending['phone'];
 
         try {
-            $ok = $this->smsHelper->checkVerificationCode($phoneFormat, $code);
+            // $ok = $this->smsHelper->checkVerificationCode($phoneFormat, $code);
 
             if (!$ok) {
                 FlashMessage::error("Invalid or expired verification code.");
@@ -297,12 +297,12 @@ class AuthController extends BaseController
         if ($userPhone) {
             $phone = $userPhone['phone'] ?? '';
             $phoneFormat = '+1' . preg_replace('/\D+/', '', $phone);
-            $sent = $this->smsHelper->sendVerificationCode($phoneFormat);
+            // $sent = $this->smsHelper->sendVerificationCode($phoneFormat);
 
-            if (!$sent) {
-                FlashMessage::error("Failed to send SMS message");
-                return $this->render($response, 'pages/loginView.php', $render);
-            }
+            // if (!$sent) {
+            //     FlashMessage::error("Failed to send SMS message");
+            //     return $this->render($response, 'pages/loginView.php', $render);
+            // }
 
             SessionManager::set('pending_2fa', [
                 'user'  => $userPhone,
@@ -342,12 +342,12 @@ class AuthController extends BaseController
         $phoneFormat = $pending['phone'];
 
         try {
-            $ok = $this->smsHelper->checkVerificationCode($phoneFormat, $code);
+            // $ok = $this->smsHelper->checkVerificationCode($phoneFormat, $code);
 
-            if (!$ok) {
-                FlashMessage::error("Invalid or expired verification code.");
-                return $this->render($response, 'pages/loginView.php', ['show_forgot_password_2fa' => true]);
-            }
+            // if (!$ok) {
+            //     FlashMessage::error("Invalid or expired verification code.");
+            //     return $this->render($response, 'pages/loginView.php', ['show_forgot_password_2fa' => true]);
+            // }
 
             // Verified -> allow user to set a new password
             $user = $pending['user'];
@@ -430,12 +430,12 @@ class AuthController extends BaseController
         }
 
         $phoneFormat = '+1' . $phoneRaw;
-        $sent = $this->smsHelper->sendVerificationCode($phoneFormat);
+        // $sent = $this->smsHelper->sendVerificationCode($phoneFormat);
 
-        if (!$sent) {
-            FlashMessage::error("Failed to send SMS message");
-            return $this->render($response, 'pages/loginView.php', $render);
-        }
+        // if (!$sent) {
+        //     FlashMessage::error("Failed to send SMS message");
+        //     return $this->render($response, 'pages/loginView.php', $render);
+        // }
 
         SessionManager::set('pending_2fa', [
             'user'  => $user,
@@ -471,12 +471,12 @@ class AuthController extends BaseController
         $phoneFormat = $pending['phone'];
 
         try {
-            $ok = $this->smsHelper->checkVerificationCode($phoneFormat, $code);
+            // $ok = $this->smsHelper->checkVerificationCode($phoneFormat, $code);
 
-            if (!$ok) {
-                FlashMessage::error("Invalid or expired verification code.");
-                return $this->render($response, 'pages/loginView.php', ['show_forgot_email_2fa' => true]);
-            }
+            // if (!$ok) {
+            //     FlashMessage::error("Invalid or expired verification code.");
+            //     return $this->render($response, 'pages/loginView.php', ['show_forgot_email_2fa' => true]);
+            // }
 
             // Verified -> allow email change; store in a descriptive session key
             SessionManager::set('change_email', ['user' => $pending['user']]);
