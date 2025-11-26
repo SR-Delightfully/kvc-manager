@@ -1,97 +1,158 @@
+/* Please use variables defined in the Global Styles for any colors */
+/* If there is no matching variable for the color you wish, please define a new one. */
 
-.register-container {
-    width: 100%;
-    min-height: 100vh;
-    display: flex;
-    background: linear-gradient(135deg, #1c2430 40%, #2a3550 100%);
-    color: white;
+/* Also note that you should avoid using specific widths(px) when creating responsive designs. Instead try to use %, vw(viewWidth), vh(viewHeight).
+You can also user rem(px = root font size) or em (px = parent container font size) */
+
+#registration-page-wrapper   {
+    max-width: calc(100vw - 5px);
+    min-width: 100%;
+    color: var(--tone-08);
     font-family: Arial, sans-serif;
-    box-sizing: border-box;
     padding: 0;
+    background: linear-gradient(45deg, var(--tone-01) 0%, var(--tone-05) 100%);
+
+}
+#registration-page-content   {
+    min-width: 100%;
+    padding: 0;
+    justify-content: flex-end;
 }
 
+#registration-page-content::after   {
+    content: "";
+    border-style: solid;
+    border-width: 0 100vw 100vh 0px;
+    border-color: transparent transparent var(--tone-00) transparent;
+    position: absolute;
+    left:50%;
+    top:50%;
+    transform: translate(-50%,-50%);
+    opacity: 50%;
+    z-index: 0;
+}
 
-.sidebar {
-    width: 300px;
+#registration-page-about {
+    max-width: 50%;
     min-height: 100vh;
-    background: linear-gradient(135deg, #1c2430 0%, #0f1418 100%);
     padding: 30px 20px;
     box-sizing: border-box;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
+    justify-content: flex-start;
+    align-items: center;
+    position: absolute;
+    left: 0;
+    border-right: 3px solid var(--tone-00); 
+    z-index: 9;
+}
+#registration-page-about::after {
+    content: "";
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    top: 0;
+    background-color: var(--tone-00);
+    opacity: 50%;
 }
 
 
-.form-wrapper {
-    flex: 1;
+#registration-form-wrapper {
+    border-radius: 1rem;
+    background-color: var(--tone-04);
+    width: 50rem;
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 40px;
+    height: 60rem;
+    position: relative;
+    right: 25%;
+    top: 50%;
+    transform: translate(25%,-50%);
+    z-index: 9;
+
 }
 
-.register-form {
-    background: #0f1418;
-    padding: 30px 40px;
-    border-radius: 10px;
-    box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+#registration-form {
+    background: var(--tone-01);
+    height: 85%;
     width: 100%;
-    max-width: 450px;
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: center;
+    align-items: center;
+    & > div {
+        min-width: calc(100% - 8rem);
+    }
 }
 
-.register-form h1 {
+#registration-form h1 {
     text-align: center;
     margin-bottom: 20px;
     color: #f5f5f5;
 }
 
-
-.register-form label {
-    font-weight: bold;
-    margin-top: 10px;
-    display: block;
-}
-
-.register-form input,
-.register-form select {
-    width: 100%;
-    padding: 10px;
-    margin-top: 5px;
-    margin-bottom: 15px;
-    border-radius: 4px;
-    border: 1px solid #555;
-    background: #1a1f28;
-    color: #fff;
-}
-
-
-.buttons {
+#registration-form-names, #registration-form-password {
     display: flex;
-    border-radius:4px ;
+    flex-flow: row nowrap;
     justify-content: space-between;
 }
 
-.register-form button:first-of-type {
-    background-color: #2a72d4;
-    color: #fff;
+#registration-form-password {
+    margin-bottom: 3rem;
 }
 
-.register-form button:last-of-type {
-    background-color: #555;
+#registration-form label {
+    font-weight: bold;
+    margin-top:0.75rem;
+    display: block;
+}
+
+#registration-form input,
+#registration-form select {
+    padding:0.75rem 0.5 rem;
+    margin-top:0.5rem;
+    margin-bottom:1rem;
+    border-radius:0.3rem;
+    border: 1px solid var(--tone-05);
+    background: var(--tone-02);
+    color: var(--tone-08);
+    width: 100%;
+    min-width: 18.5rem;
+    }
+
+
+#registration-form-buttons {
+    margin-top: 3rem;
+    display: flex;
+    border-radius:0.3rem;
+    justify-content: space-between;
+    & > button {
+        width: 18rem;
+        height: 3rem;
+    }
+}
+
+#registration-form-buttons button:first-of-type {
+    background-color: var(--tone-03);
+    color: var(--tone-08);
+}
+
+#registration-form-buttons button:last-of-type {
+    background-color: var(--tone-05);
 }
 
 
-.lang-switch {
+/* .lang-switch {
     width: 100%;
     background: #000;
     color: white;
     font-size: 12px;
-    padding: 10px 40px;
+    padding:0.75rem 40px;
 
     display: flex;
     justify-content: space-between;
     align-items: center;
 
     position: relative;
-}
+} */
