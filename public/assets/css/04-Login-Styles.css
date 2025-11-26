@@ -178,3 +178,104 @@ body {
 .logo-section {
   display: none;
 }
+
+/* OVERLAY (dark blur) */
+.forgot-modal-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.65);
+    backdrop-filter: blur(4px);
+    z-index: 999;
+}
+
+/* MODAL BOX */
+.forgot-modal-box {
+    background: #1c2430;
+    width: 450px;
+    margin: 7% auto;
+    padding: 30px;
+    border-radius: 14px;
+    color: #fff;
+    text-align: center;
+    position: relative;
+    animation: fadeDown 0.25s ease-out;
+    box-shadow: 0 0 25px rgba(0,0,0,0.5);
+}
+
+/* CLOSE BUTTON */
+.close-forgot {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    background: #d11a2a;
+    color: white;
+    padding: 5px 10px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.close-forgot:hover {
+    background: #b31222;
+}
+
+/* INPUTS */
+.forgot-modal-box input {
+    width: 85%;
+    padding: 12px;
+    margin-top: 8px;
+    border-radius: 8px;
+    border: none;
+    background: #2f3947;
+    color: #d0d6e4;
+    font-size: 16px;
+    text-align: center;
+}
+
+.forgot-modal-box label {
+    display: block;
+    margin-top: 15px;
+    text-align: left;
+    margin-left: 30px;
+    font-size: 15px;
+}
+
+/* BUTTONS */
+.forgot-btn-row {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-top: 25px;
+}
+.forgot-modal-box h2 {
+    color: #808185;
+}
+
+.forgot-send {
+    background: #111;
+    color: #fff;
+    padding: 10px 20px;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+}
+
+.forgot-change {
+    background: #1f3c88;
+    color: #fff;
+    padding: 10px 20px;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+}
+
+.forgot-change:hover {
+    background: #162d66;
+}
+
+
+@keyframes fadeDown {
+    from { opacity: 0; transform: translateY(-25px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
