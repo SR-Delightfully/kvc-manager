@@ -19,14 +19,17 @@ class ShiftController extends BaseController
         parent:: __construct($container);
     }
 
+    //useless
     public function index(Request $request, Response $response, array $args): Response {
         return $this->render($response, 'admin/orderIndexView.php');
     }
 
+    //useless
     public function show(Request $request, Response $response, array $args): Response {
         return $this->render($response, 'admin/orderShowView.php');
     }
 
+    //useless
     public function create(Request $request, Response $response, array $args): Response {
         return $this->render($response, 'admin/categoryCreateView.php');
     }

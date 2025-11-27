@@ -1,41 +1,57 @@
 /* ? Declaring root variables and website's color palette */
+/* TODO: update colors to better match figma design */
+/* TODO: add colors missing from figma design; green, yellow */
 :root {
     /* Website's Color Palette */
     /* Tones - Shades of Grey */
-    --tone-00: #000;
-    --tone-01: #0f0f0f;
-    --tone-02: #202020;
-    --tone-03: #303030;
-    --tone-04: #484848;
-    --tone-05: #606060;
-    --tone-06: #909090;
-    --tone-07: #b0b0b0;
-    --tone-08: #d0d0d0;
-    --tone-09: #e0e0e0;
-    --tone-10: #fff;
+    --tone-00: #000000;
+    --tone-01: #020303;
+    --tone-02: #0A0D10;
+    --tone-03: #11161A;
+    --tone-04: #181F28;
+    --tone-05: #1B242C;
+    --tone-06: #242E3A;
+    --tone-07: #313F4F;
+    --tone-08: #99A0AC;
+    --tone-09: #D9D9D9;
+    --tone-10: #FFFFFF;
 
     /* Colors - Varying hues and shades */
     /* Shades of red: */
-    --color-red-01: #1b0101;
-    --color-red-02: #360202;
-    --color-red-03: #510303;
-    --color-red-04: #7b0404;
-    --color-red-05: #a40605;
-    --color-red-06: #e51b1b;
-    --color-red-07: #e51b1b;
-    --color-red-08: #ed5c5c;
-    --color-red-09: #f4a1a1;
+    --color-red-01: #1b0105;
+    --color-red-02: #370303;
+    --color-red-03: #8D000E;
+    --color-red-03: #c40d0d;
+    --color-red-04: #e74438;
+    --color-red-05: #FF8C69;
+
 
     /* Shades of blue: */
-    --color-blue-01: #020210;
-    --color-blue-02: #040420;
-    --color-blue-03: #060731;
-    --color-blue-04: #0a0a4a;
-    --color-blue-05: #0d0d63;
-    --color-blue-06: #272795;
-    --color-blue-07: #6364b2;
-    --color-blue-08: #a6a6d3;
-    --color-blue-09: #c1c1df;
+    --color-blue-01: #000832;
+    --color-blue-02: #002E55;
+    --color-blue-03: #20547F;
+    --color-blue-04: #456DAB;
+    --color-blue-05: #69A6FF;
+    --color-blue-06: #99BCD4;
+
+        /* Colors - Varying hues and shades */
+    /* Shades of red: */
+    --color-green-01: #001d17;
+    --color-green-02: #00200f;
+    --color-green-03: #002A18;
+    --color-green-03: #005515;
+    --color-green-04: #0B861D;
+    --color-green-05: #3EC731;
+
+
+    /* Shades of yellow: */
+    --color-yellow-01: #191f00;
+    --color-yellow-02: #353600;
+    --color-yellow-03: #685800;
+    --color-yellow-04: #a28400;
+    --color-yellow-05: #DEB11E;
+    --color-yellow-06: #DFD241;
+
 
     /* ! Component variables */
     /* ? to be used to allow different themes*/
@@ -173,6 +189,14 @@ body {
     & h6 {
         color: var(--h6-color);
     }
+    & input {
+        min-height: 2.5rem;
+        min-width: calc(100% - 2rem);
+        border: 2px solid var(--tone-07);
+        background-color: var(--tone-00);
+        padding: 0rem 1rem;
+        margin-top: 0.5rem;
+    }
 }
 /* ? Useful classes to reduce code repetition */
 
@@ -210,9 +234,7 @@ body {
     display: flex;
     flex-flow: row nowrap;
 }
-.display-flex-center {
-    display: flex;
-    flex-flow: row nowrap;
+.flex-center {
     justify-content: center;
     align-items: center;
 }
@@ -276,4 +298,8 @@ body {
 
 /* Extra Large Screens */
 @media screen and (min-width: 1921px) {
+}
+
+.metallic {
+    /* TODO: define metallic background */
 }

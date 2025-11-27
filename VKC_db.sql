@@ -2,6 +2,8 @@
 -- ! TODO: Rename file to match the company name (Files should be consistent)
 -- ! TODO: Remove database file from git repo when project is finalized (Security Risk)
 
+-- ! TODO:
+
 CREATE TABLE users(
 	user_id INT PRIMARY KEY AUTO_INCREMENT,
 	user_role ENUM('employee', 'admin') DEFAULT 'employee',
@@ -33,7 +35,7 @@ CREATE TABLE shift(
 
 CREATE TABLE station(
     station_id INT PRIMARY KEY AUTO_INCREMENT,
-    station_description VARCHAR(100)
+    station_name VARCHAR(100)
 );
 
 CREATE TABLE team(
@@ -53,12 +55,12 @@ CREATE TABLE team_members(
 CREATE TABLE product_type(
     product_type_id INT PRIMARY KEY AUTO_INCREMENT,
     product_type_name VARCHAR(15)
-)
+);
 
 CREATE TABLE product(
     product_id INT PRIMARY KEY AUTO_INCREMENT,
     product_type_id INT NOT NULL,
-    product_code VARCHAR(50) NOT NULL,
+    product_code VARCHAR(20) NULL,
     product_name VARCHAR(50) NOT NULL,
     FOREIGN KEY (product_type_id) REFERENCES product_type(product_type_id)
 );
@@ -97,10 +99,10 @@ CREATE TABLE pallet(
 CREATE TABLE palletize_session(
     session_id INT PRIMARY KEY AUTO_INCREMENT,
     pallet_id INT NOT NULL,
-    start_time DATE NOT NULL,
-    end_time DATE NULL,
+    start_time DATETIME NOT NULL,
+    end_time DATETIME NULL,
     units INT NULL,
-    breaks BOOLEAN NULL,
+    break_start DATETIME NULL,
     break_time INT NULL,
     mess BOOLEAN NULL,
     notes VARCHAR(100) NULL,
@@ -115,7 +117,7 @@ INSERT INTO users (user_role, first_name, last_name, email, phone, password) VAL
 ('employee','employee3','emp','employee3@email.com','5142223333','password'),
 ('employee','employee4','emp','employee4@email.com','5143334444','password');
 
-INSERT INTO station (station_description) VALUES
+INSERT INTO station (station_name) VALUES
 ('station 1'),
 ('station 2'),
 ('station 3'),
@@ -138,7 +140,7 @@ INSERT INTO team_members(team_id, user_id) VALUES
 INSERT INTO product_type(product_type_id, product_type_name) VALUES
 ('1','SCI'),
 ('2','U-BASE'),
-('3','100-BASE'),
+('3','100-BASE');
 
 INSERT INTO product(product_type_id, product_code, product_name) VALUES
 ('2','pods','pods'),
@@ -192,17 +194,17 @@ INSERT INTO pallet(tote_id, station_id) VALUES
 ('6','3'),
 ('6','3');
 
-INSERT INTO palletize_session(pallet_id, start_time, end_time, units, breaks, break_time, mess, notes) VALUES
-(1,'2025-11-06 09:04:00','2025-11-06 09:53:00',528,FALSE,NULL,FALSE,NULL),
-(2,'2025-11-06 09:55:00','2025-11-06 10:44:00',528,TRUE, 4, TRUE,'double clicked'),
-(3,'2025-11-06 10:46:00','2025-11-06 11:11:00',528,FALSE,NULL,FALSE,NULL),
-(4,'2025-11-06 11:20:00','2025-11-06 12:02:00',528,TRUE, 5, FALSE,NULL),
-(5,'2025-11-06 12:04:00','2025-11-06 12:54:00',528,FALSE,NULL,FALSE,NULL),
-(6,'2025-11-06 13:01:00','2025-11-06 13:42:00',528,FALSE,NULL,FALSE,NULL),
-(7,'2025-11-06 13:44:00','2025-11-06 14:15:00',528,FALSE,NULL,FALSE,NULL),
-(8,'2025-11-06 14:19:00','2025-11-06 14:58:00',528,FALSE,NULL,FALSE,NULL),
-(9,'2025-11-06 09:06:00','2025-11-06 09:50:00',32,FALSE,NULL,FALSE,NULL),
-(10,'2025-11-06 10:02:00','2025-11-06 10:43:00',32,FALSE,NULL,FALSE,NULL),
-(11,'2025-11-06 09:07:00','2025-11-06 09:57:00',108,FALSE,NULL,FALSE,NULL),
-(12,'2025-11-06 10:00:00','2025-11-06 10:45:00',108,FALSE,NULL,FALSE,NULL),
-(13,'2025-11-06 10:48:00','2025-11-06 11:33:00',108,FALSE,NULL,FALSE,NULL);
+INSERT INTO palletize_session(pallet_id, start_time, end_time, units, break_start, break_time, mess, notes) VALUES
+(1,'2025-11-06 09:04:00','2025-11-06 09:53:00',528,NULL,NULL,FALSE,NULL),
+(2,'2025-11-06 09:55:00','2025-11-06 10:44:00',528,NULL, 4, TRUE,'double clicked'),
+(3,'2025-11-06 10:46:00','2025-11-06 11:11:00',528,NULL,NULL,FALSE,NULL),
+(4,'2025-11-06 11:20:00','2025-11-06 12:02:00',528,NULL, 5, FALSE,NULL),
+(5,'2025-11-06 12:04:00','2025-11-06 12:54:00',528,NULL,NULL,FALSE,NULL),
+(6,'2025-11-06 13:01:00','2025-11-06 13:42:00',528,NULL,NULL,FALSE,NULL),
+(7,'2025-11-06 13:44:00','2025-11-06 14:15:00',528,NULL,NULL,FALSE,NULL),
+(8,'2025-11-06 14:19:00','2025-11-06 14:58:00',528,NULL,NULL,FALSE,NULL),
+(9,'2025-11-06 09:06:00','2025-11-06 09:50:00',32,NULL,NULL,FALSE,NULL),
+(10,'2025-11-06 10:02:00','2025-11-06 10:43:00',32,NULL,NULL,FALSE,NULL),
+(11,'2025-11-06 09:07:00','2025-11-06 09:57:00',108,NULL,NULL,FALSE,NULL),
+(12,'2025-11-06 10:00:00','2025-11-06 10:45:00',108,NULL,NULL,FALSE,NULL),
+(13,'2025-11-06 10:48:00','2025-11-06 11:33:00',108,NULL,NULL,FALSE,NULL);

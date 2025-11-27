@@ -2,8 +2,18 @@
 
 use App\Helpers\ViewHelper;
 
-$page_title = 'Login page';
-ViewHelper::loadHeader($page_title, false);
+//* DYNAMIC POPUPS
+$show2fa_login = $render['show2fa_login'] ?? false;
+$show_forgot_password = $render['show_forgot_password'] ?? false;
+$show_forgot_password_2fa = $render['show_forgot_password_2fa'] ?? false;
+$show_new_password = $render['show_new_password'] ?? false;
+
+$show_forgot_email = $render['show_forgot_email'] ?? false;
+$show_forgot_email_2fa = $render['show_forgot_email_2fa'] ?? false;
+$show_new_email = $render['show_new_email'] ?? false;
+
+$page_title ='Login page';
+ViewHelper::loadHeader($page_title,false);
 ?>
 
 <div class="login-container">
