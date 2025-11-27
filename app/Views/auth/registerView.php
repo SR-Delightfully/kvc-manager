@@ -5,9 +5,9 @@ $page_title = 'Registration Page';
 ViewHelper::loadHeader($page_title,false);
 ?>
 
-<!-- tips on how to html / csss -->
+<!-- tips on how to html / css -->
 
- <!-- > Don't hesitate to use styles/classes writting in te Global-Styles.css, these are intended to be used all throughout the project. -->
+ <!-- > Don't hesitate to use styles/classes writing in te Global-Styles.css, these are intended to be used all throughout the project. -->
 
 <!-- > If there is only one single copy of the element, then give it an Id with its identifying name (instead of a class) -->
 

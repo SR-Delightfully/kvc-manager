@@ -61,16 +61,51 @@ class KpiModel extends BaseModel
     //! Compare the highest % above the median time it takes to complete a pallet of that same product variant.
     public function getTeamLeaderboard($startDate, $endDate, $variant_id): array
     {
+        $leaderBoard = [];
+
         //? 0) Validate input
 
         //? 1) Find all pelletize sessions in the date range
-        return [];
+        $allSessionsSql = "SELECT * FROM palletize_session BETWEEN :start AND :end";
+        $allSessions = $this->selectAll($allSessionsSql, ["start" => $startDate, "end" => $endDate, "variantId" => $variant_id]);
 
-        //? 2) Find all sessions per variant
-        //? 3) Find
+        foreach ($allSessions as $key => $session) {
+            $session['duration'] = $this->getSessionDurationMins($session['session_id']);
+        }
+
+        $sql = "SELECT ps. FROM palletize_session ps
+        WHERE ps.start_time BETWEEN :start AND :end
+        ORDER BY ASC
+        GROUP BY ps.pallet_id";
+        /*
+        SELECT * FROM palletize_session ps
+        WHERE ps.start_time BETWEEN 2021/02/25 AND CURRENT_TIMESTAMP
+        GROUP BY ps.pallet_id
+        */
+
+        // $sessions = $this->selectAll($sql, ["start" => $startDate, "end" => $endDate, "variantId" => $variant_id]);
+
+
+
+        //? 2) arrange in ascending order and group by pallet_id
+
+
+        //? 3) Find the median for every variant (pv)
+
+        //? 4) Find the difference from median of the pv of every palletize session in %
+
+        //? 4.5) Filter out those <= median
+
+        //? 5) Get the teams that have the highest +% found (10 best above median)
+        return $leaderBoard;
     }
+    //  (CONVERT(datetime, '18-06-12 10:34:09 PM', 5));
+    public function getSessionDurationMins(int $session_id)
+    {
+        $sql = "SELECT TIMESTAMPDIFF(MINUTE, start_time, end_time) FROM palletize_session WHERE session_id = :id";
 
-    //! teams have names or colors or just ID? Maybe update the db to add team names/color codes
+        return $this->selectOne($sql, ["id" => $session_id]);
+    }
 
     /**
      * Calculates a team's performance by
