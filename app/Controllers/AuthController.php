@@ -104,12 +104,12 @@ class AuthController extends BaseController
                 return $this->render($response, 'auth/loginView.php');
             }
 
-            $phoneFormat = '+1' . preg_replace('/\D+/', '', $phone); // ensure numeric only
+            $phoneFormat = '+1' . preg_replace('/\D+/', '', $phone);
             $sent = $this->authHelper->sendVerificationCode($phoneFormat);
 
             if (!$sent) {
                 FlashMessage::error("Failed to send SMS message");
-                return $this->render($response, 'pages/loginView.php');
+                return $this->render($response, 'auth/loginView.php');
             }
 
             // Store pending 2FA session state
@@ -122,6 +122,8 @@ class AuthController extends BaseController
                 'title'         => 'Login',
                 'show2fa_login' => true,
             ];
+
+            error_log('AFTER LOGIN, SESSION pending_2fa = ' . print_r(SessionManager::get('pending_2fa'), true));
 
             return $this->render($response, 'auth/loginView.php', $render);
         } catch (\Throwable $th) {
@@ -231,6 +233,8 @@ class AuthController extends BaseController
 
     public function verifyTwoFactor(Request $request, Response $response, array $args): Response
     {
+        error_log('VERIFY 2FA - RAW $_SESSION: ' . print_r($_SESSION ?? [], true));
+
         $data = $request->getParsedBody() ?? [];
         $code = trim((string)($data['code'] ?? ''));
 
@@ -239,17 +243,17 @@ class AuthController extends BaseController
         if (!$pending || empty($pending['user']) || empty($pending['phone'])) {
             FlashMessage::error("2FA Session Expired. Login again");
             SessionManager::remove('pending_2fa');
-            return $this->render($response, 'pages/loginView.php');
+            return $this->render($response, 'auth/loginView.php');
         }
 
         $phoneFormat = $pending['phone'];
 
         try {
-            // $ok = $this->smsHelper->checkVerificationCode($phoneFormat, $code);
+            $ok = $this->authHelper->checkVerificationCode($phoneFormat, $code);
 
             if (!$ok) {
                 FlashMessage::error("Invalid or expired verification code.");
-                return $this->render($response, 'pages/loginView.php', ['show2fa_login' => true]);
+                return $this->render($response, 'auth/loginView.php', ['show2fa_login' => true]);
             }
 
             // Success: log the user in and clear session
@@ -258,11 +262,11 @@ class AuthController extends BaseController
 
             UserContext::login($user);
 
-            return $this->render($response, 'pages/homeView.php');
+            return $this->redirect($request, $response, 'dashboard.load');
         } catch (\Throwable $e) {
             error_log("2FA verify error: " . $e->getMessage());
             FlashMessage::error("There was a problem verifying your code. Try again.");
-            return $this->render($response, 'pages/loginView.php', ['show2fa_login' => true]);
+            return $this->render($response, 'auth/loginView.php', ['show2fa_login' => true]);
         }
     }
 

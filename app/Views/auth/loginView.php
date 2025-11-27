@@ -186,8 +186,8 @@ ViewHelper::loadHeader($page_title,false);
     <h1>Two-Factor Authentication</h1>
     <p>Please enter the 6-digit code sent to your phone.</p>
 
-    <form method="POST" action="<?= APP_BASE_URL ?>/login/verify-2fa">
-      <input type="text" name="code" id="code" maxlength="6" placeholder="XXXXXX" required>
+    <form method="POST" action="<?= APP_BASE_URL ?>/login/2fa">
+      <input type="text" name="code" id="code" maxlength="6" placeholder="XXXXXX" required style="color:white;">
 
       <div>
         <button type="submit" class="verify">Verify</button>

@@ -70,7 +70,7 @@ return static function (App $app): void {
 
         // Dashboard
         $app->get('/', [HomeController::class, 'index'])->setName('dashboard.index');
-        $app->get('/home', [HomeController::class, 'index']);
+        $app->get('/home', [HomeController::class, 'index'])->setName('dashboard.load');
 
         // Work
         $app->group('/work', function ($work) {
