@@ -6,8 +6,9 @@ use App\Helpers\Core\PDOService;
 
 class KpiModel extends BaseModel
 {
-        public function __construct(PDOService $pDOService) {
-        parent:: __construct($pDOService);
+    public function __construct(PDOService $pDOService)
+    {
+        parent::__construct($pDOService);
     }
 
     /**
@@ -18,7 +19,7 @@ class KpiModel extends BaseModel
      * @param mixed $endDate date of the last calculations
      * @return array the array's first index is to the most performant team and so on.
      */
-    public function getTeamLeaderboard($startDate, $endDate) : array
+    public function getTeamAvgProductionRate($startDate, $endDate): array
     {
         //? 0) Validate input
 
@@ -32,16 +33,16 @@ class KpiModel extends BaseModel
         //? 2) Calculate the units/minute worked for every found session
         $teamPerformance = [];
 
-        foreach($sessions as $session) {
+        foreach ($sessions as $session) {
             $sql2 = "SELECT * FROM palletize_session WHERE session_id = :id";
 
             //sessions still ongoing won't have units set, so skip those:
             $units = $session["units"];
-            if($units == null || $units <= 0) {
+            if ($units == null || $units <= 0) {
                 continue;
             }
 
-            
+
 
 
             $this->selectOne($sql2, ["id" => $session["session_id"]]);
@@ -57,6 +58,18 @@ class KpiModel extends BaseModel
         return [];
     }
 
+    //! Compare the highest % above the median time it takes to complete a pallet of that same product variant.
+    public function getTeamLeaderboard($startDate, $endDate, $variant_id): array
+    {
+        //? 0) Validate input
+
+        //? 1) Find all pelletize sessions in the date range
+        return [];
+
+        //? 2) Find all sessions per variant
+        //? 3) Find
+    }
+
     //! teams have names or colors or just ID? Maybe update the db to add team names/color codes
 
     /**
@@ -66,7 +79,7 @@ class KpiModel extends BaseModel
      * @param mixed $endDate
      * @return array
      */
-    public function getTeamPerformance($teamId, $startDate, $endDate) : array
+    public function getTeamPerformance($teamId, $startDate, $endDate): array
     {
         //? 1) Get all the pelletize sessions of the team
         //? 2) Filter only the sessions from the time frame
@@ -82,7 +95,7 @@ class KpiModel extends BaseModel
      * @param mixed $date by default, it's the current time.
      * @return int total units produced that day  y the team
      */
-    public function getTeamDailyProduction($teamId, $date = date('Y-m-d H:i:s')) : int
+    public function getTeamDailyProduction($teamId, $date = date('Y-m-d H:i:s')): int
     {
         //? 1) Find the team
         //? 2) Count all the units produced that day
@@ -92,4 +105,3 @@ class KpiModel extends BaseModel
         return 300;
     }
 }
-

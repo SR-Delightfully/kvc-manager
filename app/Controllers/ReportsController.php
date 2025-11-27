@@ -15,7 +15,23 @@ class ReportsController extends BaseController
         parent::__construct($container);
     }
 
+    public function index(Request $request, Response $response, array $args): Response
+    {
+        $data = [
+            'page_title' => 'Welcome to KVC Manager',
+            'contentView' => APP_VIEWS_PATH . '/pages/reportsView.php',
+            'isSideBarShown' => true,
+            'data' => [
+                'title' => 'Reports',
+                'message' => 'Reports Page',
+            ]
+        ];
+
+        return $this->render($response, 'common/layout.php', $data);
+    }
+
     public function today(Request $request, Response $response, array $args): Response
+   
     {
         return $this->render($response, 'admin/orderIndexView.php');
     }
@@ -25,9 +41,10 @@ class ReportsController extends BaseController
         return $this->render($response, 'admin/orderShowView.php');
     }
 
-    public function adminReportsView(Request $request, Response $response, array $args): Response
+
+    public function error(Request $request, Response $response, array $args): Response
     {
-        $data = [""];
-        return $this->render($response, 'admin/adminReportsView.php', $data);
+
+        return $this->render($response, 'errorView.php');
     }
 }
