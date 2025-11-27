@@ -13,13 +13,10 @@ class AuthHelper
 
     public function __construct()
     {
-        $config = $settings['twilio'] ?? [];
 
-        //load credentials from env.php
-        $sid               = $config['sid'] ?? '';
-        $token             = $config['token'] ?? '';
-        $this->fromNumber  = $config['from'] ?? '';
-        $this->verifyServiceSid = $config['verify_sid'] ?? '';
+        if ($sid === '' || $token === '') {
+            throw new \RuntimeException('Twilio SID/token not configured.');
+        }
 
         $this->client = new Client($sid, $token);
     }

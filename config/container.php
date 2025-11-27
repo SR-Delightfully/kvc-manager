@@ -15,12 +15,21 @@ use Psr\Http\Message\UriFactoryInterface;
 use Slim\Factory\AppFactory;
 use Slim\App;
 use Slim\Views\PhpRenderer;
+use App\Helpers\AuthHelper;
 
 $definitions = [
     AppSettings::class => function () {
         return new AppSettings(
             require_once __DIR__ . '/settings.php'
         );
+    },
+    AuthHelper::class => function (ContainerInterface $container): AuthHelper {
+        // get full app settings
+        $appSettings = $container->get(AppSettings::class);
+        // pull just the 'twilio' section defined in env.php/settings.php
+        $twilioConfig = $appSettings->get('twilio');
+
+        return new AuthHelper($twilioConfig);
     },
     App::class => function (ContainerInterface $container) {
 

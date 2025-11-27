@@ -39,40 +39,40 @@ ViewHelper::loadHeader($page_title,false);
               <option value="admin">Admin</option>
               <option value="user">Employee</option>
           </select> -->
-
+            <?= App\Helpers\FlashMessage::render() ?>
           <div id="registration-form-names">
             <span>
               <label for="first_name">First Name:</label>
-              <input type="text" id="first_name" name="first_name" placeholder="Enter first name" required>
+              <input type="text" id="first_name" name="first_name" placeholder="Enter first name" required style="color:white;">
             </span>
             <span>
               <label for="last_name">Last Name:</label>
-            <input type="text" id="last_name" name="last_name" placeholder="Enter last name" required>
+            <input type="text" id="last_name" name="last_name" placeholder="Enter last name" required style="color:white;">
             </span>
           </div>
 
           <div id="registration-form-contact">
             <span>
               <label for="email">Email:</label>
-              <input type="email" id="email" name="email" placeholder="Enter email address" required>
+              <input type="email" id="email" name="email" placeholder="Enter email address" required style="color:white;">
             </span>
             <span>
               <label for="phone">Phone</label>
-              <input type="tel" id="phone" name="phone" placeholder="Enter phone number" required>
+              <input type="tel" id="phone" name="phone" placeholder="Enter phone number" required style="color:white;">
             </span>
           </div>
 
           <div id="registration-form-password">
             <span>
               <label for="password">Password:</label>
-              <input type="password" id="password" name="password" placeholder="Enter password" required>
+              <input type="password" id="password" name="password" placeholder="Enter password" required style="color:white;">
             </span>
             <!-- When Registering a user, it is important to ensure that the user -->
             <!-- did not make any mistakes in their password, to do so a password -->
             <!-- confirmation is required to verify that the user will remember it -->
             <span>
               <label for="password-confirm">Password Confirmation:</label>
-              <input type="password" id="password-confirm" name="password-confirm" placeholder="Re-enter password" required>
+              <input type="password" id="password-confirm" name="password-confirm" placeholder="Re-enter password" required style="color:white;">
             </span>
           </div>
 
@@ -100,7 +100,7 @@ ViewHelper::loadHeader($page_title,false);
           <div id="registration-form-code">
             <span>
               <label for="code">Registration Code:</label>
-              <input type="text" id="code" name="code" placeholder="Enter Code" required>
+              <input type="text" id="code" name="code" placeholder="Enter Code" required style="color:white;">
             </span>
           </div>
 
