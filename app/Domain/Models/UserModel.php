@@ -6,7 +6,7 @@ use App\Helpers\Core\PDOService;
 
 /**
  * class UserModel
- * 
+ *
  * This class contains all operations for the User table in our database.
  * This includes the authentication, registration, updating, searching,
  * filtering and get team-members
@@ -39,7 +39,7 @@ class UserModel extends BaseModel
     }
 
     public function getAdmins(): ?array {
-        $stmt = "SELECT user_id, first_name, last_name, email, phone, user_dc, user_status 
+        $stmt = "SELECT user_id, first_name, last_name, email, phone, user_dc, user_status
                  FROM users WHERE user_role = 'ADMIN'";
         return $this->selectAll($stmt);
     }
@@ -50,16 +50,16 @@ class UserModel extends BaseModel
 
         // If full name (first + last)
         if (str_contains($inputName, ' ')) {
-            $stmt = "SELECT ". self::COLUMNS_EXPANDED ." 
-                     FROM users 
+            $stmt = "SELECT ". self::COLUMNS_EXPANDED ."
+                     FROM users
                      WHERE CONCAT(first_name, ' ', last_name) LIKE :name";
             $params = [':name' => "%$inputName%"];
             return $this->selectOne($stmt, $params);
         }
 
         // If only first OR last name
-        $stmt = "SELECT ". self::COLUMNS_EXPANDED ." 
-                 FROM users 
+        $stmt = "SELECT ". self::COLUMNS_EXPANDED ."
+                 FROM users
                  WHERE first_name LIKE :n OR last_name LIKE :n";
 
         $params = [':n' => "%$inputName%"];
@@ -68,22 +68,24 @@ class UserModel extends BaseModel
     }
 
     public function getUserByPhone($phone): ?array {
-        $stmt = "SELECT ". self::COLUMNS_EXPANDED ." FROM users WHERE phone LIKE :phone";
+        $stmt = "SELECT * FROM users WHERE phone LIKE :phone";
         $params = [':phone' => $phone];
-        return $this->selectOne($stmt, $params);
+        $user =  $this->selectOne($stmt, $params);
+        return $user === false ? null : $user;
     }
 
     public function getUserByEmail($email): ?array {
-        $stmt = "SELECT ". self::COLUMNS_EXPANDED ." FROM users WHERE email = :email";
+        $stmt = "SELECT * FROM users WHERE email = :email";
         $params = [':email' => $email];
-        return $this->selectOne($stmt, $params);
+        $user = $this->selectOne($stmt, $params);
+        return $user === false ? null : $user;
     }
 
     public function register($data): void {
 
         $passwordHash = password_hash($data['password'], PASSWORD_BCRYPT);
 
-        $stmt = "INSERT INTO users(first_name, last_name, email, phone, password) 
+        $stmt = "INSERT INTO users(first_name, last_name, email, phone, password)
                  VALUES (:fName, :lName, :email, :phone, :pass)";
 
         $params = [
@@ -163,7 +165,7 @@ class UserModel extends BaseModel
 
         $stmt = "SELECT first_name FROM users WHERE user_id IN
                     (SELECT user_id FROM team_members WHERE team_id IN
-                        (SELECT team_id FROM team 
+                        (SELECT team_id FROM team
                          WHERE team_date = :nextDate AND team_id IN
                             (SELECT team_id FROM team_members WHERE user_id = :id)))";
 

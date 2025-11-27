@@ -11,14 +11,22 @@ class RegistrationCodeHelper
     public static function getWeeklyCode(): string
     {
         $currentWeek = date('o-W'); // e.g. "2025-12"
+        $secret      = $_ENV['REG_CODE_SECRET'] ?? 'some-fixed-secret';
 
-        // If a new week has started, generate a new code.
-        if (self::$cachedWeek !== $currentWeek) {
-            self::$cachedWeek = $currentWeek;
-            self::$cachedCode = self::generateCode(6);
+        // create a hash based on (secret + week)
+        $hash = hash('sha256', $secret . $currentWeek);
+
+        $chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+        $code  = '';
+
+        // use first 6 bytes of the hash to build a 6-char code
+        for ($i = 0; $i < 6; $i++) {
+            $byte   = hexdec(substr($hash, $i * 2, 2)); // 0–255
+            $index  = $byte % strlen($chars);
+            $code  .= $chars[$index];
         }
 
-        return self::$cachedCode;
+        return $code;
     }
 
     //generates random 6 length code

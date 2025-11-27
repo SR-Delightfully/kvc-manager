@@ -1,9 +1,9 @@
 <?php
 
 use App\Helpers\ViewHelper;
-
+var_dump($data);
 //* DYNAMIC POPUPS
-$show2fa_login = $render['show2fa_login'] ?? false;
+$show2fa_login = $data['show2fa_login'] ?? false;
 $show_forgot_password = $render['show_forgot_password'] ?? false;
 $show_forgot_password_2fa = $render['show_forgot_password_2fa'] ?? false;
 $show_new_password = $render['show_new_password'] ?? false;
@@ -11,14 +11,15 @@ $show_new_password = $render['show_new_password'] ?? false;
 $show_forgot_email = $render['show_forgot_email'] ?? false;
 $show_forgot_email_2fa = $render['show_forgot_email_2fa'] ?? false;
 $show_new_email = $render['show_new_email'] ?? false;
-
+echo $show2fa_login;
 $page_title ='Login page';
 ViewHelper::loadHeader($page_title,false);
-?>
 
+?>
+<div><?= $show2fa_login ?></div>
 <div class="login-container">
 
-
+<?= App\Helpers\FlashMessage::render() ?>
     <div class="left-panel">
         <h1>VKC</h1>
         <h4>[If VKC is short for something, update with the full company name]</h4>
@@ -32,7 +33,7 @@ ViewHelper::loadHeader($page_title,false);
         </div>
     </div>
 
-
+<?= App\Helpers\FlashMessage::render() ?>
 
 
     <div class="form-panel">
@@ -40,18 +41,19 @@ ViewHelper::loadHeader($page_title,false);
         <div class="center-logo">
             <div class="logo-circle">VKC</div>
         </div>
-        <form method="POST" action="">
+        <?= App\Helpers\FlashMessage::render() ?>
+        <form method="POST" action="<?= APP_BASE_URL ?>/login">
             <label for="email">Email Address</label>
-            <input type="text" name="email" id="email" required>
+            <input type="text" name="email" id="email" required style="color:white;">
             <a href="#">Forgot Email?</a>
             <br>
             <br>
             <label for="password">Password</label>
-            <input type="password" name="password" id="password" required>
+            <input type="password" name="password" id="password" required style="color:white;">
             <a href="#">Forgot Password?</a>
 
             <div class="button-row">
-                <button type="submit" class="signup-btn">Sign Up</button>
+                <a class='btn btn-success' href="<?= APP_BASE_URL ?>/register">Sign in</a>
                 <button type="submit" class="signin-btn">Sign In</button>
             </div>
         </form>
@@ -176,7 +178,38 @@ ViewHelper::loadHeader($page_title,false);
     </div>
 </div>
 
+<?php if ($show2fa_login): ?>
+<div class="twofa-modal-overlay">
+  <div class="twofactor-container">
+    <span class="close-btn" onclick="close2FAModal()">X</span>
+
+    <h1>Two-Factor Authentication</h1>
+    <p>Please enter the 6-digit code sent to your phone.</p>
+
+    <form method="POST" action="<?= APP_BASE_URL ?>/login/2fa">
+      <input type="text" name="code" id="code" maxlength="6" placeholder="XXXXXX" required style="color:white;">
+
+      <div>
+        <button type="submit" class="verify">Verify</button>
+        <button type="button" class="resend" onclick="resend2FACode()">Resend Code</button>
+      </div>
+    </form>
+  </div>
+</div>
+<?php endif; ?>
+
 <?php
 ViewHelper::loadJsScripts();
 ViewHelper::loadFooter();
 ?>
+
+<script>
+function close2FAModal() {
+  document.querySelector('.twofa-modal-overlay').style.display = 'none';
+}
+
+function resend2FACode() {
+  // TODO: AJAX request to resend
+  alert("Code resent!");
+}
+</script>

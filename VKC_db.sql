@@ -11,7 +11,7 @@ CREATE TABLE users(
 	last_name VARCHAR(50) NOT NULL,
 	email VARCHAR(50) NOT NULL UNIQUE,
 	phone CHAR(10) NOT NULL UNIQUE,
-	password VARCHAR(50) NOT NULL,
+	password VARCHAR(255) NOT NULL,
 	user_dc DATETIME DEFAULT CURRENT_TIMESTAMP,
 	user_status ENUM('active', 'leave', 'terminated') DEFAULT 'active'
 );

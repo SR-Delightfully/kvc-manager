@@ -35,7 +35,7 @@ class AdminDataHelper
             'product_types' => $this->productModel->getAllProductTypes(),
             'colours' => $this->colourModel->getAllColours(),
             'variants' => $this->productVariantModel->getAllVariants(),
-            'users' => $this->userModel->getAllUsers(),
+            'users' => $this->userModel->getUsers(),
             'schedules' => $this->scheduleModel->getAllSchedules(),
             'shifts' => $this->shiftModel->getAllShifts(),
             'stations' => $this->stationModel->getAllStations(),

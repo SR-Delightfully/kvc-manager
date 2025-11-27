@@ -10,7 +10,7 @@ use App\Helpers\FlashMessage;
 use App\Helpers\RegistrationCodeHelper;
 use App\Helpers\SessionManager;
 use App\Helpers\UserContext;
-// use App\Helpers\SmsHelper;
+use App\Helpers\AuthHelper;
 use DI\Container;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
@@ -22,23 +22,25 @@ use Psr\Http\Message\ServerRequestInterface as Request;
  */
 class AuthController extends BaseController
 {
-    private UserModel $userModel;
-    private PalletModel $palletModel;
-    // private SmsHelper $smsHelper;
 
     public function __construct(
         Container $container,
-        UserModel $userModel,
-        PalletModel $palletModel,
-        // SmsHelper $smsHelper
+        private UserModel $userModel,
+        private PalletModel $palletModel,
+        private AuthHelper $authHelper
     ) {
         parent::__construct($container);
-
-        // Normalize property names to camelCase and assign
-        $this->userModel   = $userModel;
-        $this->palletModel = $palletModel;
-        // $this->smsHelper   = $smsHelper;
     }
+
+        public function registrationCode(Request $request, Response $response, array $args): Response
+        {
+            $code = RegistrationCodeHelper::getWeeklyCode();
+            $this->authHelper->sendVerificationCode("+15149920406");
+            $data = ['title' => 'Login',
+                    'code' => $code,
+                ];
+            return $this->render($response, 'auth/codeTestingView.php', $data);
+        }
 
     public function showLoginForm(Request $request, Response $response, array $args): Response
     {
@@ -83,7 +85,7 @@ class AuthController extends BaseController
 
         if (!empty($errors)) {
             FlashMessage::error($errors[0]);
-            return $this->render($response, 'pages/loginView.php');
+            return $this->render($response, 'auth/loginView.php');
         }
 
         // Verify credentials (UserModel->verifyCredentials returns user array or null)
@@ -91,7 +93,7 @@ class AuthController extends BaseController
 
         if (!$user) {
             FlashMessage::error("Invalid credentials. Please try again.");
-            return $this->render($response, 'pages/loginView.php');
+            return $this->render($response, 'auth/loginView.php');
         }
 
         // Send 2FA code
@@ -99,16 +101,16 @@ class AuthController extends BaseController
             $phone = $user['phone'] ?? '';
             if ($phone === '') {
                 FlashMessage::error("No phone number available for 2FA.");
-                return $this->render($response, 'pages/loginView.php');
+                return $this->render($response, 'auth/loginView.php');
             }
 
-            $phoneFormat = '+1' . preg_replace('/\D+/', '', $phone); // ensure numeric only
-            // $sent = $this->smsHelper->sendVerificationCode($phoneFormat);
+            $phoneFormat = '+1' . preg_replace('/\D+/', '', $phone);
+            $sent = $this->authHelper->sendVerificationCode($phoneFormat);
 
-            // if (!$sent) {
-            //     FlashMessage::error("Failed to send SMS message");
-            //     return $this->render($response, 'pages/loginView.php');
-            // }
+            if (!$sent) {
+                FlashMessage::error("Failed to send SMS message");
+                return $this->render($response, 'auth/loginView.php');
+            }
 
             // Store pending 2FA session state
             SessionManager::set('pending_2fa', [
@@ -121,11 +123,13 @@ class AuthController extends BaseController
                 'show2fa_login' => true,
             ];
 
-            return $this->render($response, 'pages/loginView.php', $render);
+            error_log('AFTER LOGIN, SESSION pending_2fa = ' . print_r(SessionManager::get('pending_2fa'), true));
+
+            return $this->render($response, 'auth/loginView.php', $render);
         } catch (\Throwable $th) {
             error_log('2FA send error: ' . $th->getMessage());
             FlashMessage::error("2FA Failed. Please try again.");
-            return $this->render($response, 'pages/loginView.php');
+            return $this->render($response, 'auth/loginView.php');
         }
     }
 
@@ -138,8 +142,8 @@ class AuthController extends BaseController
         $email     = trim((string)($data['email'] ?? ''));
         $phone     = preg_replace('/\D+/', '', (string)($data['phone'] ?? '')); // digits only
         $password  = (string)($data['password'] ?? '');
-        $confPass  = (string)($data['conf_password'] ?? '');
-        $regCode   = trim((string)($data['registration_code'] ?? ''));
+        $confPass  = (string)($data['password-confirm'] ?? '');
+        $regCode   = trim((string)($data['code'] ?? ''));
 
         $errors = [];
 
@@ -203,7 +207,7 @@ class AuthController extends BaseController
 
         if (!empty($errors)) {
             FlashMessage::error($errors[0]);
-            return $this->render($response, 'pages/registerView.php');
+            return $this->render($response, 'auth/registerView.php');
         }
 
         try {
@@ -219,16 +223,18 @@ class AuthController extends BaseController
             $this->userModel->register($user);
 
             FlashMessage::success("Registration successful");
-            return $this->render($response, 'pages/loginView.php');
+            return $this->render($response, 'auth/loginView.php');
         } catch (\Throwable $th) {
             error_log('Registration error: ' . $th->getMessage());
             FlashMessage::error("Registration failed. Please try again.");
-            return $this->render($response, 'pages/registerView.php');
+            return $this->render($response, 'auth/registerView.php');
         }
     }
 
     public function verifyTwoFactor(Request $request, Response $response, array $args): Response
     {
+        error_log('VERIFY 2FA - RAW $_SESSION: ' . print_r($_SESSION ?? [], true));
+
         $data = $request->getParsedBody() ?? [];
         $code = trim((string)($data['code'] ?? ''));
 
@@ -237,17 +243,17 @@ class AuthController extends BaseController
         if (!$pending || empty($pending['user']) || empty($pending['phone'])) {
             FlashMessage::error("2FA Session Expired. Login again");
             SessionManager::remove('pending_2fa');
-            return $this->render($response, 'pages/loginView.php');
+            return $this->render($response, 'auth/loginView.php');
         }
 
         $phoneFormat = $pending['phone'];
 
         try {
-            // $ok = $this->smsHelper->checkVerificationCode($phoneFormat, $code);
+            $ok = $this->authHelper->checkVerificationCode($phoneFormat, $code);
 
             if (!$ok) {
                 FlashMessage::error("Invalid or expired verification code.");
-                return $this->render($response, 'pages/loginView.php', ['show2fa_login' => true]);
+                return $this->render($response, 'auth/loginView.php', ['show2fa_login' => true]);
             }
 
             // Success: log the user in and clear session
@@ -256,11 +262,11 @@ class AuthController extends BaseController
 
             UserContext::login($user);
 
-            return $this->render($response, 'pages/homeView.php');
+            return $this->redirect($request, $response, 'dashboard.load');
         } catch (\Throwable $e) {
             error_log("2FA verify error: " . $e->getMessage());
             FlashMessage::error("There was a problem verifying your code. Try again.");
-            return $this->render($response, 'pages/loginView.php', ['show2fa_login' => true]);
+            return $this->render($response, 'auth/loginView.php', ['show2fa_login' => true]);
         }
     }
 

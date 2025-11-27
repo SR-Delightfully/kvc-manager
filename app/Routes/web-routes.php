@@ -37,8 +37,10 @@ use Psr\Http\Message\ServerRequestInterface as Request;
 
 return static function (App $app): void {
 
+    $app->get("/registration-code", [AuthController::class, 'registrationCode']);
     // Authentication Routes:
     $app->group('', function ($auth) {
+
         $auth->get('/register', [AuthController::class, 'showRegisterForm'])->setName('register.index');
         $auth->post('/register', [AuthController::class, 'register']);
 
@@ -61,14 +63,14 @@ return static function (App $app): void {
         $auth->post('/login/2fa', [AuthController::class, 'verifyTwoFactor']);
 
         $auth->get('/logout', [AuthController::class, 'logout'])->setName('auth.logout');
-    });
+    })->add(GuestAuthMiddleware::class);
 
     // General / Employee Routes:
     $app->group('', function ($app) {
 
         // Dashboard
         $app->get('/', [HomeController::class, 'index'])->setName('dashboard.index');
-        $app->get('/home', [HomeController::class, 'index']);
+        $app->get('/home', [HomeController::class, 'index'])->setName('dashboard.load');
 
         // Work
         $app->group('/work', function ($work) {
