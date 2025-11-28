@@ -46,6 +46,7 @@ $tabs['tab7'] = ["key" => "settings", "icon" => "<i class='bi bi-gear'></i>"];
                     </a>
                 </li>
             <?php } ?>
+            <li><a href="<?= APP_BASE_URL ?>/logout">Sign Out</a></li>
         </ul>
     </div>
     <div id="language-control" class="mt-2 display-flex">

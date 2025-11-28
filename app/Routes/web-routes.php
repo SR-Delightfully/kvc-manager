@@ -48,13 +48,17 @@ return static function (App $app): void {
         $auth->post('/login', [AuthController::class, 'login']);
 
         $auth->get('/login/forgot-password', [AuthController::class, 'showForgotPasswordForm'])->setName('login.forgot-password');
-        $auth->post('/login/forgot-password', [AuthController::class, 'verifyForgotPassword']);
+        $auth->post('/login/forgot-password', [AuthController::class, 'sendForgotPassword']);
+        $auth->post('/login/forgot-password/verify', [AuthController::class, 'verifyForgotPassword']);
 
         $auth->get('/login/new-password', [AuthController::class, 'showNewPasswordForm'])->setName('login.new-password');
         $auth->post('/login/new-password', [AuthController::class, 'verifyNewPassword']);
 
         $auth->get('/login/forgot-email', [AuthController::class, 'showForgotEmail'])->setName('login.forgot-email');
-        $auth->post('/login/forgot-email', [AuthController::class, 'verifyForgotEmail']);
+        $auth->post('/login/forgot-email', [AuthController::class, 'sendForgotEmail']);
+
+        $auth->get('/login/forgot-email-2fa', [AuthController::class, 'showForgotEmail2fa'])->setName('login.forgot-email.2fa');
+        $auth->post('/login/forgot-email-2fa', [AuthController::class, 'verifyForgotEmail']);
 
         $auth->get('/login/new-email', [AuthController::class, 'showNewEmail'])->setName('login.new-email');
         $auth->post('/login/new-email', [AuthController::class, 'verifyNewEmail']);
@@ -62,8 +66,9 @@ return static function (App $app): void {
         $auth->get('/login/2fa', [AuthController::class, 'showTwoFactorForm'])->setName('auth.2fa');
         $auth->post('/login/2fa', [AuthController::class, 'verifyTwoFactor']);
 
-        $auth->get('/logout', [AuthController::class, 'logout'])->setName('auth.logout');
     })->add(GuestAuthMiddleware::class);
+
+    $app->get('/logout', [AuthController::class, 'logout'])->setName('auth.logout');
 
     // General / Employee Routes:
     $app->group('', function ($app) {
@@ -105,7 +110,7 @@ return static function (App $app): void {
             $settings->get('/edit', [SettingsController::class, 'edit'])->setName('settings.edit');
             $settings->post('/edit', [SettingsController::class, 'update']);
         });
-    });
+    })->add(AuthMiddleware::class);
 
     // Admin Routes:
     $app->group('/admin', function ($admin) {
@@ -176,7 +181,7 @@ return static function (App $app): void {
             $shift->get('{id}/delete', [ShiftController::class, 'delete'])->setName('admin.shift.delete');
             $shift->post('{id}', [ShiftController::class, 'update'])->setName('admin.shift.update');
         });
-    });
+    })->add(AdminAuthMiddleware::class);
 
     // Ping Route
     $app->get('/ping', function (Request $request, Response $response, $args) {

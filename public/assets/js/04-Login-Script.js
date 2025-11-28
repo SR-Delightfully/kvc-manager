@@ -10,14 +10,14 @@ updateDateTime();
  const modal = document.getElementById("forgotPasswordModal");
     const closeBtn = document.querySelector(".close-forgot");
 
-    document.querySelectorAll("a").forEach(link => {
-        if (link.textContent.includes("Forgot Password")) {
-            link.addEventListener("click", (e) => {
-                e.preventDefault();
-                modal.style.display = "block";
-            });
-        }
-    });
+    // document.querySelectorAll("a").forEach(link => {
+    //     if (link.textContent.includes("Forgot Password")) {
+    //         link.addEventListener("click", (e) => {
+    //             e.preventDefault();
+    //             modal.style.display = "block";
+    //         });
+    //     }
+    // });
 
     closeBtn.onclick = () => modal.style.display = "none";
 
