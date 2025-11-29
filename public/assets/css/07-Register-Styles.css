@@ -3,20 +3,31 @@
 
 /* Also note that you should avoid using specific widths(px) when creating responsive designs. Instead try to use %, vw(viewWidth), vh(viewHeight).
 You can also user rem(px = root font size) or em (px = parent container font size) */
-
-#registration-page-wrapper   {
-    max-width: calc(100vw - 5px);
-    min-width: 100%;
+#registration-page-wrapper {
+    min-height: calc(100vh - 5px);
+    max-height: 100%;
+    overflow: hidden;
     color: var(--tone-08);
-    font-family: Arial, sans-serif;
-    padding: 0;
-    background: linear-gradient(45deg, var(--tone-01) 0%, var(--color-blue-04) 100%);
+    background: linear-gradient(45deg, var(--tone-01) 0%, var(--tone-07) 50%, var(--color-blue-04) 100%);
+}
+#registration-page-wrapper   {
     filter: saturate(0.75);
 }
 #registration-page-content   {
     min-width: 100%;
+    min-height: 100% !important;
     padding: 0;
+    margin: 0;
     justify-content: flex-end;
+    & > div {
+        min-height: calc(100vh - 5px);
+    }
+    & > div:first-child {
+        width: 25%;
+    }
+    & > div:last-child {
+        width: 75%;
+    }
 }
 
 #registration-page-content::after   {
@@ -33,19 +44,20 @@ You can also user rem(px = root font size) or em (px = parent container font siz
 }
 
 #registration-page-about {
-    max-width: 50%;
-    min-height: 100vh;
-    padding: 30px 20px;
+    /* padding: 30px 20px; */
     box-sizing: border-box;
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
     align-items: center;
     position: absolute;
+    padding-top: 4rem;
     left: 0;
+    text-align: center;
     border-right: 3px solid var(--tone-00); 
     z-index: 9;
 }
+
 #registration-page-about::after {
     content: "";
     height: 100%;
@@ -53,22 +65,41 @@ You can also user rem(px = root font size) or em (px = parent container font siz
     position: absolute;
     top: 0;
     background-color: var(--tone-00);
-    opacity: 50%;
+    opacity: 80%;
+    z-index: -1;
+    backdrop-filter: blur(8px);
 }
 
+#registration-page-info {
+    & > h1 {
+        font-size: 4rem;
+    }
+    & > p {
+        font-size: 1.5rem;
+    }
+
+    & > p > a {
+        font-style: italic;
+        font-size: 1.5rem;
+    }
+}
+
+#register {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    max-width: 100%;
+}
 
 #registration-form-wrapper {
     border-radius: 1rem;
     background-color: var(--tone-04);
-    width: 50rem;
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 60rem;
     position: relative;
-    right: 25%;
-    top: 50%;
-    transform: translate(25%,-50%);
+    width: 48%;
+    height: 80%;
     z-index: 9;
 
 }
@@ -83,6 +114,7 @@ You can also user rem(px = root font size) or em (px = parent container font siz
     align-items: center;
     padding: 0rem 1.25rem;
     gap: 1rem;
+    z-index: 999;
     & > div {
         min-width: calc(100% - 8rem);
     }
@@ -126,18 +158,28 @@ You can also user rem(px = root font size) or em (px = parent container font siz
     border-radius:0.3rem;
     justify-content: space-between;
     & > button {
-        width: 18rem;
+        width: calc(49% - 1.5rem);
         height: 3rem;
+        font-size: 1rem;
+        backface-visibility: hidden;
+        position: relative;
+        cursor: pointer;
+        display: inline-block;
+        white-space: nowrap;
+        border-color: var(--tone-01 );
+        color: var(--tone-08);
+        background-image: linear-gradient(180deg,#2a405a30 0%,#22222230 49%, #0a090f30 51%,#17132230 100%);
+        border-radius: 5px;
+        box-shadow: inset 0px 1px 0px rgba(255,255,255,.5),0px 1px 3px rgba(0,0,0,0.3);
     }
 }
 
 #registration-form-buttons button:first-of-type {
-    background-color: var(--tone-03);
-    color: var(--tone-08);
+    background-color: var(--color-blue-02);
 }
 
 #registration-form-buttons button:last-of-type {
-    background-color: var(--tone-05);
+    background-color: var(--tone-03);
 }
 
 
