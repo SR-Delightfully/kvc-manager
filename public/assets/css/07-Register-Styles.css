@@ -8,7 +8,6 @@ You can also user rem(px = root font size) or em (px = parent container font siz
     max-height: 100%;
     overflow: hidden;
     color: var(--tone-08);
-    background: linear-gradient(45deg, var(--tone-01) 0%, var(--tone-07) 50%, var(--color-blue-04) 100%);
 }
 #registration-page-wrapper   {
     filter: saturate(0.75);

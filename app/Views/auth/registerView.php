@@ -13,12 +13,16 @@ ViewHelper::loadHeader($page_title,false);
 
 <!-- > Ids should be specific, Classes can be generic -->
 
-<div id="registration-page-wrapper">
+<div id="registration-page-wrapper" class="page">
   <div id="registration-page-content" class="display-flex-row">
     <div id="registration-page-about" class="display-flex-row flex-center">
         <div id="registration-page-info">
-          <h1>VKC</h1>
+          <h1>VKC - Manager</h1>
+          <h2>Join [insert company legal name] today</h2>
+          <p>Registering for an account will grant you access extensive data displays, easy work log process and access to your work schedule all in one place.<p>
+          <p>This web application is intended to be used only by employees of the company. If you are not an existing employee, or a new hire then see below.</p> 
           <p>
+            VKC is a new company with an ever expanding work force.
             For information on how to join the team,<br>please contact us
             <a href="#">here</a><br>or<br> check out our <a href="#">job postings</a>.
           </p>
