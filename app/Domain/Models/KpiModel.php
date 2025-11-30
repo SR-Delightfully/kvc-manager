@@ -23,11 +23,9 @@ class KpiModel extends BaseModel
     public function getTeamAvgProductionRate($startDate, $endDate): array
     {
         //? 0) Validate input
-        //
-        //
-        //
 
         //? 1) Find all pelletize sessions in the date range
+
         $sql = "SELECT * FROM palletize_session
         WHERE start_time BETWEEN :start AND :end";
         $sessions = $this->selectAll($sql, ["start" => $startDate, "end" => $endDate]);
@@ -56,19 +54,13 @@ class KpiModel extends BaseModel
         return [];
     }
 
-
     //! Compare the highest % above the median time it takes to complete a pallet of that same product variant.
     public function getTeamLeaderboard($startDate, $endDate, $variant_id): array
     {
-
         $leaderBoard = [];
 
         //? 0) Validate input
-
         //? 1) Find all pelletize sessions in the date range
-
-
-
         // $allSessionsSql = "SELECT * FROM palletize_session BETWEEN :start AND :end";
         // $allSessions = $this->selectAll($allSessionsSql, ["start" => $startDate, "end" => $endDate, "variantId" => $variant_id]);
 
@@ -117,11 +109,33 @@ class KpiModel extends BaseModel
      * @param mixed $endDate
      * @return array of the team's performance by how much units they produce a minute
      */
+    public function getTeamProgress($team_id, $startDate, $endDate): array
+    {
+        $progress = []; //Chronological
+
+        $sql = "SELECT TIMESTAMPDIFF(MINUTE, ps.start_time, ps.end_time) as duration, ps.units, t.team_id
+        FROM palletize_session ps
+        JOIN pallet p ON p.pallet_id = ps.pallet_id
+        JOIN team t ON p.station_id = t.station_id
+        WHERE ps.start_time BETWEEN :start AND :end
+        AND ps.pallet_id = :team
+        ORDER BY ps.start_time ASC";
+
+        $sessions = $this->selectAll($sql, ["team"=>$team_id, "start" => $startDate, "end" => $endDate]);
+
+        foreach ($sessions as $key => $session) {
+            $units = $session['units'];
+            $duration = $session['duration'];
+
+            if($units > 0 && $duration > 0) {
+                $progress[] = $units / $duration;
+            }
+        }
+        return $progress;
+    }
+
     public function getStationProgress($pallet_id, $startDate, $endDate): array
     {
-
-        //? 1) Get all the pelletize sessions of the team
-
         $progress = []; //Chronological
 
         $sql = "SELECT TIMESTAMPDIFF(MINUTE, ps.start_time, ps.end_time) as duration, ps.units
@@ -141,15 +155,6 @@ class KpiModel extends BaseModel
                 $progress[] = $units / $duration;
             }
         }
-
-
-        //? 2) Filter only the sessions from the time frame
-
-        //? 3) Get the productivity of each session (units produced per minute)
-
-        //? 4) Place the results in an array in chronological order
-
-
         return $progress;
     }
 
