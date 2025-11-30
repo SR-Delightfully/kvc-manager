@@ -11,6 +11,7 @@ class KpiModel extends BaseModel
         parent::__construct($pDOService);
     }
 
+
     /**
      * The function scans the progress of all teams and it
      *  returns an array that represents the leaderboard of th teams, from best to worst performance. The performance is based on units produced per minute on average.
@@ -22,12 +23,13 @@ class KpiModel extends BaseModel
     public function getTeamAvgProductionRate($startDate, $endDate): array
     {
         //? 0) Validate input
+        //
+        //
+        //
 
         //? 1) Find all pelletize sessions in the date range
         $sql = "SELECT * FROM palletize_session
         WHERE start_time BETWEEN :start AND :end";
-
-        // $sessions = [];
         $sessions = $this->selectAll($sql, ["start" => $startDate, "end" => $endDate]);
 
         //? 2) Calculate the units/minute worked for every found session
@@ -41,10 +43,6 @@ class KpiModel extends BaseModel
             if ($units == null || $units <= 0) {
                 continue;
             }
-
-
-
-
             $this->selectOne($sql2, ["id" => $session["session_id"]]);
         }
 
@@ -58,35 +56,43 @@ class KpiModel extends BaseModel
         return [];
     }
 
+
     //! Compare the highest % above the median time it takes to complete a pallet of that same product variant.
     public function getTeamLeaderboard($startDate, $endDate, $variant_id): array
     {
+
         $leaderBoard = [];
 
         //? 0) Validate input
 
         //? 1) Find all pelletize sessions in the date range
-        $allSessionsSql = "SELECT * FROM palletize_session BETWEEN :start AND :end";
-        $allSessions = $this->selectAll($allSessionsSql, ["start" => $startDate, "end" => $endDate, "variantId" => $variant_id]);
 
-        foreach ($allSessions as $key => $session) {
-            $session['duration'] = $this->getSessionDurationMins($session['session_id']);
-        }
 
-        $sql = "SELECT * FROM palletize_session ps
-        WHERE ps.start_time BETWEEN 2021/02/25 AND CURRENT_TIMESTAMP
-        GROUP BY ps.pallet_id
+
+        // $allSessionsSql = "SELECT * FROM palletize_session BETWEEN :start AND :end";
+        // $allSessions = $this->selectAll($allSessionsSql, ["start" => $startDate, "end" => $endDate, "variantId" => $variant_id]);
+
+        // foreach ($allSessions as $key => $session) {
+        //     $session['duration'] = $this->getSessionDurationMins($session['session_id']);
+        // }
+
+        // $sql = "SELECT t.variant_id, TIMESTAMPDIFF(MINUTE, ps.start_time, ps.end_time), ps.units
+        // FROM palletize_session ps
+        // JOIN pallet p ON ps.pallet_id = p.pallet_id
+        // JOIN tote t ON t.tote_id = p.tote_id
+        // WHERE ps.start_time BETWEEN '2021/02/25' AND CURRENT_TIMESTAMP
+        // -- GROUP BY ps.pallet_id
+        // ORDER BY ps.start_time ASC";
+        $sql = "SELECT t.variant_id, TIMESTAMPDIFF(MINUTE, ps.start_time, ps.end_time), ps.units
+        FROM palletize_session ps
+        JOIN pallet p ON ps.pallet_id = p.pallet_id
+        JOIN tote t ON t.tote_id = p.tote_id
+        WHERE ps.start_time BETWEEN :start AND :end
         ORDER BY ps.start_time ASC";
 
+        $sessions = $this->selectAll($sql, ["start" => $startDate, "end" => $endDate]);
 
-        // $sessions = $this->selectAll($sql, ["start" => $startDate, "end" => $endDate, "variantId" => $variant_id]);
-
-
-
-        //? 2) arrange in ascending order by time and group by pallet_id
-
-
-        //? 3) Find the median for every variant (pv)
+        //? 3) Find the median for every pallet variant (pv)
 
         //? 4) Find the difference from median of the pv of every palletize session in %
 
@@ -103,21 +109,48 @@ class KpiModel extends BaseModel
         return $this->selectOne($sql, ["id" => $session_id]);
     }
 
+
     /**
-     * Calculates a team's performance by
+     * Calculates a team's performance  (units/minute)
      * @param mixed $teamId
      * @param mixed $startDate
      * @param mixed $endDate
-     * @return array
+     * @return array of the team's performance by how much units they produce a minute
      */
-    public function getTeamPerformance($teamId, $startDate, $endDate): array
+    public function getStationProgress($pallet_id, $startDate, $endDate): array
     {
+
         //? 1) Get all the pelletize sessions of the team
+
+        $progress = []; //Chronological
+
+        $sql = "SELECT TIMESTAMPDIFF(MINUTE, ps.start_time, ps.end_time) as duration, ps.units
+        FROM palletize_session ps
+        JOIN pallet p ON p.pallet_id = ps.pallet_id
+        WHERE ps.start_time BETWEEN :start AND :end
+        AND ps.pallet_id = :pId
+        ORDER BY ps.start_time ASC";
+
+        $sessions = $this->selectAll($sql, ["pId"=>$pallet_id, "start" => $startDate, "end" => $endDate]);
+
+        foreach ($sessions as $key => $session) {
+            $units = $session['units'];
+            $duration = $session['duration'];
+
+            if($units > 0 && $duration > 0) {
+                $progress[] = $units / $duration;
+            }
+        }
+
+
         //? 2) Filter only the sessions from the time frame
+
         //? 3) Get the productivity of each session (units produced per minute)
+
         //? 4) Place the results in an array in chronological order
 
-        return [];
+
+        return $progress;
     }
 
     /**

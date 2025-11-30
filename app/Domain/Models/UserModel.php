@@ -41,7 +41,7 @@ class UserModel extends BaseModel
             return (int)($row['total'] ?? 0);
         } catch (\Throwable $e) {
             error_log("countUsers() SQL error: " . $e->getMessage());
-            return 0; 
+            return 0;
         }
     }
 
@@ -189,7 +189,8 @@ class UserModel extends BaseModel
         return $this->selectAll($stmt, $params);
     }
 
-    private function getNearestTeamCreated($userId): ?string {
+    private function getNearestTeamCreated($userId): ?string
+    {
         $stmt = "SELECT MIN(team_date) AS target_date FROM team WHERE team_id IN
                  (SELECT team_id FROM team_members WHERE user_id = :id)
                  AND team_date >= CURDATE()";
