@@ -73,21 +73,17 @@ class KpiModel extends BaseModel
             $session['duration'] = $this->getSessionDurationMins($session['session_id']);
         }
 
-        $sql = "SELECT ps. FROM palletize_session ps
-        WHERE ps.start_time BETWEEN :start AND :end
-        ORDER BY ASC
-        GROUP BY ps.pallet_id";
-        /*
-        SELECT * FROM palletize_session ps
+        $sql = "SELECT * FROM palletize_session ps
         WHERE ps.start_time BETWEEN 2021/02/25 AND CURRENT_TIMESTAMP
         GROUP BY ps.pallet_id
-        */
+        ORDER BY ps.start_time ASC";
+
 
         // $sessions = $this->selectAll($sql, ["start" => $startDate, "end" => $endDate, "variantId" => $variant_id]);
 
 
 
-        //? 2) arrange in ascending order and group by pallet_id
+        //? 2) arrange in ascending order by time and group by pallet_id
 
 
         //? 3) Find the median for every variant (pv)

@@ -33,9 +33,12 @@ ViewHelper::loadHeader($page_title,false);
         </div>
     </div>
 
+<<<<<<< HEAD
 <?= App\Helpers\FlashMessage::render() ?>
 
 
+=======
+>>>>>>> ce6db419c33c5ef13caef49eb8242292f2e05051
     <div class="form-panel">
 
         <div class="center-logo">
@@ -58,9 +61,6 @@ ViewHelper::loadHeader($page_title,false);
             </div>
         </form>
     </div>
-
-
-
 
 </div>
 <!-- FORGOT PASSWORD POPUP -->
@@ -166,17 +166,7 @@ ViewHelper::loadHeader($page_title,false);
     </div>
 </div>
 <!-- FOOTER BAR BUT only for the login page so idk if we should have a separate file/footer for it -->
-<div class="lang-switch">
-    <div class="left">
-        <a href="">EN</a> - <a href="">FR</a>
-    </div>
-    <div class="center">
-        # of registered employees, join the team, register today.
-    </div>
-    <div class="right">
-        <span id="datetime-display"></span>
-    </div>
-</div>
+
 
 <?php if ($show2fa_login): ?>
 <div class="twofa-modal-overlay">

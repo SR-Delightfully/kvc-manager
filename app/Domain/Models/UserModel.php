@@ -33,6 +33,18 @@ class UserModel extends BaseModel
         return $this->selectAll($stmt);
     }
 
+    public function countUsers(): int
+    {
+        try {
+            $stmt = "SELECT COUNT(*) AS total FROM users";
+            $row = $this->selectOne($stmt);
+            return (int)($row['total'] ?? 0);
+        } catch (\Throwable $e) {
+            error_log("countUsers() SQL error: " . $e->getMessage());
+            return 0; 
+        }
+    }
+
     public function getEmployees(): ?array {
         $stmt = "SELECT " . self::COLUMNS_EXPANDED . " FROM users WHERE user_role = 'EMPLOYEE'";
         return $this->selectAll($stmt);
