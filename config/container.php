@@ -23,14 +23,14 @@ $definitions = [
             require_once __DIR__ . '/settings.php'
         );
     },
-    AuthHelper::class => function (ContainerInterface $container): AuthHelper {
-        // get full app settings
-        $appSettings = $container->get(AppSettings::class);
-        // pull just the 'twilio' section defined in env.php/settings.php
-        $twilioConfig = $appSettings->get('twilio');
+    // AuthHelper::class => function (ContainerInterface $container): AuthHelper {
+    //     // get full app settings
+    //     $appSettings = $container->get(AppSettings::class);
+    //     // pull just the 'twilio' section defined in env.php/settings.php
+    //     $twilioConfig = $appSettings->get('twilio');
 
-        return new AuthHelper($twilioConfig);
-    },
+    //     return new AuthHelper($twilioConfig);
+    // },
     App::class => function (ContainerInterface $container) {
 
         $app = AppFactory::createFromContainer($container);

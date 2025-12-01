@@ -1,9 +1,5 @@
 env.php
 config/env.php
-AuthHelper.php
-Helpers/AuthHelper.php
-
-app/Helpers/AuthHelper.php
 env.php
 config/env.php
 
@@ -69,11 +65,3 @@ $RECYCLE.BIN/
 
 app/Controllers/TestController.php
 app/Domain/Models/TestModel.php
-app/Helpers/AuthHelper.php
-app/Helpers/AuthHelper.php
-app/Helpers/AuthHelper.php
-app/Helpers/AuthHelper.php
-app/Helpers/AuthHelper.php
-app/Helpers/AuthHelper.php
-app/Helpers/AuthHelper.php
-app/Helpers/AuthHelper.php
