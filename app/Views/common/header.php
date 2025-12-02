@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="./public/assets/css/00-Global-Styles.css">
     <link rel="stylesheet" href="./public/assets/css/01-Navbar-Styles.css">
     <link rel="stylesheet" href="./public/assets/css/02-Header-Styles.css">
-    <link rel="stylesheet" href="./public/assets/css/03-Dashboard-Styles.css">
+    <link rel="stylesheet" href="/kvc-manager/public/assets/css/03-Dashboard-Styles.css">
      <link rel="stylesheet" href="./public/assets/css/04-Login-Styles.css">
  <link rel="stylesheet" href="./public/assets/css/05-TwoFactor-Styles.css">
   <link rel="stylesheet" href="./public/assets/css/06-Reset-Styles.css">
