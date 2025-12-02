@@ -1,9 +1,7 @@
 <?php
 
 namespace App\Domain\Models;
-
 use App\Helpers\Core\PDOService;
-
 class KpiModel extends BaseModel
 {
     public function __construct(PDOService $pDOService)
@@ -11,48 +9,6 @@ class KpiModel extends BaseModel
         parent::__construct($pDOService);
     }
 
-
-    /**
-     * The function scans the progress of all teams and it
-     *  returns an array that represents the leaderboard of th teams, from best to worst performance. The performance is based on units produced per minute on average.
-     * The calculation only takes into account the records that match the input dates     *
-     * @param mixed $startDate start date to start calculations
-     * @param mixed $endDate date of the last calculations
-     * @return array the array's first index is to the most performant team and so on.
-     */
-    public function getTeamAvgProductionRate($startDate, $endDate): array
-    {
-        //? 0) Validate input
-
-        //? 1) Find all pelletize sessions in the date range
-
-        $sql = "SELECT * FROM palletize_session
-        WHERE start_time BETWEEN :start AND :end";
-        $sessions = $this->selectAll($sql, ["start" => $startDate, "end" => $endDate]);
-
-        //? 2) Calculate the units/minute worked for every found session
-        $teamPerformance = [];
-
-        foreach ($sessions as $session) {
-            $sql2 = "SELECT * FROM palletize_session WHERE session_id = :id";
-
-            //sessions still ongoing won't have units set, so skip those:
-            $units = $session["units"];
-            if ($units == null || $units <= 0) {
-                continue;
-            }
-            $this->selectOne($sql2, ["id" => $session["session_id"]]);
-        }
-
-        //? 3) Calculate the avg for the team
-        //? 4) Compare and sort
-        //? 5) return the result array
-
-        $stmt = "SELECT ";
-        // $params = [':id'=>$id];
-        // $sessions = $this->selectOne($stmt,$params);
-        return [];
-    }
 
     //! Compare the highest % above the median time it takes to complete a pallet of that same product variant.
     public function getTeamLeaderboard($startDate, $endDate, $variant_id): array
@@ -101,7 +57,6 @@ class KpiModel extends BaseModel
         return $this->selectOne($sql, ["id" => $session_id]);
     }
 
-
     /**
      * Calculates a team's performance  (units/minute)
      * @param mixed $teamId
@@ -111,14 +66,15 @@ class KpiModel extends BaseModel
      */
     public function getTeamProgress($team_id, $startDate, $endDate): array
     {
+
         $progress = []; //Chronological
 
         $sql = "SELECT TIMESTAMPDIFF(MINUTE, ps.start_time, ps.end_time) as duration, ps.units, t.team_id
         FROM palletize_session ps
         JOIN pallet p ON p.pallet_id = ps.pallet_id
         JOIN team t ON p.station_id = t.station_id
-        WHERE ps.start_time BETWEEN :start AND :end
-        AND ps.pallet_id = :team
+        WHERE t.team_id = :team
+        AND ps.start_time BETWEEN :start AND :end
         ORDER BY ps.start_time ASC";
 
         $sessions = $this->selectAll($sql, ["team"=>$team_id, "start" => $startDate, "end" => $endDate]);
@@ -131,10 +87,50 @@ class KpiModel extends BaseModel
                 $progress[] = $units / $duration;
             }
         }
+
         return $progress;
     }
 
-    public function getStationProgress($pallet_id, $startDate, $endDate): array
+
+        /**
+         * Gets the average
+         *
+         * @param [type] $startDate
+         * @param [type] $endDate
+         * @return array
+         */
+        public function getTeamsAvgProgress($startDate, $endDate): array
+        {
+
+            $teamsProgress = [];
+
+            $teamsSql = "SELECT team_id, station_id FROM team";
+            $teams = $this->selectAll($teamsSql);
+
+            foreach($teams as  $team) {
+
+                $team_id = $team['team_id'];
+
+                $oneProgress = $this->getTeamProgress($team_id, $startDate, $endDate);
+                $progressSize = count($oneProgress);
+
+                if($progressSize > 0) {
+                    $teamsProgress[$team_id] = array_sum($oneProgress) / $progressSize;
+                }
+            }
+
+            // Example output:
+            // $WE = [
+            //     team_id => 23.1,
+            //     2 => 18.1
+            // ];
+
+            return $teamsProgress;
+
+        }
+
+
+    public function getStationPerformance($stationId, $startDate, $endDate): array
     {
         $progress = []; //Chronological
 
@@ -142,10 +138,10 @@ class KpiModel extends BaseModel
         FROM palletize_session ps
         JOIN pallet p ON p.pallet_id = ps.pallet_id
         WHERE ps.start_time BETWEEN :start AND :end
-        AND ps.pallet_id = :pId
+        AND p.station_id = :stationId
         ORDER BY ps.start_time ASC";
 
-        $sessions = $this->selectAll($sql, ["pId"=>$pallet_id, "start" => $startDate, "end" => $endDate]);
+        $sessions = $this->selectAll($sql, ["stationId"=>$stationId, "start" => $startDate, "end" => $endDate]);
 
         foreach ($sessions as $key => $session) {
             $units = $session['units'];
@@ -155,22 +151,30 @@ class KpiModel extends BaseModel
                 $progress[] = $units / $duration;
             }
         }
-        return $progress;
+        return $progress; //in chronological order
     }
 
     /**
      * Summary of getTeamDailyProduction
      * @param mixed $teamId
      * @param mixed $date by default, it's the current time.
-     * @return int total units produced that day  y the team
+     * @return array total units produced that day by the team, or empty for invalid date
      */
-    public function getTeamDailyProduction($teamId, $date = date('Y-m-d H:i:s')): int
+    public function getTeamDailyProduction($teamId, $date = null): array
     {
-        //? 1) Find the team
-        //? 2) Count all the units produced that day
-        //? 3)
-        //? 4)
+        if($date == null) {
+            return [];
+        }
 
-        return 300;
+        $start = $date.' 00:00:00';
+        $end = $date.' 23:59:59';
+
+        return $this->getTeamProgress($teamId, $start, $end);
     }
+
+    // public function getA()
+    // {
+
+    // }
 }
+
