@@ -1,7 +1,9 @@
 <?php
 
 namespace App\Domain\Models;
+
 use App\Helpers\Core\PDOService;
+
 class KpiModel extends BaseModel
 {
     public function __construct(PDOService $pDOService)
@@ -11,45 +13,151 @@ class KpiModel extends BaseModel
 
 
     //! Compare the highest % above the median time it takes to complete a pallet of that same product variant.
+    // public function getTeamLeaderboard($startDate, $endDate, $variant_id): array
+    // {
+    //     $leaderBoard = [];
+
+    //     $sql = "SELECT t.team_id, t.variant_id, TIMESTAMPDIFF(MINUTE, ps.start_time, ps.end_time) as duration, ps.units
+    //     FROM palletize_session ps
+    //     JOIN pallet p ON ps.pallet_id = p.pallet_id
+    //     JOIN tote t ON t.tote_id = p.tote_id
+    //     WHERE ps.start_time BETWEEN '2021/02/25' AND CURRENT_TIMESTAMP
+    //     ORDER BY ps.start_time ASC";
+    //     $sql = "SELECT t.variant_id, TIMESTAMPDIFF(MINUTE, ps.start_time, ps.end_time), ps.units
+    //     FROM palletize_session ps
+    //     JOIN pallet p ON ps.pallet_id = p.pallet_id
+    //     JOIN tote t ON t.tote_id = p.tote_id
+    //     WHERE t.variant_id = :variant
+    //     AND ps.start_time BETWEEN :start AND :end
+    //     ORDER BY ps.start_time ASC";
+
+
+    //     $sessions = $this->selectAll($sql, ["variant" => $variant_id, "start" => $startDate, "end" => $endDate]);
+    //     if(empty($sessions))
+    //     {
+    //         return [];
+    //     }
+
+    //     //? 3) Find the median for every pallet variant (pv)
+
+
+    //     //? 4) Find the difference from median of the pv of every palletize session in %
+
+    //     //? 4.5) Filter out those <= median
+
+    //     //? 5) Get the teams that have the highest +% found (10 best above median)
+    //     return $leaderBoard;
+    // }
+    //  (CONVERT(datetime, '18-06-12 10:34:09 PM', 5));
+
+
     public function getTeamLeaderboard($startDate, $endDate, $variant_id): array
     {
+
         $leaderBoard = [];
 
-        //? 0) Validate input
-        //? 1) Find all pelletize sessions in the date range
-        // $allSessionsSql = "SELECT * FROM palletize_session BETWEEN :start AND :end";
-        // $allSessions = $this->selectAll($allSessionsSql, ["start" => $startDate, "end" => $endDate, "variantId" => $variant_id]);
+        // $teamsAvgProductivity = $this->getTeamsAvgProgress($startDate, $endDate);
+        $sessions = $this->getSessionsForVariant($startDate, $endDate, $variant_id);
+        if (empty($teamsAvgProductivity)) {
+            return $leaderBoard; // EMPTY ARRAY
+        }
 
-        // foreach ($allSessions as $key => $session) {
-        //     $session['duration'] = $this->getSessionDurationMins($session['session_id']);
-        // }
 
-        // $sql = "SELECT t.variant_id, TIMESTAMPDIFF(MINUTE, ps.start_time, ps.end_time), ps.units
+        // $sql = "SELECT ps.session_id, t.variant_id, TIMESTAMPDIFF(MINUTE, ps.start_time, ps.end_time) as duration, ps.units
         // FROM palletize_session ps
         // JOIN pallet p ON ps.pallet_id = p.pallet_id
         // JOIN tote t ON t.tote_id = p.tote_id
-        // WHERE ps.start_time BETWEEN '2021/02/25' AND CURRENT_TIMESTAMP
-        // -- GROUP BY ps.pallet_id
+        // WHERE t.variant_id = :variant
+        // AND ps.start_time BETWEEN :start AND :end
         // ORDER BY ps.start_time ASC";
-        $sql = "SELECT t.variant_id, TIMESTAMPDIFF(MINUTE, ps.start_time, ps.end_time), ps.units
+
+        // // $sessions = $this->selectAll($sql, ["variant" => $variant_id, "start" => $startDate, "end" => $endDate]);
+        // if(empty($sessions))
+        // {
+        //     return [];
+        // }
+
+        $rates = [];
+        foreach ($sessions as $key => $session) {
+            $rates[] = $session['rate'];
+        }
+
+        if (empty($rates)) {
+            return []; // EMPTY ARRAY
+        }
+
+        //? get median:
+        $median = $this->calculateMedian($rates);
+
+        //? above median sessions:
+        $aboveMedian = [];
+
+        foreach ($sessions as $key => $session) {
+            if ($session['rate'] > $median) //don't care if they are worse or same as median
+            {
+                $overPercentage = (($session['rate'] - $median) / $median) * 100;
+
+                $aboveMedian[] = [
+                    "team_id" => $session['team_id'],
+                    "session_id" => $session['session_id'],
+                    "variant_id" => $variant_id,
+                    "rate" => $session['rate'],
+                    "percent_above_median" => $overPercentage
+                ];
+            }
+        }
+
+        //Reference for sorting array: https://www.php.net/manual/en/function.usort.php
+        //?_sorting best 5:
+        // usort($aboveMedian, "$this->sorter($a, $b)");
+        usort($aboveMedian, 'aboveMedianSorter');
+
+        $leaderBoard = array_slice($aboveMedian, 0, 5);
+
+        return $leaderBoard;
+    }
+
+    function aboveMedianSorter($a, $b)
+    {
+        return $a['percent_above_median'] <=> $b['percent_above_median'];
+    }
+
+    // public function getTeamsBestSessionsForVariant($startDate, $endDate, $variant_id): array
+    public function getSessionsForVariant($startDate, $endDate, $variant_id): array
+    {
+        $best = [];
+
+        $sql = "SELECT ps.session_id, te.team_id, TIMESTAMPDIFF(MINUTE, ps.start_time, ps.end_time) as duration, ps.units
         FROM palletize_session ps
         JOIN pallet p ON ps.pallet_id = p.pallet_id
         JOIN tote t ON t.tote_id = p.tote_id
-        WHERE ps.start_time BETWEEN :start AND :end
-        ORDER BY ps.start_time ASC";
+        JOIN team te ON te.station_id = p.station_id
+        WHERE t.variant_id = :variant
+        AND ps.start_time BETWEEN :start AND :end";
 
-        $sessions = $this->selectAll($sql, ["start" => $startDate, "end" => $endDate]);
+        $sessions = $this->selectAll($sql, ["variant" => $variant_id, "start" => $startDate, "end" => $endDate]);
 
-        //? 3) Find the median for every pallet variant (pv)
+        if (empty($sessions)) {
+            return [];
+        }
 
-        //? 4) Find the difference from median of the pv of every palletize session in %
+        foreach ($sessions as $key => $session) {
+            if ($session['duration'] <= 0 || $session['units'] <= 0) {
+                continue; //sSKIP empty ones if there was a problem, don't awnt extrreme values to mess up accuracy
+            }
 
-        //? 4.5) Filter out those <= median
+            $rate = $session['units'] / $session['duration'];
 
-        //? 5) Get the teams that have the highest +% found (10 best above median)
-        return $leaderBoard;
+            $best[] = [
+                "session_id" => $session['session_id'],
+                "team_id" => $session['team_id'],
+                "rate" => $rate
+            ];
+        }
+
+        return $best;
     }
-    //  (CONVERT(datetime, '18-06-12 10:34:09 PM', 5));
+
     public function getSessionDurationMins(int $session_id)
     {
         $sql = "SELECT TIMESTAMPDIFF(MINUTE, start_time, end_time) FROM palletize_session WHERE session_id = :id";
@@ -77,13 +185,13 @@ class KpiModel extends BaseModel
         AND ps.start_time BETWEEN :start AND :end
         ORDER BY ps.start_time ASC";
 
-        $sessions = $this->selectAll($sql, ["team"=>$team_id, "start" => $startDate, "end" => $endDate]);
+        $sessions = $this->selectAll($sql, ["team" => $team_id, "start" => $startDate, "end" => $endDate]);
 
         foreach ($sessions as $key => $session) {
             $units = $session['units'];
             $duration = $session['duration'];
 
-            if($units > 0 && $duration > 0) {
+            if ($units > 0 && $duration > 0) {
                 $progress[] = $units / $duration;
             }
         }
@@ -92,42 +200,41 @@ class KpiModel extends BaseModel
     }
 
 
-        /**
-         * Gets the average
-         *
-         * @param [type] $startDate
-         * @param [type] $endDate
-         * @return array
-         */
-        public function getTeamsAvgProgress($startDate, $endDate): array
-        {
+    /**
+     * Gets the average
+     *
+     * @param [type] $startDate
+     * @param [type] $endDate
+     * @return array
+     */
+    public function getTeamsAvgProgress($startDate, $endDate): array
+    {
 
-            $teamsProgress = [];
+        $teamsProgress = [];
 
-            $teamsSql = "SELECT team_id, station_id FROM team";
-            $teams = $this->selectAll($teamsSql);
+        $teamsSql = "SELECT team_id, station_id FROM team";
+        $teams = $this->selectAll($teamsSql);
 
-            foreach($teams as  $team) {
+        foreach ($teams as  $team) {
 
-                $team_id = $team['team_id'];
+            $team_id = $team['team_id'];
 
-                $oneProgress = $this->getTeamProgress($team_id, $startDate, $endDate);
-                $progressSize = count($oneProgress);
+            $oneProgress = $this->getTeamProgress($team_id, $startDate, $endDate);
+            $progressSize = count($oneProgress);
 
-                if($progressSize > 0) {
-                    $teamsProgress[$team_id] = array_sum($oneProgress) / $progressSize;
-                }
+            if ($progressSize > 0) {
+                $teamsProgress[$team_id] = array_sum($oneProgress) / $progressSize;
             }
-
-            // Example output:
-            // $WE = [
-            //     team_id => 23.1,
-            //     2 => 18.1
-            // ];
-
-            return $teamsProgress;
-
         }
+
+        // Example output:
+        // $WE = [
+        //     team_id => 23.1,
+        //     2 => 18.1
+        // ];
+
+        return $teamsProgress;
+    }
 
 
     public function getStationPerformance($stationId, $startDate, $endDate): array
@@ -141,13 +248,13 @@ class KpiModel extends BaseModel
         AND p.station_id = :stationId
         ORDER BY ps.start_time ASC";
 
-        $sessions = $this->selectAll($sql, ["stationId"=>$stationId, "start" => $startDate, "end" => $endDate]);
+        $sessions = $this->selectAll($sql, ["stationId" => $stationId, "start" => $startDate, "end" => $endDate]);
 
         foreach ($sessions as $key => $session) {
             $units = $session['units'];
             $duration = $session['duration'];
 
-            if($units > 0 && $duration > 0) {
+            if ($units > 0 && $duration > 0) {
                 $progress[] = $units / $duration;
             }
         }
@@ -162,19 +269,46 @@ class KpiModel extends BaseModel
      */
     public function getTeamDailyProduction($teamId, $date = null): array
     {
-        if($date == null) {
+        if ($date == null) {
             return [];
         }
 
-        $start = $date.' 00:00:00';
-        $end = $date.' 23:59:59';
+        $start = $date . ' 00:00:00';
+        $end = $date . ' 23:59:59';
 
         return $this->getTeamProgress($teamId, $start, $end);
     }
 
-    // public function getA()
-    // {
+    public function calculateMedian(array $avgRates): float
+    {
+        if (empty($avgRates)) {
+            return 0; //problem
+        }
 
-    // }
+        sort($avgRates);
+
+        $arrLength = count($avgRates);
+
+        $halfLength = $arrLength / 2;
+
+        $medianIndex = (int) $halfLength;
+
+        if ($arrLength % 2 == 1) {
+            $median = $avgRates[$medianIndex];
+        } else {
+            $second_half_length = $halfLength;
+
+            $first_half_length = $second_half_length - 1;
+
+            $first_half = $avgRates[$first_half_length];
+
+            $second_half = $avgRates[$second_half_length];
+
+            $median = ($first_half + $second_half) / 2;
+        }
+
+
+        return $median;
+    }
+    //Reference: https://www.educative.io/answers/how-to-get-the-median-of-an-array-of-numbers-in-php
 }
-
