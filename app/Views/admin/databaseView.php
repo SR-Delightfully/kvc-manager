@@ -90,7 +90,7 @@ ViewHelper::loadHeader($page_title, true);
     <table>
         <thead>
         <tr>
-            <th></th>
+            <th>asd</th>
             <th>Role</th>
             <th>First Name</th>
             <th>Last Name</th>
@@ -101,23 +101,19 @@ ViewHelper::loadHeader($page_title, true);
         </thead>
 
         <tbody>
-        <span class="dot green">
             <?php foreach ($users as $key => $user): //<span class="dot green">
                  ?>
                 <tr>
                     <td><?php
-                        switch ($user['user_role']) {
+                        switch ($user['user_status']) {
                             case 'active':
-                                ?>
-                                <span class="dot green"> <?php
+                            echo '<span class="dot green"></span>';
                                 break;
                             case 'leave':
-                                ?>
-                                <span class="dot yellow"> <?php
+                            echo '<span class="dot yellow"></span>';
                                 break;
                             case 'terminated':
-                                ?>
-                                <span class="dot red"> <?php
+                            echo '<span class="dot red"></span>';
                                 break;
                             default:
                         }
@@ -169,7 +165,7 @@ ViewHelper::loadHeader($page_title, true);
 <div class="pallet-card">
 
     <div class="pallet-header">
-        <h2>P A L L E T S</h2>
+        <h2>Product Types</h2>
         <button class="jump-btn">Jump To ↪</button>
     </div>
 
@@ -178,41 +174,42 @@ ViewHelper::loadHeader($page_title, true);
     <div class="form-grid">
 
         <!-- LEFT SIDE -->
-        <div class="left-side">
+        <div class="employees-table-card">
+            <table>
+                <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                </tr>
+                </thead>
 
-            <label>Choose Tote Type:</label>
-            <select>
-                <option>Tote Options</option>
-            </select>
+                <tbody>
+                    <?php foreach ($product_types as $key => $type): //<span class="dot green">
+                        ?>
+                        <tr>
+                            <td><?= $type['product_type_id']?></td>
+                            <td><?= $type['product_type_name']?></td>
 
-            <label>Assign Pallet to a Station:</label>
-            <select>
-                <option>Stations</option>
-            </select>
-
+                        </tr>
+                    <?php endforeach; ?>
+                </tbody>
+            </table>
         </div>
 
-        <!-- RIGHT SIDE -->
-        <div class="right-side">
+    <form action="">
+            <!-- RIGHT SIDE -->
+            <div class="left-side">
 
-            <label>Choose Pallet Size:</label>
-            <div class="radio-row">
-                <label><input type="radio" name="size"> Small</label>
-                <label><input type="radio" name="size"> Medium</label>
-                <label><input type="radio" name="size"> Large</label>
+                <label>Enter Product Type:</label>
+                <input type="text" name="name" class="form-control" id="inputName">
             </div>
 
-            <label>Specify Pallet Capacity:</label>
-            <input type="text" placeholder="Enter Number of Units">
-
         </div>
 
-    </div>
-
-    <div class="button-row">
-        <button class="cancel-btn">Cancel</button>
-        <button class="save-btn">Save Pallet</button>
-    </div>
+        <div class="button-row">
+            <button class="save-btn">Save Pallet</button>
+        </div>
+    </form>
 
 </div>
 
