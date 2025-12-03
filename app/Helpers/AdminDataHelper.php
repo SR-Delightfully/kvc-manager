@@ -41,6 +41,8 @@ class AdminDataHelper
             'stations' => $this->stationModel->getAllStations(),
             'pallets' => $this->palletModel->getAllPalletsComplete(),
             'teams' => $this->teamModel->getAllTeams(),
+            'team_members' => $this->teamModel->getAllTeamMembers(),
+            'totes' => $this->palletModel->getAllTotes(),
         ];
     }
 }

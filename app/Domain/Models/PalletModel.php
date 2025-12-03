@@ -79,4 +79,11 @@ class PalletModel extends BaseModel
         $stmt = "DELETE FROM pallet WHERE pallet_id = :id";
         $this->execute($stmt, [':id' => $id]);
     }
+
+    public function getAllTotes(): ?array
+    {
+        $stmt = "SELECT * FROM tote";
+        $tote = $this->selectAll($stmt);
+        return $tote;
+    }
 }
