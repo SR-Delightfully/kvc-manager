@@ -28,6 +28,7 @@ class HomeController extends BaseController
             'page_title' => 'Welcome to KVC Manager',
             'contentView' => APP_VIEWS_PATH . '/pages/homeView.php',
             'isSideBarShown' => true,
+            'isFooterShown' => false,
             'data' => [
                 'title' => 'Home',
                 'message' => $data,

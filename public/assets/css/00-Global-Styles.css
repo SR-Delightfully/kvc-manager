@@ -145,6 +145,12 @@
 }
 /* * Setting colors for website elements */
 /* ! to change color of element, please change color in the themes ⬆ ABOVE ⬆ */
+
+html {
+    scrollbar-width: 0;
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none;
+}
 body::before {
     content: "";
     /* background-color: hotpink; */
@@ -296,7 +302,11 @@ body {
 /* Extra Large Screens */
 @media screen and (min-width: 1921px) {
 }
-
+.metallic-bg {
+    /* TODO: define metallic background */
+background-image: radial-gradient(ellipse farthest-corner at left top, var(--tone-08) 0%, var(--color-blue-04) 15%, var(--tone-03) 95%, var(--tone-03) 100%);
+                overflow: hidden;
+}
 .metallic {
     /* TODO: define metallic background */
 background-image: radial-gradient(ellipse farthest-corner at left top, var(--tone-08) 0%, var(--color-blue-04) 15%, var(--tone-03) 95%, var(--tone-03) 100%);
@@ -316,7 +326,7 @@ background-image: radial-gradient(ellipse farthest-corner at left top, var(--ton
 #footer {
     height: 3rem;
     position: absolute;
-    bottom: -8px;
+    bottom: 0;
     left: 0;
     width: calc(100% - 4rem);
     overflow: hidden;

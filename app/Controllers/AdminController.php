@@ -39,8 +39,7 @@ class AdminController extends BaseController
             'isAdmin' => UserContext::isAdmin(),
             'data' => $this->adminDataHelper->adminPageData(),
         ];
-
-        return $this->render($response, 'pages/adminView.php', $data);
+        return $this->render($response, 'common/layout.php', $data);
     }
 
     public function error(Request $request, Response $response, array $args): Response

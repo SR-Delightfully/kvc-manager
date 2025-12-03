@@ -15,6 +15,7 @@ LocalizationHelper::setLanguage($currentLang);
 
 $page_title = $page_title ?? 'KVC Manager';
 $isSideBarShown = $isSideBarShown ?? true;
+$isFooterShown = $isFooterShown ?? true;
 ?>
 
 <?php ViewHelper::loadHeader($page_title); ?>
@@ -29,5 +30,6 @@ $isSideBarShown = $isSideBarShown ?? true;
 
 <?php
 ViewHelper::loadJsScripts();
-ViewHelper::loadFooter();
+// adding userCount prop so we can display that number on the footer :)
+ViewHelper::loadFooter(['userCount' => $userCount ?? 0]);
 ?>

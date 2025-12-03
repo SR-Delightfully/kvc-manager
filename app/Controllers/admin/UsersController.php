@@ -24,9 +24,13 @@ class UsersController extends BaseController
         parent:: __construct($container);
     }
 
-    //useless
-    public function index(Request $request, Response $response, array $args): Response {
-        return $this->render($response, 'admin/orderIndexView.php');
+   public function index(Request $request, Response $response, array $args): Response
+    {
+        $userCount = $this->userModel->countUsers();
+
+        return $this->render($response, 'admin/orderIndexView.php', [
+            'userCount' => $userCount
+        ]);
     }
 
     //useless

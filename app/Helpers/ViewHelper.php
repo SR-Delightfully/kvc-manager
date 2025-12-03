@@ -51,10 +51,12 @@ class ViewHelper
      *
      * @return void
      */
-    public static function loadFooter(): void
+    public static function loadFooter(array $data = [])
     {
-        require_once APP_VIEWS_PATH . '/common/footer.php';
+        extract($data); 
+        require __DIR__ . '/../Views/common/footer.php';
     }
+
 
 
     /**

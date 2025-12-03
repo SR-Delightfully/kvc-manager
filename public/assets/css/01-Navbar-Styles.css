@@ -2,7 +2,7 @@
 @media screen and (min-width: 300px) {
     #nav-bar {
         width: 21rem;
-        min-height: calc(100% - 3rem);
+        min-height: 100vh;
         overflow: hidden;
         gap: 3rem;
         align-items: center;
@@ -11,9 +11,10 @@
         border-right: 4px solid var(--tone-00);
         z-index: 9999;
         position: absolute;
+        left: 0;
+        top:0;
         display: flex;
         flex-flow: column nowrap;
-        padding-top: 3rem;
     }
     #nav-bar-inner {
         width: 100%;
@@ -67,7 +68,6 @@
         height: 2rem;
         text-align: center;
         line-height: 0;
-        border-bottom: 2px solid hotpink;
         width: 100%;
         & > a {
             font-size: 1.75rem;
@@ -247,3 +247,59 @@
         border: 3px solid var(--tone-00);
     }
 } */
+
+/* ---------- SUBMENU SYSTEM ---------- */
+
+.tab-with-submenu {
+    width: 100%;
+    position: relative;
+}
+
+.tab-main-btn {
+    height: 4rem;
+    width: 100%;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    cursor: pointer;
+    color: var(--tone-08);
+}
+
+.submenu {
+    width: 100%;
+    background-color: #060808;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+
+    position: absolute;
+    top: 4rem;         
+    left: 0;
+    border-radius: 0 0 1.2rem 1.2rem;
+    overflow: hidden;
+    max-height: 0;
+    opacity: 0;
+
+    transition:
+        max-height 0.35s ease,
+        opacity 0.25s ease;
+}
+
+.tab-with-submenu:hover .submenu,
+.tab-with-submenu.open-submenu .submenu {
+    max-height: 500px;
+    opacity: 1;
+}
+
+.submenu li a {
+    display: block;
+    color: var(--tone-08);
+    padding: 0.8rem 0;
+    text-align: center !important;
+    font-size: 1.3rem;
+    text-decoration: none;
+}
+.submenu li a:hover {
+    color: var(--color-blue-05);
+}
+

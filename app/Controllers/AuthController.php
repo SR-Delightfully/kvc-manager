@@ -43,13 +43,18 @@ class AuthController extends BaseController
     public function showLoginForm(Request $request, Response $response, array $args): Response
     {
         $data = ['title' => 'Login'];
-        return $this->render($response, 'auth/loginView.php', $data);
+        return $this->render($response, 'auth/loginView.php', [
+                'userCount' => $this->userModel->countUsers()
+            ]);
+
     }
 
     public function showRegisterForm(Request $request, Response $response, array $args): Response
     {
         $data = ['title' => 'Registration'];
-        return $this->render($response, 'auth/registerView.php', $data);
+        return $this->render($response, 'auth/registerView.php', [
+            'userCount' => $this->userModel->countUsers()
+        ]);
     }
 
     public function login(Request $request, Response $response, array $args): Response
