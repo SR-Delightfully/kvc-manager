@@ -1,6 +1,18 @@
 <?php
 
 use App\Helpers\ViewHelper;
+$products = $data['products'] ?? null;
+$product_types = $data['product_types'] ?? null;
+$colours = $data['colours'] ?? null;
+$variants = $data['variants'] ?? null;
+$users = $data['users'] ?? null;
+$schedules = $data['schedules'] ?? null;
+$shifts = $data['shifts'] ?? null;
+$stations = $data['stations'] ?? null;
+$pallets = $data['pallets'] ?? null;
+$teams = $data['teams'] ?? null;
+
+var_dump($products);
 
 $page_title = 'Database Overview';
 ViewHelper::loadHeader($page_title, true);
@@ -20,50 +32,15 @@ ViewHelper::loadHeader($page_title, true);
                 <th>Code</th>
             </tr>
         </thead>
-
         <tbody>
-            <tr>
-                <td>1</td>
-                <td>U-BASE Pods</td>
-                <td>U-BASE</td>
-                <td>NULL</td>
-            </tr>
-            <tr>
-                <td>2</td>
-                <td>100-BASE Pods</td>
-                <td>100-BASE</td>
-                <td>NULL</td>
-            </tr>
-            <tr>
-                <td>3</td>
-                <td>Solution A</td>
-                <td>SCI</td>
-                <td>4400R</td>
-            </tr>
-            <tr>
-                <td>4</td>
-                <td>Solution B</td>
-                <td>SCI</td>
-                <td>4405RCB</td>
-            </tr>
-            <tr>
-                <td>5</td>
-                <td>U-BASE Pods</td>
-                <td>U-BASE</td>
-                <td>NULL</td>
-            </tr>
-            <tr>
-                <td>6</td>
-                <td>Solution B</td>
-                <td>SCI</td>
-                <td>4405RCB</td>
-            </tr>
-            <tr>
-                <td>7</td>
-                <td>Solution A</td>
-                <td>SCI</td>
-                <td>4400R</td>
-            </tr>
+            <?php foreach ($products as $key => $product): ?>
+                <tr>
+                    <td><?= $product['product_id']?></td>
+                    <td><?= $product['product_name']?></td>
+                    <td><?= $product['product_type_id']?></td>
+                    <td><?= $product['product_code']?></td>
+                </tr>
+            <?php endforeach; ?>
         </tbody>
     </table>
 
@@ -114,20 +91,45 @@ ViewHelper::loadHeader($page_title, true);
         <thead>
         <tr>
             <th></th>
-            <th>Name</th>
+            <th>Role</th>
+            <th>First Name</th>
+            <th>Last Name</th>
             <th>Phone</th>
             <th>Email</th>
+            <th>Date Created</th>
         </tr>
         </thead>
 
         <tbody>
-        <tr><td><span class="dot green"></span></td><td>John Doe</td><td>514-000-0000</td><td>j_doe@email.com</td></tr>
-        <tr><td><span class="dot yellow"></span></td><td>Jane Deer</td><td>438-000-0000</td><td>j_deer@email.com</td></tr>
-        <tr><td><span class="dot green"></span></td><td>Jordan Moose</td><td>514-000-0000</td><td>j_moose@email.com</td></tr>
-        <tr><td><span class="dot green"></span></td><td>Joe Caribou</td><td>514-000-0000</td><td>j_caribou@email.com</td></tr>
-        <tr><td><span class="dot green"></span></td><td>Joann Elk</td><td>514-000-0000</td><td>j_elk@email.com</td></tr>
-        <tr><td><span class="dot green"></span></td><td>Joseph Roe</td><td>514-000-0000</td><td>j_roe@email.com</td></tr>
-        <tr><td><span class="dot yellow"></span></td><td>Jessica Taruca</td><td>438-000-0000</td><td>j_taruca@email.com</td></tr>
+        <span class="dot green">
+            <?php foreach ($users as $key => $user): //<span class="dot green">
+                 ?>
+                <tr>
+                    <td><?php
+                        switch ($user['user_role']) {
+                            case 'active':
+                                ?>
+                                <span class="dot green"> <?php
+                                break;
+                            case 'leave':
+                                ?>
+                                <span class="dot yellow"> <?php
+                                break;
+                            case 'terminated':
+                                ?>
+                                <span class="dot red"> <?php
+                                break;
+                            default:
+                        }
+                    ?></td>
+                    <td><?= $user['user_role']?></td>
+                    <td><?= $user['first_name']?></td>
+                    <td><?= $user['last_name']?></td>
+                    <td><?= $user['phone']?></td>
+                    <td><?= $user['email']?></td>
+                    <td><?= $user['user_dc']?></td>
+                </tr>
+            <?php endforeach; ?>
         </tbody>
     </table>
 </div>

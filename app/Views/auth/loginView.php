@@ -206,6 +206,7 @@ if ($show_new_email):?>
 </div>
 <?php endif; ?>
 <!-- 2-factor MODAL -->
+<?php if ($show2fa_login): ?>
 <div id="two-factor-modal" class="forgot-modal-overlay">
     <div class="forgot-modal-box">
 
@@ -231,6 +232,7 @@ if ($show_new_email):?>
 
     </div>
 </div>
+<?php endif; ?>
 <!-- FOOTER BAR BUT only for the login page so idk if we should have a separate file/footer for it -->
 <div class="lang-switch">
     <div class="left">

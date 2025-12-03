@@ -24,7 +24,7 @@ use App\Controllers\admin\UsersController;
 use App\Controllers\admin\AdminDashboardController;
 
 // General Controller Imports
-use App\Controllers\AdminController;
+use App\Controllers\admin\AdminController;
 use App\Controllers\AuthController;
 use App\Controllers\HomeController;
 use App\Controllers\ReportsController;
@@ -67,7 +67,8 @@ return static function (App $app): void {
         $auth->get('/login/2fa', [AuthController::class, 'showTwoFactorForm'])->setName('auth.2fa');
         $auth->post('/login/2fa', [AuthController::class, 'verifyTwoFactor']);
 
-    })->add(GuestAuthMiddleware::class);
+    })//->add(GuestAuthMiddleware::class)
+    ;
 
     $app->get('/logout', [AuthController::class, 'logout'])->setName('auth.logout');
 
@@ -111,26 +112,25 @@ return static function (App $app): void {
             $settings->get('/edit', [SettingsController::class, 'edit'])->setName('settings.edit');
             $settings->post('/edit', [SettingsController::class, 'update']);
         });
-    })->add(AuthMiddleware::class);
+    })//->add(AuthMiddleware::class)
+    ;
 
     // Admin Routes:
     $app->group('/admin', function ($admin) {
         //temp route
-$admin->get('/temp-db', function ($request, $response) {
-    // Path to your view file
-    require APP_VIEWS_PATH . '/admin/databaseView.php';
-    return $response;
-});
-//temp route
-$admin->get('/temp-dash', function ($request, $response) {
-    // Path to your view file
-    require APP_VIEWS_PATH . '/admin/dashboardView.php';
-    return $response;
-});
-
+        $admin->get('/temp-db', function ($request, $response) {
+            // Path to your view file
+            require APP_VIEWS_PATH . '/admin/databaseView.php';
+            return $response;
+        });
+        //temp route
+        $admin->get('/temp-dash', function ($request, $response) {
+            // Path to your view file
+            require APP_VIEWS_PATH . '/admin/dashboardView.php';
+            return $response;
+        });
 
         $admin->get('', [AdminController::class, 'index'])->setName('admin.index');
-
 
         // Products
         $admin->group('/product', function ($product) {
@@ -195,7 +195,8 @@ $admin->get('/temp-dash', function ($request, $response) {
             $shift->get('{id}/delete', [ShiftController::class, 'delete'])->setName('admin.shift.delete');
             $shift->post('{id}', [ShiftController::class, 'update'])->setName('admin.shift.update');
         });
-    })->add(AdminAuthMiddleware::class);
+    })//->add(AdminAuthMiddleware::class)
+    ;
 
     // Ping Route
     $app->get('/ping', function (Request $request, Response $response, $args) {
