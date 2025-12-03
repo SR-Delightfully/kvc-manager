@@ -121,6 +121,12 @@ $admin->get('/temp-dash', function ($request, $response) {
     return $response;
 });
 
+$admin->get('/temp-settings', function ($request, $response) {
+    // Path to your view file
+    require APP_VIEWS_PATH . '/admin/settingsView.php';
+    return $response;
+});
+
 
         $admin->get('', [AdminController::class, 'index'])->setName('admin.index');
 

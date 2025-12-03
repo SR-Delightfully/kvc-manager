@@ -93,6 +93,22 @@ function sendForgotEmail() {
     // Open the second modal
     openNewEmailModal();
 }
+function openMessageModal() {
+    document.getElementById("new-email-modal").style.display = "flex";
+}
+
+function closeMessageModal() {
+    document.getElementById("new-email-modal").style.display = "none";
+}
+
+function sendMessage() {
+    closeMessageModal();
+    document.getElementById("message-sent-modal").style.display = "flex";
+}
+
+function closeSuccessModal() {
+    document.getElementById("message-sent-modal").style.display = "none";
+}
 //team members dropdown
 function toggleTeam(header) {
     const wrapper = header.nextElementSibling;

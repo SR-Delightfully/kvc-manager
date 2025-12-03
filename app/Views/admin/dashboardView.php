@@ -95,7 +95,7 @@ ViewHelper::loadHeader($page_title,true);
                 <span class="fname">First_Name1</span>
                 <span class="lname">Last_Name1</span>
                 <button class="remove-btn">Remove</button>
-                <button class="contact-btn">Contact</button>
+                <button class="contact-btn"onclick="openMessageModal()">Contact</button>
             </div>
 
             <div class="member">
@@ -103,14 +103,14 @@ ViewHelper::loadHeader($page_title,true);
                 <span class="fname">First_Name2</span>
                 <span class="lname">Last_Name2</span>
                 <button class="remove-btn">Remove</button>
-                <button class="contact-btn">Contact</button>
+                <button class="contact-btn"onclick="openMessageModal()">Contact</button>
             </div>
             <div class="member">
                 <div class="avatar"></div>
                 <span class="fname">First_Name3</span>
                 <span class="lname">Last_Name3</span>
                 <button class="remove-btn">Remove</button>
-                <button class="contact-btn">Contact</button>
+                <button class="contact-btn"onclick="openMessageModal()">Contact</button>
             </div>
         </div>
     </div>
@@ -127,7 +127,7 @@ ViewHelper::loadHeader($page_title,true);
                 <span class="fname">First_Name4</span>
                 <span class="lname">Last_Name4</span>
                 <button class="remove-btn">Remove</button>
-                <button class="contact-btn">Contact</button>
+                <button class="contact-btn"onclick="openMessageModal()">Contact</button>
             </div>
         </div>
     </div>
@@ -143,7 +143,7 @@ ViewHelper::loadHeader($page_title,true);
                 <span class="fname">First_Name5</span>
                 <span class="lname">Last_Name5</span>
                 <button class="remove-btn">Remove</button>
-                <button class="contact-btn">Contact</button>
+                <button class="contact-btn"onclick="openMessageModal()">Contact</button>
             </div>
         </div>
     </div>
@@ -159,14 +159,52 @@ ViewHelper::loadHeader($page_title,true);
                 <span class="fname">First_Name6</span>
                 <span class="lname">Last_Name6</span>
                 <button class="remove-btn">Remove</button>
-                <button class="contact-btn">Contact</button>
+                <button class="contact-btn" onclick="openMessageModal()">Contact</button>
             </div>
         </div>
     </div>
 
 </div>
+<!-- send message modal  -->
+<div id="new-email-modal" class="forgot-modal-overlay" style="display:none;">
+    <div class="forgot-modal-box">
+        <span class="close-forgot" onclick="closeMessageModal()">X</span>
+
+        <form id="newEmailForm">
+            <label for="messageRecipient">To: Add / modify recipients</label>
+<select id="messageRecipient" name="recipient" required class="modal-select">
+    <option value="" disabled selected>Select a recipient</option>
+    <option value="First_Name1 Last_Name1">First_Name1 Last_Name1</option>
+    <option value="First_Name2 Last_Name2">First_Name2 Last_Name2</option>
+    <option value="First_Name3 Last_Name3">First_Name3 Last_Name3</option>
+    <option value="First_Name4 Last_Name4">First_Name4 Last_Name4</option>
+    <option value="First_Name5 Last_Name5">First_Name5 Last_Name5</option>
+    <option value="First_Name6 Last_Name6">First_Name6 Last_Name6</option>
+</select>
 
 
+            <label>Subject:</label>
+            <input type="text" placeholder="" required>
+
+            <label>Message:</label>
+            <textarea placeholder="Lorem ipsum..." required></textarea>
+
+            <div class="forgot-btn-row">
+                <button type="button" class="forgot-send" onclick="sendMessage()">Send Message</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Successfull modal -->
+<div id="message-sent-modal" class="forgot-modal-overlay" style="display:none;">
+    <div class="forgot-modal-box">
+        <h2>Message Sent</h2>
+        <p>Your message was sent successfully!</p>
+
+        <button class="forgot-send" onclick="closeSuccessModal()">OK</button>
+    </div>
+</div>
 
 <?php
 ViewHelper::loadJsScripts();
