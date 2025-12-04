@@ -29,7 +29,7 @@ public function getVariantById($id): ?array {
         $this->execute($stmt, $params);
     }
 
-    public function deleteVariant(int $id){
+    public function deleteVariant($id){
         $stmt = "DELETE FROM product_variant WHERE variant_id = :id";
         $params = ['id'=>$id];
         $this->execute($stmt,$params);

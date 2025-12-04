@@ -16,6 +16,15 @@ $totes = $data['totes'] ?? null;
 
 $show_variant_edit = $show_variant_edit ?? null;
 $variant_to_edit = $data['variant_to_edit'] ?? null;
+
+$show_variant_delete = $show_variant_delete ?? null;
+$variant_to_delete = $data['variant_to_delete'] ?? null;
+
+$show_product_type_edit = $show_product_type_edit ?? null;
+$product_type_to_edit = $data['product_type_to_edit'] ?? null;
+
+$show_type_delete = $show_type_delete ?? null;
+$type_to_delete = $data['type_to_delete'] ?? null;
 //var_dump($variant_to_edit);
 //var_dump($show_variant_edit);
 //var_dump($products);
@@ -57,7 +66,6 @@ ViewHelper::loadHeader($page_title, true);
             <?php endforeach; ?>
         </tbody>
     </table>
-</form>
 <div class="bottom-card">
     <div class="left-side">
         <form action="<?= APP_BASE_URL ?>/admin/variant" method="POST">
@@ -102,9 +110,9 @@ ViewHelper::loadHeader($page_title, true);
 
         <div class="actions-title">Actions :</div>
 
-        <button id="view-variant" class="blue-btn">View Product Details</button>
-        <button id="edit-variant" class="yellow-btn">Edit Product Details</button>
-        <button id="delete-variant" class="red-btn">Delete Product Details</button>
+        <button id="view-variant" class="blue-btn">View Variant Details</button>
+        <button id="edit-variant" class="yellow-btn">Edit Variant Details</button>
+        <button id="delete-variant" class="red-btn">Delete Variant</button>
         <button class="jump-btn">Jump To ↪</button>
     </div>
 
@@ -121,9 +129,11 @@ ViewHelper::loadHeader($page_title, true);
 </div>
 
 <div class="employees-table-card">
+    <form id="user-form" action="" method=""></form>
     <table>
         <thead>
         <tr>
+            <th></th>
             <th></th>
             <th>Role</th>
             <th>First Name</th>
@@ -136,8 +146,13 @@ ViewHelper::loadHeader($page_title, true);
 
         <tbody>
             <?php foreach ($users as $key => $user): //<span class="dot green">
-                 ?>
-                <tr>
+                ?>
+                <tr class="user-row">
+                    <td>
+                    <input type="radio" name="user_id"
+                        value="<?= $user['user_id']?>"
+                        class="user-radio">
+                    </td>
                     <td><?php
                         switch ($user['user_status']) {
                             case 'active':
@@ -185,9 +200,8 @@ ViewHelper::loadHeader($page_title, true);
 
         <div class="actions-title">Actions :</div>
 
-        <button class="blue-btn">View Product Details</button>
-        <button class="yellow-btn">Edit Product Details</button>
-        <button class="red-btn">Delete Product</button>
+        <button id="view-user" class="blue-btn">View User Details</button>
+        <button id="delete-user" class="red-btn">Terminate User</button>
     </div>
 
 </div>
@@ -198,7 +212,7 @@ ViewHelper::loadHeader($page_title, true);
 
 </div>
 <br><br>
-<!-- pallets section -->
+<!-- PRODUCT TYPE section -->
 <div class="pallet-card">
 
     <div class="pallet-header">
@@ -206,15 +220,15 @@ ViewHelper::loadHeader($page_title, true);
         <button class="jump-btn">Jump To ↪</button>
     </div>
 
-    <div class="quick-title">Quick Add :</div>
-
     <div class="form-grid">
 
         <!-- LEFT SIDE -->
         <div class="employees-table-card">
+            <form id="product-type-form" action="" method=""></form>
             <table>
                 <thead>
                 <tr>
+                    <th></th>
                     <th>ID</th>
                     <th>Name</th>
                 </tr>
@@ -223,7 +237,12 @@ ViewHelper::loadHeader($page_title, true);
                 <tbody>
                     <?php foreach ($product_types as $key => $type): //<span class="dot green">
                         ?>
-                        <tr>
+                        <tr class="product-type-row">
+                            <td>
+                            <input type="radio" name="product_type_id"
+                                value="<?= $type['product_type_id']?>"
+                                class="type-radio">
+                            </td>
                             <td><?= $type['product_type_id']?></td>
                             <td><?= $type['product_type_name']?></td>
 
@@ -232,49 +251,51 @@ ViewHelper::loadHeader($page_title, true);
                 </tbody>
             </table>
         </div>
-
-    <form action="">
             <!-- RIGHT SIDE -->
             <div class="left-side">
+                <div class="quick-title">Quick Add :</div>
+                <form action="<?= APP_BASE_URL ?>/admin/type" method="POST">
+                    <label>Enter Product Type:</label>
+                    <input type="text" name="product_type_name" class="form-control" id="inputName">
 
-                <label>Enter Product Type:</label>
-                <input type="text" name="name" class="form-control" id="inputName">
+                    <div class="button-row">
+                        <button type="submit" class="save-btn">Save Pallet</button>
+                    </div>
+                </form>
+
+                <div class="actions-title">Actions :</div>
+
+                <button id="edit-type" class="yellow-btn">Edit Variant Details</button>
+                <button id="delete-type" class="red-btn">Delete Variant</button>
             </div>
-
         </div>
-
-        <div class="button-row">
-            <button class="save-btn">Save Pallet</button>
-        </div>
-    </form>
-
-
-
 </div>
 
 <!-- PRODUCTS section -->
 <div class="products-left">
 <div class="table-card">
-    <table>
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Name</th>
-                <th>Type</th>
-                <th>Code</th>
-            </tr>
-        </thead>
-        <tbody>
-            <?php foreach ($products as $key => $product): ?>
+    <form id="product-form" action="" method="">
+        <table>
+            <thead>
                 <tr>
-                    <td><?= $product['product_id']?></td>
-                    <td><?= $product['product_name']?></td>
-                    <td><?= $product['product_type_id']?></td>
-                    <td><?= $product['product_code']?></td>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Type</th>
+                    <th>Code</th>
                 </tr>
-            <?php endforeach; ?>
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+                <?php foreach ($products as $key => $product): ?>
+                    <tr>
+                        <td><?= $product['product_id']?></td>
+                        <td><?= $product['product_name']?></td>
+                        <td><?= $product['product_type_id']?></td>
+                        <td><?= $product['product_code']?></td>
+                    </tr>
+                <?php endforeach; ?>
+            </tbody>
+        </table>
+    </form>
 
 <div class="bottom-card">
 
@@ -699,6 +720,70 @@ ViewHelper::loadHeader($page_title, true);
 </div>
 <?php endif; ?>
 
+<!-- DELETE VARIANT POPUP -->
+ <?php
+ if ($show_variant_delete):?>
+<div id="forgotPasswordModal" class="forgot-modal-overlay">
+    <div class="forgot-modal-box">
+        <span class="close-forgot">X</span>
+
+        <h2>Delete Variant</h2>
+        <h3>Are you sure you want to delete Variant: <?= $variant_to_delete['variant_description'] ?></h3>
+        <form action="<?= APP_BASE_URL ?>/admin/variant/delete/<?= $variant_to_delete['variant_id']?>/do" method="GET">
+            <input type="hidden" value="<?= $variant_to_delete['variant_id'] ?>" name="variant_id">
+            <span>
+                <button type="submit">Delete Variant</button>
+                <button>Cancel</button>
+            </span>
+        </form>
+
+    </div>
+</div>
+<?php endif; ?>
+
+
+<!-- EDIT PRODUCT TYPE POPUP -->
+ <?php
+ if ($show_product_type_edit):?>
+<div id="forgotPasswordModal" class="forgot-modal-overlay">
+    <div class="forgot-modal-box">
+        <span class="close-forgot">X</span>
+
+        <h2>Edit Variant</h2>
+        <form action="<?= APP_BASE_URL ?>/admin/variant/edit/<?= $product_type_to_edit['product_type_id'] ?>" method="POST">
+        <input type="hidden" value="<?= $product_type_to_edit['product_type_id'] ?>" name="product_type_id">
+        <div class="quick-add-title">Quick Add :</div>
+
+            <label for="product_type_name">Type Name</label>
+            <input value="<?= $product_type_to_edit['product_type_name'] ?>" name="product_type_name" type="text" placeholder="Enter Product Type Name">
+
+            <button type="submit">Update Product Type</button>
+        </form>
+
+    </div>
+</div>
+<?php endif; ?>
+
+<!-- DELETE PRODUCT TYPE POPUP -->
+ <?php
+ if ($show_type_delete):?>
+<div id="forgotPasswordModal" class="forgot-modal-overlay">
+    <div class="forgot-modal-box">
+        <span class="close-forgot">X</span>
+
+        <h2>Delete Variant</h2>
+        <h3>Are you sure you want to delete Variant: <?= $variant_to_delete['variant_description'] ?></h3>
+        <form action="<?= APP_BASE_URL ?>/admin/variant/delete/<?= $variant_to_delete['variant_id']?>/do" method="GET">
+            <input type="hidden" value="<?= $variant_to_delete['variant_id'] ?>" name="variant_id">
+            <span>
+                <button type="submit">Delete Variant</button>
+                <button>Cancel</button>
+            </span>
+        </form>
+
+    </div>
+</div>
+<?php endif; ?>
 
 <?php
 ViewHelper::loadJsScripts();

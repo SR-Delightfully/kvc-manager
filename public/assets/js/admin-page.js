@@ -1,25 +1,33 @@
-document.querySelectorAll(".variant-row").forEach(row => {
-    row.addEventListener("click", function (e) {
-        // Prevent double-trigger when radio itself is clicked
-        if (e.target.tagName.toLowerCase() === "input") return;
+function enableRowSelect(rowSelector, radioSelector) {
+    document.querySelectorAll(rowSelector).forEach(row => {
+        row.addEventListener("click", function (e) {
+            // Prevent double-trigger when clicking the actual radio
+            if (e.target.matches(radioSelector)) return;
 
-        const radio = this.querySelector(".variant-radio");
-        radio.checked = true;
+            const radio = this.querySelector(radioSelector);
+            if (radio) {
+                radio.checked = true;
+            }
 
-        // Optional: Highlight selected row
-        document.querySelectorAll(".variant-row").forEach(r => r.classList.remove("selected-row"));
-        this.classList.add("selected-row");
+            // Highlight selected row
+            document.querySelectorAll(rowSelector).forEach(r => r.classList.remove("selected-row"));
+            this.classList.add("selected-row");
+        });
     });
-});
+}
 
-function submitBtn(formElement, buttonId, action, method) {
+enableRowSelect(".variant-row", '.variant-radio');
+enableRowSelect('.user-row', '.user-radio');
+enableRowSelect('.product-type-row', '.type-radio');
+
+function submitBtn(formElement, buttonId, action, method, name, inputName) {
     const form = document.getElementById(formElement);
     const button = document.getElementById(buttonId);
 
     button.addEventListener('click', () => {
-        const selected = document.querySelector('input[name="variant_id"]:checked');
+        const selected = document.querySelector('input[name='+ inputName +']:checked');
         if (!selected) {
-            alert('Select a variant in the table.');
+            alert('Select a '+ name +' in the table.');
             return;
         }
 
@@ -32,33 +40,12 @@ function submitBtn(formElement, buttonId, action, method) {
     });
 }
 
-submitBtn('variant-form', 'view-variant', 'admin/variant/', 'GET');
-submitBtn('variant-form', 'edit-variant', 'admin/variant/edit/', 'GET');
+submitBtn('variant-form', 'view-variant', 'admin/variant/', 'GET', 'variant', 'variant_id');
+submitBtn('variant-form', 'edit-variant', 'admin/variant/edit/', 'GET', 'variant', 'variant_id');
+submitBtn('variant-form', 'delete-variant', 'admin/variant/delete/', 'GET', 'variant', 'variant_id');
 
-function deleteShop(Id, thing) {
-    console.log("deleting ShopId: " + Id);
-    //NOTE: open the confrmation dialog
+submitBtn('user-form', 'view-user', 'admin/user/', 'GET', 'user', 'user_id');
+submitBtn('user-form', 'delete-user', 'admin/user/delete/', 'GET', 'user', 'user_id');
 
-        Swal.fire({
-        title: "Are you sure?",
-        text: "Do you want to delete "+ thing +" with id: " + Id + "?",
-        icon: "warning",
-        showCancelButton: true,
-        confirmButtonColor: "#3085d6",
-        cancelButtonColor: "#d33",
-        confirmButtonText: "Yes, delete"
-        }).then((result) => {
-            if (result.isConfirmed) {
-                Swal.fire({
-                title: "Deleted!",
-                text: "Your file has been deleted.",
-                icon: "success"
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        window.location.href = "includes/delete-shop.php?id=" +shopId;
-                    }
-                    window.location.href = "includes/delete-shop.php?id=" +shopId;
-                });
-            }
-        });
-}
+submitBtn('product-type-form', 'edit-type', 'admin/type/edit/', 'GET', 'product type', 'product_type_id');
+submitBtn('product-type-form', 'delete-type', 'admin/type/delete/', 'GET', 'product type', 'product_type_id');

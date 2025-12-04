@@ -110,6 +110,22 @@ class ProductVariantController extends BaseController
 
         return $this->redirect($request, $response, 'admin.index');
     }
+
+    public function showDelete(Request $request, Response $response, array $args): Response {
+        $variant_id = $args['id'];
+
+        $variant = $this->productVariantModel->getVariantById($variant_id);
+
+        $data = [
+                'contentView' => APP_VIEWS_PATH . '/pages/adminView.php',
+                'isSideBarShown' => true,
+                'isAdmin' => UserContext::isAdmin(),
+                'show_variant_delete' => true,
+                'data' => array_merge($this->adminDataHelper->adminPageData(),
+                        ['variant_to_delete' => $variant,]),
+            ];
+        return $this->render($response, 'admin/databaseView.php', $data);
+    }
 }
 
 ?>

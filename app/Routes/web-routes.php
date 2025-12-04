@@ -137,8 +137,9 @@ return static function (App $app): void {
             $product->get('', [ProductController::class, 'index'])->setName('admin.product.index');
             $product->post('', [ProductController::class, 'store'])->setName('admin.product.store');
             $product->get('/edit/{id}', [ProductController::class, 'edit'])->setName('admin.product.edit');
-            $product->get('{id}/delete', [ProductController::class, 'delete'])->setName('admin.product.delete');
-            $product->post('{id}', [ProductController::class, 'update'])->setName('admin.product.update');
+            $product->get('delete/{id}', [ProductController::class, 'showDelete'])->setName('admin.product.delete.show');
+            $product->get('delete/{id}/do', [ProductController::class, 'delete'])->setName('admin.product.delete');
+            $product->post('/edit/{id}', [ProductController::class, 'update'])->setName('admin.product.update');
         });
 
         // Variants
@@ -146,7 +147,8 @@ return static function (App $app): void {
             $variant->get('', [ProductVariantController::class, 'index'])->setName('admin.variant.index');
             $variant->post('', [ProductVariantController::class, 'store'])->setName('admin.variant.store');
             $variant->get('/edit/{id}', [ProductVariantController::class, 'edit'])->setName('admin.variant.edit');
-            $variant->get('/delete/{id}', [ProductVariantController::class, 'delete'])->setName('admin.variant.delete');
+            $variant->get('/delete/{id}', [ProductVariantController::class, 'showDelete'])->setName('admin.variant.delete.show');
+            $variant->get('/delete/{id}/do', [ProductVariantController::class, 'delete'])->setName('admin.variant.delete');
             $variant->post('/edit/{id}', [ProductVariantController::class, 'update'])->setName('admin.variant.update');
         });
 
@@ -154,9 +156,10 @@ return static function (App $app): void {
         $admin->group('/colour', function ($colour) {
             $colour->get('', [ColourController::class, 'index'])->setName('admin.colour.index');
             $colour->post('', [ColourController::class, 'store'])->setName('admin.colour.store');
-            $colour->get('{id}/edit', [ColourController::class, 'edit'])->setName('admin.colour.edit');
-            $colour->get('{id}/delete', [ColourController::class, 'delete'])->setName('admin.colour.delete');
-            $colour->post('{id}', [ColourController::class, 'update'])->setName('admin.colour.update');
+            $colour->get('/edit/{id}', [ColourController::class, 'edit'])->setName('admin.colour.edit');
+            $colour->get('/delete/{id}', [ColourController::class, 'showDelete'])->setName('admin.colour.delete.show');
+            $colour->get('/delete/{id}/do', [ColourController::class, 'delete'])->setName('admin.colour.delete');
+            $colour->post('/edit/{id}', [ColourController::class, 'update'])->setName('admin.colour.update');
         });
 
         // Users
@@ -173,27 +176,30 @@ return static function (App $app): void {
         $admin->group('/type', function ($type) {
             $type->get('', [ProductTypeController::class, 'index'])->setName('admin.type.index');
             $type->post('', [ProductTypeController::class, 'store'])->setName('admin.type.store');
-            $type->get('{id}/edit', [ProductTypeController::class, 'edit'])->setName('admin.type.edit');
-            $type->get('{id}/delete', [ProductTypeController::class, 'delete'])->setName('admin.type.delete');
-            $type->post('{id}', [ProductTypeController::class, 'update'])->setName('admin.type.update');
+            $type->get('/edit/{id}', [ProductTypeController::class, 'edit'])->setName('admin.type.edit');
+            $type->get('/delete/{id}', [ProductTypeController::class, 'showDelete'])->setName('admin.type.delete.show');
+            $type->get('/delete/{id}/do', [ProductTypeController::class, 'delete'])->setName('admin.type.delete');
+            $type->post('/edit/{id}', [ProductTypeController::class, 'update'])->setName('admin.type.update');
         });
 
         // Pallets
         $admin->group('/pallet', function ($pallet) {
             $pallet->get('', [PalletController::class, 'index'])->setName('admin.pallet.index');
             $pallet->post('', [PalletController::class, 'store'])->setName('admin.pallet.store');
-            $pallet->get('{id}/edit', [PalletController::class, 'edit'])->setName('admin.pallet.edit');
-            $pallet->get('{id}/delete', [PalletController::class, 'delete'])->setName('admin.pallet.delete');
-            $pallet->post('{id}', [PalletController::class, 'update'])->setName('admin.pallet.update');
+            $pallet->get('/edit/{id}', [PalletController::class, 'edit'])->setName('admin.pallet.edit');
+            $pallet->get('/delete/{id}', [PalletController::class, 'showDelete'])->setName('admin.pallet.delete.show');
+            $pallet->get('/delete/{id}/do', [PalletController::class, 'delete'])->setName('admin.pallet.delete');
+            $pallet->post('/edit/{id}', [PalletController::class, 'update'])->setName('admin.pallet.update');
         });
 
         // Shifts
         $admin->group('/shift', function ($shift) {
             $shift->get('', [ShiftController::class, 'index'])->setName('admin.shift.index');
             $shift->post('', [ShiftController::class, 'store'])->setName('admin.shift.store');
-            $shift->get('{id}/edit', [ShiftController::class, 'edit'])->setName('admin.shift.edit');
-            $shift->get('{id}/delete', [ShiftController::class, 'delete'])->setName('admin.shift.delete');
-            $shift->post('{id}', [ShiftController::class, 'update'])->setName('admin.shift.update');
+            $shift->get('/edit/{id}', [ShiftController::class, 'edit'])->setName('admin.shift.edit');
+            $shift->get('/delete/{id}', [ShiftController::class, 'showDelete'])->setName('admin.shift.delete.show');
+            $shift->get('/delete/{id}/do', [ShiftController::class, 'delete'])->setName('admin.shift.delete');
+            $shift->post('/edit/{id}', [ShiftController::class, 'update'])->setName('admin.shift.update');
         });
     })//->add(AdminAuthMiddleware::class)
     ;
