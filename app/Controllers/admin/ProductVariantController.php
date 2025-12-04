@@ -45,7 +45,7 @@ class ProductVariantController extends BaseController
         $data = $request->getParsedBody();
         $errors = [];
 
-        if (empty($data['product_id']) || empty($data['units_size']) || empty($data['variant_description'])) {
+        if (empty($data['product_id']) || empty($data['unit_size']) || empty($data['variant_description'])) {
             $errors[] = "product id, unit size and description must be filled out";
         }
 
@@ -77,14 +77,14 @@ class ProductVariantController extends BaseController
                 'data' => array_merge($this->adminDataHelper->adminPageData(),
                         ['variant_to_edit' => $variant,]),
             ];
-        return $this->render($response, 'pages/adminView.php', $data);
+        return $this->render($response, 'admin/databaseView.php', $data);
     }
 
     public function update(Request $request, Response $response, array $args): Response {
         $data = $request->getParsedBody();
         $errors = [];
 
-        if (empty($data['product_id']) || empty($data['units_size']) || empty($data['variant_description'])) {
+        if (empty($data['product_id']) || empty($data['unit_size']) || empty($data['variant_description'])) {
             $errors[] = "product id, unit size and description must be filled out";
         }
 

@@ -136,7 +136,7 @@ return static function (App $app): void {
         $admin->group('/product', function ($product) {
             $product->get('', [ProductController::class, 'index'])->setName('admin.product.index');
             $product->post('', [ProductController::class, 'store'])->setName('admin.product.store');
-            $product->get('{id}/edit', [ProductController::class, 'edit'])->setName('admin.product.edit');
+            $product->get('/edit/{id}', [ProductController::class, 'edit'])->setName('admin.product.edit');
             $product->get('{id}/delete', [ProductController::class, 'delete'])->setName('admin.product.delete');
             $product->post('{id}', [ProductController::class, 'update'])->setName('admin.product.update');
         });
@@ -145,9 +145,9 @@ return static function (App $app): void {
         $admin->group('/variant', function ($variant) {
             $variant->get('', [ProductVariantController::class, 'index'])->setName('admin.variant.index');
             $variant->post('', [ProductVariantController::class, 'store'])->setName('admin.variant.store');
-            $variant->get('{id}/edit', [ProductVariantController::class, 'edit'])->setName('admin.variant.edit');
-            $variant->get('{id}/delete', [ProductVariantController::class, 'delete'])->setName('admin.variant.delete');
-            $variant->post('{id}', [ProductVariantController::class, 'update'])->setName('admin.variant.update');
+            $variant->get('/edit/{id}', [ProductVariantController::class, 'edit'])->setName('admin.variant.edit');
+            $variant->get('/delete/{id}', [ProductVariantController::class, 'delete'])->setName('admin.variant.delete');
+            $variant->post('/edit/{id}', [ProductVariantController::class, 'update'])->setName('admin.variant.update');
         });
 
         // Colours

@@ -14,29 +14,41 @@ $teams = $data['teams'] ?? null;
 $team_members = $data['team_members'] ?? null;
 $totes = $data['totes'] ?? null;
 
-var_dump($products);
+$show_variant_edit = $show_variant_edit ?? null;
+$variant_to_edit = $data['variant_to_edit'] ?? null;
+//var_dump($variant_to_edit);
+//var_dump($show_variant_edit);
+//var_dump($products);
 
 $page_title = 'Database Overview';
 ViewHelper::loadHeader($page_title, true);
 ?>
 <!-- products section -->
  <div class="products-page">
-
+            <?= App\Helpers\FlashMessage::render() ?>
     <!-- LEFT — PRODUCTS VARIANTS TABLE -->
     <div class="products-left">
 <div class="table-card">
+    <form id="variant-form" action="" method=""></form>
     <table>
         <thead>
             <tr>
+                <th></th>
                 <th>Product ID</th>
                 <th>Colour ID</th>
                 <th>Unit Size</th>
                 <th>Description</th>
             </tr>
         </thead>
+
         <tbody>
             <?php foreach ($variants as $key => $variant): ?>
-                <tr>
+                <tr class="variant-row">
+                    <td>
+                        <input type="radio" name="variant_id"
+                            value="<?= $variant['variant_id']?>"
+                            class="variant-radio">
+                    </td>
                     <td><?= $variant['product_id']?></td>
                     <td><?= $variant['colour_id']?></td>
                     <td><?= $variant['unit_size']?></td>
@@ -45,14 +57,14 @@ ViewHelper::loadHeader($page_title, true);
             <?php endforeach; ?>
         </tbody>
     </table>
-
+</form>
 <div class="bottom-card">
     <div class="left-side">
-        <form action=""></form>
+        <form action="<?= APP_BASE_URL ?>/admin/variant" method="POST">
             <div class="quick-add-title">Quick Add :</div>
 
             <label for="">Product</label>
-            <select class="form-select" id="product_id">
+            <select name="product_id" class="form-select" id="product_id">
                 <option value="">Select Product Id</option>
                 <?php foreach ($products as $product): ?>
                     <option value="<?= $product['product_id'] ?>">
@@ -61,7 +73,7 @@ ViewHelper::loadHeader($page_title, true);
                 <?php endforeach; ?>
             </select>
             <label for="">Colour</label>
-            <select class="form-select" id="colour_id">
+            <select name="colour_id" class="form-select" id="colour_id">
                 <option value="">Select Colour Id</option>
                 <?php foreach ($colours as $colour): ?>
                     <option value="<?= $colour['colour_id'] ?>">
@@ -70,7 +82,7 @@ ViewHelper::loadHeader($page_title, true);
                 <?php endforeach; ?>
             </select>
             <label for="">Unit Size</label>
-            <select class="form-select" id="unit_size">
+            <select name="unit_size" class="form-select" id="unit_size">
                 <option value="">Select Unit Size</option>
                 <option value="0.5L">0.5L</option>
                 <option value="1L">1L</option>
@@ -78,7 +90,9 @@ ViewHelper::loadHeader($page_title, true);
                 <option value="4L">4L</option>
                 <option value="8L">8L</option>
             </select>
-            <input type="text" placeholder="Enter Product Description">
+            <input name="variant_description" type="text" placeholder="Enter Product Description">
+
+            <button type="submit">Add Variant</button>
         </form>
     </div>
 
@@ -88,9 +102,9 @@ ViewHelper::loadHeader($page_title, true);
 
         <div class="actions-title">Actions :</div>
 
-        <button class="blue-btn">View Product Details</button>
-        <button class="yellow-btn">Edit Product Details</button>
-        <button class="red-btn">Delete Product</button>
+        <button id="view-variant" class="blue-btn">View Product Details</button>
+        <button id="edit-variant" class="yellow-btn">Edit Product Details</button>
+        <button id="delete-variant" class="red-btn">Delete Product Details</button>
         <button class="jump-btn">Jump To ↪</button>
     </div>
 
@@ -634,6 +648,57 @@ ViewHelper::loadHeader($page_title, true);
         </tbody>
     </table>
 </div>
+
+
+<!-- EDIT VARIANT POPUP -->
+ <?php
+ if ($show_variant_edit):?>
+<div id="forgotPasswordModal" class="forgot-modal-overlay">
+    <div class="forgot-modal-box">
+        <span class="close-forgot">X</span>
+
+        <h2>Edit Variant</h2>
+        <form action="<?= APP_BASE_URL ?>/admin/variant/edit/<?= $variant_to_edit['variant_id'] ?>" method="POST">
+            <input type="hidden" value="<?= $variant_to_edit['variant_id'] ?>" name="variant_id">
+        <div class="quick-add-title">Quick Add :</div>
+
+            <label for="">Product</label>
+            <select name="product_id" class="form-select" id="product_id">
+                <option value="<?= $variant_to_edit['product_id'] ?>"><?= $variant_to_edit['product_id'] ?></option>
+                <?php foreach ($products as $product): ?>
+                    <option value="<?= $product['product_id'] ?>">
+                        <?= $product['product_name'] ?>
+                    </option>
+                <?php endforeach; ?>
+            </select>
+            <label for="">Colour</label>
+            <select name="colour_id" class="form-select" id="colour_id">
+                <option value="<?= $variant_to_edit['colour_id'] ?>"><?= $variant_to_edit['colour_id'] ?></option>
+                <?php foreach ($colours as $colour): ?>
+                    <option value="<?= $colour['colour_id'] ?>">
+                        <?= $colour['colour_name'] ?>
+                    </option>
+                <?php endforeach; ?>
+            </select>
+            <label for="">Unit Size</label>
+            <select name="unit_size" class="form-select" id="unit_size">
+                <option value="<?= $variant_to_edit['unit_size'] ?>"><?= $variant_to_edit['unit_size'] ?></option>
+                <option value="0.5L">0.5L</option>
+                <option value="1L">1L</option>
+                <option value="2L">2L</option>
+                <option value="4L">4L</option>
+                <option value="8L">8L</option>
+            </select>
+            <input value="<?= $variant_to_edit['variant_description'] ?>" name="variant_description" type="text" placeholder="Enter Product Description">
+
+            <button type="submit">Add Variant</button>
+
+        </form>
+
+    </div>
+</div>
+<?php endif; ?>
+
 
 <?php
 ViewHelper::loadJsScripts();

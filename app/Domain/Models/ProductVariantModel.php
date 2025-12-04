@@ -43,7 +43,7 @@ public function getVariantById($id): ?array {
                     variant_description = :vDesc
                     WHERE variant_id = :id";
 
-        $params = [':type'=>$data['product_type_id'],':code'=>$data['product_code'],':name'=>$data['product_name'],':id'=>$id];
+        $params = [':pId'=>$data['product_id'],':cId'=>$data['colour_id'],':uSize'=>$data['unit_size'],':vDesc'=>$data['variant_description'], ':id' => $data['variant_id']];
         $this->execute($stmt,$params);
     }
 }
