@@ -22,6 +22,9 @@ use App\Controllers\admin\ProductVariantController;
 use App\Controllers\admin\ShiftController;
 use App\Controllers\admin\UsersController;
 use App\Controllers\admin\AdminDashboardController;
+use App\Controllers\admin\StationController;
+use App\Controllers\admin\TeamController;
+use App\Controllers\admin\ToteController;
 
 // General Controller Imports
 use App\Controllers\admin\AdminController;
@@ -193,15 +196,14 @@ return static function (App $app): void {
             $pallet->post('/edit/{id}', [PalletController::class, 'update'])->setName('admin.pallet.update');
         });
 
-        //TODO MAKE_TOTE_MODEL_AND_CONTROLLERS
-        // $admin->group('/pallet', function ($pallet) {
-        //     $pallet->get('', [PalletController::class, 'index'])->setName('admin.pallet.index');
-        //     $pallet->post('', [PalletController::class, 'store'])->setName('admin.pallet.store');
-        //     $pallet->get('/edit/{id}', [PalletController::class, 'edit'])->setName('admin.pallet.edit');
-        //     $pallet->get('/delete/{id}', [PalletController::class, 'showDelete'])->setName('admin.pallet.delete.show');
-        //     $pallet->get('/delete/{id}/do', [PalletController::class, 'delete'])->setName('admin.pallet.delete');
-        //     $pallet->post('/edit/{id}', [PalletController::class, 'update'])->setName('admin.pallet.update');
-        // });
+        $admin->group('/tote', function ($pallet) {
+            $pallet->get('', [ToteController::class, 'index'])->setName('admin.tote.index');
+            $pallet->post('', [ToteController::class, 'store'])->setName('admin.tote.store');
+            $pallet->get('/edit/{id}', [ToteController::class, 'edit'])->setName('admin.tote.edit');
+            $pallet->get('/delete/{id}', [ToteController::class, 'showDelete'])->setName('admin.tote.delete.show');
+            $pallet->get('/delete/{id}/do', [ToteController::class, 'delete'])->setName('admin.tote.delete');
+            $pallet->post('/edit/{id}', [ToteController::class, 'update'])->setName('admin.tote.update');
+        });
 
         //TODO MAKE_TEAM_MODEL_AND_CONTROLLERS
         // $admin->group('/pallet', function ($pallet) {
@@ -214,14 +216,14 @@ return static function (App $app): void {
         // });
 
         //TODO MAKE_STATION_MODEL_AND_CONTROLLERS
-        // $admin->group('/pallet', function ($pallet) {
-        //     $pallet->get('', [PalletController::class, 'index'])->setName('admin.pallet.index');
-        //     $pallet->post('', [PalletController::class, 'store'])->setName('admin.pallet.store');
-        //     $pallet->get('/edit/{id}', [PalletController::class, 'edit'])->setName('admin.pallet.edit');
-        //     $pallet->get('/delete/{id}', [PalletController::class, 'showDelete'])->setName('admin.pallet.delete.show');
-        //     $pallet->get('/delete/{id}/do', [PalletController::class, 'delete'])->setName('admin.pallet.delete');
-        //     $pallet->post('/edit/{id}', [PalletController::class, 'update'])->setName('admin.pallet.update');
-        // });
+        $admin->group('/station', function ($pallet) {
+            $pallet->get('', [StationController::class, 'index'])->setName('admin.station.index');
+            $pallet->post('', [StationController::class, 'store'])->setName('admin.station.store');
+            $pallet->get('/edit/{id}', [StationController::class, 'edit'])->setName('admin.station.edit');
+            $pallet->get('/delete/{id}', [StationController::class, 'showDelete'])->setName('admin.station.delete.show');
+            $pallet->get('/delete/{id}/do', [StationController::class, 'delete'])->setName('admin.station.delete');
+            $pallet->post('/edit/{id}', [StationController::class, 'update'])->setName('admin.station.update');
+        });
 
         // Shifts
         $admin->group('/shift', function ($shift) {

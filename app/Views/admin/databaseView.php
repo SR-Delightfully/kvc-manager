@@ -46,6 +46,18 @@ $pallet_to_edit = $data['pallet_to_edit'] ?? null;
 
 $show_pallet_delete = $show_pallet_delete ?? null;
 $pallet_to_delete = $data['pallet_to_delete'] ?? null;
+
+$show_station_edit = $show_station_edit ?? null;
+$station_to_edit = $data['station_to_edit'] ?? null;
+
+$show_station_delete = $show_station_delete ?? null;
+$station_to_delete = $data['station_to_delete'] ?? null;
+
+$show_tote_edit = $show_tote_edit ?? null;
+$tote_to_edit = $data['tote_to_edit'] ?? null;
+
+$show_tote_delete = $show_tote_delete ?? null;
+$tote_to_delete = $data['tote_to_delete'] ?? null;
 //var_dump($variant_to_edit);
 //var_dump($show_variant_edit);
 //var_dump($products);
@@ -761,7 +773,7 @@ ViewHelper::loadHeader($page_title, true);
  if ($show_variant_delete):?>
 <div id="forgotPasswordModal" class="forgot-modal-overlay">
     <div class="forgot-modal-box">
-        <span class="close-forgot">X</span>
+        <a href="<?=APP_BASE_URL ?>/admin" class="close-forgot">X</a>
 
         <h2>Delete Variant</h2>
         <h3>Are you sure you want to delete Variant: <?= $variant_to_delete['variant_description'] ?></h3>
@@ -769,7 +781,7 @@ ViewHelper::loadHeader($page_title, true);
             <input type="hidden" value="<?= $variant_to_delete['variant_id'] ?>" name="variant_id">
             <span>
                 <button type="submit">Delete Variant</button>
-                <button>Cancel</button>
+                <a href="<?=APP_BASE_URL ?>/admin">Cancel</a>
             </span>
         </form>
 
@@ -782,7 +794,7 @@ ViewHelper::loadHeader($page_title, true);
  if ($show_user_delete):?>
 <div id="forgotPasswordModal" class="forgot-modal-overlay">
     <div class="forgot-modal-box">
-        <span class="close-forgot">X</span>
+        <a href="<?=APP_BASE_URL ?>/admin" class="close-forgot">X</a>
 
         <h2>Terminate User</h2>
         <h3>Are you sure you want to Terminate User: <?= $user_to_delete['first_name'] ?> <?= $user_to_delete['last_name'] ?></h3>
@@ -791,7 +803,7 @@ ViewHelper::loadHeader($page_title, true);
             <input type="hidden" value="<?= $user_to_delete['user_id'] ?>" name="user_id">
             <span>
                 <button type="submit">Terminate User</button>
-                <button>Cancel</button>
+                <a href="<?=APP_BASE_URL ?>/admin">Cancel</a>
             </span>
         </form>
 
@@ -804,7 +816,7 @@ ViewHelper::loadHeader($page_title, true);
  if ($show_product_type_edit):?>
 <div id="forgotPasswordModal" class="forgot-modal-overlay">
     <div class="forgot-modal-box">
-        <span class="close-forgot">X</span>
+        <a href="<?=APP_BASE_URL ?>/admin" class="close-forgot">X</a>
         <h2>Edit Product Type</h2>
         <form action="<?= APP_BASE_URL ?>/admin/type/edit/<?= $product_type_to_edit['product_type_id'] ?>" method="POST">
         <input type="hidden" value="<?= $product_type_to_edit['product_type_id'] ?>" name="product_type_id">
@@ -814,7 +826,7 @@ ViewHelper::loadHeader($page_title, true);
             <input value="<?= $product_type_to_edit['product_type_name'] ?>" name="product_type_name" type="text" placeholder="Enter Product Type Name">
 
             <button type="submit">Update Product Type</button>
-            <button>Cancel</button>
+            <a href="<?=APP_BASE_URL ?>/admin">Cancel</a>
         </form>
 
     </div>
@@ -826,7 +838,7 @@ ViewHelper::loadHeader($page_title, true);
  if ($show_type_delete):?>
 <div id="forgotPasswordModal" class="forgot-modal-overlay">
     <div class="forgot-modal-box">
-        <span class="close-forgot">X</span>
+        <a href="<?=APP_BASE_URL ?>/admin" class="close-forgot">X</a>
 
         <h2>Delete Product Type</h2>
         <h3>Are you sure you want to delete Product Type: <?= $type_to_delete['product_type_name'] ?></h3>
@@ -834,7 +846,7 @@ ViewHelper::loadHeader($page_title, true);
             <input type="hidden" value="<?= $type_to_delete['product_type_id'] ?>" name="product_type_id">
             <span>
                 <button type="submit">Delete Product Type</button>
-                <button>Cancel</button>
+                <a href="<?=APP_BASE_URL ?>/admin">Cancel</a>
             </span>
         </form>
 
@@ -847,7 +859,7 @@ ViewHelper::loadHeader($page_title, true);
  if ($show_product_edit):?>
 <div id="forgotPasswordModal" class="forgot-modal-overlay">
     <div class="forgot-modal-box">
-        <span class="close-forgot">X</span>
+        <a href="<?=APP_BASE_URL ?>/admin" class="close-forgot">X</a>
         <h2>Edit Product</h2>
         <form action="<?= APP_BASE_URL ?>/admin/product/edit/<?= $product_to_edit['product_id'] ?>" method="POST">
         <input type="hidden" value="<?= $product_to_edit['product_id'] ?>" name="product_id">
@@ -870,7 +882,7 @@ ViewHelper::loadHeader($page_title, true);
             <input value="<?= $product_to_edit['product_name'] ?>" name="product_name" type="text" placeholder="Enter Product Type Name">
 
             <button type="submit">Update Product Type</button>
-            <button>Cancel</button>
+            <a href="<?=APP_BASE_URL ?>/admin">Cancel</a>
         </form>
 
     </div>
@@ -882,7 +894,7 @@ ViewHelper::loadHeader($page_title, true);
  if ($show_product_delete):?>
 <div id="forgotPasswordModal" class="forgot-modal-overlay">
     <div class="forgot-modal-box">
-        <span class="close-forgot">X</span>
+        <a href="<?=APP_BASE_URL ?>/admin" class="close-forgot">X</a>
 
         <h2>Delete Product Type</h2>
         <h3>Are you sure you want to delete Product: <?= $product_to_delete['product_name'] ?></h3>
@@ -890,7 +902,7 @@ ViewHelper::loadHeader($page_title, true);
             <input type="hidden" value="<?= $product_to_delete['product_id'] ?>" name="product_id">
             <span>
                 <button type="submit">Delete Product</button>
-                <button>Cancel</button>
+                <a href="<?=APP_BASE_URL ?>/admin">Cancel</a>
             </span>
         </form>
 
@@ -904,7 +916,7 @@ ViewHelper::loadHeader($page_title, true);
  if ($show_colour_edit):?>
 <div id="forgotPasswordModal" class="forgot-modal-overlay">
     <div class="forgot-modal-box">
-        <span class="close-forgot">X</span>
+        <a href="<?=APP_BASE_URL ?>/admin" class="close-forgot">X</a>
         <h2>Edit Colour</h2>
         <form action="<?= APP_BASE_URL ?>/admin/colour/edit/<?= $colour_to_edit['colour_id'] ?>" method="POST">
         <input type="hidden" value="<?= $colour_to_edit['colour_id'] ?>" name="colour_id">
@@ -917,7 +929,7 @@ ViewHelper::loadHeader($page_title, true);
             <input value="<?= $colour_to_edit['colour_name'] ?>" name="colour_name" type="text" placeholder="Enter Colour Name">
 
             <button type="submit">Update Colour</button>
-            <button>Cancel</button>
+            <a href="<?=APP_BASE_URL ?>/admin">Cancel</a>
         </form>
 
     </div>
@@ -929,7 +941,7 @@ ViewHelper::loadHeader($page_title, true);
  if ($show_colour_delete):?>
 <div id="forgotPasswordModal" class="forgot-modal-overlay">
     <div class="forgot-modal-box">
-        <span class="close-forgot">X</span>
+        <a href="<?=APP_BASE_URL ?>/admin" class="close-forgot">X</a>
 
         <h2>Delete Product Type</h2>
         <h3>Are you sure you want to delete Colour: <?= $colour_to_delete['colour_name'] ?></h3>
@@ -937,7 +949,50 @@ ViewHelper::loadHeader($page_title, true);
             <input type="hidden" value="<?= $colour_to_delete['colour_id'] ?>" name="colour_id">
             <span>
                 <button type="submit">Delete Colour</button>
-                <button>Cancel</button>
+                <a href="<?=APP_BASE_URL ?>/admin">Cancel</a>
+            </span>
+        </form>
+
+    </div>
+</div>
+<?php endif; ?>
+
+<!-- EDIT STATION POPUP -->
+ <?php
+ if ($show_station_edit):?>
+<div id="forgotPasswordModal" class="forgot-modal-overlay">
+    <div class="forgot-modal-box">
+        <a href="<?=APP_BASE_URL ?>/admin" class="close-forgot">X</a>
+        <h2>Edit Station</h2>
+        <form action="<?= APP_BASE_URL ?>/admin/station/edit/<?= $station_to_edit['station_id'] ?>" method="POST">
+        <input type="hidden" value="<?= $station_to_edit['station_id'] ?>" name="station_id">
+        <div class="quick-add-title">Quick Add :</div>
+
+            <label for="station_name">Station Name</label>
+            <input value="<?= $station_to_edit['station_name'] ?>" name="station_name" type="text" placeholder="Enter Station Name">
+
+            <button type="submit">Update Station</button>
+            <a href="<?=APP_BASE_URL ?>/admin">Cancel</a>
+        </form>
+
+    </div>
+</div>
+<?php endif; ?>
+
+<!-- DELETE STATION POPUP -->
+ <?php
+ if ($show_station_delete):?>
+<div id="forgotPasswordModal" class="forgot-modal-overlay">
+    <div class="forgot-modal-box">
+        <a href="<?=APP_BASE_URL ?>/admin" class="close-forgot">X</a>
+
+        <h2>Delete Station</h2>
+        <h3>Are you sure you want to delete Station: <?= $station_to_delete['station_id'] ?></h3>
+        <form action="<?= APP_BASE_URL ?>/admin/station/delete/<?= $station_to_delete['station_id']?>/do" method="GET">
+            <input type="hidden" value="<?= $station_to_delete['station_id'] ?>" name="station_id">
+            <span>
+                <button type="submit">Delete Station</button>
+                <a href="<?=APP_BASE_URL ?>/admin">Cancel</a>
             </span>
         </form>
 
@@ -951,7 +1006,7 @@ ViewHelper::loadHeader($page_title, true);
  if ($show_pallet_edit):?>
 <div id="forgotPasswordModal" class="forgot-modal-overlay">
     <div class="forgot-modal-box">
-        <span class="close-forgot">X</span>
+        <a href="<?=APP_BASE_URL ?>/admin" class="close-forgot">X</a>
         <h2>Edit Pallet</h2>
         <form action="<?= APP_BASE_URL ?>/admin/pallet/edit/<?= $pallet_to_edit['pallet_id'] ?>" method="POST">
         <input type="hidden" value="<?= $pallet_to_edit['pallet_id'] ?>" name="pallet_id">
@@ -964,7 +1019,7 @@ ViewHelper::loadHeader($page_title, true);
             <input value="<?= $colour_to_edit['colour_name'] ?>" name="colour_name" type="text" placeholder="Enter Colour Name">
 
             <button type="submit">Update Colour</button>
-            <button>Cancel</button>
+            <a href="<?=APP_BASE_URL ?>/admin">Cancel</a>
         </form>
 
     </div>
@@ -976,7 +1031,7 @@ ViewHelper::loadHeader($page_title, true);
  if ($show_pallet_delete):?>
 <div id="forgotPasswordModal" class="forgot-modal-overlay">
     <div class="forgot-modal-box">
-        <span class="close-forgot">X</span>
+        <a href="<?=APP_BASE_URL ?>/admin" class="close-forgot">X</a>
 
         <h2>Delete Product Type</h2>
         <h3>Are you sure you want to delete Colour: <?= $colour_to_delete['colour_name'] ?></h3>
@@ -984,7 +1039,60 @@ ViewHelper::loadHeader($page_title, true);
             <input type="hidden" value="<?= $colour_to_delete['colour_id'] ?>" name="colour_id">
             <span>
                 <button type="submit">Delete Colour</button>
-                <button>Cancel</button>
+                <a href="<?=APP_BASE_URL ?>/admin">Cancel</a>
+            </span>
+        </form>
+
+    </div>
+</div>
+<?php endif; ?>
+
+<!-- EDIT TOTE POPUP -->
+ <?php
+ if ($show_tote_edit):?>
+<div id="forgotPasswordModal" class="forgot-modal-overlay">
+    <div class="forgot-modal-box">
+        <a href="<?=APP_BASE_URL ?>/admin" class="close-forgot">X</a>
+        <h2>Edit Tote</h2>
+        <form action="<?= APP_BASE_URL ?>/admin/tote/edit/<?= $tote_to_edit['tote_id'] ?>" method="POST">
+        <input type="hidden" value="<?= $tote_to_edit['tote_id'] ?>" name="tote_id">
+        <div class="quick-add-title">Quick Add :</div>
+
+            <label for="">Variant</label>
+            <select name="variant_id" class="form-select" id="variant_id">
+                <option value="<?= $tote_to_edit['variant_id'] ?>"><?= $tote_to_edit['variant_id'] ?></option>
+                <?php foreach ($variants as $variant): ?>
+                    <option value="<?= $variant['variant_id'] ?>">
+                        <?= $variant['variant_description'] ?>
+                    </option>
+                <?php endforeach; ?>
+            </select>
+
+            <label for="batch_number">Batch Number</label>
+            <input value="<?= $tote_to_edit['batch_number'] ?>" name="batch_number" type="text" placeholder="Enter Batch Number">
+
+            <button type="submit">Update Colour</button>
+            <a href="<?=APP_BASE_URL ?>/admin">Cancel</a>
+        </form>
+
+    </div>
+</div>
+<?php endif; ?>
+
+<!-- DELETE TOTE POPUP -->
+ <?php
+ if ($show_tote_delete):?>
+<div id="forgotPasswordModal" class="forgot-modal-overlay">
+    <div class="forgot-modal-box">
+        <a href="<?=APP_BASE_URL ?>/admin" class="close-forgot">X</a>
+
+        <h2>Delete Tote</h2>
+        <h3>Are you sure you want to delete Tote with Batch Number: <?= $tote_to_delete['batch_number'] ?></h3>
+        <form action="<?= APP_BASE_URL ?>/admin/tote/delete/<?= $tote_to_delete['tote_id']?>/do" method="GET">
+            <input type="hidden" value="<?= $tote_to_delete['tote_id'] ?>" name="tote_id">
+            <span>
+                <button type="submit">Delete Tote</button>
+                <a href="<?=APP_BASE_URL ?>/admin">Cancel</a>
             </span>
         </form>
 

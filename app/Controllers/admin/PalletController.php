@@ -106,7 +106,7 @@ class PalletController extends BaseController
             return $this->redirect($request, $response, 'admin.index');
         } catch (\Throwable $th) {
             FlashMessage::error("Insert failed. Please try again");
-            return $this->render($response, 'pages/adminView.php');
+            return $this->render($response, 'admin/databaseView.php');
         }
     }
 
