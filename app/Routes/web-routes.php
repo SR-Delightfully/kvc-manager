@@ -167,9 +167,10 @@ return static function (App $app): void {
             $users->get('', [UsersController::class, 'index'])->setName('admin.users.index');
             $users->post('', [UsersController::class, 'store'])->setName('admin.users.store');
             $users->get('{id}', [UsersController::class, 'show'])->setName('admin.users.show');
-            $users->get('{id}/edit', [UsersController::class, 'edit'])->setName('admin.users.edit');
-            $users->get('{id}/delete', [UsersController::class, 'delete'])->setName('admin.users.delete');
-            $users->post('{id}', [UsersController::class, 'update'])->setName('admin.users.update');
+            $users->get('/edit/{id}', [UsersController::class, 'edit'])->setName('admin.users.edit');
+            $users->get('/delete/{id}', [UsersController::class, 'showDelete'])->setName('admin.users.delete.show');
+            $users->get('/delete/{id}/do', [UsersController::class, 'delete'])->setName('admin.users.delete');
+            $users->post('/edit/{id}', [UsersController::class, 'update'])->setName('admin.users.update');
         });
 
         // Types
@@ -212,7 +213,7 @@ return static function (App $app): void {
         ];
         $response->getBody()->write(json_encode($payload, JSON_UNESCAPED_SLASHES | JSON_PARTIAL_OUTPUT_ON_ERROR));
         return $response->withHeader('Content-Type', 'application/json');
-        return $response->withHeader('Content-Type', 'application/json');
+
     });
 
     // Error Route

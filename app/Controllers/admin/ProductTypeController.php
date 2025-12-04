@@ -118,7 +118,7 @@ class ProductTypeController extends BaseController
             return $this->redirect($request, $response, 'admin.index');
         } catch (\Throwable $th) {
             FlashMessage::error("Update failed. Please try again");
-            return $this->redirect($request, $response, 'pages/adminView.php');
+            return $this->redirect($request, $response, 'admin.index');
         }
     }
 

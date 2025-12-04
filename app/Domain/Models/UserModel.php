@@ -44,6 +44,13 @@ class UserModel extends BaseModel
         return $this->selectAll($stmt);
     }
 
+    public function getUserById($id): ?array {
+        $stmt = "SELECT * FROM users WHERE user_id LIKE :user_id";
+        $params = [':user_id' => $id];
+        $user =  $this->selectOne($stmt, $params);
+        return $user === false ? null : $user;
+    }
+
     public function getUserByName($inputName): ?array {
 
         $inputName = trim($inputName);//removing trailing blank spaces.

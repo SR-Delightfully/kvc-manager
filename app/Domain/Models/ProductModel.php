@@ -51,7 +51,7 @@ class ProductModel extends BaseModel
     public function getProductTypeById($id): ?array {
         $stmt = "SELECT * FROM product_type WHERE product_type_id = :id";
         $params = [':id'=>$id];
-        $productTypes = $this->selectAll($stmt, $params);
+        $productTypes = $this->selectOne($stmt, $params);
         return $productTypes;
     }
 
@@ -76,7 +76,7 @@ class ProductModel extends BaseModel
 
     public function updateProductType($id, $data) {
         $stmt = "UPDATE product_type SET
-                    product_type_name = :name,
+                    product_type_name = :name
                     WHERE product_type_id = :id";
 
         $params = [':name'=>$data['product_type_name'],':id'=>$id];

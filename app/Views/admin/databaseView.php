@@ -25,6 +25,9 @@ $product_type_to_edit = $data['product_type_to_edit'] ?? null;
 
 $show_type_delete = $show_type_delete ?? null;
 $type_to_delete = $data['type_to_delete'] ?? null;
+
+$show_user_delete = $show_user_delete ?? null;
+$user_to_delete = $data['user_to_delete'] ?? null;
 //var_dump($variant_to_edit);
 //var_dump($show_variant_edit);
 //var_dump($products);
@@ -259,7 +262,7 @@ ViewHelper::loadHeader($page_title, true);
                     <input type="text" name="product_type_name" class="form-control" id="inputName">
 
                     <div class="button-row">
-                        <button type="submit" class="save-btn">Save Pallet</button>
+                        <button type="submit" class="save-btn">Save Product Type</button>
                     </div>
                 </form>
 
@@ -741,6 +744,27 @@ ViewHelper::loadHeader($page_title, true);
 </div>
 <?php endif; ?>
 
+<!-- DELETE USER POPUP -->
+ <?php
+ if ($show_user_delete):?>
+<div id="forgotPasswordModal" class="forgot-modal-overlay">
+    <div class="forgot-modal-box">
+        <span class="close-forgot">X</span>
+
+        <h2>Terminate User</h2>
+        <h3>Are you sure you want to Terminate User: <?= $user_to_delete['first_name'] ?> <?= $user_to_delete['last_name'] ?></h3>
+        <h3>Once they are terminated they are unable to access this website</h3>
+        <form action="<?= APP_BASE_URL ?>/admin/users/delete/<?= $user_to_delete['user_id']?>/do" method="GET">
+            <input type="hidden" value="<?= $user_to_delete['user_id'] ?>" name="user_id">
+            <span>
+                <button type="submit">Terminate User</button>
+                <button>Cancel</button>
+            </span>
+        </form>
+
+    </div>
+</div>
+<?php endif; ?>
 
 <!-- EDIT PRODUCT TYPE POPUP -->
  <?php
@@ -748,9 +772,8 @@ ViewHelper::loadHeader($page_title, true);
 <div id="forgotPasswordModal" class="forgot-modal-overlay">
     <div class="forgot-modal-box">
         <span class="close-forgot">X</span>
-
-        <h2>Edit Variant</h2>
-        <form action="<?= APP_BASE_URL ?>/admin/variant/edit/<?= $product_type_to_edit['product_type_id'] ?>" method="POST">
+        <h2>Edit Product Type</h2>
+        <form action="<?= APP_BASE_URL ?>/admin/type/edit/<?= $product_type_to_edit['product_type_id'] ?>" method="POST">
         <input type="hidden" value="<?= $product_type_to_edit['product_type_id'] ?>" name="product_type_id">
         <div class="quick-add-title">Quick Add :</div>
 
@@ -758,6 +781,7 @@ ViewHelper::loadHeader($page_title, true);
             <input value="<?= $product_type_to_edit['product_type_name'] ?>" name="product_type_name" type="text" placeholder="Enter Product Type Name">
 
             <button type="submit">Update Product Type</button>
+            <button>Cancel</button>
         </form>
 
     </div>
@@ -771,12 +795,12 @@ ViewHelper::loadHeader($page_title, true);
     <div class="forgot-modal-box">
         <span class="close-forgot">X</span>
 
-        <h2>Delete Variant</h2>
-        <h3>Are you sure you want to delete Variant: <?= $variant_to_delete['variant_description'] ?></h3>
-        <form action="<?= APP_BASE_URL ?>/admin/variant/delete/<?= $variant_to_delete['variant_id']?>/do" method="GET">
-            <input type="hidden" value="<?= $variant_to_delete['variant_id'] ?>" name="variant_id">
+        <h2>Delete Product Type</h2>
+        <h3>Are you sure you want to delete Product Type: <?= $type_to_delete['product_type_name'] ?></h3>
+        <form action="<?= APP_BASE_URL ?>/admin/type/delete/<?= $type_to_delete['product_type_id']?>/do" method="GET">
+            <input type="hidden" value="<?= $type_to_delete['product_type_id'] ?>" name="product_type_id">
             <span>
-                <button type="submit">Delete Variant</button>
+                <button type="submit">Delete Product Type</button>
                 <button>Cancel</button>
             </span>
         </form>

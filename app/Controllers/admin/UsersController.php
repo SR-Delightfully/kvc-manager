@@ -60,6 +60,22 @@ class UsersController extends BaseController
 
         return $this->redirect($request, $response, 'admin.index');
     }
+
+    public function showDelete(Request $request, Response $response, array $args): Response {
+        $user_id = $args['id'];
+
+        $user = $this->userModel->getUserById($user_id);
+
+        $data = [
+                'contentView' => APP_VIEWS_PATH . '/pages/adminView.php',
+                'isSideBarShown' => true,
+                'isAdmin' => UserContext::isAdmin(),
+                'show_user_delete' => true,
+                'data' => array_merge($this->adminDataHelper->adminPageData(),
+                        ['user_to_delete' => $user,]),
+            ];
+        return $this->render($response, 'admin/databaseView.php', $data);
+    }
 }
 
 ?>

@@ -44,8 +44,8 @@ submitBtn('variant-form', 'view-variant', 'admin/variant/', 'GET', 'variant', 'v
 submitBtn('variant-form', 'edit-variant', 'admin/variant/edit/', 'GET', 'variant', 'variant_id');
 submitBtn('variant-form', 'delete-variant', 'admin/variant/delete/', 'GET', 'variant', 'variant_id');
 
-submitBtn('user-form', 'view-user', 'admin/user/', 'GET', 'user', 'user_id');
-submitBtn('user-form', 'delete-user', 'admin/user/delete/', 'GET', 'user', 'user_id');
+submitBtn('user-form', 'view-user', 'admin/users/', 'GET', 'user', 'user_id');
+submitBtn('user-form', 'delete-user', 'admin/users/delete/', 'GET', 'user', 'user_id');
 
 submitBtn('product-type-form', 'edit-type', 'admin/type/edit/', 'GET', 'product type', 'product_type_id');
 submitBtn('product-type-form', 'delete-type', 'admin/type/delete/', 'GET', 'product type', 'product_type_id');
