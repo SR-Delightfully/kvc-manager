@@ -137,8 +137,8 @@ return static function (App $app): void {
             $product->get('', [ProductController::class, 'index'])->setName('admin.product.index');
             $product->post('', [ProductController::class, 'store'])->setName('admin.product.store');
             $product->get('/edit/{id}', [ProductController::class, 'edit'])->setName('admin.product.edit');
-            $product->get('delete/{id}', [ProductController::class, 'showDelete'])->setName('admin.product.delete.show');
-            $product->get('delete/{id}/do', [ProductController::class, 'delete'])->setName('admin.product.delete');
+            $product->get('/delete/{id}', [ProductController::class, 'showDelete'])->setName('admin.product.delete.show');
+            $product->get('/delete/{id}/do', [ProductController::class, 'delete'])->setName('admin.product.delete');
             $product->post('/edit/{id}', [ProductController::class, 'update'])->setName('admin.product.update');
         });
 
@@ -192,6 +192,36 @@ return static function (App $app): void {
             $pallet->get('/delete/{id}/do', [PalletController::class, 'delete'])->setName('admin.pallet.delete');
             $pallet->post('/edit/{id}', [PalletController::class, 'update'])->setName('admin.pallet.update');
         });
+
+        //TODO MAKE_TOTE_MODEL_AND_CONTROLLERS
+        // $admin->group('/pallet', function ($pallet) {
+        //     $pallet->get('', [PalletController::class, 'index'])->setName('admin.pallet.index');
+        //     $pallet->post('', [PalletController::class, 'store'])->setName('admin.pallet.store');
+        //     $pallet->get('/edit/{id}', [PalletController::class, 'edit'])->setName('admin.pallet.edit');
+        //     $pallet->get('/delete/{id}', [PalletController::class, 'showDelete'])->setName('admin.pallet.delete.show');
+        //     $pallet->get('/delete/{id}/do', [PalletController::class, 'delete'])->setName('admin.pallet.delete');
+        //     $pallet->post('/edit/{id}', [PalletController::class, 'update'])->setName('admin.pallet.update');
+        // });
+
+        //TODO MAKE_TEAM_MODEL_AND_CONTROLLERS
+        // $admin->group('/pallet', function ($pallet) {
+        //     $pallet->get('', [PalletController::class, 'index'])->setName('admin.pallet.index');
+        //     $pallet->post('', [PalletController::class, 'store'])->setName('admin.pallet.store');
+        //     $pallet->get('/edit/{id}', [PalletController::class, 'edit'])->setName('admin.pallet.edit');
+        //     $pallet->get('/delete/{id}', [PalletController::class, 'showDelete'])->setName('admin.pallet.delete.show');
+        //     $pallet->get('/delete/{id}/do', [PalletController::class, 'delete'])->setName('admin.pallet.delete');
+        //     $pallet->post('/edit/{id}', [PalletController::class, 'update'])->setName('admin.pallet.update');
+        // });
+
+        //TODO MAKE_STATION_MODEL_AND_CONTROLLERS
+        // $admin->group('/pallet', function ($pallet) {
+        //     $pallet->get('', [PalletController::class, 'index'])->setName('admin.pallet.index');
+        //     $pallet->post('', [PalletController::class, 'store'])->setName('admin.pallet.store');
+        //     $pallet->get('/edit/{id}', [PalletController::class, 'edit'])->setName('admin.pallet.edit');
+        //     $pallet->get('/delete/{id}', [PalletController::class, 'showDelete'])->setName('admin.pallet.delete.show');
+        //     $pallet->get('/delete/{id}/do', [PalletController::class, 'delete'])->setName('admin.pallet.delete');
+        //     $pallet->post('/edit/{id}', [PalletController::class, 'update'])->setName('admin.pallet.update');
+        // });
 
         // Shifts
         $admin->group('/shift', function ($shift) {

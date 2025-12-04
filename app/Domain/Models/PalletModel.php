@@ -74,6 +74,26 @@ class PalletModel extends BaseModel
         $this->execute($stmt, $params);
     }
 
+    public function updatePalletize(int $id, array $data): void
+    {
+        $stmt = "UPDATE palletize_session SET start_time = :start_time,
+                                end_time = :end_time,
+                                units = :units,
+                                break_time = :break_time,
+                                mess = :mess,
+                                notes = :notes WHERE pallet_id = :id";
+        $params = [
+            ':id' => $id,
+            ':start_time' => $data['start_time'],
+            ':end_time' =>$data['end_time'],
+            ':units' => $data['units'],
+            ':break_time' => $data['break_time'],
+            ':mess' => $data['mess'],
+            ':notes' => $data['notes']
+        ];
+        $this->execute($stmt, $params);
+    }
+
     public function delete(int $id): void
     {
         $stmt = "DELETE FROM pallet WHERE pallet_id = :id";

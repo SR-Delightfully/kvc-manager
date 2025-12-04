@@ -19,6 +19,8 @@ function enableRowSelect(rowSelector, radioSelector) {
 enableRowSelect(".variant-row", '.variant-radio');
 enableRowSelect('.user-row', '.user-radio');
 enableRowSelect('.product-type-row', '.type-radio');
+enableRowSelect('.product-row', '.product-radio');
+enableRowSelect('.colour-row', '.colour-radio');
 
 function submitBtn(formElement, buttonId, action, method, name, inputName) {
     const form = document.getElementById(formElement);
@@ -49,3 +51,11 @@ submitBtn('user-form', 'delete-user', 'admin/users/delete/', 'GET', 'user', 'use
 
 submitBtn('product-type-form', 'edit-type', 'admin/type/edit/', 'GET', 'product type', 'product_type_id');
 submitBtn('product-type-form', 'delete-type', 'admin/type/delete/', 'GET', 'product type', 'product_type_id');
+
+submitBtn('product-form', 'view-product', 'admin/product/', 'GET', 'product', 'product_id');
+submitBtn('product-form', 'edit-product', 'admin/product/edit/', 'GET', 'product', 'product_id');
+submitBtn('product-form', 'delete-product', 'admin/product/delete/', 'GET', 'product', 'product_id');
+
+submitBtn('colour-form', 'view-colour', 'admin/colour/', 'GET', 'colour', 'colour_id');
+submitBtn('colour-form', 'edit-colour', 'admin/colour/edit/', 'GET', 'colour', 'colour_id');
+submitBtn('colour-form', 'delete-colour', 'admin/colour/delete/', 'GET', 'colour', 'colour_id');

@@ -90,7 +90,7 @@ class ColourController extends BaseController
             return $this->redirect($request, $response, 'admin.index');
         } catch (\Throwable $th) {
             FlashMessage::error("Insert failed. Please try again");
-            return $this->render($response, 'pages/adminView.php');
+            return $this->render($response, 'admin/databaseView.php');
         }
     }
 
@@ -109,7 +109,7 @@ class ColourController extends BaseController
                 'data' => array_merge($this->adminDataHelper->adminPageData(),
                         ['colour_to_edit' => $colour]),
             ];
-        return $this->render($response, 'pages/adminView.php', $data);
+        return $this->render($response, 'admin/databaseView.php', $data);
     }
 
     //post method for updating specified product
@@ -151,6 +151,22 @@ class ColourController extends BaseController
         FlashMessage::success("Successfully Deleted Colour With ID: $id");
 
         return $this->redirect($request, $response, 'admin.index');
+    }
+
+    public function showDelete(Request $request, Response $response, array $args): Response {
+        $colour_id = $args['id'];
+
+        $variant = $this->colourModel->getColourById($colour_id);
+
+        $data = [
+                'contentView' => APP_VIEWS_PATH . '/pages/adminView.php',
+                'isSideBarShown' => true,
+                'isAdmin' => UserContext::isAdmin(),
+                'show_colour_delete' => true,
+                'data' => array_merge($this->adminDataHelper->adminPageData(),
+                        ['colour_to_delete' => $variant,]),
+            ];
+        return $this->render($response, 'admin/databaseView.php', $data);
     }
 }
 

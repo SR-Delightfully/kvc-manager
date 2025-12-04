@@ -24,9 +24,9 @@ class ColourModel extends BaseModel
     }
 
     public function createColour(array $data): void {
-        $stmt = "INSERT INTO colour(product_category, product_code, product_name) VALUES
-        (:pCat, :pCode, :pName)";
-        $params = [':pCat'=>$data['product_category'],':pCode'=>$data['product_code'],':pName'=>$data['product_name']];
+        $stmt = "INSERT INTO colour(colour_code, colour_name) VALUES
+        (:cCode, :cName)";
+        $params = [':cCode'=>$data['colour_code'],':cName'=>$data['colour_name']];
         $this->execute($stmt, $params);
     }
 
