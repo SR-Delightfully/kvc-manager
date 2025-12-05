@@ -126,7 +126,16 @@ $admin->get('/temp-settings', function ($request, $response) {
     require APP_VIEWS_PATH . '/admin/settingsView.php';
     return $response;
 });
-
+$admin->get('/temp-reports', function ($request, $response) {
+    // Path to your view file
+    require APP_VIEWS_PATH . '/admin/reportsView.php';
+    return $response;
+});
+$admin->get('/temp-reports2', function ($request, $response) {
+    // Path to your view file
+    require APP_VIEWS_PATH . '/admin/allTimeReportsView.php';
+    return $response;
+});
 
         $admin->get('', [AdminController::class, 'index'])->setName('admin.index');
 
