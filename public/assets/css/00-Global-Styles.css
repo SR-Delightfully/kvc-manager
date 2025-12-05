@@ -151,9 +151,9 @@ html {
     -ms-overflow-style: none; /* IE and Edge */
     scrollbar-width: none;
 }
-body::before {
+/* body::before {
     content: "";
-    /* background-color: hotpink; */
+    background-color: hotpink;
     background-image: linear-gradient(255deg, #9FA7BC 33%,  #495A74 67%, #313E4F 77%, #181F28 87%, #11161A 100%);
     opacity: 50%;
     height: 100vh;
@@ -162,8 +162,8 @@ body::before {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    z-index: 1;
-}
+    z-index: 999000;
+} */
 body {
     margin: 0;
     padding: 0;

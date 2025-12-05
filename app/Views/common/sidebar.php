@@ -18,16 +18,28 @@ $tabs = [];
 
 // Admin tab with submenu
 // if (UserContext::isLoggedIn() && UserContext::isAdmin()) {
+// TODO: update routes, better clarify subroute styles
     $tabs['tab1'] = [
         "key" => "admin",
         "icon" => "<i class='bi bi-person-gear'></i>",
         "subtabs" => [
             ["label" => "Dashboard", "url" => "./admin"],
-            ["label" => "Users", "url" => "./admin/users"],
+            ["label" => "<b>Employee Management</b>", "url" => "./admin/users"],
+            ["label" => "Employees", "url" => "./admin/type"],
+            ["label" => "Schedule", "url" => "./admin/type"],
+            ["label" => "Shifts", "url" => "./admin/type"],
+            ["label" => "<b>Station Management</b>", "url" => "./admin/product"],
+            ["label" => "Stations", "url" => "./admin/product"],
+            ["label" => "Teams", "url" => "./admin/product"],
+            ["label" => "Team Members", "url" => "./admin/product"],
+            ["label" => "<b>Products Management</b>", "url" => "./admin/colour"],
             ["label" => "Products", "url" => "./admin/product"],
-            ["label" => "Colours", "url" => "./admin/colour"],
-            ["label" => "Types", "url" => "./admin/type"],
-            ["label" => "Shifts", "url" => "./admin/shift"],
+            ["label" => "Product Types", "url" => "./admin/product"],
+            ["label" => "Product Variants", "url" => "./admin/product"],
+            ["label" => "Product Colours", "url" => "./admin/product"],
+            ["label" => "<b>Storage Management</b>", "url" => "./admin/type"],
+            ["label" => "Pallets", "url" => "./admin/product"],
+            ["label" => "Totes", "url" => "./admin/product"],
         ]
     ];
 // }

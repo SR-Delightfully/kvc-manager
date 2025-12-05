@@ -183,7 +183,7 @@ $is_variant_dlt_open = $is_variant_dlt_open ?? null;
                         </form>
                     </div>
                 </li>
-                // * Suggestion, instead of schedule, display stations (station_id, station_name, team_num, team_members (a dropdown?))  
+                <!-- // * Suggestion, instead of schedule, display stations (station_id, station_name, team_num, team_members (a dropdown?))   -->
                 <!-- Schedule Component -->
                 <li>
                     <div class="schedule-header">
@@ -337,7 +337,7 @@ $is_variant_dlt_open = $is_variant_dlt_open ?? null;
                     </form>
                 </li>   
             </ul>
-                        <ul>
+            <ul id="backend-sections">
                 <li>
                     <!-- TODO: call admin/users view -->
                     <!-- TODO: move big users table to this file -->
@@ -456,7 +456,7 @@ $is_variant_dlt_open = $is_variant_dlt_open ?? null;
                         </form>
                     </div>
                 </li>
-                // * Suggestion, instead of schedule, display stations (station_id, station_name, team_num, team_members (a dropdown?))  
+                <!-- // * Suggestion, instead of schedule, display stations (station_id, station_name, team_num, team_members (a dropdown?))   -->
                 <!-- Schedule Component -->
                 <li>
                     <div class="schedule-header">
@@ -610,7 +610,7 @@ $is_variant_dlt_open = $is_variant_dlt_open ?? null;
                     </form>
                 </li>   
             </ul>
-            <ul>
+            <ul id="backend-sections">
                 <li>
                     <?php include __DIR__ . '/admin/employeesView.php'; ?>
                     <!-- TODO: create admin/employees overview -->
