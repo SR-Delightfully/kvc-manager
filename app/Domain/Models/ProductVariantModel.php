@@ -46,4 +46,13 @@ public function getVariantById($id): ?array {
         $params = [':pId'=>$data['product_id'],':cId'=>$data['colour_id'],':uSize'=>$data['unit_size'],':vDesc'=>$data['variant_description'], ':id' => $data['variant_id']];
         $this->execute($stmt,$params);
     }
+
+    public function search($searchTerm) {
+        $stmt = "SELECT * FROM product_variant WHERE variant_description LIKE ?";
+        $params = [];
+        $like = '%' . $searchTerm . '%';
+        $params[] = $like;
+        $results = $this->selectAll($stmt, $params);
+        return $results;
+    }
 }

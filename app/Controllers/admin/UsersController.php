@@ -76,6 +76,32 @@ class UsersController extends BaseController
             ];
         return $this->render($response, 'admin/databaseView.php', $data);
     }
+
+    public function search(Request $request, Response $response, array $args): Response
+    {
+        $data = $request->getQueryParams();
+        $q = $data['q'] ?? "";
+        $role = $data['user_role'] ?? null;
+
+        if (strlen($q) > 100){
+            $q = substr($q, 100);
+        }
+
+        $variants = $this->userModel->search($q, $role);
+
+        $data = [
+            'success' => true,
+            'count' => count($variants),
+            'query' => $q,
+            'users' => $variants,
+        ];
+
+        $payload = json_encode($data, JSON_UNESCAPED_UNICODE);
+
+        $response->getBody()->write($payload);
+
+        return $response->withHeader('Content-Type', 'application/json')->withStatus(200);
+    }
 }
 
 ?>

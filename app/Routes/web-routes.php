@@ -82,6 +82,10 @@ return static function (App $app): void {
         $app->get('/', [HomeController::class, 'index'])->setName('dashboard.index');
         $app->get('/home', [HomeController::class, 'index'])->setName('dashboard.load');
 
+        //SEARCHING_ROUTES_FOR_ADMIN_PAGE
+        $app->get('/api/products/search', [ProductVariantController::class, 'search'])->setName('api.products.search');
+        $app->get('/api/users/search', [UsersController::class, 'search'])->setName('api.users.search');
+
         // Work
         $app->group('/work', function ($work) {
             $work->get('', [WorkController::class, 'index'])->setName('work.index');

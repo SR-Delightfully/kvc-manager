@@ -82,22 +82,23 @@ ViewHelper::loadHeader($page_title, true);
                 <th>Description</th>
             </tr>
         </thead>
-
-        <tbody>
-            <?php foreach ($variants as $key => $variant): ?>
-                <tr class="variant-row">
-                    <td>
-                        <input type="radio" name="variant_id"
-                            value="<?= $variant['variant_id']?>"
-                            class="variant-radio">
-                    </td>
-                    <td><?= $variant['product_id']?></td>
-                    <td><?= $variant['colour_id']?></td>
-                    <td><?= $variant['unit_size']?></td>
-                    <td><?= $variant['variant_description']?></td>
-                </tr>
-            <?php endforeach; ?>
-        </tbody>
+        <tbody id="variantBody"></tbody>
+            <template id="defaultVariantsTemplate">
+                <?php foreach ($variants as $key => $variant): ?>
+                    <tr class="variant-row">
+                        <td>
+                            <input type="radio" name="variant_id"
+                                value="<?= $variant['variant_id']?>"
+                                class="variant-radio">
+                        </td>
+                        <td><?= $variant['product_id']?></td>
+                        <td><?= $variant['colour_id']?></td>
+                        <td><?= $variant['unit_size']?></td>
+                        <td><?= $variant['variant_description']?></td>
+                    </tr>
+                <?php endforeach; ?>
+            </template>
+            <template id="variantResults"></template>
     </table>
 <div class="bottom-card">
     <div class="left-side">
@@ -139,7 +140,7 @@ ViewHelper::loadHeader($page_title, true);
 
     <div class="right-side">
         <label class="quick-add-title">Search . . .</label>
-        <input type="text" placeholder="Search . . .">
+        <input id="searchInput" type="text" placeholder="Search . . ." aria-label="Search variants">
 
         <div class="actions-title">Actions :</div>
 
@@ -151,10 +152,9 @@ ViewHelper::loadHeader($page_title, true);
 
 </div>
 </div>
-  </div>
 <br>
 <br>
-
+ </div>
     <!-- RIGHT — EMPLOYEES SECTION -->
     <div class="employees-card">
 <div class="employees-header">
@@ -177,37 +177,39 @@ ViewHelper::loadHeader($page_title, true);
         </tr>
         </thead>
 
-        <tbody>
-            <?php foreach ($users as $key => $user): //<span class="dot green">
-                ?>
-                <tr class="user-row">
-                    <td>
-                    <input type="radio" name="user_id"
-                        value="<?= $user['user_id']?>"
-                        class="user-radio">
-                    </td>
-                    <td><?php
-                        switch ($user['user_status']) {
-                            case 'active':
-                            echo '<span class="dot green"></span>';
-                                break;
-                            case 'leave':
-                            echo '<span class="dot yellow"></span>';
-                                break;
-                            case 'terminated':
-                            echo '<span class="dot red"></span>';
-                                break;
-                            default:
-                        }
-                    ?></td>
-                    <td><?= $user['user_role']?></td>
-                    <td><?= $user['first_name']?></td>
-                    <td><?= $user['last_name']?></td>
-                    <td><?= $user['phone']?></td>
-                    <td><?= $user['email']?></td>
-                    <td><?= $user['user_dc']?></td>
-                </tr>
-            <?php endforeach; ?>
+        <tbody id="employeeBody">
+            <template id="defaultUsersTemplate">
+                <?php foreach ($users as $key => $user): ?>
+                    <tr class="user-row">
+                        <td>
+                        <input type="radio" name="user_id"
+                            value="<?= $user['user_id']?>"
+                            class="user-radio">
+                        </td>
+                        <td><?php
+                            switch ($user['user_status']) {
+                                case 'active':
+                                echo '<span class="dot green"></span>';
+                                    break;
+                                case 'leave':
+                                echo '<span class="dot yellow"></span>';
+                                    break;
+                                case 'terminated':
+                                echo '<span class="dot red"></span>';
+                                    break;
+                                default:
+                            }
+                        ?></td>
+                        <td><?= $user['user_role']?></td>
+                        <td><?= $user['first_name']?></td>
+                        <td><?= $user['last_name']?></td>
+                        <td><?= $user['phone']?></td>
+                        <td><?= $user['email']?></td>
+                        <td><?= $user['user_dc']?></td>
+                    </tr>
+                <?php endforeach; ?>
+            </template>
+            <template id="usersResults"></template>
         </tbody>
     </table>
 </div>
@@ -236,13 +238,8 @@ ViewHelper::loadHeader($page_title, true);
         <button id="view-user" class="blue-btn">View User Details</button>
         <button id="delete-user" class="red-btn">Terminate User</button>
     </div>
-
 </div>
-
-    </div>
-
-    </div>
-
+</div>
 </div>
 <br><br>
 <!-- PRODUCT TYPE section -->
@@ -303,7 +300,7 @@ ViewHelper::loadHeader($page_title, true);
             </div>
         </div>
 </div>
-
+ </div>
 <!-- PRODUCTS section -->
 <div class="products-left">
 <div class="table-card">
@@ -718,6 +715,9 @@ ViewHelper::loadHeader($page_title, true);
     </table>
 </div>
 
+<script>
+    window.APP_BASE_URL = "<?= APP_BASE_URL ?>";
+</script>
 
 <!-- EDIT VARIANT POPUP -->
  <?php
