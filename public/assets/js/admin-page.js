@@ -323,7 +323,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
     userTbody.appendChild(userTemplate.content.cloneNode(true));
 
-    // status filter select we added to the view
     const userStatusSelect = document.getElementById('userStatusFilter');
 
     async function performUserSearch() {
@@ -332,7 +331,6 @@ document.addEventListener('DOMContentLoaded', function () {
             ? userStatusSelect.value
             : '';
 
-        // if no search term AND no role filter, show default template rows
         if (term === '' && role === '') {
             userTbody.innerHTML = '';
             userTbody.appendChild(userTemplate.content.cloneNode(true));
@@ -350,7 +348,6 @@ document.addEventListener('DOMContentLoaded', function () {
         users.forEach(u => userTbody.appendChild(createUserRow(u)));
     }
 
-    // wire search input (was missing)
     if (userSearchInput) {
         const debouncedUserSearch = debounce(performUserSearch, 300);
         userSearchInput.addEventListener('input', debouncedUserSearch);
@@ -362,7 +359,6 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
-    // run search when status filter changes (single listener)
     if (userStatusSelect) {
         userStatusSelect.addEventListener('change', () => {
             performUserSearch();
@@ -376,7 +372,6 @@ document.addEventListener('DOMContentLoaded', function () {
     const productTemplate = document.getElementById('defaultProductsTemplate');
 
     if (productTbody && productTemplate) {
-        // populate default rows from template on load
         productTbody.appendChild(productTemplate.content.cloneNode(true));
     }
 
@@ -410,7 +405,6 @@ document.addEventListener('DOMContentLoaded', function () {
     const colourTemplate = document.getElementById('defaultColoursTemplate');
 
     if (colourTbody && colourTemplate) {
-        // populate default rows from template on load
         colourTbody.appendChild(colourTemplate.content.cloneNode(true));
     }
 
@@ -442,7 +436,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
 function enableRowSelectDelegated(containerOrSelector, rowSelector, radioSelector) {
-    // accept either a selector string or an element/document
     const container = (typeof containerOrSelector === 'string')
         ? document.querySelector(containerOrSelector)
         : (containerOrSelector instanceof Element || containerOrSelector instanceof Document)
@@ -458,12 +451,10 @@ function enableRowSelectDelegated(containerOrSelector, rowSelector, radioSelecto
         const radio = row.querySelector(radioSelector);
         if (!radio) return;
 
-        // if click was directly on the radio let the browser handle toggle
         if (!e.target.matches(radioSelector)) {
             radio.checked = true;
         }
-
-        // highlight selected rows within the container
+        
         container.querySelectorAll(rowSelector).forEach(r => r.classList.remove("selected-row"));
         row.classList.add("selected-row");
     });
