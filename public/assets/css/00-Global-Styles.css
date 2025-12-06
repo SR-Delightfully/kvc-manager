@@ -303,8 +303,8 @@ body {
 @media screen and (min-width: 1921px) {
 }
 .metallic-bg {
-    /* TODO: define metallic background */
-background-image: radial-gradient(ellipse farthest-corner at left top, var(--tone-08) 0%, var(--color-blue-04) 15%, var(--tone-03) 95%, var(--tone-03) 100%);
+    /* TODO: ewdefine metallic background */
+background-image: radial-gradient(ellipse farthest-corner at left top, var(--color-blue-05) 0%, var(--color-blue-04) 30%, var(--tone-06) 100%);
                 overflow: hidden;
 }
 .metallic {

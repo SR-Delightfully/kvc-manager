@@ -1,21 +1,63 @@
 /* Default styles */
 @media screen and (min-width: 300px) {
     #nav-bar {
+        border-right: 4px solid var(--tone-00);
+        background-color: #11161A;
+
         width: 21rem;
         min-height: 100vh;
-        overflow: hidden;
-        gap: 3rem;
-        align-items: center;
-        justify-content: flex-end;
-        background-color: #11161A;
-        border-right: 4px solid var(--tone-00);
-        z-index: 9999;
-        position: absolute;
-        left: 0;
-        top:0;
+
         display: flex;
         flex-flow: column nowrap;
+        justify-content: flex-end;
+        align-items: center;
+        gap: 3rem;
+
+        position: absolute;
+        top: 0; left: 0;
+        z-index: 9999;
+        
+        transition: width 0.3s ease;
+        overflow: hidden;
     }
+    
+    #nav-bar.expanded { width: 21rem; }
+    #nav-bar.collapsed { width: 4rem; }
+    
+    
+    #sidebar-toggle {
+        position: absolute;
+        top: 0.5rem; left: 0.5rem;
+        width: 3rem; height: 3rem;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
+        & > * {
+            font-size: 3rem;
+            color: var(--tone-8);
+        }
+    }
+
+    #logo {
+        background-color: var(--tone-07);
+        border: 3px solid var(--tone-00);
+        border-radius: 100%;
+
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        transition: all 0.3s ease;
+    }
+
+    #logo.expanded { width: 10rem; height: 10rem; }
+    #logo.collapsed { width: 3rem; height: 3rem; }
+
+    #logo p { margin: 0; transition: font-size 0.3s ease; }
+    #logo.expanded p { font-size: 4rem; }
+    #logo.collapsed p { font-size: 1.5rem; }
+
     #nav-bar-inner {
         width: 100%;
         min-height: calc(75vh - 4rem);
@@ -23,26 +65,29 @@
         flex-flow: column nowrap;
         align-items: center;
         background-color: #060808;
-        border-top-right-radius: 3rem;
-        border-top-left-radius: 3rem;
+        border-top-right-radius: 2rem;
+        border-top-left-radius: 2rem;
+        padding-top: 1rem;
     }
     
     #tabs {
-        padding: 2rem 0rem;
         list-style: none;
+        padding: 0.75rem 0 0 0 ;
         margin: 0;
+
         display: flex;
         flex-flow: column nowrap;
-        gap: 2rem;
+        gap: 1rem;
         justify-content: center;
         text-align: center;
-        width: calc(100% - 3rem); 
+        width: 90%; 
         overflow: hidden;
     }
     .tab {
-        height: 4rem;
-        width: calc(100%- 4rem);
+        height: 3rem;
+        width: 90%;
         border-radius: 1.5rem;
+        padding: 0.25rem 1rem;
         background-color: #11161A;
         & > a {
             height: 100%;
@@ -64,6 +109,46 @@
         background-color: #242E3A;
 
     }
+
+    .tab-label,
+    .tab-dropdown-btn {
+        transition: opacity 0.3s ease;
+    }
+
+
+    .tab.collapsed > .tab-label,
+    .tab.collapsed > .tab-dropdown-btn { opacity: 0; display: none; }
+
+    .tab-with-submenu .submenu {
+        position: absolute;
+        top: 3rem;
+        left: 0;
+        width: 100%;
+        background-color: #060808;
+        border-radius: 0 0 1.2rem 1.2rem;
+        max-height: 0;
+        opacity: 0;
+        overflow: hidden;
+        transition: max-height 0.35s ease, opacity 0.25s ease;
+        z-index: 10;
+    }
+
+    .tab-with-submenu.open-submenu .submenu {
+        max-height: 500px;
+        opacity: 1;
+    }
+
+    .submenu li a {
+        display: block;
+        padding: 0.5rem 0;
+        text-align: center;
+        color: var(--tone-08);
+        text-decoration: none;
+        font-size: 1rem;
+    }
+
+    .submenu li a:hover { color: #4da3ff; }
+
     #language-control {
         height: 2rem;
         text-align: center;
@@ -74,18 +159,7 @@
             font-color: #c0c0c0;
         }
     }
-    #logo {
-        height: 10rem;
-        width: 10rem;
-        border-radius: 100%;
-        line-height: 0.75;
-        background-color: var(--tone-07);
-        border: 3px solid var(--tone-00);
-        & > p {
-            text-align: center;
-            font-size: 4rem;
-        }
-    }
+
 }
 
 /* Tablet Screens */
@@ -301,5 +375,34 @@
 }
 .submenu li a:hover {
     color: var(--color-blue-05);
+}
+
+
+@media screen and (max-width: 719px) {
+    #nav-bar {
+        flex-direction: row;
+        width: 100%;
+        height: 3rem;
+        bottom: 0;
+        top: auto;
+    }
+    #logo { display: none; }
+    #tabs { flex-direction: row; justify-content: space-around; padding: 0; }
+    .tab { height: 100%; width: auto; }
+    .tab-label, .tab-dropdown-btn { display: none; }
+    .submenu { display: none; }
+}
+
+@media screen and (min-width: 720px) and (max-width: 1023px) {
+    #nav-bar { width: 4rem; }
+    #logo { width: 3rem; height: 3rem; }
+    .tab-label, .tab-dropdown-btn { display: none; }
+    .submenu { display: none; }
+}
+
+@media screen and (min-width: 1024px) {
+    #nav-bar { width: 21rem; }
+    #logo { width: 10rem; height: 10rem; }
+    .tab-label, .tab-dropdown-btn { display: inline-flex; }
 }
 

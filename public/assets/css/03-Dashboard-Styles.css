@@ -88,6 +88,74 @@
     transform: translate(-50%, -3.5%);
 }
 
+.small-widget{
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-flow: column nowrap;
+    gap: 0;
+    justify-content: flex-start;
+    align-items: center;
+    & > h2 {
+        min-height: 4rem;
+        width: 100%;
+
+        /* position: relative; */
+        text-align: center;
+        size: 1.2rem;
+        color: var(--tone-8);
+
+        text-transform: uppercase;
+        letter-spacing: 0.2rem;
+        color: var(--tone-09);
+    }
+    & > h3 {
+        min-height: 3rem;
+        position: relative;
+        padding: 0.25rem 1.5rem;
+        display: flex;
+        padding-left: 5rem;
+        width: 100%;
+        text-align: left;
+        align-items: center;
+        margin-top: -5rem;
+    }
+    & > div {
+        border: 2px solid red;
+        width: calc(100% - 3rem);
+        height: 45%;
+        overflow: scroll;
+        position: relative;
+        margin-top: -1.5rem;
+
+    }
+    & > div > table { 
+        overflow-x: hidden;
+        overflow-y: scroll;
+        max-height: 1rem !important;
+    }
+    & > form { 
+        background: yellow; 
+        max-height: 40%;
+        width: 100%;
+        border-top-left-radius: 1.5rem;
+        border-top-right-radius: 1.5rem;
+    }
+
+}
+
+.mini-widget{
+    & > div {
+        background: hotpink;
+    }
+    & > h3 {
+        background: lime;
+    }
+    & > form {
+        background: cyan;
+    }
+}
+
 /* TODO: figure out how to add a small padding to the bottom of backend-senctions */
 
 /* Work Overview title */

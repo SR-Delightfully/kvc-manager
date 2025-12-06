@@ -99,11 +99,12 @@ $is_variant_dlt_open = $is_variant_dlt_open ?? null;
 
                 <!-- Products Component -->
                 <!-- Displays the most recent product variant entries -->
-                <li class="metallic-bg">
+                <li class="metallic-bg small-widget">
                     <h2> Products </h2>
                     <h3> Most Recent Entries:</h3>
+
                     <div>
-                        <table class="products-mini-table">
+                        <table class="products-mini-table table table-striped">
                             <!-- Reworking table headers to match "product_variant" table -->
                             <!-- if sql tables get reworked, I suggest maybe adding a 'name' attribute to easily identify the product variants -->
                             <thead>
@@ -131,61 +132,62 @@ $is_variant_dlt_open = $is_variant_dlt_open ?? null;
                                 <?php endforeach; ?>
                             </tbody>
                         </table>
-                        <form action="<?= APP_BASE_URL ?>/admin/variant" method="POST">
-                            <div class="left-side">
-                                <h3 class="quick-add-title">Quick Add :</h3>
+                    </div>
 
-                                <label>Product Options</label>
-                                <select name="product_id" class="form-select" id="product_id">
-                                    <option value="">Select Product Id</option>
-                                    <?php foreach ($products as $product): ?>
-                                        <option value="<?= $product['product_id'] ?>">
-                                            <?= $product['product_name'] ?>
+                    <form action="<?= APP_BASE_URL ?>/admin/variant" method="POST">
+                        <div class="left-side">
+                            <h3 class="quick-add-title">Quick Add :</h3>
+
+                            <label>Product Options</label>
+                            <select name="product_id" class="form-select" id="product_id">
+                                <option value="">Select Product Id</option>
+                                <?php foreach ($products as $product): ?>
+                                    <option value="<?= $product['product_id'] ?>">
+                                        <?= $product['product_name'] ?>
+                                    </option>
+                                <?php endforeach; ?>
+                            </select>
+
+                            <label for="">Colour</label>
+                                <select name="colour_id" class="form-select" id="colour_id">
+                                    <option value="">Select Colour Id</option>
+                                    <?php foreach ($colours as $colour): ?>
+                                        <option value="<?= $colour['colour_id'] ?>">
+                                            <?= $colour['colour_name'] ?>
                                         </option>
                                     <?php endforeach; ?>
                                 </select>
 
-                                <label for="">Colour</label>
-                                    <select name="colour_id" class="form-select" id="colour_id">
-                                        <option value="">Select Colour Id</option>
-                                        <?php foreach ($colours as $colour): ?>
-                                            <option value="<?= $colour['colour_id'] ?>">
-                                                <?= $colour['colour_name'] ?>
-                                            </option>
-                                        <?php endforeach; ?>
-                                    </select>
+                            <!-- TODO: create table or array variable to hold sizes  -->
+                            <!-- TODO: use for each to display options (in case they carry most sizes in the future)-->
+                            <label for="">Unit Size</label>
+                                <select name="unit_size" class="form-select" id="unit_size">
+                                    <option value="">Select Unit Size</option>
+                                    <option value="0.5L">0.5L</option>
+                                    <option value="1L">1L</option>
+                                    <option value="2L">2L</option>
+                                    <option value="4L">4L</option>
+                                    <option value="8L">8L</option>
+                                </select>
 
-                                <!-- TODO: create table or array variable to hold sizes  -->
-                                <!-- TODO: use for each to display options (in case they carry most sizes in the future)-->
-                                <label for="">Unit Size</label>
-                                    <select name="unit_size" class="form-select" id="unit_size">
-                                        <option value="">Select Unit Size</option>
-                                        <option value="0.5L">0.5L</option>
-                                        <option value="1L">1L</option>
-                                        <option value="2L">2L</option>
-                                        <option value="4L">4L</option>
-                                        <option value="8L">8L</option>
-                                    </select>
+                            <input name="variant_description" type="text" placeholder="Enter Product Description">
+                        </div>
+                        <div class="right-side">
+                            <label>Search . .</label>
+                            <input type="text" placeholder="Search . .">
 
-                                <input name="variant_description" type="text" placeholder="Enter Product Description">
-                            </div>
-                            <div class="right-side">
-                                <label>Search . .</label>
-                                <input type="text" placeholder="Search . .">
+                            <div class="actions-title">Actions :</div>
 
-                                <div class="actions-title">Actions :</div>
-
-                                <button class="blue-btn">View Product Details</button>
-                                <button class="yellow-btn">Edit Product Details</button>
-                                <button class="red-btn">Delete Product</button>
-                                <button class="jump-btn">Jump To ↪</button>
-                            </div>
-                        </form>
-                    </div>
+                            <button class="blue-btn">View Product Details</button>
+                            <button class="yellow-btn">Edit Product Details</button>
+                            <button class="red-btn">Delete Product</button>
+                            <button class="jump-btn">Jump To ↪</button>
+                        </div>
+                    </form>
                 </li>
                 <!-- // * Suggestion, instead of schedule, display stations (station_id, station_name, team_num, team_members (a dropdown?))   -->
                 <!-- Schedule Component -->
-                <li>
+                <li class="mini-widget">
                     <div class="schedule-header">
                         <h2>S C H E D U L E S</h2><button class="jump-btn">Jump To ↪</button>
                     </div>  
@@ -228,7 +230,7 @@ $is_variant_dlt_open = $is_variant_dlt_open ?? null;
                     </form>
                 </li>
                 <!-- Pallet Component -->
-                <li>
+                <li class="mini-widget">
                     <div class="pallet-header">
                         <h2>P A L L E T S</h2><button class="jump-btn">Jump To ↪</button>
                     </div>  
@@ -263,7 +265,7 @@ $is_variant_dlt_open = $is_variant_dlt_open ?? null;
                     </form>
                 </li>
                 <!-- Employees Component -->
-                <li class="metallic-bg">
+                <li class="metallic-bg small-widget">
                     <h2>Employees</h2>
                     <h3>Recent Entries:</h3>
                     <table>
@@ -372,11 +374,11 @@ $is_variant_dlt_open = $is_variant_dlt_open ?? null;
 
                 <!-- Products Component -->
                 <!-- Displays the most recent product variant entries -->
-                <li class="metallic-bg">
+                <li class="metallic-bg small-widget">
                     <h2> Products </h2>
                     <h3> Most Recent Entries:</h3>
                     <div>
-                        <table class="products-mini-table">
+                        <table class="products-mini-table table table-striped">
                             <!-- Reworking table headers to match "product_variant" table -->
                             <!-- if sql tables get reworked, I suggest maybe adding a 'name' attribute to easily identify the product variants -->
                             <thead>
@@ -404,7 +406,8 @@ $is_variant_dlt_open = $is_variant_dlt_open ?? null;
                                 <?php endforeach; ?>
                             </tbody>
                         </table>
-                        <form action="<?= APP_BASE_URL ?>/admin/variant" method="POST">
+
+                    </div>                        <form action="<?= APP_BASE_URL ?>/admin/variant" method="POST">
                             <div class="left-side">
                                 <h3 class="quick-add-title">Quick Add :</h3>
 
@@ -454,11 +457,10 @@ $is_variant_dlt_open = $is_variant_dlt_open ?? null;
                                 <button class="jump-btn">Jump To ↪</button>
                             </div>
                         </form>
-                    </div>
                 </li>
                 <!-- // * Suggestion, instead of schedule, display stations (station_id, station_name, team_num, team_members (a dropdown?))   -->
                 <!-- Schedule Component -->
-                <li>
+                <li class="mini-widget">
                     <div class="schedule-header">
                         <h2>S C H E D U L E S</h2><button class="jump-btn">Jump To ↪</button>
                     </div>  
@@ -501,7 +503,7 @@ $is_variant_dlt_open = $is_variant_dlt_open ?? null;
                     </form>
                 </li>
                 <!-- Pallet Component -->
-                <li>
+                <li class="mini-widget">
                     <div class="pallet-header">
                         <h2>P A L L E T S</h2><button class="jump-btn">Jump To ↪</button>
                     </div>  
@@ -536,7 +538,7 @@ $is_variant_dlt_open = $is_variant_dlt_open ?? null;
                     </form>
                 </li>
                 <!-- Employees Component -->
-                <li class="metallic-bg">
+                <li class="metallic-bg small-widget">
                     <h2>Employees</h2>
                     <h3>Recent Entries:</h3>
                     <table>
