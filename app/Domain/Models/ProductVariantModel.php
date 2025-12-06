@@ -55,4 +55,17 @@ public function getVariantById($id): ?array {
         $results = $this->selectAll($stmt, $params);
         return $results;
     }
+
+    public function getAllVariantsClean() {
+        $stmt = "SELECT v.variant_id, p.product_name AS product_id, c.colour_code AS colour_id, v.unit_size, v.variant_description FROM product_variant v LEFT JOIN product p ON p.product_id = v.product_id LEFT JOIN colour c ON c.colour_id = v.colour_id";
+        $variants = $this->selectAll($stmt);
+        return $variants;
+    }
+
+    public function getVariantCleanById($id) {
+        $stmt = "SELECT v.variant_id, p.product_name AS product_id, c.colour_code AS colour_id, v.unit_size, v.variant_description FROM product_variant v LEFT JOIN product p ON p.product_id = v.product_id LEFT JOIN colour c ON c.colour_id = v.colour_id WHERE variant_id = :id";
+        $params = [':id' => $id];
+        $variants = $this->selectOne($stmt, $params);
+        return $variants;
+    }
 }

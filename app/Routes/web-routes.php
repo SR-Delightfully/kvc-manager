@@ -34,6 +34,7 @@ use App\Controllers\ReportsController;
 use App\Controllers\ScheduleController;
 use App\Controllers\SettingsController;
 use App\Controllers\WorkController;
+use App\Controllers\admin\TeamMemberController;
 
 use Slim\App;
 use Psr\Http\Message\ResponseInterface as Response;
@@ -83,8 +84,10 @@ return static function (App $app): void {
         $app->get('/home', [HomeController::class, 'index'])->setName('dashboard.load');
 
         //SEARCHING_ROUTES_FOR_ADMIN_PAGE
-        $app->get('/api/products/search', [ProductVariantController::class, 'search'])->setName('api.products.search');
+        $app->get('/api/variants/search', [ProductVariantController::class, 'search'])->setName('api.variants.search');
         $app->get('/api/users/search', [UsersController::class, 'search'])->setName('api.users.search');
+        $app->get('/api/products/search', [ProductController::class, 'search'])->setName('api.products.search');
+        $app->get('/api/colours/search', [ColourController::class, 'search'])->setName('api.colours.search');
 
         // Work
         $app->group('/work', function ($work) {
@@ -200,33 +203,42 @@ return static function (App $app): void {
             $pallet->post('/edit/{id}', [PalletController::class, 'update'])->setName('admin.pallet.update');
         });
 
-        $admin->group('/tote', function ($pallet) {
-            $pallet->get('', [ToteController::class, 'index'])->setName('admin.tote.index');
-            $pallet->post('', [ToteController::class, 'store'])->setName('admin.tote.store');
-            $pallet->get('/edit/{id}', [ToteController::class, 'edit'])->setName('admin.tote.edit');
-            $pallet->get('/delete/{id}', [ToteController::class, 'showDelete'])->setName('admin.tote.delete.show');
-            $pallet->get('/delete/{id}/do', [ToteController::class, 'delete'])->setName('admin.tote.delete');
-            $pallet->post('/edit/{id}', [ToteController::class, 'update'])->setName('admin.tote.update');
+        $admin->group('/tote', function ($tote) {
+            $tote->get('', [ToteController::class, 'index'])->setName('admin.tote.index');
+            $tote->post('', [ToteController::class, 'store'])->setName('admin.tote.store');
+            $tote->get('/edit/{id}', [ToteController::class, 'edit'])->setName('admin.tote.edit');
+            $tote->get('/delete/{id}', [ToteController::class, 'showDelete'])->setName('admin.tote.delete.show');
+            $tote->get('/delete/{id}/do', [ToteController::class, 'delete'])->setName('admin.tote.delete');
+            $tote->post('/edit/{id}', [ToteController::class, 'update'])->setName('admin.tote.update');
         });
 
-        //TODO MAKE_TEAM_MODEL_AND_CONTROLLERS
-        // $admin->group('/pallet', function ($pallet) {
-        //     $pallet->get('', [PalletController::class, 'index'])->setName('admin.pallet.index');
-        //     $pallet->post('', [PalletController::class, 'store'])->setName('admin.pallet.store');
-        //     $pallet->get('/edit/{id}', [PalletController::class, 'edit'])->setName('admin.pallet.edit');
-        //     $pallet->get('/delete/{id}', [PalletController::class, 'showDelete'])->setName('admin.pallet.delete.show');
-        //     $pallet->get('/delete/{id}/do', [PalletController::class, 'delete'])->setName('admin.pallet.delete');
-        //     $pallet->post('/edit/{id}', [PalletController::class, 'update'])->setName('admin.pallet.update');
-        // });
+        // TODO MAKE_TEAM_MODEL_AND_CONTROLLERS
+        $admin->group('/member', function ($member) {
+            $member->get('', [TeamMemberController::class, 'index'])->setName('admin.member.index');
+            $member->post('', [TeamMemberController::class, 'store'])->setName('admin.member.store');
+            $member->get('/edit/{user_id}/{team_id}', [TeamMemberController::class, 'edit'])->setName('admin.member.edit');
+            $member->get('/delete/{user_id}/{team_id}', [TeamMemberController::class, 'showDelete'])->setName('admin.member.delete.show');
+            $member->get('/delete/{user_id}/{team_id}/do', [TeamMemberController::class, 'delete'])->setName('admin.member.delete');
+            $member->post('/edit/{user_id}/{team_id}', [TeamMemberController::class, 'update'])->setName('admin.member.update');
+        });
+
+        $admin->group('/team', function ($team) {
+            $team->get('', [TeamController::class, 'index'])->setName('admin.team.index');
+            $team->post('', [TeamController::class, 'store'])->setName('admin.team.store');
+            $team->get('/edit/{id}', [TeamController::class, 'edit'])->setName('admin.team.edit');
+            $team->get('/delete/{id}', [TeamController::class, 'showDelete'])->setName('admin.team.delete.show');
+            $team->get('/delete/{id}/do', [TeamController::class, 'delete'])->setName('admin.team.delete');
+            $team->post('/edit/{id}', [TeamController::class, 'update'])->setName('admin.team.update');
+        });
 
         //TODO MAKE_STATION_MODEL_AND_CONTROLLERS
-        $admin->group('/station', function ($pallet) {
-            $pallet->get('', [StationController::class, 'index'])->setName('admin.station.index');
-            $pallet->post('', [StationController::class, 'store'])->setName('admin.station.store');
-            $pallet->get('/edit/{id}', [StationController::class, 'edit'])->setName('admin.station.edit');
-            $pallet->get('/delete/{id}', [StationController::class, 'showDelete'])->setName('admin.station.delete.show');
-            $pallet->get('/delete/{id}/do', [StationController::class, 'delete'])->setName('admin.station.delete');
-            $pallet->post('/edit/{id}', [StationController::class, 'update'])->setName('admin.station.update');
+        $admin->group('/station', function ($station) {
+            $station->get('', [StationController::class, 'index'])->setName('admin.station.index');
+            $station->post('', [StationController::class, 'store'])->setName('admin.station.store');
+            $station->get('/edit/{id}', [StationController::class, 'edit'])->setName('admin.station.edit');
+            $station->get('/delete/{id}', [StationController::class, 'showDelete'])->setName('admin.station.delete.show');
+            $station->get('/delete/{id}/do', [StationController::class, 'delete'])->setName('admin.station.delete');
+            $station->post('/edit/{id}', [StationController::class, 'update'])->setName('admin.station.update');
         });
 
         // Shifts

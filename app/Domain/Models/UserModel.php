@@ -208,22 +208,29 @@ class UserModel extends BaseModel
         $this->execute($stmt, $params);
     }
 
-    public function search($searchTerm, $role)
+    public function search($searchTerm = '', $role = null, $status = null)
     {
         $stmt = "SELECT * FROM users WHERE 1 = 1";
         $params = [];
-        if (!empty($searchTerm)){
-            $stmt .= " AND (first_name LIKE ? OR last_name LIKE ?)";
+
+        if (!empty($searchTerm)) {
+            $stmt .= " AND (first_name LIKE ? OR last_name LIKE ? OR email LIKE ?)";
             $like = '%' . $searchTerm . '%';
+            $params[] = $like;
             $params[] = $like;
             $params[] = $like;
         }
 
-        if (!empty($role) && !is_null($role)){
+        if (!empty($role) && !is_null($role)) {
             $stmt .= " AND user_role = ?";
             $params[] = $role;
         }
-        $results = $this->selectAll($stmt, $params);
-        return $results;
+
+        if (!empty($status) && !is_null($status)) {
+            $stmt .= " AND user_status = ?";
+            $params[] = $status;
+        }
+
+        return $this->selectAll($stmt, $params);
     }
 }

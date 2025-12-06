@@ -67,7 +67,7 @@ class ProductVariantController extends BaseController
     public function edit(Request $request, Response $response, array $args): Response {
         $variant_id = $args['id'];
 
-        $variant = $this->productVariantModel->getVariantById($variant_id);
+        $variant = $this->productVariantModel->getVariantCleanById($variant_id);
 
         $data = [
                 'contentView' => APP_VIEWS_PATH . '/pages/adminView.php',

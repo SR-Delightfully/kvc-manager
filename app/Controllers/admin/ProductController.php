@@ -92,7 +92,7 @@ class ProductController extends BaseController
     public function edit(Request $request, Response $response, array $args): Response {
         $product_id = $args['id'];
 
-        $product = $this->productModel->getProductById($product_id);
+        $product = $this->productModel->getProductCleanById($product_id);
 
         $data = [
                 'contentView' => APP_VIEWS_PATH . '/pages/adminView.php',
@@ -152,6 +152,31 @@ class ProductController extends BaseController
                         ['product_to_delete' => $variant,]),
             ];
         return $this->render($response, 'admin/databaseView.php', $data);
+    }
+
+    public function search(Request $request, Response $response, array $args): Response
+    {
+        $data = $request->getQueryParams();
+        $q = $data['q'] ?? "";
+
+        if (strlen($q) > 100){
+            $q = substr($q, 100);
+        }
+
+        $products = $this->productModel->search($q);
+
+        $data = [
+            'success' => true,
+            'count' => count($products),
+            'query' => $q,
+            'products' => $products,
+        ];
+
+        $payload = json_encode($data, JSON_UNESCAPED_UNICODE);
+
+        $response->getBody()->write($payload);
+
+        return $response->withHeader('Content-Type', 'application/json')->withStatus(200);
     }
 }
 

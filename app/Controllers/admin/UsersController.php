@@ -82,18 +82,19 @@ class UsersController extends BaseController
         $data = $request->getQueryParams();
         $q = $data['q'] ?? "";
         $role = $data['user_role'] ?? null;
+        $status = $data['user_status'] ?? null;
 
         if (strlen($q) > 100){
             $q = substr($q, 100);
         }
 
-        $variants = $this->userModel->search($q, $role);
+        $users = $this->userModel->search($q, $role, $status);
 
         $data = [
             'success' => true,
-            'count' => count($variants),
+            'count' => count($users),
             'query' => $q,
-            'users' => $variants,
+            'users' => $users,
         ];
 
         $payload = json_encode($data, JSON_UNESCAPED_UNICODE);

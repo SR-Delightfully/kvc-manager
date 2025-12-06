@@ -45,4 +45,14 @@ class ColourModel extends BaseModel
         $params = [':code'=>$data['colour_code'],':name'=>$data['colour_name'],':id'=>$id];
         $this->execute($stmt,$params);
     }
+
+    public function search($searchTerm) {
+        $stmt = "SELECT * FROM colour WHERE colour_name LIKE ? OR colour_code LIKE ?";
+        $params = [];
+        $like = '%' . $searchTerm . '%';
+        $params[] = $like;
+        $params[] = $like;
+        $results = $this->selectAll($stmt, $params);
+        return $results;
+    }
 }

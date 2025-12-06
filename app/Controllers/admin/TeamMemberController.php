@@ -14,7 +14,7 @@ use App\Helpers\UserContext;
 use App\Helpers\AdminDataHelper;
 use App\Helpers\FlashMessage;
 
-class TeamController extends BaseController
+class TeamMemberController extends BaseController
 {
     public function __construct(
         Container $container,
@@ -40,66 +40,28 @@ class TeamController extends BaseController
     }
 
     public function edit(Request $request, Response $response, array $args): Response {
-        $team_id = $args['id'];
+        $user_id = $args['user_id'];
+        $team_id = $args['team_id'];
 
-        $team = $this->teamModel->getTeamCleanById($team_id);
+        $product = $this->teamModel->getTeamMemberByTeamUser($team_id, $user_id);
 
         $data = [
                 'contentView' => APP_VIEWS_PATH . '/pages/adminView.php',
                 'isSideBarShown' => true,
                 'isAdmin' => UserContext::isAdmin(),
-                'show_team_edit' => true,
+                'show_team_member_edit' => true,
                 'data' => array_merge($this->adminDataHelper->adminPageData(),
-                        ['team_to_edit' => $team]),
+                        ['team_to_edit' => $product]),
             ];
         return $this->render($response, 'admin/databaseView.php', $data);
     }
 
     public function update(Request $request, Response $response, array $args): Response {
-        $data = $request->getParsedBody();
-        $errors = [];
-
-        if (empty($data['station_id'])) {
-            $errors[] = "Station must be filled out";
-        }
-
-        if (!empty($errors)) {
-            FlashMessage::error($errors[0]);
-            return $this->redirect($request, $response, 'admin.index');
-        }
-        try {
-            $this->teamModel->updateTeam($data['team_id'], $data);
-            FlashMessage::success("Successfully updated station");
-            return $this->redirect($request, $response, 'admin.index');
-        } catch (\Throwable $th) {
-            FlashMessage::error("Update failed. Please try again");
-            return $this->redirect($request, $response, 'admin.index');
-        }
+        return $this->render($response, 'admin/categoryEditView.php');
     }
 
     public function delete(Request $request, Response $response, array $args): Response {
-        $id = $args['id'];
-
-        $this->teamModel->deleteTeam($id);
-        FlashMessage::success("Successfully Deleted Team With ID: $id");
-
-        return $this->redirect($request, $response, 'admin.index');
-    }
-
-    public function showDelete(Request $request, Response $response, array $args): Response {
-        $team_id = $args['id'];
-
-        $team = $this->teamModel->getTeamById($team_id);
-
-        $data = [
-                'contentView' => APP_VIEWS_PATH . '/pages/adminView.php',
-                'isSideBarShown' => true,
-                'isAdmin' => UserContext::isAdmin(),
-                'show_team_delete' => true,
-                'data' => array_merge($this->adminDataHelper->adminPageData(),
-                        ['team_to_delete' => $team,]),
-            ];
-        return $this->render($response, 'admin/databaseView.php', $data);
+        return $this->render($response, 'admin/categoryIndexView.php');
     }
 }
 

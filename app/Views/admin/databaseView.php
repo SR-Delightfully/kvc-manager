@@ -58,6 +58,12 @@ $tote_to_edit = $data['tote_to_edit'] ?? null;
 
 $show_tote_delete = $show_tote_delete ?? null;
 $tote_to_delete = $data['tote_to_delete'] ?? null;
+
+$show_team_edit = $show_team_edit ?? null;
+$team_to_edit = $data['team_to_edit'] ?? null;
+
+$show_team_delete = $show_team_delete ?? null;
+$team_to_delete = $data['team_to_delete'] ?? null;
 //var_dump($variant_to_edit);
 //var_dump($show_variant_edit);
 //var_dump($products);
@@ -76,8 +82,8 @@ ViewHelper::loadHeader($page_title, true);
         <thead>
             <tr>
                 <th></th>
-                <th>Product ID</th>
-                <th>Colour ID</th>
+                <th>Product</th>
+                <th>Colour</th>
                 <th>Unit Size</th>
                 <th>Description</th>
             </tr>
@@ -144,7 +150,7 @@ ViewHelper::loadHeader($page_title, true);
 
         <div class="actions-title">Actions :</div>
 
-        <button id="view-variant" class="blue-btn">View Variant Details</button>
+        <!-- <button id="view-variant" class="blue-btn">View Variant Details</button> -->
         <button id="edit-variant" class="yellow-btn">Edit Variant Details</button>
         <button id="delete-variant" class="red-btn">Delete Variant</button>
         <button class="jump-btn">Jump To ↪</button>
@@ -217,7 +223,7 @@ ViewHelper::loadHeader($page_title, true);
 <div class="employees-bottom">
 
     <div class="left-side">
-        <select>
+        <select id="userStatusFilter">
             <option>Employee Status</option>
             <option value="active">Active</option>
             <option value="leave">Leave</option>
@@ -235,7 +241,7 @@ ViewHelper::loadHeader($page_title, true);
 
         <div class="actions-title">Actions :</div>
 
-        <button id="view-user" class="blue-btn">View User Details</button>
+        <!-- <button id="view-user" class="blue-btn">View User Details</button> -->
         <button id="delete-user" class="red-btn">Terminate User</button>
     </div>
 </div>
@@ -315,20 +321,23 @@ ViewHelper::loadHeader($page_title, true);
                     <th>Code</th>
                 </tr>
             </thead>
-            <tbody>
-                <?php foreach ($products as $key => $product): ?>
-                    <tr class="product-row">
-                        <td>
-                        <input type="radio" name="product_id"
-                            value="<?= $product['product_id']?>"
-                            class="product-radio">
-                        </td>
-                        <td><?= $product['product_id']?></td>
-                        <td><?= $product['product_name']?></td>
-                        <td><?= $product['product_type_id']?></td>
-                        <td><?= $product['product_code']?></td>
-                    </tr>
-                <?php endforeach; ?>
+            <tbody id="productBody">
+                <template id="defaultProductsTemplate">
+                    <?php foreach ($products as $key => $product): ?>
+                        <tr class="product-row">
+                            <td>
+                            <input type="radio" name="product_id"
+                                value="<?= $product['product_id']?>"
+                                class="product-radio">
+                            </td>
+                            <td><?= $product['product_id']?></td>
+                            <td><?= $product['product_name']?></td>
+                            <td><?= $product['product_type_id']?></td>
+                            <td><?= $product['product_code']?></td>
+                        </tr>
+                    <?php endforeach; ?>
+                </template>
+                <template id="variantsResult"></template>
             </tbody>
         </table>
 
@@ -356,11 +365,11 @@ ViewHelper::loadHeader($page_title, true);
 
     <div class="right-side">
         <label>Search . .</label>
-        <input type="text" placeholder="Search . .">
+        <input id="productSearchInput" type="text" placeholder="Search . .">
 
         <div class="actions-title">Actions :</div>
 
-        <button id="view-product" class="blue-btn">View Product Details</button>
+        <!-- <button id="view-product" class="blue-btn">View Product Details</button> -->
         <button id="edit-product" class="yellow-btn">Edit Product Details</button>
         <button id="delete-product" class="red-btn">Delete Product</button>
     </div>
@@ -381,19 +390,21 @@ ViewHelper::loadHeader($page_title, true);
                 <th>Colour Name</th>
             </tr>
         </thead>
-        <tbody>
-            <?php foreach ($colours as $key => $colour): ?>
-                <tr class="colour-row">
-                    <td>
-                    <input type="radio" name="colour_id"
-                        value="<?= $colour['colour_id']?>"
-                        class="colour-radio">
-                    </td>
-                    <td><?= $colour['colour_id']?></td>
-                    <td><?= $colour['colour_code']?></td>
-                    <td><?= $colour['colour_name']?></td>
-                </tr>
-            <?php endforeach; ?>
+        <tbody id="colourBody">
+            <template id="defaultColoursTemplate">
+                <?php foreach ($colours as $key => $colour): ?>
+                    <tr class="colour-row">
+                        <td>
+                        <input type="radio" name="colour_id"
+                            value="<?= $colour['colour_id']?>"
+                            class="colour-radio">
+                        </td>
+                        <td><?= $colour['colour_id']?></td>
+                        <td><?= $colour['colour_code']?></td>
+                        <td><?= $colour['colour_name']?></td>
+                    </tr>
+                <?php endforeach; ?>
+            </template>
         </tbody>
     </table>
 
@@ -413,13 +424,13 @@ ViewHelper::loadHeader($page_title, true);
 
     <div class="right-side">
         <label>Search . .</label>
-        <input type="text" placeholder="Search . .">
+        <input id="colourSearchInput" type="text" placeholder="Search . .">
 
         <div class="actions-title">Actions :</div>
 
-        <button id="view-colour" class="blue-btn">View Product Details</button>
-        <button id="edit-colour" class="yellow-btn">Edit Product Details</button>
-        <button id="delete-colour" class="red-btn">Delete Product</button>
+        <!-- <button id="view-colour" class="blue-btn">View Product Details</button> -->
+        <button id="edit-colour" class="yellow-btn">Edit Colour Details</button>
+        <button id="delete-colour" class="red-btn">Delete Colour</button>
     </div>
 
 </div>
@@ -576,6 +587,7 @@ ViewHelper::loadHeader($page_title, true);
             <tr>
                 <th scope="col">#</th>
                 <th scope="col">Name</th>
+                <th scope="col">Actions</th>
             </tr>
         </thead>
         <tbody>
@@ -628,18 +640,25 @@ ViewHelper::loadHeader($page_title, true);
         <thead>
             <tr>
                 <th scope="col">Team</th>
-                <th scope="col">Member</th>
+                <th scope="col">Station</th>
+                <th scope="col">User</th>
+                <th scope="col">First Name</th>
+                <th scope="col">Last Name</th>
+            <!--<th scope="col">Actions</th> -->
             </tr>
         </thead>
         <tbody>
             <?php foreach ($team_members as $key => $member): ?>
                 <tr>
                     <td><?= $member['team_id']?></td>
+                    <td><?= $member['station_name']?></td>
                     <td><?= $member['user_id']?></td>
-                    <td>
-                        <a class="btn btn-secondary" href="products/<?=$product['id']?>/edit">Edit</a>
-                        <a class="btn btn-danger" href="products/<?=$product['id']?>/delete">Delete</a>
-                    </td>
+                    <td><?= $member['first_name']?></td>
+                    <td><?= $member['last_name']?></td>
+                    <!--<td>
+                        <a class="btn btn-secondary" href="member/edit/<?=$member['team_id']?>/<?= $member['user_id'] ?>">Edit</a>
+                        <a class="btn btn-danger" href="member/delete/<?=$member['team_id']?>/<?= $member['user_id'] ?>">Delete</a>
+                    </td>-->
                 </tr>
             <?php endforeach; ?>
         </tbody>
@@ -724,7 +743,7 @@ ViewHelper::loadHeader($page_title, true);
  if ($show_variant_edit):?>
 <div id="forgotPasswordModal" class="forgot-modal-overlay">
     <div class="forgot-modal-box">
-        <span class="close-forgot">X</span>
+        <a href="<?=APP_BASE_URL ?>/admin" class="close-forgot">X</a>
 
         <h2>Edit Variant</h2>
         <form action="<?= APP_BASE_URL ?>/admin/variant/edit/<?= $variant_to_edit['variant_id'] ?>" method="POST">
@@ -760,7 +779,7 @@ ViewHelper::loadHeader($page_title, true);
             </select>
             <input value="<?= $variant_to_edit['variant_description'] ?>" name="variant_description" type="text" placeholder="Enter Product Description">
 
-            <button type="submit">Add Variant</button>
+            <button type="submit">Update Variant</button>
 
         </form>
 
@@ -1012,13 +1031,45 @@ ViewHelper::loadHeader($page_title, true);
         <input type="hidden" value="<?= $pallet_to_edit['pallet_id'] ?>" name="pallet_id">
         <div class="quick-add-title">Quick Add :</div>
 
-            <label for="colour_code">Colour Code</label>
-            <input value="<?= $colour_to_edit['colour_code'] ?>" name="colour_code" type="text" placeholder="Enter Colour Code">
+            <label for="">Tote</label>
+            <select name="tote_id" class="form-select" id="product_type_id">
+                <option value="<?= $pallet_to_edit['tote_id'] ?>"><?= $pallet_to_edit['tote_id'] ?></option>
+                <?php foreach ($totes as $tote): ?>
+                    <option value="<?= $tote['tote_id'] ?>">
+                        <?= $tote['batch_number'] ?>
+                    </option>
+                <?php endforeach; ?>
+            </select>
 
-            <label for="colour_name">Colour Name</label>
-            <input value="<?= $colour_to_edit['colour_name'] ?>" name="colour_name" type="text" placeholder="Enter Colour Name">
+            <label for="">Station</label>
+            <select name="station_id" class="form-select" id="product_type_id">
+                <option value="<?= $pallet_to_edit['station_id'] ?>"><?= $pallet_to_edit['station_id'] ?></option>
+                <?php foreach ($stations as $station): ?>
+                    <option value="<?= $station['station_id'] ?>">
+                        <?= $station['station_name'] ?>
+                    </option>
+                <?php endforeach; ?>
+            </select>
 
-            <button type="submit">Update Colour</button>
+            <label for="start_time">Start Time</label>
+            <input value="<?= $pallet_to_edit['start_time'] ?>" name="start_time" type="text" placeholder="Enter Start Time">
+
+            <label for="end_time">End Time</label>
+            <input value="<?= $pallet_to_edit['end_time'] ?>" name="end_time" type="text" placeholder="Enter End Time">
+
+            <label for="units">Units</label>
+            <input value="<?= $pallet_to_edit['units'] ?>" name="units" type="text" placeholder="Enter Units">
+
+            <label for="break_time">Break Time</label>
+            <input value="<?= $pallet_to_edit['break_time'] ?>" name="break_time" type="text" placeholder="Enter Break Time">
+
+            <label for="mess">Break Time</label>
+            <input value="<?= $pallet_to_edit['mess'] ?>" name="mess" type="button">
+
+            <label for="notes">Notes</label>
+            <input value="<?= $pallet_to_edit['notes'] ?>" name="notes" type="text" placeholder="Enter Notes">
+
+            <button type="submit">Update Pallet</button>
             <a href="<?=APP_BASE_URL ?>/admin">Cancel</a>
         </form>
 
@@ -1034,11 +1085,11 @@ ViewHelper::loadHeader($page_title, true);
         <a href="<?=APP_BASE_URL ?>/admin" class="close-forgot">X</a>
 
         <h2>Delete Product Type</h2>
-        <h3>Are you sure you want to delete Colour: <?= $colour_to_delete['colour_name'] ?></h3>
-        <form action="<?= APP_BASE_URL ?>/admin/colour/delete/<?= $colour_to_delete['colour_id']?>/do" method="GET">
-            <input type="hidden" value="<?= $colour_to_delete['colour_id'] ?>" name="colour_id">
+        <h3>Are you sure you want to delete Pallet with ID: <?= $pallet_to_delete['pallet_id'] ?></h3>
+        <form action="<?= APP_BASE_URL ?>/admin/pallet/delete/<?= $pallet_to_delete['pallet_id']?>/do" method="GET">
+            <input type="hidden" value="<?= $pallet_to_delete['pallet_id'] ?>" name="pallet_id">
             <span>
-                <button type="submit">Delete Colour</button>
+                <button type="submit">Delete Pallet</button>
                 <a href="<?=APP_BASE_URL ?>/admin">Cancel</a>
             </span>
         </form>
@@ -1100,7 +1151,56 @@ ViewHelper::loadHeader($page_title, true);
 </div>
 <?php endif; ?>
 
+<!-- EDIT TEAM POPUP -->
+ <?php
+ if ($show_team_edit):?>
+<div id="forgotPasswordModal" class="forgot-modal-overlay">
+    <div class="forgot-modal-box">
+        <a href="<?=APP_BASE_URL ?>/admin" class="close-forgot">X</a>
+        <h2>Edit Team</h2>
+        <form action="<?= APP_BASE_URL ?>/admin/team/edit/<?= $team_to_edit['team_id'] ?>" method="POST">
+        <input type="hidden" value="<?= $team_to_edit['team_id'] ?>" name="team_id">
+        <div class="quick-add-title">Quick Add :</div>
+
+            <label for="">Station</label>
+            <select name="station_id" class="form-select" id="station_id">
+                <option value="<?= $team_to_edit['station_id'] ?>"><?= $team_to_edit['station_id'] ?></option>
+                <?php foreach ($stations as $station): ?>
+                    <option value="<?= $station['station_id'] ?>">
+                        <?= $station['station_name'] ?>
+                    </option>
+                <?php endforeach; ?>
+            </select>
+
+            <button type="submit">Update Team</button>
+            <a href="<?=APP_BASE_URL ?>/admin">Cancel</a>
+        </form>
+
+    </div>
+</div>
+<?php endif; ?>
+
+<!-- DELETE TEAM POPUP -->
+ <?php
+ if ($show_team_delete):?>
+<div id="forgotPasswordModal" class="forgot-modal-overlay">
+    <div class="forgot-modal-box">
+        <a href="<?=APP_BASE_URL ?>/admin" class="close-forgot">X</a>
+
+        <h2>Delete Team</h2>
+        <h3>Are you sure you want to delete Team with Team ID: <?= $team_to_delete['team_id'] ?></h3>
+        <form action="<?= APP_BASE_URL ?>/admin/team/delete/<?= $team_to_delete['team_id']?>/do" method="GET">
+            <input type="hidden" value="<?= $tote_to_deleteam_to_deletete['team_id'] ?>" name="team_id">
+            <span>
+                <button type="submit">Delete Team</button>
+                <a href="<?=APP_BASE_URL ?>/admin">Cancel</a>
+            </span>
+        </form>
+
+    </div>
+</div>
+<?php endif; ?>
+<script src="/kvc-manager/public/assets/js/admin-page.js"></script>
 <?php
-ViewHelper::loadJsScripts();
 ViewHelper::loadFooter();
 ?>

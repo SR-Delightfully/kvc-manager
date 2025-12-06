@@ -79,7 +79,7 @@ class ToteController extends BaseController
     public function edit(Request $request, Response $response, array $args): Response {
         $tote_id = $args['id'];
 
-        $tote = $this->toteModel->getToteById($tote_id);
+        $tote = $this->toteModel->getToteCleanById($tote_id);
 
         $data = [
                 'contentView' => APP_VIEWS_PATH . '/pages/adminView.php',

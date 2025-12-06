@@ -1,24 +1,3 @@
-function enableRowSelect(rowSelector, radioSelector) {
-    document.querySelectorAll(rowSelector).forEach(row => {
-        row.addEventListener("click", function (e) {
-            if (e.target.matches(radioSelector)) return;
-
-            const radio = this.querySelector(radioSelector);
-            if (radio) {
-                radio.checked = true;
-            }
-
-            document.querySelectorAll(rowSelector).forEach(r => r.classList.remove("selected-row"));
-            this.classList.add("selected-row");
-        });
-    });
-}
-
-enableRowSelect(".variant-row", '.variant-radio');
-enableRowSelect('.user-row', '.user-radio');
-enableRowSelect('.product-type-row', '.type-radio');
-enableRowSelect('.product-row', '.product-radio');
-enableRowSelect('.colour-row', '.colour-radio');
 
 function submitBtn(formElement, buttonId, action, method, name, inputName) {
     const form = document.getElementById(formElement);
@@ -40,21 +19,21 @@ function submitBtn(formElement, buttonId, action, method, name, inputName) {
     });
 }
 
-submitBtn('variant-form', 'view-variant', 'admin/variant/', 'GET', 'variant', 'variant_id');
+//submitBtn('variant-form', 'view-variant', 'admin/variant/', 'GET', 'variant', 'variant_id');
 submitBtn('variant-form', 'edit-variant', 'admin/variant/edit/', 'GET', 'variant', 'variant_id');
 submitBtn('variant-form', 'delete-variant', 'admin/variant/delete/', 'GET', 'variant', 'variant_id');
 
-submitBtn('user-form', 'view-user', 'admin/users/', 'GET', 'user', 'user_id');
+//submitBtn('user-form', 'view-user', 'admin/users/', 'GET', 'user', 'user_id');
 submitBtn('user-form', 'delete-user', 'admin/users/delete/', 'GET', 'user', 'user_id');
 
 submitBtn('product-type-form', 'edit-type', 'admin/type/edit/', 'GET', 'product type', 'product_type_id');
 submitBtn('product-type-form', 'delete-type', 'admin/type/delete/', 'GET', 'product type', 'product_type_id');
 
-submitBtn('product-form', 'view-product', 'admin/product/', 'GET', 'product', 'product_id');
+//submitBtn('product-form', 'view-product', 'admin/product/', 'GET', 'product', 'product_id');
 submitBtn('product-form', 'edit-product', 'admin/product/edit/', 'GET', 'product', 'product_id');
 submitBtn('product-form', 'delete-product', 'admin/product/delete/', 'GET', 'product', 'product_id');
 
-submitBtn('colour-form', 'view-colour', 'admin/colour/', 'GET', 'colour', 'colour_id');
+//submitBtn('colour-form', 'view-colour', 'admin/colour/', 'GET', 'colour', 'colour_id');
 submitBtn('colour-form', 'edit-colour', 'admin/colour/edit/', 'GET', 'colour', 'colour_id');
 submitBtn('colour-form', 'delete-colour', 'admin/colour/delete/', 'GET', 'colour', 'colour_id');
 
@@ -67,13 +46,109 @@ function debounce(func, delay) {
     };
 }
 
-
 async function fetchProducts(searchTerm) {
     try {
         const params = new URLSearchParams();
         if (searchTerm) params.append('q', searchTerm);
 
         const response = await fetch(`${window.APP_BASE_URL}/api/products/search?${params.toString()}`);
+
+        if (!response.ok) {
+            throw new Error(`HTTP Error: ${response.status}`);
+        }
+
+        const data = await response.json();
+        return data.products || [];
+
+    } catch (error) {
+        console.error('Fetch error (products):', error);
+        return [];
+    }
+}
+
+async function fetchColours(searchTerm) {
+    try {
+        const params = new URLSearchParams();
+        if (searchTerm) params.append('q', searchTerm);
+
+        const response = await fetch(`${window.APP_BASE_URL}/api/colours/search?${params.toString()}`);
+
+        if (!response.ok) {
+            throw new Error(`HTTP Error: ${response.status}`);
+        }
+
+        const data = await response.json();
+        return data.colours || [];
+
+    } catch (error) {
+        console.error('Fetch error (colours):', error);
+        return [];
+    }
+}
+
+function createColourRow(colour) {
+    const tr = document.createElement('tr');
+    tr.className = "colour-row";
+
+    tr.innerHTML = `
+        <td>
+            <input type="radio" name="colour_id"
+                   value="${colour.colour_id}"
+                   class="colour-radio">
+        </td>
+        <td>${escapeHtml(colour.colour_id)}</td>
+        <td>${escapeHtml(colour.colour_code)}</td>
+        <td>${escapeHtml(colour.colour_name)}</td>
+    `;
+
+    return tr;
+}
+
+function renderColourTable(colours) {
+    const tbody = document.getElementById('colourBody');
+    tbody.innerHTML = '';
+
+    if (!colours || colours.length === 0) {
+        tbody.innerHTML = `
+            <tr>
+                <td colspan="4">
+                    <div class="alert alert-info m-0">
+                        <i class="bi bi-info-circle"></i> No colours found.
+                    </div>
+                </td>
+            </tr>
+        `;
+        return;
+    }
+
+    colours.forEach(c => tbody.appendChild(createColourRow(c)));
+}
+
+function createProductRow(product) {
+    const tr = document.createElement('tr');
+    tr.className = "product-row";
+
+    tr.innerHTML = `
+        <td>
+            <input type="radio" name="product_id"
+                   value="${product.product_id}"
+                   class="product-radio">
+        </td>
+        <td>${product.product_id}</td>
+        <td>${escapeHtml(product.product_name)}</td>
+        <td>${escapeHtml(product.product_type_id)}</td>
+        <td>${escapeHtml(product.product_code)}</td>
+    `;
+
+    return tr;
+}
+
+async function fetchVariants(searchTerm) {
+    try {
+        const params = new URLSearchParams();
+        if (searchTerm) params.append('q', searchTerm);
+
+        const response = await fetch(`${window.APP_BASE_URL}/api/variants/search?${params.toString()}`);
 
         if (!response.ok) {
             throw new Error(`HTTP Error: ${response.status}`);
@@ -99,8 +174,28 @@ function showError(message) {
     `;
 }
 
+function renderProductTable(products) {
+    const tbody = document.getElementById('productBody');
 
-function renderProducts(products) {
+    tbody.innerHTML = '';
+
+    if (!products || products.length === 0) {
+        tbody.innerHTML = `
+            <tr>
+                <td colspan="5">
+                    <div class="alert alert-info m-0">
+                        <i class="bi bi-info-circle"></i> No products found.
+                    </div>
+                </td>
+            </tr>
+        `;
+        return;
+    }
+
+    products.forEach(p => tbody.appendChild(createProductRow(p)));
+}
+
+function renderVariants(products) {
     const tbody = document.getElementById('variantBody');
 
     //clear table
@@ -111,7 +206,7 @@ function renderProducts(products) {
             <tr>
                 <td colspan="5">
                     <div class="alert alert-info m-0">
-                        <i class="bi bi-info-circle"></i> No products found.
+                        <i class="bi bi-info-circle"></i> No variants found.
                     </div>
                 </td>
             </tr>
@@ -153,7 +248,7 @@ function escapeHtml(text) {
 async function fetchUsers(searchTerm, role = "") {
     const params = new URLSearchParams();
     if (searchTerm) params.append('q', searchTerm);
-    if (role) params.append('user_role', role);
+    if (role) params.append('user_status', role);
 
     try {
         const response = await fetch(`${window.APP_BASE_URL}/api/users/search?${params.toString()}`);
@@ -179,7 +274,7 @@ function createUserRow(user) {
     if (user.user_status === "terminated") statusDot = '<span class="dot red"></span>';
 
     tr.innerHTML = `
-        <td><input type="radio" name="user_id" value="${user.user_id}"></td>
+        <td><input type="radio" name="user_id" value="${user.user_id}" class="user-radio"></td>
         <td>${statusDot}</td>
         <td>${user.user_role}</td>
         <td>${user.first_name}</td>
@@ -209,8 +304,8 @@ document.addEventListener('DOMContentLoaded', function () {
             tbody.appendChild(template.content.cloneNode(true));
             return;
         }
-        const products = await fetchProducts(searchTerm);
-        renderProducts(products);
+        const products = await fetchVariants(searchTerm);
+        renderVariants(products);
     }
 
     const debouncedSearch = debounce(performSearch, 300);
@@ -222,26 +317,32 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 
-    // USERS TABLE
-    const userSearchInput = document.querySelector('.employees-bottom .search');
+        const userSearchInput = document.querySelector('.employees-bottom .search');
     const userTbody = document.getElementById('employeeBody');
     const userTemplate = document.getElementById('defaultUsersTemplate');
 
     userTbody.appendChild(userTemplate.content.cloneNode(true));
 
-    async function performUserSearch() {
-        const term = userSearchInput.value.trim();
+    // status filter select we added to the view
+    const userStatusSelect = document.getElementById('userStatusFilter');
 
-        if (term === '') {
+    async function performUserSearch() {
+        const term = (userSearchInput ? userSearchInput.value.trim() : '');
+        const role = (userStatusSelect && userStatusSelect.value && userStatusSelect.value !== 'Employee Status')
+            ? userStatusSelect.value
+            : '';
+
+        // if no search term AND no role filter, show default template rows
+        if (term === '' && role === '') {
             userTbody.innerHTML = '';
             userTbody.appendChild(userTemplate.content.cloneNode(true));
             return;
         }
 
-        const users = await fetchUsers(term);
+        const users = await fetchUsers(term, role);
         userTbody.innerHTML = '';
 
-        if (!users.length) {
+        if (!users || users.length === 0) {
             userTbody.innerHTML = `<tr><td colspan="8">No users found.</td></tr>`;
             return;
         }
@@ -249,13 +350,129 @@ document.addEventListener('DOMContentLoaded', function () {
         users.forEach(u => userTbody.appendChild(createUserRow(u)));
     }
 
-    const debouncedUserSearch = debounce(performUserSearch, 300);
-    userSearchInput.addEventListener('input', debouncedUserSearch);
-    userSearchInput.addEventListener('keydown', e => {
-        if (e.key === 'Escape') {
-            userSearchInput.value = '';
-            performUserSearch();
-        }
-    });
+    // wire search input (was missing)
+    if (userSearchInput) {
+        const debouncedUserSearch = debounce(performUserSearch, 300);
+        userSearchInput.addEventListener('input', debouncedUserSearch);
+        userSearchInput.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                userSearchInput.value = '';
+                performUserSearch();
+            }
+        });
+    }
 
+    // run search when status filter changes (single listener)
+    if (userStatusSelect) {
+        userStatusSelect.addEventListener('change', () => {
+            performUserSearch();
+        });
+    }
+
+    // PRODUCTS TABLE
+
+    const productSearchInput = document.getElementById('productSearchInput');
+    const productTbody = document.getElementById('productBody');
+    const productTemplate = document.getElementById('defaultProductsTemplate');
+
+    if (productTbody && productTemplate) {
+        // populate default rows from template on load
+        productTbody.appendChild(productTemplate.content.cloneNode(true));
+    }
+
+    if (productSearchInput) {
+        async function performProductSearch() {
+            const term = productSearchInput.value.trim();
+
+            if (term === '') {
+                productTbody.innerHTML = '';
+                if (productTemplate) productTbody.appendChild(productTemplate.content.cloneNode(true));
+                return;
+            }
+
+            const products = await fetchProducts(term);
+            renderProductTable(products);
+        }
+
+        const debouncedProductSearch = debounce(performProductSearch, 300);
+        productSearchInput.addEventListener('input', debouncedProductSearch);
+        productSearchInput.addEventListener('keydown', e => {
+            if (e.key === 'Escape') {
+                productSearchInput.value = '';
+                performProductSearch();
+            }
+        });
+    }
+
+    // COLOURS TABLE
+    const colourSearchInput = document.getElementById('colourSearchInput');
+    const colourTbody = document.getElementById('colourBody');
+    const colourTemplate = document.getElementById('defaultColoursTemplate');
+
+    if (colourTbody && colourTemplate) {
+        // populate default rows from template on load
+        colourTbody.appendChild(colourTemplate.content.cloneNode(true));
+    }
+
+    if (colourSearchInput) {
+        async function performColourSearch() {
+            const term = colourSearchInput.value.trim();
+
+            if (term === '') {
+                colourTbody.innerHTML = '';
+                if (colourTemplate) colourTbody.appendChild(colourTemplate.content.cloneNode(true));
+                return;
+            }
+
+            const colours = await fetchColours(term);
+            renderColourTable(colours);
+        }
+
+        const debouncedColourSearch = debounce(performColourSearch, 300);
+        colourSearchInput.addEventListener('input', debouncedColourSearch);
+        colourSearchInput.addEventListener('keydown', e => {
+            if (e.key === 'Escape') {
+                colourSearchInput.value = '';
+                performColourSearch();
+            }
+        });
+    }
 });
+
+
+
+function enableRowSelectDelegated(containerOrSelector, rowSelector, radioSelector) {
+    // accept either a selector string or an element/document
+    const container = (typeof containerOrSelector === 'string')
+        ? document.querySelector(containerOrSelector)
+        : (containerOrSelector instanceof Element || containerOrSelector instanceof Document)
+            ? containerOrSelector
+            : document;
+
+    if (!container) return;
+
+    container.addEventListener('click', function (e) {
+        const row = e.target.closest(rowSelector);
+        if (!row) return;
+
+        const radio = row.querySelector(radioSelector);
+        if (!radio) return;
+
+        // if click was directly on the radio let the browser handle toggle
+        if (!e.target.matches(radioSelector)) {
+            radio.checked = true;
+        }
+
+        // highlight selected rows within the container
+        container.querySelectorAll(rowSelector).forEach(r => r.classList.remove("selected-row"));
+        row.classList.add("selected-row");
+    });
+}
+
+
+enableRowSelectDelegated(document, ".variant-row", '.variant-radio');
+enableRowSelectDelegated(document, '.user-row', '.user-radio');
+enableRowSelectDelegated(document, '.product-type-row', '.type-radio');
+enableRowSelectDelegated(document, '.product-row', '.product-radio');
+enableRowSelectDelegated(document, '.colour-row', '.colour-radio');
+
