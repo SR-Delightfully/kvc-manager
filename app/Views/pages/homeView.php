@@ -49,4 +49,3 @@ $page_title = 'Welcome to KVC Manager!';
         </ul>
     </div>
 </div>
-

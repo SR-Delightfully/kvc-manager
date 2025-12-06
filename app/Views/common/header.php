@@ -21,6 +21,7 @@ function e($value)
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<<<<<<< HEAD
     <title><?= isset($page_title) ? e($page_title) : 'KVC Manager' ?></title>
     <link rel="stylesheet" href="./public/assets/css/00-Global-Styles.css">
     <link rel="stylesheet" href="./public/assets/css/01-Navbar-Styles.css">
@@ -31,6 +32,22 @@ function e($value)
     <link rel="stylesheet" href="./public/assets/css/06-Reset-Styles.css">
     <link rel="stylesheet" href="./public/assets/css/07-Register-Styles.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+=======
+    <title><?= $page_title ?></title>
+    <link rel="stylesheet" href="/kvc-manager/public/assets/css/00-Global-Styles.css">
+    <link rel="stylesheet" href="/kvc-manager/public/assets/css/01-Navbar-Styles.css">
+    <link rel="stylesheet" href="/kvc-manager/public/assets/css/02-Header-Styles.css">
+    <link rel="stylesheet" href="/kvc-manager/public/assets/css/03-Dashboard-Styles.css">
+     <link rel="stylesheet" href="/kvc-manager/public/assets/css/04-Login-Styles.css">
+ <link rel="stylesheet" href="/kvc-manager/public/assets/css/05-TwoFactor-Styles.css">
+  <link rel="stylesheet" href="/kvc-manager/public/assets/css/06-Reset-Styles.css">
+   <link rel="stylesheet" href="/kvc-manager/public/assets/css/07-Register-Styles.css">
+
+    <link rel="stylesheet" href="/kvc-manager/public/assets/css/08-Settings-Styles.css">
+    <link rel="stylesheet" href="/kvc-manager/public/assets/css/09-Reports-Styles.css">
+    <!-- bootstrap -->
+     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+>>>>>>> acbb9d28902ee8044b7f096a01678b057ea1deaf
 </head>
 
 <body>

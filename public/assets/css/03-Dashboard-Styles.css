@@ -6,3 +6,703 @@
     right: 3vw;
     margin-top: 5rem;
 }
+/* Work Overview title */
+.page-title {
+    text-align: center;
+    font-size: 36px;
+    margin-bottom: 25px;
+    color: #ffffff;
+    letter-spacing: 5px;
+}
+
+/* Layout for leaderboard + chart */
+.dashboard-grid {
+    display: flex;
+    gap: 30px;
+    align-items: flex-start;
+}
+
+/* Left column */
+.dashboard-left {
+    width: 35%;
+}
+
+/* Right column */
+.dashboard-right {
+    width: 65%;
+}
+
+/* Make chart container smaller */
+.team-progress-container {
+    width: 100%;
+    max-width: 650px;
+    background: #1a1f29;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 0 10px #00000080;
+}
+
+/* leaderboard */
+.leaderboard-container {
+    background: #1e1e1e;
+    padding: 20px;
+    border-radius: 10px;
+    width: 350px;
+    text-align: center;
+}
+
+.bars {
+    display: flex;
+    justify-content: space-around;
+    height: 250px;
+    align-items: flex-end;
+    margin-bottom: 20px;
+}
+
+.bar {
+    width: 60px;
+    background: #333;
+    border-radius: 5px 5px 0 0;
+    position: relative;
+}
+
+.bar1 {
+    background: #f1c40f;
+}
+.bar2 {
+    background: #2ecc71;
+}
+.bar3 {
+    background: #3498db;
+}
+
+.rank {
+    position: absolute;
+    top: -25px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 20px;
+    font-weight: bold;
+}
+/* chart*/
+.team-progress-container {
+    background: #1a1f29;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 0 10px #00000080;
+    width: 90%;
+    margin: 0 auto;
+}
+.team-summary-list {
+    margin-top: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.team-summary-row {
+    background: #27313f;
+    border-radius: 10px;
+    padding: 8px 14px;
+    color: #e6e6e6;
+    display: flex;
+    align-items: center;
+    box-shadow: 0 2px 4px #00000080;
+    font-size: 14px;
+}
+
+.team-summary-row.best {
+    font-weight: bold;
+}
+
+.team-summary-row .team-name {
+    margin-right: 12px;
+}
+
+.team-summary-row .summary-item {
+    margin-left: 12px;
+    padding-left: 12px;
+    border-left: 1px solid rgba(255, 255, 255, 0.35);
+    font-size: 13px;
+}
+
+.team-summary-row .summary-item .value {
+    color: #ffffff;
+}
+
+.team-progress-container h2 {
+    color: #fff;
+    margin-bottom: 10px;
+    font-size: 22px;
+    font-weight: bold;
+}
+
+/* OUTER CONTAINER */
+.team-assignment-container {
+    background: #1a1f29;
+    padding: 20px;
+    margin-top: 30px;
+    border-radius: 12px;
+    width: 450px;
+    color: white;
+    box-shadow: 0 0 12px #00000070;
+    font-family: "Segoe UI", sans-serif;
+}
+
+/* TITLE */
+.team-assignment-container h2 {
+    text-align: center;
+    margin-bottom: 15px;
+    font-size: 24px;
+    letter-spacing: 2px;
+}
+
+/* DATE ROW */
+.team-assignment-date {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+    align-items: center;
+}
+
+.team-assignment-date span {
+    font-size: 16px;
+}
+
+.team-assignment-date input {
+    background: #2a3142;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 6px;
+    color: white;
+    width: 160px;
+    font-size: 14px;
+}
+
+/* INNER CARD */
+.team-assignment-card {
+    background: #151a22;
+    border-radius: 12px;
+    padding: 15px;
+    box-shadow: inset 0 0 10px #00000060;
+}
+
+/* EACH TEAM BLOCK */
+.team-group {
+    margin-bottom: 15px;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+/* HEADER (CLICKABLE DROPDOWN) */
+.team-header {
+    display: flex;
+    justify-content: space-between;
+    background: #0f1218;
+    padding: 12px 14px;
+    cursor: pointer;
+    align-items: center;
+    color: #ffffff;
+    font-weight: bold;
+    border-radius: 8px;
+    font-size: 15px;
+}
+
+.team-header:hover {
+    background: #131722;
+}
+
+.team-label {
+    letter-spacing: 1px;
+}
+
+.team-arrow {
+    font-size: 14px;
+    opacity: 0.7;
+}
+
+/* MEMBERS WRAPPER */
+.team-members {
+    display: none; /* shown when toggled */
+    padding: 12px;
+    background: #1b202a;
+    border-radius: 0 0 8px 8px;
+}
+
+/* MEMBER ROW */
+.member {
+    background: #2a3142;
+    padding: 10px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+/* AVATAR DOT */
+.avatar {
+    width: 16px;
+    height: 16px;
+    background: #000;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+
+/* NAME TEXT */
+.member span {
+    color: #e6e6e6;
+    margin-right: 10px;
+    font-size: 14px;
+}
+
+/* ACTION BUTTONS */
+.remove-btn {
+    background: #c42c2c;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    padding: 6px 10px;
+    font-size: 12px;
+    margin-left: auto;
+    cursor: pointer;
+}
+
+.contact-btn {
+    background: #284b9f;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    padding: 6px 10px;
+    font-size: 12px;
+    margin-left: 6px;
+    cursor: pointer;
+}
+
+.remove-btn:hover {
+    background: #a92323;
+}
+
+.contact-btn:hover {
+    background: #1f3d85;
+}
+
+/* styling for the database overview page */
+/* PAGE LAYOUT */
+body {
+    background: #0f1218;
+    font-family: "Segoe UI", sans-serif;
+    margin: 0;
+    padding: 40px;
+    color: #e6e6e6;
+}
+
+.page {
+    max-width: 900px;
+    margin: auto;
+}
+
+/* TITLE */
+.title {
+    text-align: center;
+    font-size: 38px;
+    letter-spacing: 10px;
+    margin-bottom: 30px;
+    color: #ffffff;
+}
+
+/* TABLE CARD */
+.table-card {
+    background: #1a1f29;
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 0 10px #00000070;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+thead {
+    background: #222836;
+}
+
+thead th {
+    padding: 12px;
+    font-size: 14px;
+    letter-spacing: 1px;
+}
+
+tbody tr {
+    background: #151a22;
+}
+
+tbody tr:nth-child(even) {
+    background: #1b202a;
+}
+
+tbody td {
+    padding: 10px;
+    border-bottom: 1px solid #2a3142;
+}
+
+/* BOTTOM CARD */
+.bottom-card {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+
+    background: #151a22;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 0 10px #00000070;
+}
+
+.left-side,
+.right-side {
+    width: 45%;
+}
+
+label {
+    display: block;
+    color: #ccc;
+    margin-bottom: 6px;
+}
+
+/* INPUTS */
+input,
+select {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 12px;
+    border-radius: 6px;
+    border: none;
+    background: #2a3142;
+    color: #fff;
+}
+
+/* TITLES */
+.quick-add-title,
+.actions-title {
+    margin-top: 15px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+/* BUTTONS */
+button {
+    border: none;
+    width: 100%;
+    padding: 10px;
+    border-radius: 6px;
+    font-weight: bold;
+    cursor: pointer;
+    margin-bottom: 10px;
+}
+
+.jump-btn {
+    background: #345cdb;
+}
+
+.blue-btn {
+    background: #1e63e9;
+}
+
+.yellow-btn {
+    background: #bfa025;
+    color: black;
+}
+
+.red-btn {
+    background: #c42c2c;
+}
+/* pallets section in database overview  */
+/* MAIN CARD */
+.pallet-card {
+    background: #151a22;
+    padding: 25px;
+    border-radius: 12px;
+    width: 600px;
+    color: #e6e6e6;
+    box-shadow: 0 0 10px #00000070;
+    font-family: "Segoe UI", sans-serif;
+}
+
+/* HEADER */
+.pallet-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.pallet-header h2 {
+    letter-spacing: 8px;
+    font-size: 22px;
+    color: #fff;
+    margin: 0;
+}
+
+/* JUMP BUTTON */
+.jump-btn {
+    background: #345cdb;
+    padding: 8px 18px;
+    border: none;
+    border-radius: 20px;
+    font-weight: bold;
+    color: #fff;
+    cursor: pointer;
+    width: 110px;
+    height: 40px;
+}
+
+/* Quick Add text */
+.quick-title {
+    margin-top: 20px;
+    font-weight: bold;
+    margin-bottom: 15px;
+}
+
+/* GRID LAYOUT */
+.form-grid {
+    display: flex;
+    justify-content: space-between;
+}
+
+.left-side,
+.right-side {
+    width: 48%;
+}
+
+/* LABELS */
+label {
+    display: block;
+    margin-bottom: 6px;
+    color: #ccc;
+    font-size: 14px;
+}
+
+/* INPUTS + SELECTS */
+select,
+input[type="text"] {
+    width: 100%;
+    padding: 10px;
+    border-radius: 6px;
+    border: none;
+    background: #2a3142;
+    color: #fff;
+    margin-bottom: 15px;
+}
+
+/* RADIO BUTTON ROW */
+.radio-row {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 15px;
+}
+
+.radio-row label {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+/* BUTTONS */
+.button-row {
+    margin-top: 20px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.cancel-btn {
+    width: 48%;
+    padding: 12px;
+    background: #b3262a;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.save-btn {
+    width: 48%;
+    padding: 12px;
+    background: #284b9f;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    font-weight: bold;
+    cursor: pointer;
+}
+/* employees section */
+/* ==== PAGE LAYOUT ==== */
+.products-page {
+    display: flex;
+    gap: 25px;
+}
+
+.products-left {
+    width: 60%;
+}
+
+.employees-card {
+    width: 40%;
+    background: #151a22;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 0 10px #00000060;
+    color: white;
+    font-family: "Segoe UI", sans-serif;
+}
+
+/* ==== HEADER ==== */
+.employees-header h2 {
+    text-align: center;
+    font-size: 26px;
+    letter-spacing: 8px;
+    margin: 0;
+}
+
+/* ==== TABLE CARD ==== */
+.employees-table-card {
+    background: #1a1f29;
+    padding: 15px;
+    border-radius: 10px;
+    margin-top: 15px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+thead {
+    background: #222836;
+}
+
+thead th {
+    padding: 10px;
+    font-size: 14px;
+    letter-spacing: 1px;
+}
+
+tbody tr {
+    background: #151a22;
+}
+
+tbody tr:nth-child(even) {
+    background: #1c222d;
+}
+
+tbody td {
+    padding: 8px;
+    border-bottom: 1px solid #2c3344;
+}
+
+/* ==== STATUS DOTS ==== */
+.dot {
+    height: 12px;
+    width: 12px;
+    border-radius: 50%;
+    display: inline-block;
+}
+.green {
+    background: #35c94a;
+}
+.yellow {
+    background: #dfae34;
+}
+.red {
+    background: #c43a3a;
+}
+
+/* ==== BOTTOM SECTION ==== */
+.employees-bottom {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+
+.left-side,
+.right-side {
+    width: 48%;
+}
+
+select,
+input {
+    width: 100%;
+    padding: 10px;
+    background: #2a3142;
+    border: none;
+    border-radius: 6px;
+    color: #fff;
+    margin-bottom: 12px;
+}
+
+.search {
+    background: #2a3142;
+}
+
+.blue-btn {
+    background: #1e63e9;
+    padding: 10px;
+    width: 100%;
+    border-radius: 6px;
+    border: none;
+    margin-bottom: 10px;
+}
+
+.yellow-btn {
+    background: #bfa025;
+    padding: 10px;
+    width: 100%;
+    border: none;
+    border-radius: 6px;
+    margin-bottom: 10px;
+}
+
+.red-btn {
+    background: #c42c2c;
+    padding: 10px;
+    width: 100%;
+    border-radius: 6px;
+    border: none;
+}
+.recipient-list {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 12px;
+    border-radius: 6px;
+    background: #2a3142;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    max-height: 140px;
+    overflow-y: auto;
+}
+
+.recipient-option {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    color: #fff;
+}
+
+.recipient-option input[type="checkbox"] {
+    cursor: pointer;
+}
+
+/* textarea dans la modal */
+.modal-textarea {
+    width: 100%;
+    min-height: 130px;
+    padding: 10px;
+    margin-bottom: 12px;
+    border-radius: 6px;
+    border: none;
+    background: #2a3142;
+    color: #fff;
+    font-size: 14px;
+    resize: vertical;
+}

@@ -21,6 +21,7 @@ use App\Controllers\admin\ProductTypeController;
 use App\Controllers\admin\ProductVariantController;
 use App\Controllers\admin\ShiftController;
 use App\Controllers\admin\UsersController;
+use App\Controllers\admin\AdminDashboardController;
 
 // General Controller Imports
 use App\Controllers\AdminController;
@@ -109,9 +110,37 @@ return static function (App $app): void {
 
     // Admin Routes:
     $app->group('/admin', function ($admin) {
+        //temp route
+$admin->get('/temp-db', function ($request, $response) {
+    // Path to your view file
+    require APP_VIEWS_PATH . '/admin/databaseView.php';
+    return $response;
+});
+//temp route
+$admin->get('/temp-dash', function ($request, $response) {
+    // Path to your view file
+    require APP_VIEWS_PATH . '/admin/dashboardView.php';
+    return $response;
+});
 
+$admin->get('/temp-settings', function ($request, $response) {
+    // Path to your view file
+    require APP_VIEWS_PATH . '/admin/settingsView.php';
+    return $response;
+});
+$admin->get('/temp-reports', function ($request, $response) {
+    // Path to your view file
+    require APP_VIEWS_PATH . '/admin/reportsView.php';
+    return $response;
+});
+$admin->get('/temp-reports2', function ($request, $response) {
+    // Path to your view file
+    require APP_VIEWS_PATH . '/admin/allTimeReportsView.php';
+    return $response;
+});
 
         $admin->get('', [AdminController::class, 'index'])->setName('admin.index');
+
 
         // Products
         $admin->group('/product', function ($product) {
