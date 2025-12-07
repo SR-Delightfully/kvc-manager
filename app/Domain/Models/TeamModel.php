@@ -58,15 +58,24 @@ class TeamModel extends BaseModel
     }
 
     //FOR_TEAM_MEMBERS
-    public function getTeamMemberByUser($id): ?array {
-        $stmt = "SELECT * FROM team_members WHERE user_id = :id";
-        $params = [':id'=>$id];
-        $user = $this->selectOne($stmt,$params);
-        return $user;
+    public function getTodayTeamMembersForUser($user_id): ?array {
+        $stmt = "SELECT tm.team_id, t.team_date, s.station_name, u.user_id, u.first_name, u.last_name FROM team_members tm
+            JOIN team t ON tm.team_id = t.team_id
+            LEFT JOIN station s ON t.station_id = s.station_id
+            JOIN users u ON tm.user_id = u.user_id
+            WHERE tm.team_id IN (
+                SELECT tm2.team_id FROM team_members tm2
+                JOIN team t2 ON tm2.team_id = t2.team_id
+                WHERE tm2.user_id = :user_id AND DATE(t2.team_date) = CURDATE())
+            AND DATE(t.team_date) = CURDATE()
+            ORDER BY u.first_name, u.last_name";
+
+        $params = [':user_id' => $user_id];
+        return $this->selectAll($stmt, $params);
     }
 
-    public function getTeamMemberByStation($id): ?array {
-        $stmt = "SELECT * FROM team_members WHERE station_id = :id";
+    public function getTeamMemberByUser($id): ?array {
+        $stmt = "SELECT * FROM team_members WHERE user_id = :id";
         $params = [':id'=>$id];
         $user = $this->selectOne($stmt,$params);
         return $user;

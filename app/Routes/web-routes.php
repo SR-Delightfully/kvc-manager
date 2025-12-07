@@ -93,8 +93,12 @@ return static function (App $app): void {
         $app->group('/work', function ($work) {
             $work->get('', [WorkController::class, 'index'])->setName('work.index');
             $work->get('/create', [WorkController::class, 'create'])->setName('work.create');
-            $work->post('', [WorkController::class, 'store'])->setName('work.store');
-            $work->get('/{id}/edit', [WorkController::class, 'edit'])->setName('work.edit');
+            $work->post('/start', [WorkController::class, 'startSession'])->setName('work.start');
+            $work->post('/end', [WorkController::class, 'endSession'])->setName('work.end');
+            $work->post('/break/start', [WorkController::class, 'startBreak'])->setName('work.break.start');
+            $work->post('/break/end', [WorkController::class, 'endBreak'])->setName('work.break.end');
+            $work->get('/search', [WorkController::class, 'search'])->setName('work.search');
+            $work->get('/edit/{id}', [WorkController::class, 'edit'])->setName('work.edit');
             $work->post('/{id}', [WorkController::class, 'update'])->setName('work.update');
             $work->get('/{id}/delete', [WorkController::class, 'delete'])->setName('work.delete');
         });
