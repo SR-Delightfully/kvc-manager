@@ -195,15 +195,58 @@ class UserModel extends BaseModel
                  WHERE user_id = :user_id";
 
         $params = [
-            ':first_name' => $data['first_name'],
-            ':last_name'  => $data['last_name'],
-            ':email'      => $data['email'],
-            ':phone'      => $data['phone'],
-            ':password'   => $passwordHash,
-            ':user_id'    => $user_id
+            'first_name' => $data['first_name'],
+            'last_name'  => $data['last_name'],
+            'email'      => $data['email'],
+            'phone'      => $data['phone'],
+            'password'   => $passwordHash,
+            'user_id'    => $user_id
         ];
 
-        $this->execute($stmt, $params);
+        try {
+
+            $update = $this->execute($stmt, $params);
+
+            if($update <= 0)
+            {
+                throw new Exception("Employee(ID: $user_id) update failed.", 1);
+
+            }
+
+        } catch (Exception $e) {
+            print($e->getMessage());
+        }
+    }
+
+    public function createUser($data): int
+    {
+        $passwordHash = password_hash($data['password'], PASSWORD_BCRYPT);
+
+        $stmt = "INSERT INTO users (user_role, first_name, last_name, email, phone, password, user_dc, user_status) VALUES (employee, :first_name,  :last_name, :email, :phone, :password, current_timestamp(), active)";
+
+        $params = [
+            'first_name' => $data['first_name'],
+            'last_name'  => $data['last_name'],
+            'email'      => $data['email'],
+            'phone'      => $data['phone'],
+            'password'   => $passwordHash,
+        ];
+
+        try {
+
+            $insert = $this->execute($stmt, $params);
+
+            if($insert <= 0)
+            {
+                throw new Exception("New Employee insert failed.", 1);
+
+            }
+
+        } catch (Exception $e) {
+            print($e->getMessage());
+        }
+
+        return $this->lastInsertId();
     }
 
     public function getTeamMembersByStation($userId): ?array

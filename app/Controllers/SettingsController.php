@@ -35,7 +35,6 @@ class SettingsController extends BaseController
 
     public function error(Request $request, Response $response, array $args): Response
     {
-
         return $this->render($response, 'errorView.php');
     }
 
@@ -47,22 +46,90 @@ class SettingsController extends BaseController
      * @param array $args
      * @return Response
      */
+    // public function createUser(Request $request, Response $response, array $args): Response
+    // {
+    //     //? 1) Parse the request
+    //     $formData = $request->getParsedBody();
+    //     $firstName = $formData["first_name"];
+    //     $firstName = $formData["first_name"];
+    //     $firstName = $formData["first_name"];
+    //     $firstName = $formData["first_name"];
+
+    //     //? 2) Validate
+    //     $errors = [];
+
+    //     if (empty($firstName)) {
+    //         $errors[] = "All fields are required!";
+    //     }
+
+    //     if (!empty($errors)) {
+    //         FlashMessage::error($errors[0]);
+    //         return $this->redirect($request, $response, 'auth.register');
+    //     } else {
+    //         try {
+    //             $userData = [
+    //                 'first_name' => $firstName,
+    //             ];
+    //             $userId = $this->userModel->createUser($userData);
+    //             FlashMessage::success("Registration successful! Please log in.");
+    //             return $this->redirect($request, $response, 'auth.login');
+    //         } catch (\Exception $e) {
+    //             FlashMessage::error("Registration failed. Please try again.");
+    //             return $this->redirect($request, $response, 'auth.register');
+    //         }
+    //     }
+    // }
+
     public function createUser(Request $request, Response $response, array $args): Response
     {
-        //? 1) Parse the request
-        $formData = $request->getParsedBody();
-        $firstName = $formData["first_name"];
-        $firstName = $formData["first_name"];
-        $firstName = $formData["first_name"];
-        $firstName = $formData["first_name"];
+        //? 1) Parse the request and 2) Verify what needs to be updated
+        //? 3) Validate
 
-        //? 2) Validate
         $errors = [];
+        $phoneRegex1 = '/^\d{3}-\d{3}-\d{4}$/';
+        $phoneRegex2 = '/^\d{10}$/';
 
-        if (empty($firstName)) {
-            $errors[] = "All fields are required!";
+        try {
+
+            $formData = $request->getParsedBody();
+
+            if (!isset($formData["first_name"]) || empty($formData["first_name"])) {
+                $errors[] = "Please enter your first name.";
+            } else {
+                $firstName = $formData['first_name'];
+            }
+
+            if (!isset($formData["last_name"]) || empty($formData["last_name"])) {
+                $errors[] = "Please enter your last name.";
+            } else {
+                $lastName = $formData['last_name'];
+            }
+
+            if (!isset($formData["email"]) || empty($email) || filter_var($email, FILTER_VALIDATE_EMAIL)) {
+                $errors[] = "Please enter valid email address like abc@example.com.";
+            } else {
+                $email = $formData['email'];
+            }
+
+            if (!isset($formData["phone"]) || empty($formData["phone"]) || preg_match($phoneRegex1, $formData["phone"]) && !preg_match($phoneRegex2, $formData["phone"])) {
+
+                $errors[] = "Please enter valid phone number like 1231231234 or 123-123-1234";
+
+            }
+            else {
+
+                $phone = $formData["phone"];
+            }
+        } catch (Exception $e)
+        {
+            print($e->getMessage());
         }
 
+        //? 3) Validate:
+
+        // $emailRegex = "";
+
+        //TODO Update Flash messages if needed
         if (!empty($errors)) {
             FlashMessage::error($errors[0]);
             return $this->redirect($request, $response, 'auth.register');
@@ -70,17 +137,20 @@ class SettingsController extends BaseController
             try {
                 $userData = [
                     'first_name' => $firstName,
+                    'last_name' => $lastName,
+                    'email' => $email,
+                    'phone' => $phone
                 ];
-                $userId = $this->userModel->createUser($userData);
-                FlashMessage::success("Registration successful! Please log in.");
+
+                $this->userModel->createUser($userData);
+                FlashMessage::success("Employee creation successful!");
                 return $this->redirect($request, $response, 'auth.login');
             } catch (\Exception $e) {
-                FlashMessage::error("Registration failed. Please try again.");
+                FlashMessage::error("Employee creation failed. Please try again.");
                 return $this->redirect($request, $response, 'auth.register');
             }
         }
     }
-
 
     /**
      *Update a user's info if they do exist.
@@ -150,7 +220,7 @@ class SettingsController extends BaseController
         //TODO Update Flash messages if needed
         if (!empty($errors)) {
             FlashMessage::error($errors[0]);
-            return $this->redirect($request, $response, 'auth.register');
+            return $this->redirect($request, $response, 'auth.register'); //TODO redirect to settings
         } else {
             try {
                 $userData = [
@@ -163,10 +233,10 @@ class SettingsController extends BaseController
 
                 $this->userModel->updateInformation($userId, $userData);
                 FlashMessage::success("Update successful!");
-                // return $this->redirect($request, $response, 'auth.login');
+                return $this->redirect($request, $response, 'auth.login');//TODO redirect to settings
             } catch (\Exception $e) {
                 FlashMessage::error("Update failed. Please try again.");
-                // return $this->redirect($request, $response, 'auth.register');
+                return $this->redirect($request, $response, 'auth.register');//TODO redirect to settings
             }
         }
     }
