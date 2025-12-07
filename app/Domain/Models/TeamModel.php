@@ -74,6 +74,18 @@ class TeamModel extends BaseModel
         return $this->selectAll($stmt, $params);
     }
 
+    public function getTodayTeamMembersForStation($station_id): ?array {
+        $stmt = "SELECT tm.team_id, t.team_date, s.station_name, u.user_id, u.first_name, u.last_name FROM team t
+            JOIN team_members tm ON t.team_id = tm.team_id
+            JOIN users u ON tm.user_id = u.user_id
+            LEFT JOIN station s ON t.station_id = s.station_id
+            WHERE t.station_id = :station_id
+              AND DATE(t.team_date) = CURDATE()
+            ORDER BY u.first_name, u.last_name";
+        $params = [':station_id' => $station_id];
+        return $this->selectAll($stmt, $params);
+    }
+
     public function getTeamMemberByUser($id): ?array {
         $stmt = "SELECT * FROM team_members WHERE user_id = :id";
         $params = [':id'=>$id];

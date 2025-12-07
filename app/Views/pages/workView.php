@@ -6,6 +6,7 @@ $page_title = 'Welcome to KVC Manager!';
 ViewHelper::loadHeader($page_title);
 $user = UserContext::getCurrentUser();
 
+$isAdmin = $data['isAdmin'] ?? false;
 $show_variant_search = $show_variant_search ?? false;
 
 $pallets = $data['pallets'] ?? [];
@@ -44,13 +45,13 @@ function fmt_time(?string $ts): string {
 <main id="work-page">
 
     <?php if ($isAdmin): ?>
-        <form method="get" action="/work">
+        <form method="GET" action="<?= APP_BASE_URL ?>/work">
             <label for="station_id">Station:</label>
             <select name="station_id" id="station_id" onchange="this.form.submit()">
-                <?php foreach ($stations as $station): ?>
-                    <option value="<?= $station['station_id'] ?>"
-                        <?= $station['station_id'] == $selectedStationId ? 'selected' : '' ?>>
-                        <?= htmlspecialchars($station['station_name']) ?>
+                <?php foreach ($stations as $s): ?>
+                    <option value="<?= $s['station_id'] ?>"
+                        <?= $s['station_id'] == $selectedStationId ? 'selected' : '' ?>>
+                        <?= htmlspecialchars($s['station_name']) ?>
                     </option>
                 <?php endforeach; ?>
             </select>
@@ -58,7 +59,12 @@ function fmt_time(?string $ts): string {
     <?php endif; ?>
 
     <section id="work-header">
-        <h1><?= $station['station_name'] ?></h1>
+        <h1>
+            <?= !empty($station['station_name'])
+                ? htmlspecialchars($station['station_name'])
+                : 'No station selected' ?>
+        </h1>
+
         <div id="team-members">
             <strong>Team Members:</strong>
             <span>
@@ -132,7 +138,7 @@ function fmt_time(?string $ts): string {
                     <tr>
                         <form action="<?= APP_BASE_URL ?>/work/start" method="POST">
                         <td>
-                            <input type="hidden" name="station_id" value="<?= $station['station_id']?>">
+                            <input type="hidden" name="station_id" value="<?= $station['station_id'] ?? ''?>">
                             <input id="variant_display" type="text" name="variant_display" value="" readonly>
                             <input type="hidden" id="variant_id_hidden" name="variant_id" value="">
                             <a href="<?=APP_BASE_URL ?>/work/search">Search Product</a>
@@ -210,7 +216,7 @@ function fmt_time(?string $ts): string {
             <select name="station_id" class="form-select" id="product_type_id">
                 <option value="<?= $pallet_to_edit['station_id'] ?>"><?= $pallet_to_edit['station_id'] ?></option>
                 <?php foreach ($stations as $station): ?>
-                    <option value="<?= $station['station_id'] ?>">
+                    <option value="<?= $station['station_id'] ?? '' ?>">
                         <?= $station['station_name'] ?>
                     </option>
                 <?php endforeach; ?>

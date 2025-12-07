@@ -26,27 +26,47 @@ class WorkController extends BaseController {
         $currentUser = UserContext::getCurrentUser();
 
         if (UserContext::isAdmin()) {
-            $station_id = (int)($request->getQueryParams()['station_id'] ?? 1);
-            $pallets = $this->workLogModel->getSelectedWorkLogs($station_id);
             $stations = $this->stationModel->getAllStations();
+            $station_id = (int)($request->getQueryParams()['station_id'] ?? 1);
+            $station = $this->stationModel->getStationById($station_id);
+            $pallets = $this->workLogModel->getSelectedWorkLogs($station_id);
 
+            if (!$station) {
+                FlashMessage::error('Invalid station selected');
+                $station_id = 1;
+                $station = $this->stationModel->getStationById(1);
+            }
+
+            // determine break state (same logic as employee)
             $show_break_continue = false;
             if (!empty($pallets)) {
-                // get most recent session (getCurrentWorkLogs orders ASC so last item is newest)
-                $mostRecent = end($pallets);
-                $sessionId = $mostRecent['session_id'] ?? null;
-                if ($sessionId && $this->workLogModel->isOnBreak($sessionId)) {
+                $latest = end($pallets);
+                reset($pallets);
+
+                if (!empty($latest['session_id']) &&
+                    $this->workLogModel->isOnBreak($latest['session_id'])) {
                     $show_break_continue = true;
                 }
-                reset($pallets);
+            }
+
+            // determine if an open pallet exists
+            $show_form_end = false;
+            foreach ($pallets as $p) {
+                if (empty($p['end_time'])) {
+                    $show_form_end = true;
+                    break;
+                }
             }
 
             return $this->render($response, 'pages/workView.php', [
-                'pallets' => $pallets,
-                'stations' => $stations,
-                'selectedStationId' => $station_id,
-                'isAdmin' => true,
-                'show_break_continue' => $show_break_continue,
+                'pallets'            => $pallets,
+                'stations'           => $stations,
+                'station'            => $station,
+                'selectedStationId'  => $station_id,
+                'isAdmin'            => true,
+                'show_form_end'      => $show_form_end,
+                'show_break_continue'=> $show_break_continue,
+                'team_members'       => $this->teamModel->getTodayTeamMembersForStation($station_id),
             ]);
         }
 
@@ -303,9 +323,15 @@ class WorkController extends BaseController {
         $user = UserContext::getCurrentUser();
         $bool = $this->workLogModel->checkPalletizeComplete($user['user_id']);
 
-        if ($bool) {
-            FlashMessage::error("You have an ongoing session. Please end it before starting a new one.");
-            return $this->redirect($request, $response, 'work.index');
+        $user = UserContext::getCurrentUser();
+
+        if (!UserContext::isAdmin()) {
+            $bool = $this->workLogModel->checkPalletizeComplete($user['user_id']);
+
+            if ($bool) {
+                FlashMessage::error("You have an ongoing session.");
+                return $this->redirect($request, $response, 'work.index');
+            }
         }
 
         $result = $this->workLogModel->initialInsertPallet($data);
@@ -419,5 +445,55 @@ class WorkController extends BaseController {
 
         FlashMessage::success("Break ended successfully");
         return $this->redirect($request, $response, 'work.index');
+    }
+
+    public function show(Request $request, Response $response, array $args): Response
+    {
+        if (!UserContext::isAdmin()) {
+            return $response->withStatus(403, 'Forbidden');
+        }
+
+        $station_id = (int)($args['station_id'] ?? $args['id'] ?? 1);
+
+        $pallets = $this->workLogModel->getSelectedWorkLogs($station_id);
+        $team_members = $this->teamModel->getTodayTeamMembersForStation($station_id);
+        $station = $this->stationModel->getStationById($station_id);
+
+        $stations = $this->stationModel->getAllStations();
+
+        $show_form_end = false;
+        foreach ($pallets as $pl) {
+            if (empty($pl['end_time'])) {
+                $show_form_end = true;
+                break;
+            }
+        }
+
+        $show_break_continue = false;
+        $mostRecentSessionId = null;
+        if (!empty($pallets)) {
+            $latestTs = null;
+            foreach ($pallets as $pl) {
+                if (empty($pl['start_time'])) continue;
+                if ($latestTs === null || strtotime($pl['start_time']) > strtotime($latestTs)) {
+                    $latestTs = $pl['start_time'];
+                    $mostRecentSessionId = $pl['session_id'] ?? null;
+                }
+            }
+            if ($mostRecentSessionId && $this->workLogModel->isOnBreak($mostRecentSessionId)) {
+                $show_break_continue = true;
+            }
+        }
+
+        return $this->render($response, 'pages/workView.php', [
+            'pallets' => $pallets,
+            'team_members' => $team_members,
+            'show_form_end' => $show_form_end,
+            'station' => $station,
+            'stations' => $stations,
+            'selectedStationId' => $station_id,
+            'isAdmin' => true,
+            'show_break_continue' => $show_break_continue,
+        ]);
     }
 }

@@ -98,6 +98,7 @@ return static function (App $app): void {
             $work->post('/break/start', [WorkController::class, 'startBreak'])->setName('work.break.start');
             $work->post('/break/end', [WorkController::class, 'endBreak'])->setName('work.break.end');
             $work->get('/search', [WorkController::class, 'search'])->setName('work.search');
+            $work->get('/{id}', [WorkController::class, 'show'])->setName('work.show');
             $work->get('/edit/{id}', [WorkController::class, 'edit'])->setName('work.edit');
             $work->post('/{id}', [WorkController::class, 'update'])->setName('work.update');
             $work->get('/{id}/delete', [WorkController::class, 'delete'])->setName('work.delete');
