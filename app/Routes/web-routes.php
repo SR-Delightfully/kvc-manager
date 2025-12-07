@@ -120,6 +120,11 @@ $admin->get('/temp-dash', function ($request, $response) {
     require APP_VIEWS_PATH . '/admin/dashboardView.php';
     return $response;
 });
+$admin->get('/temp-work', function ($request, $response) {
+    // Path to your view file
+    require APP_VIEWS_PATH . '/admin/workLogView.php';
+    return $response;
+});
 
 $admin->get('/temp-settings', function ($request, $response) {
     // Path to your view file
