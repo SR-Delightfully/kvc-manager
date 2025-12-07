@@ -16,45 +16,48 @@ $page_title ='Login page';
 ViewHelper::loadHeader($page_title,false);
 ?>
 
-<div class="login-container">
+<div id="login-page-wrapper" class="page">
+    <div id="login-page-content" class="display-flex-row">
+        <div id="login">
+            <div id="login-form-wrapper" class="auth-form-wrapper metallic">
+                <!-- <div class="center-logo">
+                    <div class="logo-circle">VKC</div>
+                </div> -->
+                <form id="login-form" method="POST" action="<?= APP_BASE_URL ?>/login">
+                    <label for="email">Email Address</label>
+                    <input type="text" name="email" id="email" required>
+                    <a href="#">Forgot Email?</a>
+                    <br>
+                    <label for="password">Password</label>
+                    <input type="password" name="password" id="password" required>
+                    <a href="#">Forgot Password?</a>
+                    <br>
+                    <br>
 
-
-    <div class="left-panel">
-        <h1>VKC</h1>
-        <h4>[If VKC is short for something, update with the full company name]</h4>
-        <h2>[Insert Subtitle Here (a short hook/summary of the company)]</h2>
-
-        <div class="description-box">
-            <p>[INSERT Description - Summary of who/what/where is the company...]</p>
-            <p>BLALALALALALALALALALALALALALLALALALALALA</p>
-            <p>LALALALALALALALALALA</p>
-            <p>Socials:<br>[insert social media links here]</p>
-        </div>
-    </div>
-
-    <div class="form-panel">
-
-        <div class="center-logo">
-            <div class="logo-circle">VKC</div>
-        </div>
-        <form method="POST" action="">
-            <label for="email">Email Address</label>
-            <input type="text" name="email" id="email" required>
-            <a href="#">Forgot Email?</a>
-            <br>
-            <br>
-            <label for="password">Password</label>
-            <input type="password" name="password" id="password" required>
-            <a href="#">Forgot Password?</a>
-
-            <div class="button-row">
-                <button type="submit" class="signup-btn">Sign Up</button>
-                <button type="submit" class="signin-btn">Sign In</button>
+                    <div class="button-row">
+                        <button type="submit" class="signup-btn btn btn-wide btn-secondary">Sign Up</button>
+                        <button type="submit" class="signin-btn btn btn-wide btn-primary">Sign In</button>
+                    </div>
+                </form>
             </div>
-        </form>
-    </div>
+        </div>
+        <div id="login-page-about" class="display-flex-col flex-center">
+            <div class="login-page-info">
+                <h1>VKC</h1>
+                <h4>[If VKC is short for something, update with the full company name]</h4>
+                <h2>[Insert Subtitle Here (a short hook/summary of the company)]</h2>
 
+                <div class="description-box">
+                    <p>[INSERT Description - Summary of who/what/where is the company...]</p>
+                    <p>BLALALALALALALALALALALALALALLALALALALALA</p>
+                    <p>LALALALALALALALALALA</p>
+                    <p>Socials:<br>[insert social media links here]</p>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
+
 <!-- FORGOT PASSWORD POPUP -->
 <div id="forgotPasswordModal" class="forgot-modal-overlay">
     <div class="forgot-modal-box">

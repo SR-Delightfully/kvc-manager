@@ -1,0 +1,226 @@
+/* BUTTONS */
+
+button,  .btn {
+    border-radius: 0.3rem;
+    width: 12rem;
+    height: 3rem;
+    font-size: 1.2rem;
+    position: relative;
+    cursor: pointer;
+    border-radius: var(--radius-m);
+    transition: all 0.3s ease-in-out;
+    &:hover {
+        transform: scale(1.1);
+        top: 0.1rem;
+        transition: color 0.25s ease;
+    }
+    &:active {
+        transform: scale(0.9);
+    }
+}
+.btn-wide {
+    width: 16rem !important;
+}
+.btn-thin {
+    width: 10rem !important;
+}
+/* Red button */
+.btn-danger {
+    background-color: var(--color-red-03);
+    border-color: var(--color-red-02);
+    color: var(--color-red-06);
+    background-image: linear-gradient(180deg,#2a405a50 0%,var(--color-red-03) 25%, #0a090f50 75%,var(--color-red-03) 100%) ;
+    box-shadow: inset 0px 2px 0px var(--color-red-04), inset 0px -2px 0px var(--color-red-02),0px 1px 3px var(--color-blue-01);
+    &:hover {
+        color: var(--tone-10);
+        box-shadow: inset 0px 1px 0px var(--color-red-04), inset 0px -1px 0px var(--color-red-04);
+    }
+    &:active {
+        transform: scale(0.9);
+    }
+}
+/* Yellow button */
+.btn-warning {
+    background-color: var(--color-yellow-04);
+    border-color: var(--color-yellow-03);
+    color: var(--tone-09);
+    background-image: linear-gradient(180deg,#2a405a50 0%,var(--color-yellow-04) 25%, #0a090f50 75%,var(--color-yellow-04) 100%) ;
+    box-shadow: inset 0px 2px 0px var(--color-yellow-05), inset 0px -2px 0px var(--color-yellow-03),0px 1px 3px var(--color-blue-01);
+    &:hover {
+        color: var(--tone-10);
+        box-shadow: inset 0px 1px 0px var(--color-yellow-06), inset 0px -1px 0px var(--color-yellow-06);
+    }
+    &:active {
+        transform: scale(0.9);
+    }
+}
+/* Light Blue button */
+.btn-okay {
+    background-color: var(--color-blue-03);
+    border-color: var(--color-blue-02);
+    color: var(--color-blue-06);
+    background-image: linear-gradient(180deg,#2a405a50 0%,var(--color-blue-03) 25%, #0a090f50 75%,var(--color-blue-03) 100%) ;
+    box-shadow: inset 0px 2px 0px var(--color-blue-04), inset 0px -2px 0px var(--color-blue-02),0px 1px 3px var(--color-blue-01);
+    &:hover {
+        color: var(--tone-10);
+        box-shadow: inset 0px 1px 0px var(--color-blue-04), inset 0px -1px 0px var(--color-blue-04);
+    }
+    &:active {
+        transform: scale(0.9);
+    }
+}
+/* Blue button */
+.btn-primary {
+    border-color: var(--color-blue-04);
+    color: var(--tone-08);
+    background-color: var(--color-blue-02); 
+    background-image: linear-gradient(180deg,#2a405a50 0%,var(--color-blue-02) 25%, #0a090f50 75%,var(--color-blue-02) 100%) ;
+    box-shadow: inset 0px 2px 0px var(--color-blue-03), inset 0px -2px 0px var(--color-blue-01),0px 1px 3px var(--tone-03);
+    &:hover {
+        color: var(--tone-10);
+        box-shadow: inset 0px 1px 0px var(--tone-06), inset 0px -1px 0px var(--tone-06);
+    }
+    &:active {
+        transform: scale(0.9);
+    }
+}
+/* Grey button */
+.btn-secondary {
+    border-color: var(--tone-04);
+    color: var(--tone-08);
+    background-color: var(--tone-05); 
+    background-image: linear-gradient(180deg,#2a405a50 0%,var(--tone-05) 25%, #0a090f50 75%,var(--tone-05) 100%) ;
+    box-shadow: inset 0px 2px 0px var(--tone-06), inset 0px -2px 0px var(--tone-04),0px 1px 3px var(--tone-03);
+    &:hover {
+        color: var(--tone-10);
+        box-shadow: inset 0px 1px 0px var(--tone-06), inset 0px -1px 0px var(--tone-06);
+    }
+    &:active {
+        transform: scale(0.9);
+    }  
+}
+/* Black button (for elements that dont work yet) */
+.btn-not-allowed {
+    border-color: var(--tone-02);
+    color: var(--tone-06);
+    background-color: var(--tone-03); 
+    background-image: linear-gradient(180deg,#2a405a50 0%,var(--tone-03) 25%, #0a090f50 75%,var(--tone-03) 100%) ;
+    box-shadow: inset 0px 2px 0px var(--tone-04), inset 0px -2px 0px var(--tone-02),0px 1px 3px var(--tone-01);
+    &:hover {
+        cursor: not-allowed !important;
+        color: var(--color-red-03) !important;
+        box-shadow: inset 0px 1px 0px var(--tone-04), inset 0px -1px 0px var(--tone-04);
+    }
+    &:active {
+        transform: scale(1);
+    } 
+}
+
+/* TYPOGRAPHY */
+
+h1 { font-size: var(--font-size-h1); color: var(--h1-color); line-height: var(--line-height-heading); }
+h2 { font-size: var(--font-size-h2); color: var(--h2-color); line-height: var(--line-height-heading); }
+h3 { font-size: var(--font-size-h3); color: var(--h3-color); }
+h4 { font-size: var(--font-size-h4); color: var(--h4-color); }
+h5 { font-size: var(--font-size-h5); color: var(--h5-color); }
+h6 { font-size: var(--font-size-h6); color: var(--h6-color); }
+
+p { font-size: var(--font-size-body); color: var(--body-color); }
+small { font-size: var(--font-size-small); opacity: 0.75; }
+strong, b { font-weight: var(--font-weight-bold); }
+
+ul, ol { padding-left: 1.5rem; margin-bottom: 1rem; }
+li { margin: 0.3rem 0; }
+
+code {
+    background-color: var(--tone-08);
+    color: var(--tone-00);
+    padding: 0.15rem 0.3rem;
+    border-radius: 0.4rem;
+    font-size: 0.95rem;
+}
+pre code { display: block; padding: 1rem; border-radius: 0.6rem; }
+
+blockquote {
+    background-color: var(--tone-09);
+    padding: 1rem 1.5rem;
+    border-left: 5px solid var(--tone-07);
+    border-radius: 0.5rem;
+    margin: 1rem 0;
+    font-style: italic;
+}
+
+/* LINKS */
+
+a {
+    color: var(--link-color);
+    text-decoration: none;
+    transition: color var(--btn-transition), opacity var(--btn-transition);
+}
+a:hover { color: var(--link-hover-color); }
+a:active { color: var(--link-active-color); }
+
+/* INPUTS, SELECTS, TEXTAREAS */
+
+input, select, textarea {
+    padding: var(--input-padding);
+    background-color: var(--input-bg);
+    border: 2px solid var(--input-border);
+    border-radius: var(--input-radius) !important;
+    color: var(--input-text);
+    font-size: var(--input-font-size);
+    transition: all var(--transition-fast);
+    
+    min-height: 2.5rem;
+    min-width:  18rem !important;
+    max-width:  42rem !important;
+
+}
+
+input:focus, select:focus, textarea:focus {
+    outline: none;
+    border-color: var(--input-border-focus);
+    background-color: var(--input-bg-focus);
+}
+
+input:disabled, select:disabled, textarea:disabled { opacity: 0.6; cursor: not-allowed; }
+.input-error { border-color: var(--color-red-04); background-color: rgba(255,0,0,0.1); }
+.input-error:focus { border-color: var(--color-red-03); }
+
+textarea { resize: vertical; min-height: 6rem; }
+
+/* TABLES */
+
+table { width: 100%; border-collapse: collapse; font-size: var(--font-size-body); background-color: var(--card-bg); border-radius: var(--card-radius); overflow: hidden; box-shadow: var(--card-shadow); }
+thead { background-color: var(--tone-03); color: var(--tone-10); text-align: left; }
+thead th { padding: 1rem; font-weight: var(--font-weight-semibold); font-size: 0.95rem; border-bottom: 1px solid var(--tone-07); }
+tbody td { padding: 0.9rem 1rem; border-bottom: 1px solid var(--tone-04); color: var(--tone-10); }
+tbody tr:hover { background-color: var(--hover-color); }
+.table-hover tbody tr:hover { background-color: var(--hover-color); }
+.table-striped tbody tr:nth-child(odd) { background-color: rgba(255,255,255,0.02); }
+.table-striped tbody tr:nth-child(even) { background-color: rgba(0,0,0,0.08); }
+.table-bordered td, .table-bordered th { border: 1px solid var(--tone-07); }
+.table-compact td, .table-compact th { padding: 0.5rem 0.7rem; }
+.table-spacious td, .table-spacious th { padding: 1.3rem 1.4rem; }
+
+/* Row selection */
+tbody tr { cursor: pointer; transition: background-color var(--transition-fast); }
+tbody tr.selected { background-color: var(--active-color); }
+tbody tr.selected td { color: var(--tone-10); }
+
+:root[data-theme="dark-mode"] tbody tr.selected { background-color: rgba(255,255,255,0.15); }
+:root[data-theme="light-mode"] tbody tr.selected { background-color: rgba(0,0,0,0.08); }
+
+/* FORMS */
+
+form { width: 100%; display: flex; flex-direction: column; gap: 1.4rem; }
+.form-group { display: flex; flex-direction: column; gap: 0.4rem; }
+label { font-weight: var(--font-weight-medium); color: var(--h4-color); font-size: 0.95rem; }
+.form-helper { font-size: 0.85rem; opacity: 0.8; margin-top: -0.2rem; }
+.form-error { color: var(--color-red-05); font-size: 0.85rem; }
+.form-warning { color: var(--color-yellow-05); font-size: 0.85rem; }
+.form-success { color: var(--color-green-06); font-size: 0.85rem; }
+fieldset { border: 1px solid var(--tone-07); padding: 1.5rem; border-radius: var(--radius-md); }
+legend { font-size: 1.1rem; font-weight: var(--font-weight-semibold); padding: 0 0.6rem; }
+.form-grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1.4rem; }
+@media (max-width: 720px) { .form-grid-2, .form-grid-3 { grid-template-columns: 1fr; } }

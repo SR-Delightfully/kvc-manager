@@ -75,22 +75,22 @@ $isEmployee = UserContext::isEmployee();
                                         <div class="avatar"></div>
                                         <span class="fname">First_Name1</span>
                                         <span class="lname">Last_Name1</span>
-                                        <button class="remove-btn">Remove</button>
-                                        <button class="contact-btn">Contact</button>
+                                        <button class="btn btn-thin btn-danger">Remove</button>
+                                        <button class="btn btn-thin btn-okay">Contact</button>
                                     </div>
                                     <div class="member">
                                         <div class="avatar"></div>
                                         <span class="fname">First_Name2</span>
                                         <span class="lname">Last_Name2</span>
-                                        <button class="remove-btn">Remove</button>
-                                        <button class="contact-btn">Contact</button>
+                                        <button class="btn btn-thin btn-danger">Remove</button>
+                                        <button class="btn btn-thin btn-okay">Contact</button>
                                     </div>
                                 <div class="member">
                                     <div class="avatar"></div>
                                     <span class="fname">First_Name3</span>
                                     <span class="lname">Last_Name3</span>
-                                    <button class="remove-btn">Remove</button>
-                                    <button class="contact-btn">Contact</button>
+                                    <button class="btn btn-thin btn-danger">Remove</button>
+                                    <button class="btn btn-thin btn-okay">Contact</button>
                                 </div>
                             </div>
                             <!-- Repeat for Team 2, Team 3, Team 4 -->
@@ -104,8 +104,8 @@ $isEmployee = UserContext::isEmployee();
                                         <div class="avatar"></div>
                                         <span class="fname">First_Name4</span>
                                         <span class="lname">Last_Name4</span>
-                                        <button class="remove-btn">Remove</button>
-                                        <button class="contact-btn">Contact</button>
+                                        <button class="btn btn-thin btn-danger">Remove</button>
+                                        <button class="btn btn-thin btn-okay">Contact</button>
                                     </div>
                                 </div>
                             </div>
@@ -120,8 +120,8 @@ $isEmployee = UserContext::isEmployee();
                                         <div class="avatar"></div>
                                         <span class="fname">First_Name5</span>
                                         <span class="lname">Last_Name5</span>
-                                        <button class="remove-btn">Remove</button>
-                                        <button class="contact-btn">Contact</button>
+                                        <button class="btn btn-thin btn-danger">Remove</button>
+                                        <button class="btn btn-thin btn-okay">Contact</button>
                                     </div>
                                 </div>
                             </div>
@@ -136,8 +136,8 @@ $isEmployee = UserContext::isEmployee();
                                         <div class="avatar"></div>
                                         <span class="fname">First_Name6</span>
                                         <span class="lname">Last_Name6</span>
-                                        <button class="remove-btn">Remove</button>
-                                        <button class="contact-btn">Contact</button>
+                                        <button class="btn btn-thin btn-danger">Remove</button>
+                                        <button class="btn btn-thin btn-okay">Contact</button>
                                     </div>
                                 </div>
                             </div>
@@ -257,22 +257,22 @@ $isEmployee = UserContext::isEmployee();
                                         <div class="avatar"></div>
                                         <span class="fname">First_Name1</span>
                                         <span class="lname">Last_Name1</span>
-                                        <button class="remove-btn">Remove</button>
-                                        <button class="contact-btn">Contact</button>
+                                        <button class="btn btn-thin btn-danger">Remove</button>
+                                        <button class="btn btn-thin btn-okay">Contact</button>
                                     </div>
                                     <div class="member">
                                         <div class="avatar"></div>
                                         <span class="fname">First_Name2</span>
                                         <span class="lname">Last_Name2</span>
-                                        <button class="remove-btn">Remove</button>
-                                        <button class="contact-btn">Contact</button>
+                                        <button class="btn btn-thin btn-danger">Remove</button>
+                                        <button class="btn btn-thin btn-okay">Contact</button>
                                     </div>
                                 <div class="member">
                                     <div class="avatar"></div>
                                     <span class="fname">First_Name3</span>
                                     <span class="lname">Last_Name3</span>
-                                    <button class="remove-btn">Remove</button>
-                                    <button class="contact-btn">Contact</button>
+                                    <button class="btn btn-thin btn-danger">Remove</button>
+                                    <button class="btn btn-thin btn-okay">Contact</button>
                                 </div>
                             </div>
                             <!-- Repeat for Team 2, Team 3, Team 4 -->
@@ -286,8 +286,8 @@ $isEmployee = UserContext::isEmployee();
                                         <div class="avatar"></div>
                                         <span class="fname">First_Name4</span>
                                         <span class="lname">Last_Name4</span>
-                                        <button class="remove-btn">Remove</button>
-                                        <button class="contact-btn">Contact</button>
+                                        <button class="btn btn-thin btn-danger">Remove</button>
+                                        <button class="btn btn-thin btn-okay">Contact</button>
                                     </div>
                                 </div>
                             </div>
@@ -302,8 +302,8 @@ $isEmployee = UserContext::isEmployee();
                                         <div class="avatar"></div>
                                         <span class="fname">First_Name5</span>
                                         <span class="lname">Last_Name5</span>
-                                        <button class="remove-btn">Remove</button>
-                                        <button class="contact-btn">Contact</button>
+                                        <button class="btn btn-thin btn-danger">Remove</button>
+                                        <button class="btn btn-thin btn-okay">Contact</button>
                                     </div>
                                 </div>
                             </div>
@@ -318,8 +318,8 @@ $isEmployee = UserContext::isEmployee();
                                         <div class="avatar"></div>
                                         <span class="fname">First_Name6</span>
                                         <span class="lname">Last_Name6</span>
-                                        <button class="remove-btn">Remove</button>
-                                        <button class="contact-btn">Contact</button>
+                                        <button class="btn btn-thin btn-danger">Remove</button>
+                                        <button class="btn btn-thin btn-okay">Contact</button>
                                     </div>
                                 </div>
                             </div>

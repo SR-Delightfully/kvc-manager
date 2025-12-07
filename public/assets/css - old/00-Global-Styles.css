@@ -1,0 +1,332 @@
+/* ? Declaring root variables and website's color palette */
+/* TODO: update colors to better match figma design */
+/* TODO: add colors missing from figma design; green, yellow */
+:root {
+    /* Website's Color Palette */
+    /* Tones - Shades of Grey */
+    --tone-00: #000000;
+    --tone-01: #020303;
+    --tone-02: #0A0D10;
+    --tone-03: #11161A;
+    --tone-04: #181F28;
+    --tone-05: #1B242C;
+    --tone-06: #242E3A;
+    --tone-07: #313F4F;
+    --tone-08: #99A0AC;
+    --tone-09: #D9D9D9;
+    --tone-10: #FFFFFF;
+
+    /* Colors - Varying hues and shades */
+    /* Shades of red: */
+    --color-red-01: #1b0105;
+    --color-red-02: #370303;
+    --color-red-03: #8D000E;
+    --color-red-03: #c40d0d;
+    --color-red-04: #e74438;
+    --color-red-05: #FF8C69;
+
+
+    /* Shades of blue: */
+    --color-blue-01: #000832;
+    --color-blue-02: #002E55;
+    --color-blue-03: #20547F;
+    --color-blue-04: #456DAB;
+    --color-blue-05: #69A6FF;
+    --color-blue-06: #99BCD4;
+
+        /* Colors - Varying hues and shades */
+    /* Shades of red: */
+    --color-green-01: #001d17;
+    --color-green-02: #00200f;
+    --color-green-03: #002A18;
+    --color-green-03: #005515;
+    --color-green-04: #0B861D;
+    --color-green-05: #3EC731;
+
+
+    /* Shades of yellow: */
+    --color-yellow-01: #191f00;
+    --color-yellow-02: #353600;
+    --color-yellow-03: #685800;
+    --color-yellow-04: #a28400;
+    --color-yellow-05: #DEB11E;
+    --color-yellow-06: #DFD241;
+
+
+    /* ! Component variables */
+    /* ? to be used to allow different themes*/
+    --background-color: var(--tone-05);
+    --body-color: var(--tone-05);
+    --h1-color: var(--tone-00);
+    --h2-color: var(--tone-02);
+    --h3-color: var(--tone-03);
+    --h4-color: var(--tone-03);
+    --h5-color: var(--tone-03);
+    --h6-color: var(--tone-03);
+    --hr-color: var(--tone-00);
+    --padding-h-3: 0vh 3vw;
+    --padding-h-2: 0vh 2vw;
+    --padding-h-1: 0vh 1vw;
+    --padding-v-3: 3vh 0vw;
+    --padding-v-2: 2vh 0vw;
+    --padding-v-1: 1vh 0vw;
+    --padding-3: 3rem;
+    --padding-2: 2rem;
+    --padding-1: 1rem;
+}
+
+/* Themes: */
+/* ? Feel free to add additional themes if you want to! :D */
+:root[data-theme="dark-mode"] {
+    --background-color: var(--tone-00);
+    --body-color: var(--tone-00);
+    --h1-color: var(--tone-10);
+    --h2-color: var(--tone-08);
+    --h3-color: var(--tone-06);
+    --h4-color: var(--tone-06);
+    --h5-color: var(--tone-06);
+    --h6-color: var(--tone-06);
+    --hr-color: var(--tone-08);
+}
+:root[data-theme="light-mode"] {
+    --background-color: var(--tone-08);
+    --body-color: var(--tone-08);
+    --h1-color: var(--tone-01);
+    --h2-color: var(--tone-02);
+    --h3-color: var(--tone-03);
+    --h4-color: var(--tone-04);
+    --h5-color: var(--tone-04);
+    --h6-color: var(--tone-04);
+    --hr-color: var(--tone-10);
+}
+:root[data-theme="dark-red"] {
+    --background-color: var(--tone-00);
+    --body-color: var(--tone-00);
+    --h1-color: var(--tone-10);
+    --h2-color: var(--tone-08);
+    --h3-color: var(--tone-06);
+    --h4-color: var(--tone-06);
+    --h5-color: var(--tone-06);
+    --h6-color: var(--tone-06);
+    --hr-color: var(--tone-08);
+}
+:root[data-theme="light-red"] {
+    --background-color: var(--tone-08);
+    --body-color: var(--tone-08);
+    --h1-color: var(--tone-01);
+    --h2-color: var(--tone-02);
+    --h3-color: var(--tone-03);
+    --h4-color: var(--tone-04);
+    --h5-color: var(--tone-04);
+    --h6-color: var(--tone-04);
+    --hr-color: var(--tone-10);
+}
+:root[data-theme="dark-blue"] {
+    --background-color: var(--tone-00);
+    --body-color: var(--tone-00);
+    --h1-color: var(--tone-10);
+    --h2-color: var(--tone-08);
+    --h3-color: var(--tone-06);
+    --h4-color: var(--tone-06);
+    --h5-color: var(--tone-06);
+    --h6-color: var(--tone-06);
+    --hr-color: var(--tone-08);
+}
+:root[data-theme="light-blue"] {
+    --background-color: var(--tone-08);
+    --body-color: var(--tone-08);
+    --h1-color: var(--tone-01);
+    --h2-color: var(--tone-02);
+    --h3-color: var(--tone-03);
+    --h4-color: var(--tone-04);
+    --h5-color: var(--tone-04);
+    --h6-color: var(--tone-04);
+    --hr-color: var(--tone-10);
+}
+/* * Setting colors for website elements */
+/* ! to change color of element, please change color in the themes ⬆ ABOVE ⬆ */
+
+html {
+    scrollbar-width: 0;
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none;
+}
+/* body::before {
+    content: "";
+    background-color: hotpink;
+    background-image: linear-gradient(255deg, #9FA7BC 33%,  #495A74 67%, #313E4F 77%, #181F28 87%, #11161A 100%);
+    opacity: 50%;
+    height: 100vh;
+    width: min(100%,100vw);
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 999000;
+} */
+body {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    background-color: var(--body-color);
+    background-color: #20262B; 
+    overflow-x: hidden;
+    overflow-y: scroll;
+    min-height: 100%;
+    max-height: 100vh;
+    position: relative;
+    top: -1.5rem;
+    overflow: hidden;
+    & h1 {
+        color: var(--h1-color);
+    }
+    & h2 {
+        color: var(--h2-color);
+    }
+    & h3 {
+        color: var(--h3-color);
+    }
+    & h4 {
+        color: var(--h4-color);
+    }
+    & h5 {
+        color: var(--h5-color);
+    }
+    & h6 {
+        color: var(--h6-color);
+    }
+    & input {
+        min-height: 2.5rem;
+        min-width: calc(100% - 2rem);
+        border: 2px solid var(--tone-07);
+        background-color: var(--tone-00);
+        padding: 0rem 1rem;
+        margin-top: 0.5rem;
+        border-radius: 0.5rem;
+        color: var(--tone-08);
+    }
+}
+/* ? Useful classes to reduce code repetition */
+
+/* positions */
+/* center */
+.center-h {
+    position: relative;
+    left: 50%;
+    transform: translate(-50%, 0);
+}
+.center-v {
+    position: absolute;
+    top: 50%;
+    transform: translate(0, -50%);
+}
+
+.left {
+    position: relative;
+    left: 0;
+    transform: translate(-50%, 0);
+}
+.right {
+    position: relative;
+    right: 0;
+    transform: translate(-50%, 0);
+}
+
+.full-width {
+    min-width: 100vh;
+    max-width: 100%;
+}
+
+/* Div Layouts */
+.display-flex-row {
+    display: flex;
+    flex-flow: row nowrap;
+}
+.flex-center {
+    justify-content: center;
+    align-items: center;
+}
+.display-flex-col {
+    display: flex;
+    flex-flow: column nowrap;
+}
+
+/* Rounded Borders */
+.rounded-border-3 {
+    border-radius: 2rem;
+}
+.rounded-border-2 {
+    border-radius: 1rem;
+}
+.rounded-border-1 {
+    border-radius: 0.5rem;
+}
+/* Border styles */
+.border-3 {
+    border: 3px solid hotpink;
+}
+.border-2 {
+    border: 2px solid hotpink;
+}
+.border-1 {
+    border: 1dvi solid hotpink;
+}
+
+.page {
+}
+
+/*  Media Queries: */
+/*  Setting break points for different screen sizes */
+/* Default State - Will effect all queries */
+@media screen and (min-width: 300px) {
+}
+
+/* Extra Small Screens */
+@media screen and (max-width: 720px) {
+}
+
+/* Small Screens */
+@media screen and (min-width: 721px) and (max-width: 1280px) {
+}
+
+/* Medium Screens */
+@media screen and (min-width: 1281px) and (max-width: 1440px) {
+}
+
+/* Large Screens */
+@media screen and (min-width: 1441px) and (max-width: 1920px) {
+}
+
+/* Extra Large Screens */
+@media screen and (min-width: 1921px) {
+}
+.metallic-bg {
+    /* TODO: ewdefine metallic background */
+background-image: radial-gradient(ellipse farthest-corner at left top, var(--color-blue-05) 0%, var(--color-blue-04) 30%, var(--tone-06) 100%);
+                overflow: hidden;
+}
+    .metallic {
+        /* TODO: define metallic background */
+    background-image: radial-gradient(ellipse farthest-corner at left top, var(--tone-08) 0%, var(--color-blue-04) 15%, var(--tone-03) 95%, var(--tone-03) 100%);
+                    overflow: hidden;
+    }
+    .metallic::before {
+        content: "";
+        height: 100%;
+        width: 100%;
+        position: absolute;
+        background-image:linear-gradient(to right, var(--tone-04) 0%, var(--color-blue-06)10%, var(--tone-04)30%, var(--tone-04)70%, var(--tone-08) 85%, var(--tone-03)100%);
+        opacity: 30%;
+        z-index: 0;
+        mix-blend-mode: overlay;
+    }
+
+#footer {
+    height: 3rem;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: calc(100% - 4rem);
+    overflow: hidden;
+    padding: 0 2rem;
+}

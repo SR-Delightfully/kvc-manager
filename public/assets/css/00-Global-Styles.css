@@ -1,8 +1,10 @@
-/* ? Declaring root variables and website's color palette */
-/* TODO: update colors to better match figma design */
-/* TODO: add colors missing from figma design; green, yellow */
+/* This is our Global Styles file */
+/* Inside this file you will find our root variables, our page reset, and general classes and ids that are seen on every page. */
+
+/* Theme Variables */
 :root {
-    /* Website's Color Palette */
+
+    /* Website's Color Palette                  */
     /* Tones - Shades of Grey */
     --tone-00: #000000;
     --tone-01: #020303;
@@ -21,10 +23,9 @@
     --color-red-01: #1b0105;
     --color-red-02: #370303;
     --color-red-03: #8D000E;
-    --color-red-03: #c40d0d;
-    --color-red-04: #e74438;
-    --color-red-05: #FF8C69;
-
+    --color-red-04: #c40d0d;
+    --color-red-05: #e74438;
+    --color-red-06: #FF8C69;
 
     /* Shades of blue: */
     --color-blue-01: #000832;
@@ -34,15 +35,13 @@
     --color-blue-05: #69A6FF;
     --color-blue-06: #99BCD4;
 
-        /* Colors - Varying hues and shades */
-    /* Shades of red: */
+    /* Shades of green: */
     --color-green-01: #001d17;
     --color-green-02: #00200f;
     --color-green-03: #002A18;
-    --color-green-03: #005515;
-    --color-green-04: #0B861D;
-    --color-green-05: #3EC731;
-
+    --color-green-04: #005515;
+    --color-green-05: #0B861D;
+    --color-green-06: #3EC731;
 
     /* Shades of yellow: */
     --color-yellow-01: #191f00;
@@ -52,163 +51,245 @@
     --color-yellow-05: #DEB11E;
     --color-yellow-06: #DFD241;
 
+    /* Component Variables                      */
+    /* ? used to allow theme switching */
 
-    /* ! Component variables */
-    /* ? to be used to allow different themes*/
     --background-color: var(--tone-05);
     --body-color: var(--tone-05);
-    --h1-color: var(--tone-00);
-    --h2-color: var(--tone-02);
-    --h3-color: var(--tone-03);
-    --h4-color: var(--tone-03);
-    --h5-color: var(--tone-03);
-    --h6-color: var(--tone-03);
+
+    --h1-color: var(--tone-10);
+    --h2-color: var(--tone-09);
+    --h3-color: var(--tone-08);
+    --h4-color: var(--tone-08);
+    --h5-color: var(--tone-07);
+    --h6-color: var(--tone-06);
+
     --hr-color: var(--tone-00);
+
+    /* Typography */
+    --font-family-heading: 'Inter', sans-serif;
+    --font-family-body: 'Inter', sans-serif;
+
+    --font-size-h1: 2.5rem;
+    --font-size-h2: 2rem;
+    --font-size-h3: 1.6rem;
+    --font-size-h4: 1.3rem;
+    --font-size-h5: 1.1rem;
+    --font-size-h6: 1rem;
+    --font-size-body: 1rem;
+    --font-size-small: 0.875rem;
+
+    --font-weight-regular: 400;
+    --font-weight-medium: 500;
+    --font-weight-semibold: 600;
+    --font-weight-bold: 700;
+
+    --line-height-heading: 1.2;
+    --line-height-body: 1.6;
+
+    /* Spacing */
     --padding-h-3: 0vh 3vw;
     --padding-h-2: 0vh 2vw;
     --padding-h-1: 0vh 1vw;
     --padding-v-3: 3vh 0vw;
     --padding-v-2: 2vh 0vw;
     --padding-v-1: 1vh 0vw;
+
     --padding-3: 3rem;
     --padding-2: 2rem;
     --padding-1: 1rem;
+
+    /* Component Sizing */
+    --radius-s: 4px;
+    --radius-m: 8px;
+    --radius-l: 16px;
+    --radius-xl: 24px;
+
+    --shadow-sm: 0 2px 4px rgba(0,0,0,0.15);
+    --shadow-md: 0 4px 12px rgba(0,0,0,0.2);
+    --shadow-lg: 0 8px 24px rgba(0,0,0,0.25);
+
+    --border-width: 1px;
+    --border-color: rgba(255,255,255,0.1);
+
+    /* Buttons */
+    --button-bg: var(--color-blue-04);
+    --button-bg-hover: var(--color-blue-05);
+    --button-bg-active: var(--color-blue-03);
+    --button-radius: var(--radius-m);
+    --button-padding: 0.75rem 1.25rem;
+    --button-font-size: 1rem;
+
+    /* Inputs */
+    --input-bg: var(--tone-04);
+    --input-bg-focus: var(--tone-03);
+    --input-border: var(--border-color);
+    --input-padding: 0rem 1rem;
+    --input-radius: var(--radius-m);
+    --input-font-size: 1rem;
+
+    /* States */
+    --state-success: var(--color-green-05);
+    --state-warning: var(--color-yellow-05);
+    --state-danger: var(--color-red-05);
+    --state-info: var(--color-blue-05);
+
+    --hover-color: rgba(255,255,255,0.08);
+    --active-color: rgba(255,255,255,0.15);
+    --focus-ring: var(--color-blue-05);
+
+    /* Navigation */
+    --nav-bg: var(--tone-03);
+    --nav-width: 21rem;
+    --nav-item-height: 3rem;
+    --nav-hover: rgba(255,255,255,0.08);
+    --nav-active: rgba(255,255,255,0.18);
+
+    /* Cards */
+    --card-bg: var(--tone-04);
+    --card-radius: var(--radius-lg);
+    --card-padding: var(--padding-2);
+    --card-shadow: var(--shadow-md);
+
+    /* z-index levels */
+    --z-nav: 100;
+    --z-modal: 200;
+    --z-tooltip: 300;
+    --z-overlay: 400;
+
+    /* Animations */
+    --transition-fast: 150ms ease;
+    --transition-medium: 250ms ease;
+    --transition-slow: 400ms ease;
 }
 
-/* Themes: */
+
+/* Themes                          */
 /* ? Feel free to add additional themes if you want to! :D */
+
+/* Dark Mode Theme           */
 :root[data-theme="dark-mode"] {
     --background-color: var(--tone-00);
     --body-color: var(--tone-00);
-    --h1-color: var(--tone-10);
-    --h2-color: var(--tone-08);
-    --h3-color: var(--tone-06);
-    --h4-color: var(--tone-06);
-    --h5-color: var(--tone-06);
-    --h6-color: var(--tone-06);
-    --hr-color: var(--tone-08);
+
+    --h1-color: var(--tone-01);
+    --h2-color: var(--tone-02);
+    --h3-color: var(--tone-03);
+    --h4-color: var(--tone-04);
+    --h5-color: var(--tone-04);
+    --h6-color: var(--tone-04);
+
+    --hr-color: var(--tone-10);
 }
+
+/* Light Mode Theme          */
 :root[data-theme="light-mode"] {
     --background-color: var(--tone-08);
     --body-color: var(--tone-08);
-    --h1-color: var(--tone-01);
-    --h2-color: var(--tone-02);
-    --h3-color: var(--tone-03);
-    --h4-color: var(--tone-04);
-    --h5-color: var(--tone-04);
-    --h6-color: var(--tone-04);
-    --hr-color: var(--tone-10);
-}
-:root[data-theme="dark-red"] {
-    --background-color: var(--tone-00);
-    --body-color: var(--tone-00);
+    
     --h1-color: var(--tone-10);
-    --h2-color: var(--tone-08);
-    --h3-color: var(--tone-06);
-    --h4-color: var(--tone-06);
-    --h5-color: var(--tone-06);
-    --h6-color: var(--tone-06);
-    --hr-color: var(--tone-08);
-}
-:root[data-theme="light-red"] {
-    --background-color: var(--tone-08);
-    --body-color: var(--tone-08);
-    --h1-color: var(--tone-01);
-    --h2-color: var(--tone-02);
-    --h3-color: var(--tone-03);
-    --h4-color: var(--tone-04);
-    --h5-color: var(--tone-04);
-    --h6-color: var(--tone-04);
-    --hr-color: var(--tone-10);
-}
-:root[data-theme="dark-blue"] {
-    --background-color: var(--tone-00);
-    --body-color: var(--tone-00);
-    --h1-color: var(--tone-10);
-    --h2-color: var(--tone-08);
-    --h3-color: var(--tone-06);
-    --h4-color: var(--tone-06);
-    --h5-color: var(--tone-06);
-    --h6-color: var(--tone-06);
-    --hr-color: var(--tone-08);
-}
-:root[data-theme="light-blue"] {
-    --background-color: var(--tone-08);
-    --body-color: var(--tone-08);
-    --h1-color: var(--tone-01);
-    --h2-color: var(--tone-02);
-    --h3-color: var(--tone-03);
-    --h4-color: var(--tone-04);
-    --h5-color: var(--tone-04);
-    --h6-color: var(--tone-04);
-    --hr-color: var(--tone-10);
-}
-/* * Setting colors for website elements */
-/* ! to change color of element, please change color in the themes ⬆ ABOVE ⬆ */
+    --h2-color: var(--tone-09);
+    --h3-color: var(--tone-08);
+    --h4-color: var(--tone-08);
+    --h5-color: var(--tone-08);
+    --h6-color: var(--tone-08);
 
-html {
-    scrollbar-width: 0;
-    -ms-overflow-style: none; /* IE and Edge */
-    scrollbar-width: none;
+    --hr-color: var(--tone-10);
 }
-/* body::before {
-    content: "";
-    background-color: hotpink;
-    background-image: linear-gradient(255deg, #9FA7BC 33%,  #495A74 67%, #313E4F 77%, #181F28 87%, #11161A 100%);
-    opacity: 50%;
-    height: 100vh;
-    width: min(100%,100vw);
+
+/* BLUE THEME                */
+:root[data-theme="blue-mode"] {
+    --background-color: var(--color-blue-01);
+    --body-color: var(--color-blue-01);
+
+    --h1-color: var(--color-blue-06);
+    --h2-color: var(--color-blue-05);
+    --h3-color: var(--color-blue-04);
+    --h4-color: var(--color-blue-03);
+    --h5-color: var(--color-blue-03);
+    --h6-color: var(--color-blue-03);
+
+    --hr-color: var(--color-blue-05);
+
+    --button-bg: var(--color-blue-04);
+    --button-bg-hover: var(--color-blue-05);
+    --button-bg-active: var(--color-blue-03);
+}
+
+/* RED THEME                 */
+:root[data-theme="red-mode"] {
+    --background-color: var(--color-red-01);
+    --body-color: var(--color-red-01);
+
+    --h1-color: var(--color-red-06);
+    --h2-color: var(--color-red-05);
+    --h3-color: var(--color-red-04);
+    --h4-color: var(--color-red-03);
+    --h5-color: var(--color-red-03);
+    --h6-color: var(--color-red-03);
+
+    --hr-color: var(--color-red-05);
+
+    --button-bg: var(--color-red-04);
+    --button-bg-hover: var(--color-red-05);
+    --button-bg-active: var(--color-red-03);
+}
+
+/* GREEN THEME               */
+:root[data-theme="green-mode"] {
+    --background-color: var(--color-green-01);
+    --body-color: var(--color-green-01);
+
+    --h1-color: var(--color-green-06);
+    --h2-color: var(--color-green-05);
+    --h3-color: var(--color-green-04);
+    --h4-color: var(--color-green-04);
+    --h5-color: var(--color-green-03);
+    --h6-color: var(--color-green-03);
+
+    --hr-color: var(--color-green-05);
+
+    --button-bg: var(--color-green-04);
+    --button-bg-hover: var(--color-green-05);
+    --button-bg-active: var(--color-green-03);
+}
+
+/* Page Reset                */
+html, body {
+    max-width: 100vw;
+    min-width: 100%;
+    min-height: 100vh;
+    max-height: 100%;
     position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    z-index: 999000;
-} */
-body {
+    top: 0; bottom: 0;
+    left: 0; right: 0;
+}
+
+html, html > * {
     margin: 0;
     padding: 0;
-    box-sizing: border-box;
-    background-color: var(--body-color);
-    background-color: #20262B; 
-    /* TODO: update body-color  */
-    overflow-x: hidden;
-    overflow-y: scroll;
-    min-height: 100%;
-    max-height: 100vh;
-    position: relative;
-    top: -1.5rem;
-    overflow: hidden;
-    & h1 {
-        color: var(--h1-color);
-    }
-    & h2 {
-        color: var(--h2-color);
-    }
-    & h3 {
-        color: var(--h3-color);
-    }
-    & h4 {
-        color: var(--h4-color);
-    }
-    & h5 {
-        color: var(--h5-color);
-    }
-    & h6 {
-        color: var(--h6-color);
-    }
-    & input {
-        min-height: 2.5rem;
-        min-width: calc(100% - 2rem);
-        border: 2px solid var(--tone-07);
-        background-color: var(--tone-00);
-        padding: 0rem 1rem;
-        margin-top: 0.5rem;
-        border-radius: 0.5rem;
-        color: var(--tone-08);
-    }
+    border: 0;
+    vertical-align: baseline;
 }
-/* ? Useful classes to reduce code repetition */
 
+footer, header, nav, menu, section {
+    display: block;
+}
+
+ol, ul {
+    list-style: none;
+}
+
+body {
+    font-family: var(--font-family-body);
+    font-size: var(--font-size-body);
+    color: var(--tone-10);
+    background: linear-gradient(45deg, var(--tone-01) 0%, var(--tone-07) 50%, var(--color-blue-04) 100%);
+    overflow:hidden;
+}
+
+
+/* ? Useful classes to reduce code repetition */
 /* positions */
 /* center */
 .center-h {
@@ -274,43 +355,46 @@ body {
 }
 
 .page {
-    background: linear-gradient(45deg, var(--tone-01) 0%, var(--tone-07) 50%, var(--color-blue-04) 100%);
+    min-height: 100vh;
+    max-height: 100%;
+    min-width: 100vw;
+    max-width: 100%;
+    overflow: hidden;
+    position: absolute;
+    top: 0;
+    left: 0;
 }
 
-/*  Media Queries: */
-/*  Setting break points for different screen sizes */
-/* Default State - Will effect all queries */
-@media screen and (min-width: 300px) {
+#main-content {
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
 }
 
-/* Extra Small Screens */
-@media screen and (max-width: 720px) {
-}
-
-/* Small Screens */
-@media screen and (min-width: 721px) and (max-width: 1280px) {
-}
-
-/* Medium Screens */
-@media screen and (min-width: 1281px) and (max-width: 1440px) {
-}
-
-/* Large Screens */
-@media screen and (min-width: 1441px) and (max-width: 1920px) {
-}
-
-/* Extra Large Screens */
-@media screen and (min-width: 1921px) {
-}
 .metallic-bg {
-    /* TODO: ewdefine metallic background */
 background-image: radial-gradient(ellipse farthest-corner at left top, var(--color-blue-05) 0%, var(--color-blue-04) 30%, var(--tone-06) 100%);
                 overflow: hidden;
 }
 .metallic {
-    /* TODO: define metallic background */
-background-image: radial-gradient(ellipse farthest-corner at left top, var(--tone-08) 0%, var(--color-blue-04) 15%, var(--tone-03) 95%, var(--tone-03) 100%);
-                overflow: hidden;
+overflow: hidden;
+position: relative;
+z-index: 0;
+background-color: var(--tone-05) !important;
+border: 2px solid var(--tone-07);
+box-shadow: inset 0px 2px 0px var(--tone-03), inset 0px -3px 0px var(--color-blue-02), 0px 3px 8px var(--tone-01);
+}
+.metallic::after {
+    content: "";
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    background-image: radial-gradient(ellipse farthest-corner at left top, var(--tone-08) 0%, var(--color-blue-04) 15%, var(--tone-03) 95%, var(--tone-03) 100%);
+    opacity: 30%;
+    z-index: 1;
+    mix-blend-mode: color-dodge;
 }
 .metallic::before {
     content: "";
@@ -319,16 +403,139 @@ background-image: radial-gradient(ellipse farthest-corner at left top, var(--ton
     position: absolute;
     background-image:linear-gradient(to right, var(--tone-04) 0%, var(--color-blue-06)10%, var(--tone-04)30%, var(--tone-04)70%, var(--tone-08) 85%, var(--tone-03)100%);
     opacity: 30%;
-    z-index: 0;
+    z-index: 1;
     mix-blend-mode: overlay;
 }
 
-#footer {
-    height: 3rem;
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: calc(100% - 4rem);
-    overflow: hidden;
-    padding: 0 2rem;
+
+
+
+/* Media Queries             */
+/* Extra Small Screens — mobile portrait (0px–720px) */
+@media screen and (max-width: 720px) {
+
+    /* Typography scaling */
+    :root {
+        --font-size-h1: 2rem;
+        --font-size-h2: 1.7rem;
+        --font-size-h3: 1.4rem;
+        --font-size-body: 0.95rem;
+    }
+
+    body {
+        padding: 1rem;
+    }
+
+    .container,
+    section,
+    main {
+        width: 100%;
+        max-width: 100%;
+        padding: 1rem;
+    }
+
+    img {
+        max-width: 100%;
+        height: auto;
+    }
+}
+
+
+/* Small Screens — large phones + small tablets (721px–1280px) */
+@media screen and (min-width: 721px) and (max-width: 1280px) {
+
+    :root {
+        --font-size-h1: 2.2rem;
+        --font-size-h2: 1.8rem;
+        --font-size-h3: 1.5rem;
+        --font-size-body: 1rem;
+    }
+
+    body {
+        padding: 1.5rem;
+    }
+
+    .container,
+    section,
+    main {
+        width: 90%;
+        max-width: 900px;
+        margin: 0 auto;
+        padding: 1.5rem;
+    }
+}
+
+
+/* Medium Screens — laptops (1281px–1440px) */
+@media screen and (min-width: 1281px) and (max-width: 1440px) {
+
+    :root {
+        --font-size-h1: 2.4rem;
+        --font-size-h2: 2rem;
+        --font-size-h3: 1.6rem;
+        --font-size-body: 1rem;
+    }
+
+    body {
+        padding: 2rem;
+    }
+
+    .container,
+    section,
+    main {
+        width: 80%;
+        max-width: 1100px;
+        margin: 0 auto;
+        padding: 2rem;
+    }
+}
+
+
+/* Large Screens — desktop HD (1441px–1920px) */
+@media screen and (min-width: 1441px) and (max-width: 1920px) {
+
+    :root {
+        --font-size-h1: 2.6rem;
+        --font-size-h2: 2.2rem;
+        --font-size-h3: 1.7rem;
+        --font-size-body: 1.05rem;
+    }
+
+    body {
+        padding: 2.5rem;
+    }
+
+    .container,
+    section,
+    main {
+        width: 75%;
+        max-width: 1400px;
+        margin: 0 auto;
+        padding: 2.5rem;
+    }
+}
+
+
+/* Extra Large Screens — 2K & 4K monitors (1921px+) */
+@media screen and (min-width: 1921px) {
+
+    :root {
+        --font-size-h1: 3rem;
+        --font-size-h2: 2.4rem;
+        --font-size-h3: 1.8rem;
+        --font-size-body: 1.1rem;
+    }
+
+    body {
+        padding: 3rem;
+    }
+
+    .container,
+    section,
+    main {
+        width: 65%;
+        max-width: 1800px;
+        margin: 0 auto;
+        padding: 3rem;
+    }
 }

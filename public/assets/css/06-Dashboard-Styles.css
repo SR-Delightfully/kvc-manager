@@ -1,0 +1,159 @@
+/* Okay this file is really frustrating to read/work with */
+/* Please do not define styles for html elements unless specified */
+/* Please do not redefine classes that already exist. */
+/* Please check if the class name is already in user before writting your styles. */
+/* Please reuse classes when necessary. */
+
+#home-page-wrapper, #admin-page-wrapper {
+    min-width: 100vw;
+    min-height: 100vh;
+    overflow: hidden;
+    position: absolute;
+    left: 0;
+    top: 0;
+    border: 2px solid hotpink;
+}
+
+#home-page-content, #admin-page-content, #employee-page-content {
+    width: calc(100% - 14.25%);
+    height: calc(100vh - 12%);
+    
+    overflow-x: hidden;
+    overflow-y: scroll;
+    
+    position: absolute;
+    right: 0;
+    top: 12%;
+
+    display: flex;
+    flex-flow: column nowrap;
+}
+
+#backend-dashboard, #admin-dashboard, #employee-dashboard {
+    /* padding-top: 2rem; */
+    padding-right: 0.5rem;
+    border-radius: 1.5rem 12rem;
+    background-color: var(--tone-01);
+    height: 98%;
+    max-width: calc(96%);
+    min-width: calc(96%);
+
+    display: flex;
+    flex-flow: column wrap;
+    justify-content: center;
+    align-items: flex-start;
+    align-content: flex-start;
+    gap: 1.5rem;
+
+    position: relative;
+    
+    left: 50%;
+    top: 48%;
+    transform: translate(-50%, -50%);
+
+    & > li {
+        margin-left: -1rem;
+        margin-right: 1rem;
+        width: calc(99% / 2);
+        overflow: hidden;
+        border-radius: 1.5rem;
+    }
+    & > li:not(:nth-child(3n - 2)) {
+        background-color: var(--tone-05);
+        height: calc(44% - 4rem);
+    }
+    & > li:nth-child(3n - 2) {
+        background-color: hotpink;
+        height: calc(59% - 2rem);
+    }
+}
+
+#backend-sections {
+    padding-right: 0.5rem;
+    border-radius: 1.5rem 12rem;
+    background-color: var(--tone-01);
+    height: 400%;
+    max-width: calc(96%);
+    min-width: calc(96%);
+
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: flex-start;
+    align-items: center;
+    align-content: center;
+    gap: 1.5rem;
+
+    position:    absolute;
+    
+    top: 100vh;
+    left: 50%;
+    transform: translate(-50%, -3.5%);
+}
+
+.small-widget{
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-flow: column nowrap;
+    gap: 0;
+    justify-content: flex-start;
+    align-items: center;
+    & > h2 {
+        min-height: 4rem;
+        width: 100%;
+
+        /* position: relative; */
+        text-align: center;
+        size: 1.2rem;
+        color: var(--tone-8);
+
+        text-transform: uppercase;
+        letter-spacing: 0.2rem;
+        color: var(--tone-09);
+    }
+    & > h3 {
+        min-height: 3rem;
+        position: relative;
+        padding: 0.25rem 1.5rem;
+        display: flex;
+        padding-left: 5rem;
+        width: 100%;
+        text-align: left;
+        align-items: center;
+        margin-top: -5rem;
+    }
+    & > div {
+        border: 2px solid red;
+        width: calc(100% - 3rem);
+        height: 45%;
+        overflow: scroll;
+        position: relative;
+        margin-top: -1.5rem;
+
+    }
+    & > div > table { 
+        overflow-x: hidden;
+        overflow-y: scroll;
+        max-height: 1rem !important;
+    }
+    & > form { 
+        background: yellow; 
+        max-height: 40%;
+        width: 100%;
+        border-top-left-radius: 1.5rem;
+        border-top-right-radius: 1.5rem;
+    }
+
+}
+
+.mini-widget{
+    & > div {
+        background: hotpink;
+    }
+    & > h3 {
+        background: lime;
+    }
+    & > form {
+        background: cyan;
+    }
+}

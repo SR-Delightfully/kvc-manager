@@ -1,0 +1,34 @@
+#header {
+    width: calc(100% - 14.1%);
+    height: 9.5vh;
+    position: absolute;
+    right: 0;
+    top: 1rem;
+    display: flex;
+    flex-flow: column nowrap;
+    align-items: flex-start;
+    justify-content: flex-end;
+    z-index: 9999999;
+    overflow: hidden;
+    & > h1 {
+        padding-left: 2rem;
+        font-size: 3rem;
+        margin-bottom: -0.25rem;
+    }
+}
+.ribbon {       
+    background-color: var(--tone-00);
+    width: 100%;
+    height: 5vh;
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: flex-start;
+    align-items: center;
+    padding-left: 2rem;
+    gap: 0.5rem;
+    line-height: 1;
+    & > h3:last-child {
+        position: absolute;
+        right: 4rem;
+    }
+}
