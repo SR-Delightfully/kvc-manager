@@ -35,7 +35,7 @@ ViewHelper::loadHeader($page_title,false);
                     <br>
 
                     <div class="button-row">
-                        <button type="submit" class="signup-btn btn btn-wide btn-secondary">Sign Up</button>
+                        <a href="./register"><button type="button" class="signup-btn btn btn-wide btn-secondary">Sign Up</button></a>
                         <button type="submit" class="signin-btn btn btn-wide btn-primary">Sign In</button>
                     </div>
                 </form>
@@ -73,7 +73,7 @@ ViewHelper::loadHeader($page_title,false);
         <input type="text" maxlength="6" placeholder="0 0 0 0 0 0">
 
         <div class="forgot-btn-row">
-            <button class="forgot-send">Send Email</button>
+            <button class="forgot-send btn btn-wide btn-okay">Send Email</button>
             <button type="button" class="forgot-change"onclick="openNewPasswordModal()">Change Password</button>
         </div>
     </div>
@@ -98,8 +98,8 @@ ViewHelper::loadHeader($page_title,false);
 
             <div class="forgot-btn-row">
                 <!-- Use same button styles -->
-                <button type="button" class="forgot-send" onclick="submitNewPassword()">Send</button>
-                <button type="button" class="forgot-change" onclick="closeNewPasswordModal()">Cancel</button>
+                <button type="button" class="forgot-send btn btn-wide btn-okay" onclick="submitNewPassword()">Send</button>
+                <button type="button" class="forgot-change btn btn-wide btn-danger" onclick="closeNewPasswordModal()">Cancel</button>
             </div>
         </form>
 

@@ -1,10 +1,8 @@
-/* Okay this file is really frustrating to read/work with */
-/* Please do not define styles for html elements unless specified */
-/* Please do not redefine classes that already exist. */
-/* Please check if the class name is already in user before writting your styles. */
-/* Please reuse classes when necessary. */
+/* This is the Dashboard Styles page */
+/* This file contains all of the styles relevant to the layout of the dashboard, 
+   and its children such as the widgets of various sizes. */
 
-#home-page-wrapper, #admin-page-wrapper {
+#page-wrapper{
     min-width: 100vw;
     min-height: 100vh;
     overflow: hidden;
@@ -14,7 +12,7 @@
     border: 2px solid hotpink;
 }
 
-#home-page-content, #admin-page-content, #employee-page-content {
+#page-content {
     width: calc(100% - 14.25%);
     height: calc(100vh - 12%);
     
@@ -27,16 +25,17 @@
 
     display: flex;
     flex-flow: column nowrap;
+    scrollbar-width: none;
 }
 
-#backend-dashboard, #admin-dashboard, #employee-dashboard {
-    /* padding-top: 2rem; */
-    padding-right: 0.5rem;
-    border-radius: 1.5rem 12rem;
-    background-color: var(--tone-01);
+#dashboard {
+    padding: 0rem 1.5rem 0rem 3rem;
+    /* padding: 0rem 1.5rem; */
+    border-radius: 9rem;
+    background-color:    var(--tone-03);
     height: 98%;
-    max-width: calc(96%);
-    min-width: calc(96%);
+    max-width: calc(95%);
+    min-width: calc(95%);
 
     display: flex;
     flex-flow: column wrap;
@@ -50,8 +49,8 @@
     left: 50%;
     top: 48%;
     transform: translate(-50%, -50%);
-
-    & > li {
+    scrollbar-width: none;
+        & > li {
         margin-left: -1rem;
         margin-right: 1rem;
         width: calc(99% / 2);
@@ -68,13 +67,13 @@
     }
 }
 
-#backend-sections {
+#dashboard-sections {
     padding-right: 0.5rem;
     border-radius: 1.5rem 12rem;
-    background-color: var(--tone-01);
-    height: 400%;
-    max-width: calc(96%);
-    min-width: calc(96%);
+    background-color:    var(--tone-03);
+    min-height: 400%;
+    max-width: calc(95%);
+    min-width: calc(95%);
 
     display: flex;
     flex-flow: column nowrap;
@@ -88,9 +87,18 @@
     top: 100vh;
     left: 50%;
     transform: translate(-50%, -3.5%);
+    & > ul {
+    border: 2px solid red;
+    }
 }
-
+.dashboard-section {
+    background-color:    var(--tone-03);
+    height: 98%;
+    max-width: calc(95%);
+    min-width: calc(95%);
+}
 .small-widget{
+    height: 55% !important;
     padding: 0;
     margin: 0;
     display: flex;
@@ -98,20 +106,94 @@
     gap: 0;
     justify-content: flex-start;
     align-items: center;
-    & > h2 {
-        min-height: 4rem;
+    background-color: var(--tone-06 ) !important;
+    border-bottom: 2px solid var(--color-blue-03);
+    & > h2 { 
+        background-color: var(--color-blue-04);
+        border-bottom: 3px solid var(--tone-08);
         width: 100%;
+        min-height: 3rem;
+        text-transform: uppercase;
+        letter-spacing: 0.2;
+        position: relative;
+        top: -1.5rem;
+        text-align: center;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    & > h3 {
+        width: 100%;
+        min-height: 2rem;
+        position: relative;
+        top: -4rem;
+        padding-left: 6rem;
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        color: var(--color-blue-04);
+    }
+
+    & > div {
+        border: 2px solid var(--color-blue-01);
+        border-top-left-radius: var(--radius-xl);
+        border-top-right-radius: var(--radius-xl);
+        width: 95%;
+        min-height: 55%;  
+        overflow: hidden;
+        position: relative;
+        top: -5rem;
+        overflow-x: hidden;
+        overflow-y: scroll;
+        scrollbar-width: none;
+        z-index: 99;
+    }
+    & > form {
+        border: 3px solid var(--tone-00);
+        background-color: var(--tone-03) !important;
+        position: relative;
+        bottom: 19%;
+        min-height: 34%;
+        overflow: hidden;
+        z-index: 99;
+        display: flex;
+        flex-flow: row nowrap;
+        gap: 3rem;
+        padding-left: 3rem;
+        padding: 1rem;
+        border-top-right-radius: 1.5rem !important;
+        border-top-left-radius: 1.5rem !important;
+        max-width: 96%;
+        z-index: 9999;
+    }
+    & > form > div {
+        display: flex;
+        flex-flow: row wrap;
+
+        min-width: 44.9%;
+    }
+    & > form > .left-side {
+        gap: 0.75rem;
+        z-index: 99;
+    }
+    & > form > .right-side {
+        gap: 1rem;
+        z-index: 99;
+    }
+    /* & > h2 {
+        min-height: 4rem;
+        width: 100%; */
 
         /* position: relative; */
-        text-align: center;
+        /* text-align: center;
         size: 1.2rem;
         color: var(--tone-8);
 
         text-transform: uppercase;
         letter-spacing: 0.2rem;
         color: var(--tone-09);
-    }
-    & > h3 {
+    } */
+    /* & > h3 {
         min-height: 3rem;
         position: relative;
         padding: 0.25rem 1.5rem;
@@ -121,8 +203,8 @@
         text-align: left;
         align-items: center;
         margin-top: -5rem;
-    }
-    & > div {
+    } */
+    /* & > div {
         border: 2px solid red;
         width: calc(100% - 3rem);
         height: 45%;
@@ -130,19 +212,19 @@
         position: relative;
         margin-top: -1.5rem;
 
-    }
-    & > div > table { 
+    } */
+    /* & > div > table { 
         overflow-x: hidden;
         overflow-y: scroll;
         max-height: 1rem !important;
-    }
-    & > form { 
+    } */
+    /* & > form { 
         background: yellow; 
         max-height: 40%;
         width: 100%;
         border-top-left-radius: 1.5rem;
         border-top-right-radius: 1.5rem;
-    }
+    } */
 
 }
 
@@ -157,3 +239,7 @@
         background: cyan;
     }
 }
+
+.tall-widget {}
+
+.big-widget {}

@@ -171,7 +171,8 @@ input, select, textarea {
     font-size: var(--input-font-size);
     transition: all var(--transition-fast);
     
-    min-height: 2.5rem;
+    min-height: 2rem;
+    max-height: 2rem;
     min-width:  18rem !important;
     max-width:  42rem !important;
 
@@ -191,17 +192,54 @@ textarea { resize: vertical; min-height: 6rem; }
 
 /* TABLES */
 
-table { width: 100%; border-collapse: collapse; font-size: var(--font-size-body); background-color: var(--card-bg); border-radius: var(--card-radius); overflow: hidden; box-shadow: var(--card-shadow); }
-thead { background-color: var(--tone-03); color: var(--tone-10); text-align: left; }
-thead th { padding: 1rem; font-weight: var(--font-weight-semibold); font-size: 0.95rem; border-bottom: 1px solid var(--tone-07); }
-tbody td { padding: 0.9rem 1rem; border-bottom: 1px solid var(--tone-04); color: var(--tone-10); }
-tbody tr:hover { background-color: var(--hover-color); }
-.table-hover tbody tr:hover { background-color: var(--hover-color); }
-.table-striped tbody tr:nth-child(odd) { background-color: rgba(255,255,255,0.02); }
-.table-striped tbody tr:nth-child(even) { background-color: rgba(0,0,0,0.08); }
-.table-bordered td, .table-bordered th { border: 1px solid var(--tone-07); }
-.table-compact td, .table-compact th { padding: 0.5rem 0.7rem; }
-.table-spacious td, .table-spacious th { padding: 1.3rem 1.4rem; }
+table { 
+    width: 100%; border-collapse: collapse; font-size: var(--font-size-body); background-color: var(--card-bg); border-radius: var(--card-radius); overflow: hidden; box-shadow: var(--card-shadow); 
+}
+
+thead { 
+    background-color: var(--tone-03); 
+    color: var(--tone-10); 
+    text-align: left; 
+}
+
+thead th { 
+    padding: 1rem; font-weight: var(--font-weight-semibold); 
+    font-size: 0.95rem; border-bottom: 1px solid var(--tone-07); 
+}
+
+tbody td { 
+    padding: 0.2rem 0rem; 
+    border-bottom: 1px solid var(--tone-04); 
+    color: var(--tone-10); 
+}
+
+tbody tr:hover { 
+    background-color: var(--hover-color); 
+}
+
+.table-hover tbody tr:hover { 
+    background-color: var(--hover-color); 
+}
+
+.table-striped tbody tr:nth-child(odd) {
+    background-color: var(--color-blue-05); 
+}
+
+.table-striped tbody tr:nth-child(even) {   
+    background-color: var(--color-blue-04); 
+}
+
+.table-bordered td, .table-bordered th { 
+    border: 1px solid var(--tone-07); 
+}
+
+.table-compact td, .table-compact th { 
+    padding: 0.5rem 0.7rem; 
+}
+
+.table-spacious td, .table-spacious th { 
+    padding: 1.3rem 1.4rem; 
+}
 
 /* Row selection */
 tbody tr { cursor: pointer; transition: background-color var(--transition-fast); }
@@ -224,3 +262,7 @@ fieldset { border: 1px solid var(--tone-07); padding: 1.5rem; border-radius: var
 legend { font-size: 1.1rem; font-weight: var(--font-weight-semibold); padding: 0 0.6rem; }
 .form-grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1.4rem; }
 @media (max-width: 720px) { .form-grid-2, .form-grid-3 { grid-template-columns: 1fr; } }
+.select {
+    min-width: 45% !important;
+    max-width: 45% !important;
+}

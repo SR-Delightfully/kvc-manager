@@ -78,7 +78,9 @@ $currentPath = $_SERVER['REQUEST_URI'];
                         </ul>
                     <?php endif; ?>
                 </li>
-            <?php } ?>
+                <?php } ?>
+                <li class="btn btn-wide btn-secondary flex-row"><a href="<?= APP_BASE_URL ?>/logout">Sign Out</a></li>
+
         </ul>
     </div>
 

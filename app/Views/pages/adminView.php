@@ -90,11 +90,11 @@ $is_variant_dlt_open = $is_variant_dlt_open ?? null;
 
 ?>
 
-<div id="admin-page-wrapper" class="page">
+<div id="page-wrapper" class="page">
     <?= App\Helpers\FlashMessage::render() ?>
-    <div id="admin-page-content">
+    <div id="page-content">
         <?php if ($isAdmin): ?>
-            <ul id="backend-dashboard" class="center-v">
+            <ul id="dashboard" class="center-v">
                 <!-- ? Clarification needed: What actually is the difference between the tables "product" and "product_type" they both seem to depict different aspects of the "product_variant" but if thats the case wouldn't "product_variant" just be the product itself..? -->
 
                 <!-- Products Component -->
@@ -103,13 +103,14 @@ $is_variant_dlt_open = $is_variant_dlt_open ?? null;
                     <h2> Products </h2>
                     <h3> Most Recent Entries:</h3>
 
+                    <!-- Some of the information is not necessary to be displayed right away and will be commented out... -->
                     <div>
-                        <table class="products-mini-table table table-striped">
+                        <table class="products-small table table table-striped">
                             <!-- Reworking table headers to match "product_variant" table -->
                             <!-- if sql tables get reworked, I suggest maybe adding a 'name' attribute to easily identify the product variants -->
                             <thead>
                                 <tr>
-                                    <th>Product ID:</th>
+                                    <!-- <th>Product ID:</th> -->
                                     <th>Product Type:</th>
                                     <th>Product Colour:</th>
                                     <th>Product Size:</th>
@@ -124,7 +125,7 @@ $is_variant_dlt_open = $is_variant_dlt_open ?? null;
                                                 value="<?= $variant['variant_id']?>"
                                                 class="variant-radio">
                                         </td>
-                                        <td><?= $variant['product_id']?></td>
+                                        <!-- <td></?= $variant['product_id']?></td> -->
                                         <td><?= $variant['colour_id']?></td> <!-- TODO: get color_name from colours table by colour_id -->
                                         <td><?= $variant['unit_size']?></td>
                                         <td><?= $variant['variant_description']?></td>
@@ -138,7 +139,7 @@ $is_variant_dlt_open = $is_variant_dlt_open ?? null;
                         <div class="left-side">
                             <h3 class="quick-add-title">Quick Add :</h3>
 
-                            <label>Product Options</label>
+                            <label></label>
                             <select name="product_id" class="form-select" id="product_id">
                                 <option value="">Select Product Id</option>
                                 <?php foreach ($products as $product): ?>
@@ -150,7 +151,7 @@ $is_variant_dlt_open = $is_variant_dlt_open ?? null;
 
                             <label for="">Colour</label>
                                 <select name="colour_id" class="form-select" id="colour_id">
-                                    <option value="">Select Colour Id</option>
+                                    <option value=""></option>
                                     <?php foreach ($colours as $colour): ?>
                                         <option value="<?= $colour['colour_id'] ?>">
                                             <?= $colour['colour_name'] ?>
@@ -162,7 +163,7 @@ $is_variant_dlt_open = $is_variant_dlt_open ?? null;
                             <!-- TODO: use for each to display options (in case they carry most sizes in the future)-->
                             <label for="">Unit Size</label>
                                 <select name="unit_size" class="form-select" id="unit_size">
-                                    <option value="">Select Unit Size</option>
+                                    <option value=""></option>
                                     <option value="0.5L">0.5L</option>
                                     <option value="1L">1L</option>
                                     <option value="2L">2L</option>
@@ -178,10 +179,10 @@ $is_variant_dlt_open = $is_variant_dlt_open ?? null;
 
                             <div class="actions-title">Actions :</div>
 
-                            <button class="blue-btn">View Product Details</button>
-                            <button class="yellow-btn">Edit Product Details</button>
-                            <button class="red-btn">Delete Product</button>
-                            <button class="jump-btn">Jump To ↪</button>
+                            <button class="btn btn-thin btn-okay">View Product</button>
+                            <button class="btn btn-thin btn-warning">Edit Product</button>
+                            <button class="btn btn-thin btn-danger">Delete Product</button>
+                            <button class="btn btn-wide btn-primary">Jump To ↪</button>
                         </div>
                     </form>
                 </li>
@@ -224,15 +225,15 @@ $is_variant_dlt_open = $is_variant_dlt_open ?? null;
                             </div>
                         </div>
                         <div class="button-row">
-                            <button class="cancel-btn">Cancel</button>
-                            <button class="save-btn">Save Schedule</button>
+                            <button class="btn btn-thin btn-danger">Cancel</button>
+                            <button class="btn btn-thin btn-okay">Save Schedule</button>
                         </div>
                     </form>
                 </li>
                 <!-- Pallet Component -->
                 <li class="mini-widget">
                     <div class="pallet-header">
-                        <h2>P A L L E T S</h2><button class="jump-btn">Jump To ↪</button>
+                        <h2>P A L L E T S</h2><button class="btn btn-wide btn-pimary">Jump To ↪</button>
                     </div>  
                     <h3> [Component SubTitle] (a quick explanation of the contents) </h3>
                     <form>
@@ -259,8 +260,8 @@ $is_variant_dlt_open = $is_variant_dlt_open ?? null;
                             <input type="text" placeholder="Enter Number of Units">
                         </div>
                         <div class="button-row">
-                            <button class="cancel-btn">Cancel</button>
-                            <button class="save-btn">Save Pallet</button>
+                            <button class="btn btn-thin btn-danger">Cancel</button>
+                            <button class="btn btn-thin btn-okay">Save Pallet</button>
                         </div>
                     </form>
                 </li>
@@ -325,21 +326,21 @@ $is_variant_dlt_open = $is_variant_dlt_open ?? null;
                             <input type="text" value="XJ8M32N" readonly> 
                             <!-- TODO: get actual code from database -->
                             <!-- TODO: create registration_code table so we keep track of codes used and avoid reusing the same code twice. -->
-                            <button class="jump-btn">Jump To ↪</button>
+                            <button class="btn btn-wide btn-primary">Jump To ↪</button>
                         </div>
 
                         <div class="right-side">
                             <input class="search" type="text" placeholder="Search . .">
 
                             <div class="actions-title">Actions :</div>
-                            <button class="blue-btn">View Employee Details</button>
-                            <button class="yellow-btn">Edit Employee Details</button>
-                            <button class="red-btn">Delete Employee</button>
+                            <button class="btn btn-thin btn-okay">View Employee</button>
+                            <button class="btn btn-thin btn-warning">Edit Employee</button>
+                            <button class="btn btn-thin btn-danger">Delete Employee</button>
                         </div>
                     </form>
                 </li>   
             </ul>
-            <ul id="backend-sections">
+            <ul id="sections">
                 <li>
                     <!-- TODO: call admin/users view -->
                     <!-- TODO: move big users table to this file -->
@@ -369,12 +370,12 @@ $is_variant_dlt_open = $is_variant_dlt_open ?? null;
             <!-- just adding this twice because i dont want to login rn -->
             <!-- In production version this code will be replaced with an error screen that -->
             <!-- will redirect the user back to the employee dashboard or login if no user is provided.-->
-            <ul id="backend-dashboard" class="center-v">
+            <ul id="dashboard" class="center-v">
                 <!-- ? Clarification needed: What actually is the difference between the tables "product" and "product_type" they both seem to depict different aspects of the "product_variant" but if thats the case wouldn't "product_variant" just be the product itself..? -->
 
                 <!-- Products Component -->
                 <!-- Displays the most recent product variant entries -->
-                <li class="metallic-bg small-widget">
+                <li class="metallic small-widget">
                     <h2> Products </h2>
                     <h3> Most Recent Entries:</h3>
                     <div>
@@ -383,7 +384,7 @@ $is_variant_dlt_open = $is_variant_dlt_open ?? null;
                             <!-- if sql tables get reworked, I suggest maybe adding a 'name' attribute to easily identify the product variants -->
                             <thead>
                                 <tr>
-                                    <th>Product ID:</th>
+                                    <!-- <th>Product ID:</th> -->
                                     <th>Product Type:</th>
                                     <th>Product Colour:</th>
                                     <th>Product Size:</th>
@@ -398,7 +399,7 @@ $is_variant_dlt_open = $is_variant_dlt_open ?? null;
                                                 value="<?= $variant['variant_id']?>"
                                                 class="variant-radio">
                                         </td>
-                                        <td><?= $variant['product_id']?></td>
+                                        <!-- <td></?= $variant['product_id']?></td> -->
                                         <td><?= $variant['colour_id']?></td> <!-- TODO: get color_name from colours table by colour_id -->
                                         <td><?= $variant['unit_size']?></td>
                                         <td><?= $variant['variant_description']?></td>
@@ -407,12 +408,13 @@ $is_variant_dlt_open = $is_variant_dlt_open ?? null;
                             </tbody>
                         </table>
 
-                    </div>                        <form action="<?= APP_BASE_URL ?>/admin/variant" method="POST">
+                    </div>                        
+                    <form class="metallic" action="<?= APP_BASE_URL ?>/admin/variant" method="POST">
                             <div class="left-side">
-                                <h3 class="quick-add-title">Quick Add :</h3>
+                                <!-- <h3 class="quick-add-title">Quick Add :</h3> -->
 
-                                <label>Product Options</label>
-                                <select name="product_id" class="form-select" id="product_id">
+                                <!-- <label></label> -->
+                                <select name="product_id" class="select" id="product_id">
                                     <option value="">Select Product Id</option>
                                     <?php foreach ($products as $product): ?>
                                         <option value="<?= $product['product_id'] ?>">
@@ -421,8 +423,8 @@ $is_variant_dlt_open = $is_variant_dlt_open ?? null;
                                     <?php endforeach; ?>
                                 </select>
 
-                                <label for="">Colour</label>
-                                    <select name="colour_id" class="form-select" id="colour_id">
+                                <label for=""></label>
+                                    <select name="colour_id" class="select" id="colour_id">
                                         <option value="">Select Colour Id</option>
                                         <?php foreach ($colours as $colour): ?>
                                             <option value="<?= $colour['colour_id'] ?>">
@@ -433,8 +435,8 @@ $is_variant_dlt_open = $is_variant_dlt_open ?? null;
 
                                 <!-- TODO: create table or array variable to hold sizes  -->
                                 <!-- TODO: use for each to display options (in case they carry most sizes in the future)-->
-                                <label for="">Unit Size</label>
-                                    <select name="unit_size" class="form-select" id="unit_size">
+                                <label for=""></label>
+                                    <select name="unit_size" class="select" id="unit_size">
                                         <option value="">Select Unit Size</option>
                                         <option value="0.5L">0.5L</option>
                                         <option value="1L">1L</option>
@@ -446,15 +448,15 @@ $is_variant_dlt_open = $is_variant_dlt_open ?? null;
                                 <input name="variant_description" type="text" placeholder="Enter Product Description">
                             </div>
                             <div class="right-side">
-                                <label>Search . .</label>
+                                <!-- <label>Search . .</label> -->
                                 <input type="text" placeholder="Search . .">
 
-                                <div class="actions-title">Actions :</div>
+                                <!-- <div class="actions-title">Actions :</div> -->
 
-                                <button class="blue-btn">View Product Details</button>
-                                <button class="yellow-btn">Edit Product Details</button>
-                                <button class="red-btn">Delete Product</button>
-                                <button class="jump-btn">Jump To ↪</button>
+                                <button class="btn btn-wide btn-okay">View Product</button>
+                                <button class="btn btn-thin btn-warning">Edit Product</button>
+                                <button class="btn btn-thin btn-danger">Delete Product</button>
+                                <button class="btn btn-wide btn-primary">Jump To ↪</button>
                             </div>
                         </form>
                 </li>
@@ -462,7 +464,7 @@ $is_variant_dlt_open = $is_variant_dlt_open ?? null;
                 <!-- Schedule Component -->
                 <li class="mini-widget">
                     <div class="schedule-header">
-                        <h2>S C H E D U L E S</h2><button class="jump-btn">Jump To ↪</button>
+                        <h2>S C H E D U L E S</h2><button class="btn btn-thin btn-secondary">Jump To ↪</button>
                     </div>  
                     <h3> [Component SubTitle] (a quick explanation of the contents) </h3>
                     <form>
@@ -497,15 +499,15 @@ $is_variant_dlt_open = $is_variant_dlt_open ?? null;
                             </div>
                         </div>
                         <div class="button-row">
-                            <button class="cancel-btn">Cancel</button>
-                            <button class="save-btn">Save Schedule</button>
+                            <button class="btn btn-wide btn-danger">Cancel</button>
+                            <button class="btn btn-wide btn-okay">Save Schedule</button>
                         </div>
                     </form>
                 </li>
                 <!-- Pallet Component -->
                 <li class="mini-widget">
                     <div class="pallet-header">
-                        <h2>P A L L E T S</h2><button class="jump-btn">Jump To ↪</button>
+                        <h2>P A L L E T S</h2><button class="btn btn-thin btn-secondary">Jump To ↪</button>
                     </div>  
                     <h3> [Component SubTitle] (a quick explanation of the contents) </h3>
                     <form>
@@ -532,87 +534,110 @@ $is_variant_dlt_open = $is_variant_dlt_open ?? null;
                             <input type="text" placeholder="Enter Number of Units">
                         </div>
                         <div class="button-row">
-                            <button class="cancel-btn">Cancel</button>
-                            <button class="save-btn">Save Pallet</button>
+                            <button class="btn btn-wide btn-danger">Cancel</button>
+                            <button class="btn btn-wide btn-okay">Save Pallet</button>
                         </div>
                     </form>
                 </li>
-                <!-- Employees Component -->
-                <li class="metallic-bg small-widget">
-                    <h2>Employees</h2>
-                    <h3>Recent Entries:</h3>
-                    <table>
-                        <thead>
-                        <tr>
-                            <th>Role</th>
-                            <th>First Name</th>
-                            <th>Last Name</th>
-                            <th>Phone</th>
-                            <th>Email</th>
-                            <th>Date Created</th>
-                        </tr>
-                        </thead>
-
-                        <tbody>
-                            <?php foreach ($users as $key => $user): //<span class="dot green">
-                                ?>
-                                <tr class="user-row">
-                                    <td>
-                                    <input type="radio" name="user_id"
-                                        value="<?= $user['user_id']?>"
-                                        class="user-radio">
-                                    </td>
-                                    <td><?php
-                                        switch ($user['user_status']) {
-                                            case 'active':
-                                            echo '<span class="dot green"></span>';
-                                                break;
-                                            case 'leave': 
-                                            // TODO: change 'leave' for 'inactive' to account for vacation, sick days, etc.
-                                            // ? leave sounds to similar to ending something and may be confused for terminated.
-                                            echo '<span class="dot yellow"></span>';
-                                                break;
-                                            case 'terminated':
-                                            echo '<span class="dot red"></span>';
-                                                break;
-                                            default:
-                                        }
-                                    ?></td>
-                                    <td><?= $user['user_role']?></td>
-                                    <td><?= $user['first_name']?></td>
-                                    <td><?= $user['last_name']?></td>
-                                    <td><?= $user['phone']?></td>
-                                    <td><?= $user['email']?></td>
-                                    <td><?= $user['user_dc']?></td>
+                <li class="metallic small-widget">
+                    <h2> Employees </h2>
+                    <h3> Most Recent Entries:</h3>
+                    <div>
+                        <table class="products-mini-table table table-striped">
+                            <!-- Reworking table headers to match "product_variant" table -->
+                            <!-- if sql tables get reworked, I suggest maybe adding a 'name' attribute to easily identify the product variants -->
+                            <thead>
+                                <tr>
+                                    <th>Role</th>
+                                    <th>First Name</th>
+                                    <th>Last Name</th>
+                                    <th>Phone</th>
+                                    <th>Email</th>
+                                    <th>Date Created</th>
                                 </tr>
-                            <?php endforeach; ?>
-                        </tbody>
-                    </table>
-                    <form>
-                        <div class="left-side">
-                            <select>
-                                <option>Employee Status</option>
-                            </select>
+                            </thead>
+                            <tbody>
+                                <?php foreach ($users as $key => $user): //<span class="dot green">
+                                    ?>
+                                    <tr class="user-row">
+                                        <td>
+                                        <input type="radio" name="user_id"
+                                            value="<?= $user['user_id']?>"
+                                            class="user-radio">
+                                        </td>
+                                        <td><?php
+                                            switch ($user['user_status']) {
+                                                case 'active':
+                                                echo '<span class="dot green"></span>';
+                                                    break;
+                                                case 'leave': 
+                                                // TODO: change 'leave' for 'inactive' to account for vacation, sick days, etc.
+                                                // ? leave sounds to similar to ending something and may be confused for terminated.
+                                                echo '<span class="dot yellow"></span>';
+                                                    break;
+                                                case 'terminated':
+                                                echo '<span class="dot red"></span>';
+                                                    break;
+                                                default:
+                                            }
+                                        ?></td>
+                                        <td><?= $user['user_role']?></td>
+                                        <td><?= $user['first_name']?></td>
+                                        <td><?= $user['last_name']?></td>
+                                        <td><?= $user['phone']?></td>
+                                        <td><?= $user['email']?></td>
+                                        <td><?= $user['user_dc']?></td>
+                                    </tr>
+                                <?php endforeach; ?>
+                            </tbody>
+                        </table>
 
+                    </div>                        
+                    <form class="metallic" action="<?= APP_BASE_URL ?>/admin/variant" method="POST">
+                            <div class="left-side">
                             <div class="reg-label">Registration Code :</div>
                             <input type="text" value="XJ8M32N" readonly> 
-                            <!-- TODO: get actual code from database -->
-                            <!-- TODO: create registration_code table so we keep track of codes used and avoid reusing the same code twice. -->
-                            <button class="jump-btn">Jump To ↪</button>
-                        </div>
 
-                        <div class="right-side">
-                            <input class="search" type="text" placeholder="Search . .">
 
-                            <div class="actions-title">Actions :</div>
-                            <button class="blue-btn">View Employee Details</button>
-                            <button class="yellow-btn">Edit Employee Details</button>
-                            <button class="red-btn">Delete Employee</button>
-                        </div>
-                    </form>
-                </li>   
+                                <label for=""></label>
+                                    <select name="colour_id" class="select" id="colour_id">
+                                        <option value="">Select Colour Id</option>
+                                        <?php foreach ($colours as $colour): ?>
+                                            <option value="<?= $colour['colour_id'] ?>">
+                                                <?= $colour['colour_name'] ?>
+                                            </option>
+                                        <?php endforeach; ?>
+                                    </select>
+
+                                <!-- TODO: create table or array variable to hold sizes  -->
+                                <!-- TODO: use for each to display options (in case they carry most sizes in the future)-->
+                                <label for=""></label>
+                                    <select name="unit_size" class="select" id="unit_size">
+                                        <option value="">Select Unit Size</option>
+                                        <option value="0.5L">0.5L</option>
+                                        <option value="1L">1L</option>
+                                        <option value="2L">2L</option>
+                                        <option value="4L">4L</option>
+                                        <option value="8L">8L</option>
+                                    </select>
+
+                                <input name="variant_description" type="text" placeholder="Enter Product Description">
+                            </div>
+                            <div class="right-side">
+                                <!-- <label>Search . .</label> -->
+                                <input type="text" placeholder="Search . .">
+
+                                <!-- <div class="actions-title">Actions :</div> -->
+
+                                <button class="btn btn-wide btn-okay">View Employee</button>
+                                <button class="btn btn-thin btn-warning">Edit Employee</button>
+                                <button class="btn btn-thin btn-danger">Delete Employee</button>
+                                <button class="btn btn-wide btn-primary">Jump To ↪</button>
+                            </div>
+                        </form>
+                </li>
             </ul>
-            <ul id="backend-sections">
+            <ul id="dashboard-sections">
                 <li>
                     <?php include __DIR__ . '/admin/employeesView.php'; ?>
                     <!-- TODO: create admin/employees overview -->
