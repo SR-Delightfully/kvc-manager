@@ -144,15 +144,10 @@ return static function (App $app): void {
             require APP_VIEWS_PATH . '/admin/dashboardView.php';
             return $response;
         });
-        $admin->get('/temp-db', function ($request, $response) {
-            // Path to your view file
-            require APP_VIEWS_PATH . '/admin/databaseView.php';
-            return $response;
-        });
         //temp route
-        $admin->get('/temp-dash', function ($request, $response) {
+        $admin->get('/temp-work', function ($request, $response) {
             // Path to your view file
-            require APP_VIEWS_PATH . '/admin/dashboardView.php';
+            require APP_VIEWS_PATH . '/admin/workLogView.php';
             return $response;
         });
 

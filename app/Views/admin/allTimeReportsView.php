@@ -6,71 +6,53 @@ $page_title = 'Database Overview';
 ViewHelper::loadHeader($page_title, true);
 ?>
 
-
-<!-- to be completed!! -->
 <div id="rpt-dashboard-container">
 
-    <!-- Top Tabs -->
+
     <div id="rpt-top-tabs">
-
         <a href="" class="rpt-tab rpt-active">Daily Progress</a>
+        <a href="" class="rpt-tab">All Time Progress</a>
+    </div>
 
-        <!-- DATE FILTER -->
-        <div class="rpt-date-filter">
 
-            <button id="rpt-dateButton" class="rpt-tab rpt-date-btn" onclick="rpt_toggleDateDropdown()">
-                Choose Date: Default today
-            </button>
+    <div id="rpt-chart-filters">
 
-            <div class="rpt-date-dropdown" id="rpt-dateDropdown">
-                <div class="rpt-dropdown-item" onclick="rpt_setDateFilter('Default Today')">Default Today</div>
-                <div class="rpt-dropdown-item" onclick="rpt_setDateFilter('This Month')">This Month</div>
-                <div class="rpt-dropdown-item" onclick="rpt_setDateFilter('This Year')">This Year</div>
+
+        <div class="rpt-select" onclick="rpt_toggleSelect(this)">
+            <div class="rpt-select-header">
+                <span id="rpt-product-label">Solution A</span>
+                <span class="rpt-arrow">⌄</span>
             </div>
 
+            <div class="rpt-select-options">
+                <div onclick="rpt_setProduct('Solution A')">Solution A</div>
+                <div onclick="rpt_setProduct('Solution B')">Solution B</div>
+                <div onclick="rpt_setProduct('100-Base Pods')">100-Base Pods</div>
+                <div onclick="rpt_setProduct('U-Base Pods')">U-Base Pods</div>
+            </div>
         </div>
 
-        <a href="" class="rpt-tab rpt-active">All Time Progress</a>
 
-    </div>
-    <div class="alltime-chart-wrapper">
+        <div class="rpt-select" onclick="rpt_toggleSelect(this)">
+            <div class="rpt-select-header">
+                <span id="rpt-metric-label">Units Produced</span>
+                <span class="rpt-arrow">⌄</span>
+            </div>
 
-
-    <div class="dropdown product-dropdown">
-        <button class="dropdown-btn">
-            Solution A
-            <span class="arrow">⌄</span>
-        </button>
-
-        <div class="dropdown-menu">
-            <div class="dropdown-item">Solution B</div>
-            <div class="dropdown-item">100-Base Pods</div>
-            <div class="dropdown-item">U-Base Pods</div>
-        </div>
-    </div>
-
-
-    <div class="dropdown metric-dropdown">
-        <button class="dropdown-btn">
-            Units Produced
-            <span class="arrow">⌄</span>
-        </button>
-
-        <div class="dropdown-menu">
-            <div class="dropdown-item">Units/hr</div>
-            <div class="dropdown-item">Pallets</div>
-            <div class="dropdown-item">Breaks</div>
+            <div class="rpt-select-options">
+                <div onclick="">Units Produced</div>
+                <div onclick="">Units/hr</div>
+                <div onclick="">Pallets</div>
+                <div onclick="">Breaks</div>
+            </div>
         </div>
     </div>
 
 
-
-    <div class="chart-area">
-
-        <div class="chart-placeholder">
-          <!-- to be completed -->
-        </div>
+    <div style="width:100%; height:350px;">
+        <canvas id="rptChart"></canvas>
     </div>
+
 
     <div class="time-filters">
         <button class="time-btn">1D</button>
@@ -80,6 +62,59 @@ ViewHelper::loadHeader($page_title, true);
 
 </div>
 
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+// simple fake data for now
+const rpt_fakeData = {
+    "Units Produced": [220, 300, 260, 410, 300, 360, 250],
+
+};
+
+// initial chart
+const ctx = document.getElementById("rptChart");
+
+let rptChart = new Chart(ctx, {
+    type: "bar",
+    data: {
+        labels: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
+        datasets: [{
+            label: "Units Produced",
+            data: rpt_fakeData["Units Produced"],
+            backgroundColor: "#D9D9D9",
+            borderRadius: 8,
+            barPercentage: 0.6
+        }]
+    },
+    options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: { legend: { display: false }},
+        scales: {
+            y: { ticks: { color: "#ffffff" }},
+            x: { ticks: { color: "#ffffff" }}
+        }
+    }
+});
+
+// dropdown
+function rpt_toggleSelect(selectBox) {
+    const boxOpen = selectBox.classList.contains("open");
+
+    document.querySelectorAll(".rpt-select").forEach(s => {
+        s.classList.remove("open");
+        s.querySelector(".rpt-select-options").style.display = "none";
+    });
+
+    if (!boxOpen) {
+        selectBox.classList.add("open");
+        selectBox.querySelector(".rpt-select-options").style.display = "flex";
+    }
+}
+
+
+
+</script>
 
 <?php
 ViewHelper::loadJsScripts();
