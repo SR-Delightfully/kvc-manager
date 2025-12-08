@@ -18,11 +18,14 @@ button,  .btn {
         transform: scale(0.9);
     }
 }
+.btn-wider {
+    width: 22rem !important;
+}
 .btn-wide {
     width: 16rem !important;
 }
 .btn-thin {
-    width: 10rem !important;
+    width: 10.5rem !important;
 }
 /* Red button */
 .btn-danger {
@@ -173,7 +176,7 @@ input, select, textarea {
     
     min-height: 2rem;
     max-height: 2rem;
-    min-width:  18rem !important;
+    min-width:  19.75rem !important;
     max-width:  42rem !important;
 
 }

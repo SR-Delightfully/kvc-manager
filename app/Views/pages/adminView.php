@@ -137,11 +137,9 @@ $is_variant_dlt_open = $is_variant_dlt_open ?? null;
 
                     <form action="<?= APP_BASE_URL ?>/admin/variant" method="POST">
                         <div class="left-side">
-                            <h3 class="quick-add-title">Quick Add :</h3>
-
                             <label></label>
                             <select name="product_id" class="form-select" id="product_id">
-                                <option value="">Select Product Id</option>
+                                <option value="">Product Id</option>
                                 <?php foreach ($products as $product): ?>
                                     <option value="<?= $product['product_id'] ?>">
                                         <?= $product['product_name'] ?>
@@ -189,12 +187,11 @@ $is_variant_dlt_open = $is_variant_dlt_open ?? null;
                 <!-- // * Suggestion, instead of schedule, display stations (station_id, station_name, team_num, team_members (a dropdown?))   -->
                 <!-- Schedule Component -->
                 <li class="mini-widget">
-                    <div class="schedule-header">
+                    <div class="header">
                         <h2>S C H E D U L E S</h2><button class="jump-btn">Jump To ↪</button>
                     </div>  
-                    <h3> [Component SubTitle] (a quick explanation of the contents) </h3>
+                    <h3>In a rush? Quickly add a new schedule with the form below!</h3>
                     <form>
-                        <h2 class="quick-title">Quick Add :</h2>
                         <div class="left-side">
                             <label>Choose Schedule Date:</label>
                             <select>
@@ -232,12 +229,11 @@ $is_variant_dlt_open = $is_variant_dlt_open ?? null;
                 </li>
                 <!-- Pallet Component -->
                 <li class="mini-widget">
-                    <div class="pallet-header">
+                    <div class="header">
                         <h2>P A L L E T S</h2><button class="btn btn-wide btn-pimary">Jump To ↪</button>
                     </div>  
-                    <h3> [Component SubTitle] (a quick explanation of the contents) </h3>
+                    <h3>In a rush? Quickly add a new pallet with the form below!</h3>
                     <form>
-                        <h2 class="quick-title">Quick Add :</h2>
                         <div class="left-side">
                             <label>Choose Tote Type:</label>
                             <select>
@@ -405,6 +401,30 @@ $is_variant_dlt_open = $is_variant_dlt_open ?? null;
                                         <td><?= $variant['variant_description']?></td>
                                     </tr>
                                 <?php endforeach; ?>
+                                    <tr class="variant-row">
+                                        <td> 
+                                        </td>
+                                        <td> 
+                                            <button class="btn btn-wide btn-primary">View Full Table</button>
+                                        </td>
+                                        <td> 
+                                        </td>
+                                        <td> 
+                                        </td>
+                                    </tr>
+                                    <tr class="variant-row">
+                                        <td> 
+                                        </td>
+                                    </tr>
+                                    <tr class="variant-row">
+                                        <td> 
+                                        </td>
+                                    </tr>
+                                    <tr class="variant-row">
+                                        <td> 
+                                        </td>
+                                        
+                                    </tr>
                             </tbody>
                         </table>
 
@@ -415,7 +435,7 @@ $is_variant_dlt_open = $is_variant_dlt_open ?? null;
 
                                 <!-- <label></label> -->
                                 <select name="product_id" class="select" id="product_id">
-                                    <option value="">Select Product Id</option>
+                                    <option value="">Product Id</option>
                                     <?php foreach ($products as $product): ?>
                                         <option value="<?= $product['product_id'] ?>">
                                             <?= $product['product_name'] ?>
@@ -425,7 +445,7 @@ $is_variant_dlt_open = $is_variant_dlt_open ?? null;
 
                                 <label for=""></label>
                                     <select name="colour_id" class="select" id="colour_id">
-                                        <option value="">Select Colour Id</option>
+                                        <option value="">Colour Id</option>
                                         <?php foreach ($colours as $colour): ?>
                                             <option value="<?= $colour['colour_id'] ?>">
                                                 <?= $colour['colour_name'] ?>
@@ -437,7 +457,7 @@ $is_variant_dlt_open = $is_variant_dlt_open ?? null;
                                 <!-- TODO: use for each to display options (in case they carry most sizes in the future)-->
                                 <label for=""></label>
                                     <select name="unit_size" class="select" id="unit_size">
-                                        <option value="">Select Unit Size</option>
+                                        <option value="">Unit Size</option>
                                         <option value="0.5L">0.5L</option>
                                         <option value="1L">1L</option>
                                         <option value="2L">2L</option>
@@ -453,22 +473,20 @@ $is_variant_dlt_open = $is_variant_dlt_open ?? null;
 
                                 <!-- <div class="actions-title">Actions :</div> -->
 
-                                <button class="btn btn-wide btn-okay">View Product</button>
+                                <button class="btn btn-wider btn-okay">View Product</button>
                                 <button class="btn btn-thin btn-warning">Edit Product</button>
                                 <button class="btn btn-thin btn-danger">Delete Product</button>
-                                <button class="btn btn-wide btn-primary">Jump To ↪</button>
                             </div>
                         </form>
                 </li>
                 <!-- // * Suggestion, instead of schedule, display stations (station_id, station_name, team_num, team_members (a dropdown?))   -->
                 <!-- Schedule Component -->
                 <li class="mini-widget">
-                    <div class="schedule-header">
-                        <h2>S C H E D U L E S</h2><button class="btn btn-thin btn-secondary">Jump To ↪</button>
+                    <div class="header">
+                        <h2>S C H E D U L E S</h2><button class="btn btn-thin btn-secondary">↪ View Table</button>
                     </div>  
-                    <h3> [Component SubTitle] (a quick explanation of the contents) </h3>
+                    <h3>In a rush? Quickly add a new schedule with the form below!</h3>
                     <form>
-                        <h2 class="quick-title">Quick Add :</h2>
                         <div class="left-side">
                             <label>Choose Schedule Date:</label>
                             <select>
@@ -499,19 +517,18 @@ $is_variant_dlt_open = $is_variant_dlt_open ?? null;
                             </div>
                         </div>
                         <div class="button-row">
-                            <button class="btn btn-wide btn-danger">Cancel</button>
-                            <button class="btn btn-wide btn-okay">Save Schedule</button>
+                            <button class="btn btn-wider btn-danger">Cancel</button>
+                            <button class="btn btn-wider btn-okay">Save Schedule</button>
                         </div>
                     </form>
                 </li>
                 <!-- Pallet Component -->
                 <li class="mini-widget">
-                    <div class="pallet-header">
-                        <h2>P A L L E T S</h2><button class="btn btn-thin btn-secondary">Jump To ↪</button>
+                    <div class="header metallic">
+                        <h2>P A L L E T S</h2><button class="btn btn-thin btn-secondary">↪ View Table</button>
                     </div>  
-                    <h3> [Component SubTitle] (a quick explanation of the contents) </h3>
-                    <form>
-                        <h2 class="quick-title">Quick Add :</h2>
+                    <h3 class="metallic-bg">In a rush? Quickly add a new pallet with the form below!</h3>
+                    <form class="metallic">
                         <div class="left-side">
                             <label>Choose Tote Type:</label>
                             <select>
@@ -534,8 +551,8 @@ $is_variant_dlt_open = $is_variant_dlt_open ?? null;
                             <input type="text" placeholder="Enter Number of Units">
                         </div>
                         <div class="button-row">
-                            <button class="btn btn-wide btn-danger">Cancel</button>
-                            <button class="btn btn-wide btn-okay">Save Pallet</button>
+                            <button type="button" class="btn btn-wider btn-danger">Cancel</button>
+                            <button type="button" class="btn btn-wider btn-okay">Save Pallet</button>
                         </div>
                     </form>
                 </li>
@@ -621,7 +638,7 @@ $is_variant_dlt_open = $is_variant_dlt_open ?? null;
                                         <option value="8L">8L</option>
                                     </select>
 
-                                <input name="variant_description" type="text" placeholder="Enter Product Description">
+                                <input name="variant_description" type="textarea" placeholder="Enter Product Description">
                             </div>
                             <div class="right-side">
                                 <!-- <label>Search . .</label> -->
@@ -632,7 +649,7 @@ $is_variant_dlt_open = $is_variant_dlt_open ?? null;
                                 <button class="btn btn-wide btn-okay">View Employee</button>
                                 <button class="btn btn-thin btn-warning">Edit Employee</button>
                                 <button class="btn btn-thin btn-danger">Delete Employee</button>
-                                <button class="btn btn-wide btn-primary">Jump To ↪</button>
+                                <button class="btn btn-wide btn-primary">↪ view Table</button>
                             </div>
                         </form>
                 </li>

@@ -151,15 +151,15 @@
     & > form {
         border: 3px solid var(--tone-00);
         background-color: var(--tone-03) !important;
+        border-top: 3px solid var(--color-blue-02);
         position: relative;
-        bottom: 19%;
-        min-height: 34%;
+        bottom: 21%;
+        min-height: 32%;
         overflow: hidden;
         z-index: 99;
         display: flex;
         flex-flow: row nowrap;
         gap: 3rem;
-        padding-left: 3rem;
         padding: 1rem;
         border-top-right-radius: 1.5rem !important;
         border-top-left-radius: 1.5rem !important;
@@ -175,6 +175,7 @@
     & > form > .left-side {
         gap: 0.75rem;
         z-index: 99;
+        padding-left: 3rem;
     }
     & > form > .right-side {
         gap: 1rem;
@@ -229,15 +230,74 @@
 }
 
 .mini-widget{
+    padding-bottom: 0.2rem;
+    margin-top: -0.1rem;
+    border: 2px solid var(--tone-07);
+    border-bottom: 3px solid var(--color-blue-04);
     & > div {
-        background: hotpink;
+        /* background: hotpink; */
+        height: 3rem;
+        display: flex;
+        flex-flow: row nowrap;
+        justify-content: space-between;
+        align-items: center;
+        /* padding: 0.25rem 3.5rem 0.3rem 3.5rem; */
+        position: relative;
+        bottom: 0.2rem;
+        border: none;
+        background-color: var(--color-blue-01) !important;
+    }
+    & > div > h2 {
+        padding-left: 4rem;
+    }
+    & > div > button {
+        margin-right: 4rem;
     }
     & > h3 {
-        background: lime;
+        border-top: 3px solid var(--tone-00);
+        padding-top: 0.5rem;
+        background: var(--color-blue-04);
+        min-height: 2rem;
+        position: relative;
+        bottom: 1.4rem;
+        padding-left: 4rem;
     }
     & > form {
-        background: cyan;
+        background-image: linear-gradient(190deg, var(--tone-03), var(--tone-07));
+        position: relative;
+        bottom: 2.5rem;
+        border: none;
+        display: flex;
+        flex-flow: row wrap;
     }
+    & > form > h2 {
+        min-width: 100%;
+    }
+    & > form > .button-row {
+        min-width: calc(100% - 3rem);
+        position: relative;
+        z-index: 99;
+        bottom: 1.5rem;
+        padding: 0 1.5rem;
+    }
+    & > form > .left-side {
+        position: relative;
+        z-index: 999;
+        max-width: 45%;
+        min-width: 45%;
+        display: flex;
+        flex-flow: column nowrap;
+        gap: 1rem;
+    }
+    & > form > .right-side {
+        position: relative;
+        z-index: 999;
+        max-width: 45%;
+        min-width: 45%;
+        flex-flow: column nowrap;
+        gap: 1rem;
+    }
+
 }
 
 .tall-widget {}
