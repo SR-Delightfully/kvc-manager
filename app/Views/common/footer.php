@@ -12,7 +12,8 @@ use App\Domain\Models\UserModel;
         <a href="">EN</a> - <a href="">FR</a>
     </h4>
     <h3>
-        <?= $userCount ?> registered employees — join the team, register today.
+        <?= "test" //$userCount  ?>
+        registered employees — join the team, register today.
     </h3>
     <h4>
         <span id="datetime-display"></span>
