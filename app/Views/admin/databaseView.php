@@ -740,11 +740,12 @@ ViewHelper::loadHeader($page_title, true);
 
 <!-- EDIT VARIANT POPUP -->
  <?php
- if ($show_variant_edit):?>
+ if ($show_variant_edit): ?>
 <div id="forgotPasswordModal" class="forgot-modal-overlay">
     <div class="forgot-modal-box">
         <a href="<?=APP_BASE_URL ?>/admin" class="close-forgot">X</a>
 
+        <?= var_dump($variant_to_edit) ?>
         <h2>Edit Variant</h2>
         <form action="<?= APP_BASE_URL ?>/admin/variant/edit/<?= $variant_to_edit['variant_id'] ?>" method="POST">
             <input type="hidden" value="<?= $variant_to_edit['variant_id'] ?>" name="variant_id">
@@ -752,16 +753,16 @@ ViewHelper::loadHeader($page_title, true);
 
             <label for="">Product</label>
             <select name="product_id" class="form-select" id="product_id">
-                <option value="<?= $variant_to_edit['product_id'] ?>"><?= $variant_to_edit['product_id'] ?></option>
+                <option value="<?= $variant_to_edit['product_id'] ?>"><?= $variant_to_edit['product_name'] ?></option>
                 <?php foreach ($products as $product): ?>
-                    <option value="<?= $product['product_id'] ?>">
+                    <option value="<?= $product['product_id'] ?>" name="product_id">
                         <?= $product['product_name'] ?>
                     </option>
                 <?php endforeach; ?>
             </select>
             <label for="">Colour</label>
             <select name="colour_id" class="form-select" id="colour_id">
-                <option value="<?= $variant_to_edit['colour_id'] ?>"><?= $variant_to_edit['colour_id'] ?></option>
+                <option value="<?= $variant_to_edit['colour_id'] ?>"><?= $variant_to_edit['colour_code'] ?></option>
                 <?php foreach ($colours as $colour): ?>
                     <option value="<?= $colour['colour_id'] ?>">
                         <?= $colour['colour_name'] ?>

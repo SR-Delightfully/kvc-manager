@@ -157,5 +157,6 @@ class TeamModel extends BaseModel
 
         $params = [':team_id'=>$data['team_id'],':user_id'=>$user_id];
         $this->execute($stmt,$params);
+        }
     }
 }

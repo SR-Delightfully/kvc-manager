@@ -93,6 +93,7 @@ class ProductVariantController extends BaseController
             return $this->redirect($request, $response, 'admin.index');
         }
         try {
+            //dd($data);
             $this->productVariantModel->updateVariant($data['variant_id'], $data);
             FlashMessage::success("Successfully updated product");
             return $this->redirect($request, $response, 'admin.index');

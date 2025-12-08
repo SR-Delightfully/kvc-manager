@@ -3,8 +3,8 @@
 <?php
 use App\Domain\Models\UserModel;
 
-$userModel = $container->get(UserModel::class);
-$userCount = $userModel->countUsers();
+// $userModel = $container->get(UserModel::class);
+// $userCount = $userModel->countUsers();
 ?>
 
 <div id="footer" class="lang-switch">

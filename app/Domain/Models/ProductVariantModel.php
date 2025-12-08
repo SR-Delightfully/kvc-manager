@@ -43,7 +43,7 @@ public function getVariantById($id): ?array {
                     variant_description = :vDesc
                     WHERE variant_id = :id";
 
-        $params = [':pId'=>$data['product_id'],':cId'=>$data['colour_id'],':uSize'=>$data['unit_size'],':vDesc'=>$data['variant_description'], ':id' => $data['variant_id']];
+        $params = [':pId'=>$data['product_id'],':cId'=>$data['colour_id'],':uSize'=>$data['unit_size'],':vDesc'=>$data['variant_description'], ':id' => $id];
         $this->execute($stmt,$params);
     }
 
@@ -63,7 +63,7 @@ public function getVariantById($id): ?array {
     }
 
     public function getVariantCleanById($id) {
-        $stmt = "SELECT v.variant_id, p.product_name AS product_id, c.colour_code AS colour_id, v.unit_size, v.variant_description FROM product_variant v LEFT JOIN product p ON p.product_id = v.product_id LEFT JOIN colour c ON c.colour_id = v.colour_id WHERE variant_id = :id";
+        $stmt = "SELECT v.variant_id, p.product_name AS product_name, p.product_id AS product_id, c.colour_id AS colour_id, c.colour_code AS colour_code, v.unit_size, v.variant_description FROM product_variant v LEFT JOIN product p ON p.product_id = v.product_id LEFT JOIN colour c ON c.colour_id = v.colour_id WHERE variant_id = :id";
         $params = [':id' => $id];
         $variants = $this->selectOne($stmt, $params);
         return $variants;

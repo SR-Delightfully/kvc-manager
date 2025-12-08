@@ -62,13 +62,6 @@ class UserModel extends BaseModel
         return $this->selectAll($stmt);
     }
 
-    public function getUserById($id): ?array {
-        $stmt = "SELECT * FROM users WHERE user_id LIKE :user_id";
-        $params = [':user_id' => $id];
-        $user =  $this->selectOne($stmt, $params);
-        return $user === false ? null : $user;
-    }
-
     public function getUserByName($inputName): ?array {
 
         $inputName = trim($inputName);
@@ -326,6 +319,7 @@ class UserModel extends BaseModel
         }
 
         return $this->selectAll($stmt, $params);
+    }
     /**
      * Update the first and last names of a specific user
      * @param mixed $userId The id of the user to edit
