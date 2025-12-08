@@ -93,6 +93,22 @@ function sendForgotEmail() {
     // Open the second modal
     openNewEmailModal();
 }
+function openMessageModal() {
+    document.getElementById("new-email-modal").style.display = "flex";
+}
+
+function closeMessageModal() {
+    document.getElementById("new-email-modal").style.display = "none";
+}
+
+function sendMessage() {
+    closeMessageModal();
+    document.getElementById("message-sent-modal").style.display = "flex";
+}
+
+function closeSuccessModal() {
+    document.getElementById("message-sent-modal").style.display = "none";
+}
 //team members dropdown
 function toggleTeam(header) {
     const wrapper = header.nextElementSibling;
@@ -104,5 +120,28 @@ function toggleTeam(header) {
     } else {
         wrapper.style.display = "block";
         arrow.textContent = "▲";
+    }
+}
+
+function rpt_toggleDateDropdown() {
+    const dd = document.getElementById("rpt-dateDropdown");
+    dd.style.display = dd.style.display === "flex" ? "none" : "flex";
+}
+
+function rpt_setDateFilter(value) {
+    document.getElementById("rpt-dateButton").innerText = "Choose Date: " + value;
+    document.getElementById("rpt-dateDropdown").style.display = "none";
+}
+
+function rpt_toggleStation(header) {
+    const details = header.nextElementSibling;
+    const arrow = header.querySelector(".rpt-arrow");
+
+    if (details.style.display === "block") {
+        details.style.display = "none";
+        arrow.textContent = "∨";
+    } else {
+        details.style.display = "block";
+        arrow.textContent = "∧";
     }
 }

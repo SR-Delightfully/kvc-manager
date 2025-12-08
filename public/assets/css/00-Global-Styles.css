@@ -162,12 +162,13 @@ body {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    /* background-color: var(--body-color); */
-    background-color: #20262B; /* TODO: update body-color */ 
+    background-color: var(--body-color);
+    background-color: #20262B; 
+    /* TODO: update body-color  */
     overflow-x: hidden;
     overflow-y: scroll;
-    min-height: 100vh;
-    max-height: 100%;
+    min-height: 100%;
+    max-height: 100vh;
     position: relative;
     top: -1.5rem;
     overflow: hidden;
@@ -196,6 +197,8 @@ body {
         background-color: var(--tone-00);
         padding: 0rem 1rem;
         margin-top: 0.5rem;
+        border-radius: 0.5rem;
+        color: var(--tone-08);
     }
 }
 /* ? Useful classes to reduce code repetition */
@@ -265,13 +268,7 @@ body {
 }
 
 .page {
-    min-height: 100vh;
-    min-width: 90%;
-    max-width: 90vw;
-    padding: var(--padding-3);
-    overflow-x: hidden;
-    overflow-y: scroll;
-    scrollbar-width: none;
+    background: linear-gradient(45deg, var(--tone-01) 0%, var(--tone-07) 50%, var(--color-blue-04) 100%);
 }
 
 /*  Media Queries: */
@@ -302,4 +299,26 @@ body {
 
 .metallic {
     /* TODO: define metallic background */
+background-image: radial-gradient(ellipse farthest-corner at left top, var(--tone-08) 0%, var(--color-blue-04) 15%, var(--tone-03) 95%, var(--tone-03) 100%);
+                overflow: hidden;
+}
+.metallic::before {
+    content: "";
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    background-image:linear-gradient(to right, var(--tone-04) 0%, var(--color-blue-06)10%, var(--tone-04)30%, var(--tone-04)70%, var(--tone-08) 85%, var(--tone-03)100%);
+    opacity: 30%;
+    z-index: 0;
+    mix-blend-mode: overlay;
+}
+
+#footer {
+    height: 3rem;
+    position: absolute;
+    bottom: -8px;
+    left: 0;
+    width: calc(100% - 4rem);
+    overflow: hidden;
+    padding: 0 2rem;
 }

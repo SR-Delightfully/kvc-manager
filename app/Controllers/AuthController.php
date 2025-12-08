@@ -35,7 +35,7 @@ class AuthController extends BaseController
         public function registrationCode(Request $request, Response $response, array $args): Response
         {
             $code = RegistrationCodeHelper::getWeeklyCode();
-            $this->authHelper->sendVerificationCode("+15149920406");
+            // $this->authHelper->sendVerificationCode("+15149920406");
             $data = ['title' => 'Login',
                     'code' => $code,
                 ];

@@ -100,7 +100,8 @@ class TeamModel extends BaseModel
         return $user;
     }
 
-    public function getAllTeamMembers(): ?array {
+    public function getAllTeamMembers(): ?array
+    {
         $stmt = "SELECT * FROM team_members";
         $teamMembers = $this->selectAll($stmt);
         return $teamMembers;
@@ -120,7 +121,8 @@ class TeamModel extends BaseModel
         $this->execute($stmt, $params);
     }
 
-    public function deleteTeamMember($user_id, $team_id){
+    public function deleteTeamMember($user_id, $team_id)
+    {
         $stmt = "DELETE FROM team_members WHERE user_id = :uId AND team_id = :tId";
         $params = [':uId'=>$user_id, ':tId'=>$team_id];
         $this->execute($stmt,$params);
@@ -128,6 +130,8 @@ class TeamModel extends BaseModel
 
 
     public function updateTeamMember($user_id, $data) {
+    {
+        //check if there is existing team with specified id
         $stmt = "SELECT team_id FROM team WHERE station_id = :new_station AND team_date = :team_date";
         $params = [':new_station'=>$data['station_id'],':team_date'=>$data['team_date']];
         $teamCheck = $this->selectOne($stmt, $params);

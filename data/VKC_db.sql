@@ -1,4 +1,8 @@
+-- ! TODO: Rework Tables to match the updated diagram
+-- ! TODO: Rename file to match the company name (Files should be consistent)
+-- ! TODO: Remove database file from git repo when project is finalized (Security Risk)
 
+-- ! TODO:
 
 CREATE TABLE users(
 	user_id INT PRIMARY KEY AUTO_INCREMENT,
@@ -18,7 +22,7 @@ CREATE TABLE schedule(
     start_time DATETIME NOT NULL,
     end_time DATETIME NOT NULL,
     schedule_status ENUM('pending','confirmed','rejected') NOT NULL DEFAULT 'pending',
-    FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE
+    FOREIGN KEY (user_id) REFERENCES users(user_id)
 );
 
 CREATE TABLE shift(
@@ -26,7 +30,7 @@ CREATE TABLE shift(
     schedule_id INT NOT NULL,
     shift_start DATETIME NOT NULL,
     shift_end DATETIME NULL,
-    FOREIGN KEY (schedule_id) REFERENCES schedule(schedule_id) ON DELETE CASCADE
+    FOREIGN KEY (schedule_id) REFERENCES schedule(schedule_id)
 );
 
 CREATE TABLE station(
@@ -38,14 +42,14 @@ CREATE TABLE team(
     team_id INT PRIMARY KEY AUTO_INCREMENT,
     station_id INT NOT NULL,
     team_date DATE NOT NULL,
-    FOREIGN KEY (station_id) REFERENCES station(station_id) ON DELETE CASCADE
+    FOREIGN KEY (station_id) REFERENCES station(station_id)
 );
 
 CREATE TABLE team_members(
     team_id INT NOT NULL,
     user_id INT NOT NULL,
-    FOREIGN KEY (team_id) REFERENCES team(team_id) ON DELETE CASCADE,
-    FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE
+    FOREIGN KEY (team_id) REFERENCES team(team_id),
+    FOREIGN KEY (user_id) REFERENCES users(user_id)
 );
 
 CREATE TABLE product_type(
@@ -58,7 +62,7 @@ CREATE TABLE product(
     product_type_id INT NOT NULL,
     product_code VARCHAR(20) NULL,
     product_name VARCHAR(50) NOT NULL,
-    FOREIGN KEY (product_type_id) REFERENCES product_type(product_type_id) ON DELETE RESTRICT
+    FOREIGN KEY (product_type_id) REFERENCES product_type(product_type_id)
 );
 
 CREATE TABLE colour(
@@ -73,28 +77,28 @@ CREATE TABLE product_variant(
     colour_id INT NULL,
     unit_size ENUM('0.5L', '1L', '2L', '4L', '8L'),
     variant_description VARCHAR(50) NOT NULL,
-    FOREIGN KEY (product_id) REFERENCES product(product_id) ON DELETE RESTRICT,
-    FOREIGN KEY (colour_id) REFERENCES colour(colour_id) ON DELETE SET NULL
+    FOREIGN KEY (product_id) REFERENCES product(product_id),
+    FOREIGN KEY (colour_id) REFERENCES colour(colour_id)
 );
 
 CREATE TABLE tote(
     tote_id INT PRIMARY KEY AUTO_INCREMENT,
     variant_id INT NOT NULL,
     batch_number INT UNIQUE,
-    FOREIGN KEY (variant_id) REFERENCES product_variant(variant_id) ON DELETE RESTRICT
+    FOREIGN KEY (variant_id) REFERENCES product_variant(variant_id)
 );
 
 CREATE TABLE pallet(
     pallet_id INT PRIMARY KEY AUTO_INCREMENT,
     tote_id INT NOT NULL,
     station_id INT NOT NULL,
-    FOREIGN KEY (tote_id) REFERENCES tote(tote_id) ON DELETE RESTRICT,
-    FOREIGN KEY (station_id) REFERENCES station(station_id) ON DELETE SET NULL
+    FOREIGN KEY (tote_id) REFERENCES tote(tote_id),
+    FOREIGN KEY (station_id) REFERENCES station(station_id)
 );
 
 CREATE TABLE palletize_session(
     session_id INT PRIMARY KEY AUTO_INCREMENT,
-    pallet_id INT NOT NULL,
+    pallet_id INT NOT NULL, 
     start_time DATETIME NOT NULL,
     end_time DATETIME NULL,
     units INT NULL,
@@ -102,7 +106,7 @@ CREATE TABLE palletize_session(
     break_time INT NULL,
     mess BOOLEAN NULL,
     notes VARCHAR(100) NULL,
-    FOREIGN KEY (pallet_id) REFERENCES pallet(pallet_id) ON DELETE CASCADE
+    FOREIGN KEY (pallet_id) REFERENCES pallet(pallet_id)
 );
 
 

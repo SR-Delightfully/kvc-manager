@@ -144,6 +144,33 @@ return static function (App $app): void {
             require APP_VIEWS_PATH . '/admin/dashboardView.php';
             return $response;
         });
+        $admin->get('/temp-db', function ($request, $response) {
+            // Path to your view file
+            require APP_VIEWS_PATH . '/admin/databaseView.php';
+            return $response;
+        });
+        //temp route
+        $admin->get('/temp-dash', function ($request, $response) {
+            // Path to your view file
+            require APP_VIEWS_PATH . '/admin/dashboardView.php';
+            return $response;
+        });
+
+        $admin->get('/temp-settings', function ($request, $response) {
+            // Path to your view file
+            require APP_VIEWS_PATH . '/admin/settingsView.php';
+            return $response;
+        });
+        $admin->get('/temp-reports', function ($request, $response) {
+            // Path to your view file
+            require APP_VIEWS_PATH . '/admin/reportsView.php';
+            return $response;
+        });
+        $admin->get('/temp-reports2', function ($request, $response) {
+            // Path to your view file
+            require APP_VIEWS_PATH . '/admin/allTimeReportsView.php';
+            return $response;
+        });
 
         $admin->get('', [AdminController::class, 'index'])->setName('admin.index');
 
