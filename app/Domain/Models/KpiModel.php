@@ -654,5 +654,10 @@ class KpiModel extends BaseModel
         return [];
     }
 
+    public function getStationDailyTotals($station_id, $date)
+    {
+        
+    }
+
 }
 
