@@ -1,5 +1,7 @@
 <?php
+
 namespace App\Domain\Models;
+
 use App\Helpers\Core\PDOService;
 
 class KpiModel extends BaseModel
@@ -15,6 +17,51 @@ class KpiModel extends BaseModel
         parent::__construct($pDOService);
     }
 
+        /**
+         * Undocumented function
+         *
+         * @param [type] $startDate
+         * @param [type] $endDate
+         * @param [type] $variant_id
+         * @return array
+         */
+        //! Compare the highest % above the median time it takes to complete a pallet of that same product variant.
+        // public function getTeamLeaderboard($startDate, $endDate, $variant_id): array
+        // {
+        //      $leaderBoard = [];
+        //     $sql = "SELECT t.team_id, t.variant_id, TIMESTAMPDIFF(MINUTE, ps.start_time, ps.end_time) as duration, ps.units
+        //     FROM palletize_session ps
+        //     JOIN pallet p ON ps.pallet_id = p.pallet_id
+        //     JOIN tote t ON t.tote_id = p.tote_id
+        //     WHERE ps.start_time BETWEEN '2021/02/25' AND CURRENT_TIMESTAMP
+        //     ORDER BY ps.start_time ASC";
+        //     $sql = "SELECT t.variant_id, TIMESTAMPDIFF(MINUTE, ps.start_time, ps.end_time), ps.units
+        //     FROM palletize_session ps
+        //     JOIN pallet p ON ps.pallet _id = p.pallet_id
+        //     JOIN tote t ON t.tote_id =  p.tote_id
+        //     WHERE t.variant_id = :variant
+        //     AND ps.start_time BETWEEN :start AND :end
+        //     ORDER BY ps.start_time ASC";
+
+
+        //     $sessions  = $this->selectAll($sql, ["variant" => $variant_id, "start" => $startDate, "end" => $endDate]);
+        //     if(empty($sessions))
+        //     {
+        //         return  [];
+        //     }
+
+        //     //?3) Find the median for every pallet variant (pv)
+
+
+        //     //? 4) Find the difference from median of the pv of every palletize session in %
+
+        //     //? 4.5) Filter out those <= median
+
+        //     //? 5) Get the teams that have the highest +% found (10 best above median)
+        //     return $leaderBoard;
+        // }
+        //  (CONVERT(datetime, '18-06-12 10:34:09 PM', 5));
+
     /**
      * Undocumented function
      *
@@ -23,115 +70,50 @@ class KpiModel extends BaseModel
      * @param [type] $variant_id
      * @return array
      */
-    //! Compare the highest % above the median time it takes to complete a pallet of that same product variant.
-    // public function getTeamLeaderboard($startDate, $endDate, $variant_id): array
-    // {
-    //      $leaderBoard = [];
-    //     $sql = "SELECT t.team_id, t.variant_id, TIMESTAMPDIFF(MINUTE, ps.start_time, ps.end_time) as duration, ps.units
-    //     FROM palletize_session ps
-    //     JOIN pallet p ON ps.pallet_id = p.pallet_id
-    //     JOIN tote t ON t.tote_id = p.tote_id
-    //     WHERE ps.start_time BETWEEN '2021/02/25' AND CURRENT_TIMESTAMP
-    //     ORDER BY ps.start_time ASC";
-    //     $sql = "SELECT t.variant_id, TIMESTAMPDIFF(MINUTE, ps.start_time, ps.end_time), ps.units
-    //     FROM palletize_session ps
-    //     JOIN pallet p ON ps.pallet _id = p.pallet_id
-    //     JOIN tote t ON t.tote_id =  p.tote_id
-    //     WHERE t.variant_id = :variant
-    //     AND ps.start_time BETWEEN :start AND :end
-    //     ORDER BY ps.start_time ASC";
-
-
-    //     $sessions  = $this->selectAll($sql, ["variant" => $variant_id, "start" => $startDate, "end" => $endDate]);
-    //     if(empty($sessions))
-    //     {
-    //         return  [];
-    //     }
-
-    //     //?3) Find the median for every pallet variant (pv)
-
-
-     //     //? 4) Find the difference from median of the pv of every palletize session in %
-
-     //     //? 4.5) Filter out those <= median
-
-     //     //? 5) Get the teams that have the highest +% found (10 best above median)
-     //     return $leaderBoard;
-     // }
-     //  (CONVERT(datetime, '18-06-12 10:34:09 PM', 5));
-
-
-     /**
-      * Undocumented function
-      *
-      * @param [type] $startDate
-      * @param [type] $endDate
-      * @param [type] $variant_id
-      * @return array
-      */
-  public function getTeamLeaderboard($startDate, $endDate, $variant_id): array
+    public function getTeamLeaderboard($startDate, $endDate, $variant_id): array
     {
-
         $leaderBoard = [];
-
         // $teamsAvgProductivity = $this->getTeamsAvgProgress($startDate, $endDate);
         $sessions = $this->getSessionsForVariant($startDate, $endDate, $variant_id);
-         if (empty($sessions)) {
+        if (empty($sessions)) {
             return $leaderBoard; // EMPTY ARRAY
-         }
+        }
 
+        $rates = [];
 
-         // $sql = "SELECT ps.session_id, t.variant_id, TIMESTAMPDIFF(MINUTE, ps.start_time, ps.end_time) as duration, ps. units
-         // FROM palletize_session ps
-         // JOIN pallet p ON ps.pallet_id = p.pallet_id
-         // JOIN tote t ON t.tote_id = p.tote_id
-         // WHERE t.variant_id = :variant
-         // AND ps.start_time BETWEEN :start AND :end
-         // ORDER BY ps.start_time ASC";
+        foreach ($sessions as $key => $session) {
+            $rates[] = $session['rate'];
+        }
 
-         // // $sessions = $this->selectAll($sql, ["variant" => $variant_id, "start" => $startDate, "end" => $endDate]);
-         // if(empty($sessions))
-         // {
-         //     return [];
-         // }
+        if (empty($rates)) {
+            return []; // EMPTY ARRAY
+        }
 
-         $rates = [];
-         foreach ($sessions as $key => $session) {
-             $rates[] = $session['rate'];
-         }
+        //? get median:
+        $median = $this->calculateMedian($rates);
 
-         if (empty($rates)) {
-             return []; // EMPTY ARRAY
-         }
+        //? above median sessions:
+        $aboveMedian = [];
 
-         //? get median:
-         $median = $this->calculateMedian($rates);
+        foreach ($sessions as $key => $session) {
+            if ($session['rate'] > $median) //don't care if they are worse or same as median
+            {
+                $overPercentage = (($session['rate'] - $median) / $median) * 100;
+                $aboveMedian[] = [
+                    "team_id" => $session['team_id'],
+                    "session_id" => $session['session_id'],
+                    "variant_id" => $variant_id,
+                    "rate" => $session['rate'],
+                    "percent_above_median" => $overPercentage
+                ];
+            }
+        }
 
-         //? above median sessions:
-         $aboveMedian = [];
-
-         foreach ($sessions as $key => $session) {
-             if ($session['rate'] > $median) //don't care if they are worse or same as median
-             {
-                 $overPercentage = (($session['rate'] - $median) / $median) * 100;
-
-                 $aboveMedian[] = [
-                     "team_id" => $session['team_id'],
-                     "session_id" => $session['session_id'],
-                     "variant_id" => $variant_id,
-                     "rate" => $session['rate'],
-                     "percent_above_median" => $overPercentage
-                 ];
-             }
-         }
-
-         //Reference for sorting array: https://www.php.net/manual/en/function.usort.php
-         //?_sorting best 5:
-         // usort($aboveMedian, "$this->sorter($a, $b)");
-         usort($aboveMedian, [$this,'aboveMedianSorter']);
-
+        //Reference for sorting array: https://www.php.net/manual/en/function.usort.php
+        //?_sorting best 5:
+        // usort($aboveMedian, "$this->sorter($a, $b)");
+        usort($aboveMedian, [$this, 'aboveMedianSorter']);
         $leaderBoard = array_slice($aboveMedian, 0, 5);
-
         return $leaderBoard;
     }
 
@@ -167,14 +149,6 @@ class KpiModel extends BaseModel
         JOIN team te ON te.station_id = p.station_id
         WHERE t.variant_id = :variant
         AND ps.start_time BETWEEN :start AND :end";
-
-        // $sql = "SELECT ps.session_id, t.variant_id, TIMESTAMPDIFF(MINUTE, ps.start_time, ps.end_time) as duration, ps.units
-        // FROM palletize_session ps
-        // JOIN pallet p ON ps.pallet_id = p.pallet_id
-        // JOIN tote t ON t.tote_id = p.tote_id
-        // WHERE t.variant_id = :variant
-        // AND ps.start_time BETWEEN :start AND :end
-        // ORDER BY ASC";
 
         $sessions = $this->selectAll($sql, ["variant" => $variant_id, "start" => $startDate, "end" => $endDate]);
 
@@ -217,24 +191,19 @@ class KpiModel extends BaseModel
         //$stmt = $this->execute(;)
         $sessions = $this->getSessionsForVariant($startDate, $endDate, $variant_id);
 
-        if(empty($session))
-        {
+        if (empty($session)) {
             return null;
         }
 
         $best = null;
 
-        foreach ($sessions as $key => $session)
-        {
-            if($best == null || $session['rate'] > $best['rate'])
-            {
+        foreach ($sessions as $key => $session) {
+            if ($best == null || $session['rate'] > $best['rate']) {
                 $best = $session;
             }
         }
-
         return $best;
     }
-
 
     /**
      * Undocumented function
@@ -248,21 +217,18 @@ class KpiModel extends BaseModel
     {
         $sessions = $this->getSessionsForVariant($startDate, $endDate, $variant_id);
 
-        if(empty($session))
-        {
+        if (empty($session)) {
             return 0;
         }
 
         $sum = 0;
         $count = count($sessions);
 
-        if($count <= 0)
-        {
+        if ($count <= 0) {
             return 0;
         }
 
-        foreach ($sessions as $key => $session)
-        {
+        foreach ($sessions as $key => $session) {
             $sum += $session['rate'];
         }
 
@@ -283,18 +249,16 @@ class KpiModel extends BaseModel
     {
         $sessions = $this->getSessionsForVariant($startDate, $endDate, $variant_id);
 
-        if(empty($session))
-        {
+        if (empty($session)) {
             return null;
         }
 
         $teams = [];
 
-        foreach ($sessions as $key => $session)
-        {
+        foreach ($sessions as $key => $session) {
             $team = $session['team_id'];
 
-            if(isset($teams[$team])) //Make sure the team has sessions
+            if (!isset($teams[$team])) //Make sure the team has sessions
             {
                 $teams[$team] = [
                     'team_id' => $team,
@@ -314,24 +278,21 @@ class KpiModel extends BaseModel
 
         foreach ($teams as $key => $team) {
 
-            if($team['count'] <= 0)
-            {
+            if ($team['count'] <= 0) {
                 continue; //skip useless teams
             }
 
 
             $avg = $team['total_rate'] / $team['count'];
 
-            if($avg > $bestAvg)
-            {
+            if ($avg > $bestAvg) {
                 $bestAvg = $avg;
 
                 $bestTeamId = $team['team_id'];
             }
         }
 
-        if($bestTeamId == null)
-        {
+        if ($bestTeamId == null) {
             return null;
         }
 
@@ -342,7 +303,6 @@ class KpiModel extends BaseModel
 
         return $result;
     }
-
 
     /**
      * Undocumented function
@@ -356,18 +316,16 @@ class KpiModel extends BaseModel
     {
         $sessions = $this->getSessionsForVariant($startDate, $endDate, $variant_id);
 
-        if(empty($session))
-        {
+        if (empty($session)) {
             return null;
         }
 
         $teams = [];
 
-        foreach ($sessions as $key => $session)
-        {
+        foreach ($sessions as $key => $session) {
             $team = $session['team_id'];
 
-            if(isset($teams[$team])) //Make sure the team has sessions
+            if (isset($teams[$team])) //Make sure the team has sessions
             {
                 $teams[$team] = [
                     'team_id' => $team,
@@ -382,10 +340,8 @@ class KpiModel extends BaseModel
 
         $avgRates = [];
 
-        foreach ($teams as $key => $team)
-        {
-            if($team['count'] <= 0)
-            {
+        foreach ($teams as $key => $team) {
+            if ($team['count'] <= 0) {
                 continue; //SKip useless ones
             }
 
@@ -400,6 +356,7 @@ class KpiModel extends BaseModel
         return $avgRates;
     }
 
+
     /**
      * Helper method for getTeamsVariantLeaderboard method
      * Sorts an array by descending average_rate values
@@ -411,6 +368,7 @@ class KpiModel extends BaseModel
     {
         return $a['average_rate'] <=> $b['average_rate'];
     }
+
 
     /**
      * Undocumented function
@@ -424,6 +382,7 @@ class KpiModel extends BaseModel
 
         return $this->selectOne($sql, ["id" => $session_id]) ?? 0;
     }
+
 
     /**
      * Calculates a team's performance  (units/minute)
@@ -492,11 +451,8 @@ class KpiModel extends BaseModel
         //     team_id => 23.1,
         //     2 => 18.1
         // ];
-
         return $teamsProgress;
     }
-
-
     /**
      * Undocumented function
      *
@@ -529,6 +485,7 @@ class KpiModel extends BaseModel
         return $progress; //in chronological order
     }
 
+
     /**
      * Summary of getTeamDailyProduction
      * @param mixed $teamId
@@ -546,6 +503,7 @@ class KpiModel extends BaseModel
 
         return $this->getTeamProgress($teamId, $start, $end);
     }
+
 
     /**
      * Undocumented function
@@ -585,6 +543,7 @@ class KpiModel extends BaseModel
         return $median;
     }
 
+
     //Reference: https://www.educative.io/answers/how-to-get-the-median-of-an-array-of-numbers-in-php
 
     /**
@@ -596,8 +555,8 @@ class KpiModel extends BaseModel
      */
     public function getProductSummary(int $variant_id, string $date): array
     {
-        $startTime = $date. ' 00:00:00';
-        $endTime = $date. ' 00:00:00';
+        $startTime = $date . ' 00:00:00';
+        $endTime = $date . ' 00:00:00';
 
         $sql = "SELECT
                 COALESCE(SUM(ps.units),0) AS total_units,
@@ -611,11 +570,11 @@ class KpiModel extends BaseModel
 
         //Reference: got help for writing lines 508-515*
 
-        $row = $this->selectOne($sql, ["variant" => $variant_id, "start" => $startTime, "end" => $endTime]);
+            $row = $this->selectOne($sql, ["variant" => $variant_id, "start" => $startTime, "end" => $endTime]);
 
-        $totalUnits = (int)($row['total_units'] ?? 0);
-        $totalMinutes = (int)($row['total_minutes'] ?? 0);
-        $avgRatePerMin = $totalMinutes ? ($totalUnits / $totalMinutes) : 0;
+            $totalUnits = (int)($row['total_units'] ?? 0);
+            $totalMinutes = (int)($row['total_minutes'] ?? 0);
+            $avgRatePerMin = $totalMinutes ? ($totalUnits / $totalMinutes) : 0;
 
         return [
             'variant_id' => $variant_id,
@@ -624,6 +583,7 @@ class KpiModel extends BaseModel
             'avg_rate_per_min' => $avgRatePerMin
         ];
     }
+
 
     /**
      * Undocumented function
@@ -642,6 +602,7 @@ class KpiModel extends BaseModel
         return $team['team_id'] ?? null;
     }
 
+
     /**
      * Undocumented function
      *
@@ -651,13 +612,98 @@ class KpiModel extends BaseModel
      */
     public function getSessions(int $station_id, string $start_time): array
     {
-        return [];
+        $sql = "SELECT * FROM palletize_session ps
+        JOIN pallet p ON p.pallet_id = ps.pallet_id
+        WHERE p.station_id = :station";
+
+        //TODO date condition
+
+        $result = $this->selectAll($sql, ["station" => $station_id]);
+
+        return $result;
     }
 
+
+    /**
+     * Summary of getStationDailyTotals
+     * @param mixed $station_id
+     * @param mixed $date
+     * @return void
+     */
     public function getStationDailyTotals($station_id, $date)
     {
-        
+        $startTime = $date . ' 00:00:00';
+
+        $endTime = $date . ' 23:59:59';
+
+        $sql = "SELECT SUM(ps.units) AS total_units,
+        SUM(TIMESTAMPDIFF(MINUTE, ps.start_time, ps.end_time)) as total_minutes
+        FROM palletize_session ps
+        JOIN pallet p
+        ON p.pallet_id = ps.pallet_id
+        WHERE p.station_id = :station
+        AND ps.start_time BETWEEN :start AND :end";
+
+        $result = $this->selectOne($sql, ['station' => $station_id, "start" => $startTime, "end" => $endTime]);
+
+        $totalUnitsProduced = $result['total_units'];
+        $totalMinutes = $result['total_minutes'];
+
+        if($totalMinutes > 0)
+        {
+            $avgRate = $totalUnitsProduced/$totalMinutes;
+        }
+        else
+        {
+            $avgRate = 0;
+        }
+
+        $finalResult = [
+            "station_id" => $station_id,
+            "date" => $date,
+            "total_units" => $totalUnitsProduced,
+            "avg_rate" => $avgRate
+        ];
+
     }
 
+
+    /**
+     * JUST uses another function, but it's easier. Can be discarded later
+     * @param mixed $variant_id
+     * @param mixed $date
+     * @return void
+     */
+    public function getVariantTotalsForDay($variant_id, $date)
+    {
+        $result = $this->getProductSummary($variant_id, $date);
+    }
+
+    /**
+     * Summary of getStationVariant
+     * @param mixed $station_id
+     * @return void
+     */
+    public function getStationVariant($station_id)
+    {
+        $sql = "SELECT t.variant_id
+        FROM pallet p
+        JOIN tote t
+        ON p.tote_id = t.tote_id
+        WHERE p.station_id = :station";
+
+        $result = $this->selectOne($sql, ["station" => $station_id] );
+
+        if($result && isset($result['variant_id']))
+        {
+            $finalResult = $result['variant_id'];
+        }
+        else
+        {
+            $finalResult = null;
+        }
+
+        return $finalResult;
+    }
 }
 
