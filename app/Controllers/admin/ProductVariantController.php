@@ -45,7 +45,7 @@ class ProductVariantController extends BaseController
         $data = $request->getParsedBody();
         $errors = [];
 
-        if (empty($data['product_id']) || empty($data['units_size']) || empty($data['variant_description'])) {
+        if (empty($data['product_id']) || empty($data['unit_size']) || empty($data['variant_description'])) {
             $errors[] = "product id, unit size and description must be filled out";
         }
 
@@ -67,7 +67,7 @@ class ProductVariantController extends BaseController
     public function edit(Request $request, Response $response, array $args): Response {
         $variant_id = $args['id'];
 
-        $variant = $this->productVariantModel->getVariantById($variant_id);
+        $variant = $this->productVariantModel->getVariantCleanById($variant_id);
 
         $data = [
                 'contentView' => APP_VIEWS_PATH . '/pages/adminView.php',
@@ -77,14 +77,14 @@ class ProductVariantController extends BaseController
                 'data' => array_merge($this->adminDataHelper->adminPageData(),
                         ['variant_to_edit' => $variant,]),
             ];
-        return $this->render($response, 'pages/adminView.php', $data);
+        return $this->render($response, 'admin/databaseView.php', $data);
     }
 
     public function update(Request $request, Response $response, array $args): Response {
         $data = $request->getParsedBody();
         $errors = [];
 
-        if (empty($data['product_id']) || empty($data['units_size']) || empty($data['variant_description'])) {
+        if (empty($data['product_id']) || empty($data['unit_size']) || empty($data['variant_description'])) {
             $errors[] = "product id, unit size and description must be filled out";
         }
 
@@ -93,12 +93,13 @@ class ProductVariantController extends BaseController
             return $this->redirect($request, $response, 'admin.index');
         }
         try {
+            //dd($data);
             $this->productVariantModel->updateVariant($data['variant_id'], $data);
             FlashMessage::success("Successfully updated product");
             return $this->redirect($request, $response, 'admin.index');
         } catch (\Throwable $th) {
             FlashMessage::error("Update failed. Please try again");
-            return $this->redirect($request, $response, 'pages/adminView.php');
+            return $this->redirect($request, $response, 'admin.index');
         }
     }
 
@@ -109,6 +110,48 @@ class ProductVariantController extends BaseController
         FlashMessage::success("Successfully Deleted Variant With ID: $id");
 
         return $this->redirect($request, $response, 'admin.index');
+    }
+
+    public function showDelete(Request $request, Response $response, array $args): Response {
+        $variant_id = $args['id'];
+
+        $variant = $this->productVariantModel->getVariantById($variant_id);
+
+        $data = [
+                'contentView' => APP_VIEWS_PATH . '/pages/adminView.php',
+                'isSideBarShown' => true,
+                'isAdmin' => UserContext::isAdmin(),
+                'show_variant_delete' => true,
+                'data' => array_merge($this->adminDataHelper->adminPageData(),
+                        ['variant_to_delete' => $variant,]),
+            ];
+        return $this->render($response, 'admin/databaseView.php', $data);
+    }
+
+
+    public function search(Request $request, Response $response, array $args): Response
+    {
+        $data = $request->getQueryParams();
+        $q = $data['q'] ?? "";
+
+        if (strlen($q) > 100){
+            $q = substr($q, 100);
+        }
+
+        $variants = $this->productVariantModel->search($q);
+
+        $data = [
+            'success' => true,
+            'count' => count($variants),
+            'query' => $q,
+            'products' => $variants,
+        ];
+
+        $payload = json_encode($data, JSON_UNESCAPED_UNICODE);
+
+        $response->getBody()->write($payload);
+
+        return $response->withHeader('Content-Type', 'application/json')->withStatus(200);
     }
 }
 

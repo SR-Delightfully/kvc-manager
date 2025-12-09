@@ -20,7 +20,7 @@ document.querySelectorAll("a").forEach((link) => {
 });
 
 closeBtn.onclick = () => (modal.style.display = "none");
-// here
+
 window.addEventListener("click", (e) => {
     if (e.target === modal) modal.style.display = "none";
 });
@@ -33,9 +33,9 @@ function closeForgotPasswordModal() {
 }
 
 function openNewPasswordModal() {
-    // hide first modal
+
     document.getElementById("forgotPasswordModal").style.display = "none";
-    // show second modal
+
     document.getElementById("new-password-modal").style.display = "flex";
 }
 
@@ -47,7 +47,7 @@ function closeNewPasswordModal() {
 const forgotEmailModal = document.getElementById("forgotEmailModal");
 const forgotEmailCloseBtn = forgotEmailModal.querySelector(".close-forgot");
 
-// Open modal when clicking "Forgot Email" links
+
 document.querySelectorAll("a").forEach((link) => {
     if (link.textContent.includes("Forgot Email")) {
         link.addEventListener("click", (e) => {
@@ -57,12 +57,12 @@ document.querySelectorAll("a").forEach((link) => {
     }
 });
 
-// Close modal when clicking the X button
+
 forgotEmailCloseBtn.onclick = () => {
     forgotEmailModal.style.display = "none";
 };
 
-// Close modal when clicking outside the modal box
+
 window.addEventListener("click", (e) => {
     if (e.target === forgotEmailModal) {
         forgotEmailModal.style.display = "none";
@@ -77,9 +77,9 @@ function closeForgotEmailModal() {
     forgotEmailModal.style.display = "none";
 }
 function openNewEmailModal() {
-    // hide first modal
+
     document.getElementById("forgotEmailModal").style.display = "none";
-    // show second modal
+
     document.getElementById("new-email-modal").style.display = "flex";
 }
 
@@ -87,10 +87,10 @@ function closeNewEmailModal() {
     document.getElementById("new-email-modal").style.display = "none";
 }
 function sendForgotEmail() {
-    // Close the first modal
+
     closeForgotEmailModal();
 
-    // Open the second modal
+
     openNewEmailModal();
 }
 function openMessageModal() {
@@ -122,7 +122,7 @@ function toggleTeam(header) {
         arrow.textContent = "▲";
     }
 }
-
+// all time report page
 function rpt_toggleDateDropdown() {
     const dd = document.getElementById("rpt-dateDropdown");
     dd.style.display = dd.style.display === "flex" ? "none" : "flex";

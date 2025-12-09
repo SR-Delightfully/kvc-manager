@@ -62,10 +62,9 @@ class UserModel extends BaseModel
         return $this->selectAll($stmt);
     }
 
-    public function getUserByName($inputName): ?array
-    {
+    public function getUserByName($inputName): ?array {
 
-        $inputName = trim($inputName); //removing trailing blank spaces.
+        $inputName = trim($inputName);
 
         // If full name (first + last)
         if (str_contains($inputName, ' ')) {
@@ -296,6 +295,31 @@ class UserModel extends BaseModel
         $this->execute($stmt, $params);
     }
 
+    public function search($searchTerm = '', $role = null, $status = null)
+    {
+        $stmt = "SELECT * FROM users WHERE 1 = 1";
+        $params = [];
+
+        if (!empty($searchTerm)) {
+            $stmt .= " AND (first_name LIKE ? OR last_name LIKE ? OR email LIKE ?)";
+            $like = '%' . $searchTerm . '%';
+            $params[] = $like;
+            $params[] = $like;
+            $params[] = $like;
+        }
+
+        if (!empty($role) && !is_null($role)) {
+            $stmt .= " AND user_role = ?";
+            $params[] = $role;
+        }
+
+        if (!empty($status) && !is_null($status)) {
+            $stmt .= " AND user_status = ?";
+            $params[] = $status;
+        }
+
+        return $this->selectAll($stmt, $params);
+    }
     /**
      * Update the first and last names of a specific user
      * @param mixed $userId The id of the user to edit

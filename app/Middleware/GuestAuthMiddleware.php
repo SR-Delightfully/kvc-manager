@@ -21,7 +21,7 @@ class GuestAuthMiddleware implements MiddlewareInterface
             FlashMessage::success("You are already logged in.");
 
             $routeParser = RouteContext::fromRequest($request)->getRouteParser();
-            $dashboardUrl = $routeParser->urlFor('dashboard');
+            $dashboardUrl = $routeParser->urlFor('dashboard.load');
 
             $psr17Factory = new \Nyholm\Psr7\Factory\Psr17Factory();
             return $psr17Factory->createResponse(302)

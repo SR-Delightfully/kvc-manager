@@ -10,7 +10,7 @@ use App\Domain\Models\ShiftModel;
 use App\Domain\Models\StationModel;
 use App\Domain\Models\PalletModel;
 use App\Domain\Models\TeamModel;
-
+use App\Domain\Models\ToteModel;
 
 
 class AdminDataHelper
@@ -25,22 +25,25 @@ class AdminDataHelper
         private ShiftModel $shiftModel,
         private StationModel $stationModel,
         private PalletModel $palletModel,
-        private TeamModel $teamModel
+        private TeamModel $teamModel,
+        private ToteModel $toteModel
     )
     {}
 
     public function adminPageData(): ?array {
         return [
-            'products' => $this->productModel->getAllProducts(),
+            'products' => $this->productModel->getAllProductsClean(),
             'product_types' => $this->productModel->getAllProductTypes(),
             'colours' => $this->colourModel->getAllColours(),
-            'variants' => $this->productVariantModel->getAllVariants(),
+            'variants' => $this->productVariantModel->getAllVariantsClean(),
             'users' => $this->userModel->getUsers(),
             'schedules' => $this->scheduleModel->getAllSchedules(),
             'shifts' => $this->shiftModel->getAllShifts(),
             'stations' => $this->stationModel->getAllStations(),
-            'pallets' => $this->palletModel->getAllPalletsComplete(),
-            'teams' => $this->teamModel->getAllTeams(),
+            'pallets' => $this->palletModel->getAllPalletsClean(),
+            'teams' => $this->teamModel->getAllTeamsClean(),
+            'team_members' => $this->teamModel->getAllTeamMembersClean(),
+            'totes' => $this->toteModel->getAllTotesClean(),
         ];
     }
 }

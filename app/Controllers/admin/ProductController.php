@@ -69,7 +69,7 @@ class ProductController extends BaseController
     public function store(Request $request, Response $response, array $args): Response {
         $data = $request->getParsedBody();
         $errors = [];
-
+        //dd($data);
         if (empty($data['product_type_id']) || empty($data['product_name'])) {
             $errors[] = "Product Type and Product Name are required";
         }
@@ -92,7 +92,7 @@ class ProductController extends BaseController
     public function edit(Request $request, Response $response, array $args): Response {
         $product_id = $args['id'];
 
-        $product = $this->productModel->getProductById($product_id);
+        $product = $this->productModel->getProductCleanById($product_id);
 
         $data = [
                 'contentView' => APP_VIEWS_PATH . '/pages/adminView.php',
@@ -102,7 +102,7 @@ class ProductController extends BaseController
                 'data' => array_merge($this->adminDataHelper->adminPageData(),
                         ['product_to_edit' => $product]),
             ];
-        return $this->render($response, 'pages/adminView.php', $data);
+        return $this->render($response, 'admin/databaseView.php', $data);
     }
 
     //post method for updating specified product
@@ -124,7 +124,7 @@ class ProductController extends BaseController
             return $this->redirect($request, $response, 'admin.index');
         } catch (\Throwable $th) {
             FlashMessage::error("Update failed. Please try again");
-            return $this->redirect($request, $response, 'pages/adminView.php');
+            return $this->redirect($request, $response, 'admin.index');
         }
     }
 
@@ -136,6 +136,47 @@ class ProductController extends BaseController
         FlashMessage::success("Successfully Deleted Product With ID: $id");
 
         return $this->redirect($request, $response, 'admin.index');
+    }
+
+    public function showDelete(Request $request, Response $response, array $args): Response {
+        $product_id = $args['id'];
+
+        $variant = $this->productModel->getProductById($product_id);
+
+        $data = [
+                'contentView' => APP_VIEWS_PATH . '/pages/adminView.php',
+                'isSideBarShown' => true,
+                'isAdmin' => UserContext::isAdmin(),
+                'show_product_delete' => true,
+                'data' => array_merge($this->adminDataHelper->adminPageData(),
+                        ['product_to_delete' => $variant,]),
+            ];
+        return $this->render($response, 'admin/databaseView.php', $data);
+    }
+
+    public function search(Request $request, Response $response, array $args): Response
+    {
+        $data = $request->getQueryParams();
+        $q = $data['q'] ?? "";
+
+        if (strlen($q) > 100){
+            $q = substr($q, 100);
+        }
+
+        $products = $this->productModel->search($q);
+
+        $data = [
+            'success' => true,
+            'count' => count($products),
+            'query' => $q,
+            'products' => $products,
+        ];
+
+        $payload = json_encode($data, JSON_UNESCAPED_UNICODE);
+
+        $response->getBody()->write($payload);
+
+        return $response->withHeader('Content-Type', 'application/json')->withStatus(200);
     }
 }
 

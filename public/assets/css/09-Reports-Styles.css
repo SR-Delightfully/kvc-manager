@@ -1,7 +1,4 @@
-/* ================================
-   REPORTS PAGE — FULLY ISOLATED CSS
-   Uses only: tone-* , color-blue-*
-   ================================ */
+
 
 #rpt-dashboard-container {
     width: 100%;
@@ -11,9 +8,7 @@
     font-family: "Inter", sans-serif;
 }
 
-/* ------------------------------
-   TABS
--------------------------------*/
+
 #rpt-top-tabs {
     display: flex;
     align-items: center;
@@ -41,9 +36,7 @@
     border-color: var(--color-blue-05);
 }
 
-/* ------------------------------
-   DATE FILTER DROPDOWN
--------------------------------*/
+
 .rpt-date-filter {
     position: relative;
 }
@@ -78,9 +71,7 @@
     background-color: var(--tone-08);
 }
 
-/* ------------------------------
-   STATION CARD
--------------------------------*/
+
 .rpt-station {
     background: var(--tone-04);
     padding: 1rem;
@@ -109,9 +100,7 @@
     padding: 1.2rem;
 }
 
-/* ------------------------------
-   GRID LAYOUT (Metrics)
--------------------------------*/
+
 .rpt-metrics-grid {
     display: grid;
     grid-template-columns: 2fr 1fr 1fr;
@@ -125,9 +114,7 @@
     color: var(--tone-09);
 }
 
-/* ------------------------------
-   PROGRESS BAR
--------------------------------*/
+
 .rpt-progress-bar {
     width: 100%;
     height: 28px;
@@ -144,18 +131,77 @@
     transition: width 0.4s ease;
 }
 
-/* ------------------------------
-   SUBTITLE
--------------------------------*/
+
 .rpt-sub-title {
     font-size: 1.1rem;
     margin-top: 1rem;
     color: var(--tone-09);
 }
 
-/* ------------------------------
-   DARK MODE SUPPORT
--------------------------------*/
 :root[data-theme="dark-mode"] #rpt-dashboard-container {
     color: var(--tone-10);
+}
+
+#rpt-chart-filters {
+    display: flex;
+    gap: 2rem;
+    margin-bottom: 2rem;
+}
+
+/* DROPDOWN BOX */
+.rpt-select {
+    position: relative;
+    width: 220px;
+    user-select: none;
+    font-family: Inter, sans-serif;
+    z-index: 10;
+}
+
+.rpt-select-header {
+    background: var(--tone-09);
+    padding: 0.9rem 1rem;
+    border-radius: 0.6rem;
+    border: 2px solid var(--tone-08);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    color: var(--tone-01);
+    font-size: 1.25rem;
+}
+
+.rpt-select.open .rpt-arrow {
+    transform: rotate(180deg);
+}
+
+.rpt-arrow {
+    font-size: 1.4rem;
+    transition: 0.2s;
+}
+
+
+.rpt-select-options {
+    display: none;
+    flex-direction: column;
+    background: var(--tone-09);
+    border: 2px solid var(--tone-08);
+    border-radius: 0 0 0.6rem 0.6rem;
+    width: 100%;
+    margin-top: -2px;
+}
+
+.rpt-select-options div {
+    padding: 0.9rem 1rem;
+    font-size: 1.2rem;
+    cursor: pointer;
+    color: var(--tone-01);
+    border-bottom: 2px solid var(--tone-08);
+}
+
+.rpt-select-options div:last-child {
+    border-bottom: none;
+}
+
+.rpt-select-options div:hover {
+    background: var(--tone-08);
 }
