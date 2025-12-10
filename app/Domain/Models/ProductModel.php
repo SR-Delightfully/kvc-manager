@@ -51,7 +51,7 @@ class ProductModel extends BaseModel
     public function getProductTypeById($id): ?array {
         $stmt = "SELECT * FROM product_type WHERE product_type_id = :id";
         $params = [':id'=>$id];
-        $productTypes = $this->selectAll($stmt, $params);
+        $productTypes = $this->selectOne($stmt, $params);
         return $productTypes;
     }
 
@@ -76,10 +76,34 @@ class ProductModel extends BaseModel
 
     public function updateProductType($id, $data) {
         $stmt = "UPDATE product_type SET
-                    product_type_name = :name,
+                    product_type_name = :name
                     WHERE product_type_id = :id";
 
         $params = [':name'=>$data['product_type_name'],':id'=>$id];
         $this->execute($stmt,$params);
+    }
+
+    public function getAllProductsClean() {
+        $stmt = "SELECT p.product_id, t.product_type_name AS product_type_id, p.product_code, p.product_name FROM product p LEFT JOIN product_type t ON p.product_type_id = t.product_type_id";
+        $products = $this->selectAll($stmt);
+        return $products;
+    }
+
+    public function getProductCleanById($id) {
+        $stmt = "SELECT p.product_id, t.product_type_name AS product_type_id, p.product_code, p.product_name FROM product p LEFT JOIN product_type t ON p.product_type_id = t.product_type_id WHERE p.product_id = :id";
+        $params = [':id' => $id];
+        $product = $this->selectOne($stmt, $params);
+        return $product;
+    }
+
+    public function search($searchTerm) {
+        $stmt = "SELECT * FROM product WHERE product_name LIKE ? OR product_code LIKE ? OR product_type_id LIKE ?";
+        $params = [];
+        $like = '%' . $searchTerm . '%';
+        $params[] = $like;
+        $params[] = $like;
+        $params[] = $like;
+        $results = $this->selectAll($stmt, $params);
+        return $results;
     }
 }

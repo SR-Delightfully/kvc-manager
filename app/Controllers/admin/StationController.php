@@ -40,8 +40,8 @@ class StationController extends BaseController
         $data = $request->getParsedBody();
         $errors = [];
 
-        if (empty($data['station_description'])) {
-            $errors[] = "Product Type and Product Name are required";
+        if (empty($data['station_name'])) {
+            $errors[] = "Station name is required";
         }
 
         if (!empty($errors)) {
@@ -54,7 +54,7 @@ class StationController extends BaseController
             return $this->redirect($request, $response, 'admin.index');
         } catch (\Throwable $th) {
             FlashMessage::error("Insert failed. Please try again");
-            return $this->render($response, 'pages/adminView.php');
+            return $this->render($response, 'admin/databaseView.php');
         }
     }
 
@@ -71,15 +71,15 @@ class StationController extends BaseController
                 'data' => array_merge($this->adminDataHelper->adminPageData(),
                         ['station_to_edit' => $product]),
             ];
-        return $this->render($response, 'pages/adminView.php', $data);
+        return $this->render($response, 'admin/databaseView.php', $data);
     }
 
     public function update(Request $request, Response $response, array $args): Response {
         $data = $request->getParsedBody();
         $errors = [];
 
-        if (empty($data['station_description'])) {
-            $errors[] = "Product type and name must be filled out";
+        if (empty($data['station_name'])) {
+            $errors[] = "Station name must be filled out";
         }
 
         if (!empty($errors)) {
@@ -92,7 +92,7 @@ class StationController extends BaseController
             return $this->redirect($request, $response, 'admin.index');
         } catch (\Throwable $th) {
             FlashMessage::error("Update failed. Please try again");
-            return $this->redirect($request, $response, 'pages/adminView.php');
+            return $this->redirect($request, $response, 'admin.index');
         }
     }
 
@@ -103,6 +103,22 @@ class StationController extends BaseController
         FlashMessage::success("Successfully Deleted Station With ID: $id");
 
         return $this->redirect($request, $response, 'admin.index');
+    }
+
+    public function showDelete(Request $request, Response $response, array $args): Response {
+        $station_id = $args['id'];
+
+        $station = $this->stationModel->getStationById($station_id);
+
+        $data = [
+                'contentView' => APP_VIEWS_PATH . '/pages/adminView.php',
+                'isSideBarShown' => true,
+                'isAdmin' => UserContext::isAdmin(),
+                'show_station_delete' => true,
+                'data' => array_merge($this->adminDataHelper->adminPageData(),
+                        ['station_to_delete' => $station,]),
+            ];
+        return $this->render($response, 'admin/databaseView.php', $data);
     }
 }
 

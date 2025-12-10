@@ -11,8 +11,8 @@ $isAdmin = UserContext::isAdmin();
 $isEmployee = UserContext::isEmployee();
 ?>
 
-<div id="home-page-wrapper" class="page">
-    <div id="home-page-content">
+<div id="page-wrapper" class="page">
+    <div id="page-content">
         <!-- This is the admin's view -->
         <?php if ($isAdmin): ?>
             <ul id="dashboard" class="center-v">
@@ -52,7 +52,7 @@ $isEmployee = UserContext::isEmployee();
                         <!-- Calendar -->
                     </div>  
                 </li>
-                            <li>
+                <li>
                     <h2> Team Assignment </h2>
                     <h3> [Component SubTitle] (a quick explanation of the contents) </h3>
                     <div>
@@ -180,7 +180,7 @@ $isEmployee = UserContext::isEmployee();
                         <!-- Calendar -->
                     </div>  
                 </li>
-                            <li>
+                <li>
                     <h2> Team Assignment </h2>
                     <h3> [Component SubTitle] (a quick explanation of the contents) </h3>
                     <div>
@@ -204,7 +204,7 @@ $isEmployee = UserContext::isEmployee();
         <?php else: ?>
         <!-- NOT LOGGED IN-->
             <!-- <p>You are not logged in.</p> -->
-            <ul id="admin-dashboard" class="center-v">
+            <ul id="dashboard" class="center-v">
                 <!-- Leaderboard Component -->
                 <li class="metallic-bg">
                     <h2> Leaderboard </h2>

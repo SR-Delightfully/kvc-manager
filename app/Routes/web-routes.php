@@ -21,15 +21,20 @@ use App\Controllers\admin\ProductTypeController;
 use App\Controllers\admin\ProductVariantController;
 use App\Controllers\admin\ShiftController;
 use App\Controllers\admin\UsersController;
+use App\Controllers\admin\AdminDashboardController;
+use App\Controllers\admin\StationController;
+use App\Controllers\admin\TeamController;
+use App\Controllers\admin\ToteController;
 
 // General Controller Imports
-use App\Controllers\AdminController;
+use App\Controllers\admin\AdminController;
 use App\Controllers\AuthController;
 use App\Controllers\HomeController;
 use App\Controllers\ReportsController;
 use App\Controllers\ScheduleController;
 use App\Controllers\SettingsController;
 use App\Controllers\WorkController;
+use App\Controllers\admin\TeamMemberController;
 
 use Slim\App;
 use Psr\Http\Message\ResponseInterface as Response;
@@ -37,8 +42,10 @@ use Psr\Http\Message\ServerRequestInterface as Request;
 
 return static function (App $app): void {
 
+    $app->get("/registration-code", [AuthController::class, 'registrationCode']);
     // Authentication Routes:
     $app->group('', function ($auth) {
+
         $auth->get('/register', [AuthController::class, 'showRegisterForm'])->setName('register.index');
         $auth->post('/register', [AuthController::class, 'register']);
 
@@ -46,13 +53,17 @@ return static function (App $app): void {
         $auth->post('/login', [AuthController::class, 'login']);
 
         $auth->get('/login/forgot-password', [AuthController::class, 'showForgotPasswordForm'])->setName('login.forgot-password');
-        $auth->post('/login/forgot-password', [AuthController::class, 'verifyForgotPassword']);
+        $auth->post('/login/forgot-password', [AuthController::class, 'sendForgotPassword']);
+        $auth->post('/login/forgot-password/verify', [AuthController::class, 'verifyForgotPassword']);
 
         $auth->get('/login/new-password', [AuthController::class, 'showNewPasswordForm'])->setName('login.new-password');
         $auth->post('/login/new-password', [AuthController::class, 'verifyNewPassword']);
 
         $auth->get('/login/forgot-email', [AuthController::class, 'showForgotEmail'])->setName('login.forgot-email');
-        $auth->post('/login/forgot-email', [AuthController::class, 'verifyForgotEmail']);
+        $auth->post('/login/forgot-email', [AuthController::class, 'sendForgotEmail']);
+
+        $auth->get('/login/forgot-email-2fa', [AuthController::class, 'showForgotEmail2fa'])->setName('login.forgot-email.2fa');
+        $auth->post('/login/forgot-email-2fa', [AuthController::class, 'verifyForgotEmail']);
 
         $auth->get('/login/new-email', [AuthController::class, 'showNewEmail'])->setName('login.new-email');
         $auth->post('/login/new-email', [AuthController::class, 'verifyNewEmail']);
@@ -60,22 +71,35 @@ return static function (App $app): void {
         $auth->get('/login/2fa', [AuthController::class, 'showTwoFactorForm'])->setName('auth.2fa');
         $auth->post('/login/2fa', [AuthController::class, 'verifyTwoFactor']);
 
-        $auth->get('/logout', [AuthController::class, 'logout'])->setName('auth.logout');
-    });
+    })//->add(GuestAuthMiddleware::class)
+    ;
+
+    $app->get('/logout', [AuthController::class, 'logout'])->setName('auth.logout');
 
     // General / Employee Routes:
     $app->group('', function ($app) {
 
         // Dashboard
         $app->get('/', [HomeController::class, 'index'])->setName('dashboard.index');
-        $app->get('/home', [HomeController::class, 'index']);
+        $app->get('/home', [HomeController::class, 'index'])->setName('dashboard.load');
+
+        //SEARCHING_ROUTES_FOR_ADMIN_PAGE
+        $app->get('/api/variants/search', [ProductVariantController::class, 'search'])->setName('api.variants.search');
+        $app->get('/api/users/search', [UsersController::class, 'search'])->setName('api.users.search');
+        $app->get('/api/products/search', [ProductController::class, 'search'])->setName('api.products.search');
+        $app->get('/api/colours/search', [ColourController::class, 'search'])->setName('api.colours.search');
 
         // Work
         $app->group('/work', function ($work) {
             $work->get('', [WorkController::class, 'index'])->setName('work.index');
             $work->get('/create', [WorkController::class, 'create'])->setName('work.create');
-            $work->post('', [WorkController::class, 'store'])->setName('work.store');
-            $work->get('/{id}/edit', [WorkController::class, 'edit'])->setName('work.edit');
+            $work->post('/start', [WorkController::class, 'startSession'])->setName('work.start');
+            $work->post('/end', [WorkController::class, 'endSession'])->setName('work.end');
+            $work->post('/break/start', [WorkController::class, 'startBreak'])->setName('work.break.start');
+            $work->post('/break/end', [WorkController::class, 'endBreak'])->setName('work.break.end');
+            $work->get('/search', [WorkController::class, 'search'])->setName('work.search');
+            $work->get('/{id}', [WorkController::class, 'show'])->setName('work.show');
+            $work->get('/edit/{id}', [WorkController::class, 'edit'])->setName('work.edit');
             $work->post('/{id}', [WorkController::class, 'update'])->setName('work.update');
             $work->get('/{id}/delete', [WorkController::class, 'delete'])->setName('work.delete');
         });
@@ -103,11 +127,46 @@ return static function (App $app): void {
             $settings->get('/edit', [SettingsController::class, 'edit'])->setName('settings.edit');
             $settings->post('/edit', [SettingsController::class, 'update']);
         });
-    });
+    })//->add(AuthMiddleware::class)
+    ;
 
     // Admin Routes:
     $app->group('/admin', function ($admin) {
+        //temp route
+        $admin->get('/temp-db', function ($request, $response) {
+            // Path to your view file
+            // require APP_VIEWS_PATH . '/admin/databaseView.php';
+            require APP_VIEWS_PATH . '/pages/adminview.php';
+            return $response;
+        });
+        //temp route
+        $admin->get('/temp-dash', function ($request, $response) {
+            // Path to your view file
+            require APP_VIEWS_PATH . '/admin/dashboardView.php';
+            return $response;
+        });
+        //temp route
+        $admin->get('/temp-work', function ($request, $response) {
+            // Path to your view file
+            require APP_VIEWS_PATH . '/admin/workLogView.php';
+            return $response;
+        });
 
+        $admin->get('/temp-settings', function ($request, $response) {
+            // Path to your view file
+            require APP_VIEWS_PATH . '/admin/settingsView.php';
+            return $response;
+        });
+        $admin->get('/temp-reports', function ($request, $response) {
+            // Path to your view file
+            require APP_VIEWS_PATH . '/admin/reportsView.php';
+            return $response;
+        });
+        $admin->get('/temp-reports2', function ($request, $response) {
+            // Path to your view file
+            require APP_VIEWS_PATH . '/admin/allTimeReportsView.php';
+            return $response;
+        });
 
         $admin->get('', [AdminController::class, 'index'])->setName('admin.index');
 
@@ -115,27 +174,30 @@ return static function (App $app): void {
         $admin->group('/product', function ($product) {
             $product->get('', [ProductController::class, 'index'])->setName('admin.product.index');
             $product->post('', [ProductController::class, 'store'])->setName('admin.product.store');
-            $product->get('{id}/edit', [ProductController::class, 'edit'])->setName('admin.product.edit');
-            $product->get('{id}/delete', [ProductController::class, 'delete'])->setName('admin.product.delete');
-            $product->post('{id}', [ProductController::class, 'update'])->setName('admin.product.update');
+            $product->get('/edit/{id}', [ProductController::class, 'edit'])->setName('admin.product.edit');
+            $product->get('/delete/{id}', [ProductController::class, 'showDelete'])->setName('admin.product.delete.show');
+            $product->get('/delete/{id}/do', [ProductController::class, 'delete'])->setName('admin.product.delete');
+            $product->post('/edit/{id}', [ProductController::class, 'update'])->setName('admin.product.update');
         });
 
         // Variants
         $admin->group('/variant', function ($variant) {
             $variant->get('', [ProductVariantController::class, 'index'])->setName('admin.variant.index');
             $variant->post('', [ProductVariantController::class, 'store'])->setName('admin.variant.store');
-            $variant->get('{id}/edit', [ProductVariantController::class, 'edit'])->setName('admin.variant.edit');
-            $variant->get('{id}/delete', [ProductVariantController::class, 'delete'])->setName('admin.variant.delete');
-            $variant->post('{id}', [ProductVariantController::class, 'update'])->setName('admin.variant.update');
+            $variant->get('/edit/{id}', [ProductVariantController::class, 'edit'])->setName('admin.variant.edit');
+            $variant->get('/delete/{id}', [ProductVariantController::class, 'showDelete'])->setName('admin.variant.delete.show');
+            $variant->get('/delete/{id}/do', [ProductVariantController::class, 'delete'])->setName('admin.variant.delete');
+            $variant->post('/edit/{id}', [ProductVariantController::class, 'update'])->setName('admin.variant.update');
         });
 
         // Colours
         $admin->group('/colour', function ($colour) {
             $colour->get('', [ColourController::class, 'index'])->setName('admin.colour.index');
             $colour->post('', [ColourController::class, 'store'])->setName('admin.colour.store');
-            $colour->get('{id}/edit', [ColourController::class, 'edit'])->setName('admin.colour.edit');
-            $colour->get('{id}/delete', [ColourController::class, 'delete'])->setName('admin.colour.delete');
-            $colour->post('{id}', [ColourController::class, 'update'])->setName('admin.colour.update');
+            $colour->get('/edit/{id}', [ColourController::class, 'edit'])->setName('admin.colour.edit');
+            $colour->get('/delete/{id}', [ColourController::class, 'showDelete'])->setName('admin.colour.delete.show');
+            $colour->get('/delete/{id}/do', [ColourController::class, 'delete'])->setName('admin.colour.delete');
+            $colour->post('/edit/{id}', [ColourController::class, 'update'])->setName('admin.colour.update');
         });
 
         // Users
@@ -143,38 +205,81 @@ return static function (App $app): void {
             $users->get('', [UsersController::class, 'index'])->setName('admin.users.index');
             $users->post('', [UsersController::class, 'store'])->setName('admin.users.store');
             $users->get('{id}', [UsersController::class, 'show'])->setName('admin.users.show');
-            $users->get('{id}/edit', [UsersController::class, 'edit'])->setName('admin.users.edit');
-            $users->get('{id}/delete', [UsersController::class, 'delete'])->setName('admin.users.delete');
-            $users->post('{id}', [UsersController::class, 'update'])->setName('admin.users.update');
+            $users->get('/edit/{id}', [UsersController::class, 'edit'])->setName('admin.users.edit');
+            $users->get('/delete/{id}', [UsersController::class, 'showDelete'])->setName('admin.users.delete.show');
+            $users->get('/delete/{id}/do', [UsersController::class, 'delete'])->setName('admin.users.delete');
+            $users->post('/edit/{id}', [UsersController::class, 'update'])->setName('admin.users.update');
         });
 
         // Types
         $admin->group('/type', function ($type) {
             $type->get('', [ProductTypeController::class, 'index'])->setName('admin.type.index');
             $type->post('', [ProductTypeController::class, 'store'])->setName('admin.type.store');
-            $type->get('{id}/edit', [ProductTypeController::class, 'edit'])->setName('admin.type.edit');
-            $type->get('{id}/delete', [ProductTypeController::class, 'delete'])->setName('admin.type.delete');
-            $type->post('{id}', [ProductTypeController::class, 'update'])->setName('admin.type.update');
+            $type->get('/edit/{id}', [ProductTypeController::class, 'edit'])->setName('admin.type.edit');
+            $type->get('/delete/{id}', [ProductTypeController::class, 'showDelete'])->setName('admin.type.delete.show');
+            $type->get('/delete/{id}/do', [ProductTypeController::class, 'delete'])->setName('admin.type.delete');
+            $type->post('/edit/{id}', [ProductTypeController::class, 'update'])->setName('admin.type.update');
         });
 
         // Pallets
         $admin->group('/pallet', function ($pallet) {
             $pallet->get('', [PalletController::class, 'index'])->setName('admin.pallet.index');
             $pallet->post('', [PalletController::class, 'store'])->setName('admin.pallet.store');
-            $pallet->get('{id}/edit', [PalletController::class, 'edit'])->setName('admin.pallet.edit');
-            $pallet->get('{id}/delete', [PalletController::class, 'delete'])->setName('admin.pallet.delete');
-            $pallet->post('{id}', [PalletController::class, 'update'])->setName('admin.pallet.update');
+            $pallet->get('/edit/{id}', [PalletController::class, 'edit'])->setName('admin.pallet.edit');
+            $pallet->get('/delete/{id}', [PalletController::class, 'showDelete'])->setName('admin.pallet.delete.show');
+            $pallet->get('/delete/{id}/do', [PalletController::class, 'delete'])->setName('admin.pallet.delete');
+            $pallet->post('/edit/{id}', [PalletController::class, 'update'])->setName('admin.pallet.update');
+        });
+
+        $admin->group('/tote', function ($tote) {
+            $tote->get('', [ToteController::class, 'index'])->setName('admin.tote.index');
+            $tote->post('', [ToteController::class, 'store'])->setName('admin.tote.store');
+            $tote->get('/edit/{id}', [ToteController::class, 'edit'])->setName('admin.tote.edit');
+            $tote->get('/delete/{id}', [ToteController::class, 'showDelete'])->setName('admin.tote.delete.show');
+            $tote->get('/delete/{id}/do', [ToteController::class, 'delete'])->setName('admin.tote.delete');
+            $tote->post('/edit/{id}', [ToteController::class, 'update'])->setName('admin.tote.update');
+        });
+
+        // TODO MAKE_TEAM_MODEL_AND_CONTROLLERS
+        $admin->group('/member', function ($member) {
+            $member->get('', [TeamMemberController::class, 'index'])->setName('admin.member.index');
+            $member->post('', [TeamMemberController::class, 'store'])->setName('admin.member.store');
+            $member->get('/edit/{user_id}/{team_id}', [TeamMemberController::class, 'edit'])->setName('admin.member.edit');
+            $member->get('/delete/{user_id}/{team_id}', [TeamMemberController::class, 'showDelete'])->setName('admin.member.delete.show');
+            $member->get('/delete/{user_id}/{team_id}/do', [TeamMemberController::class, 'delete'])->setName('admin.member.delete');
+            $member->post('/edit/{user_id}/{team_id}', [TeamMemberController::class, 'update'])->setName('admin.member.update');
+        });
+
+        $admin->group('/team', function ($team) {
+            $team->get('', [TeamController::class, 'index'])->setName('admin.team.index');
+            $team->post('', [TeamController::class, 'store'])->setName('admin.team.store');
+            $team->get('/edit/{id}', [TeamController::class, 'edit'])->setName('admin.team.edit');
+            $team->get('/delete/{id}', [TeamController::class, 'showDelete'])->setName('admin.team.delete.show');
+            $team->get('/delete/{id}/do', [TeamController::class, 'delete'])->setName('admin.team.delete');
+            $team->post('/edit/{id}', [TeamController::class, 'update'])->setName('admin.team.update');
+        });
+
+        //TODO MAKE_STATION_MODEL_AND_CONTROLLERS
+        $admin->group('/station', function ($station) {
+            $station->get('', [StationController::class, 'index'])->setName('admin.station.index');
+            $station->post('', [StationController::class, 'store'])->setName('admin.station.store');
+            $station->get('/edit/{id}', [StationController::class, 'edit'])->setName('admin.station.edit');
+            $station->get('/delete/{id}', [StationController::class, 'showDelete'])->setName('admin.station.delete.show');
+            $station->get('/delete/{id}/do', [StationController::class, 'delete'])->setName('admin.station.delete');
+            $station->post('/edit/{id}', [StationController::class, 'update'])->setName('admin.station.update');
         });
 
         // Shifts
         $admin->group('/shift', function ($shift) {
             $shift->get('', [ShiftController::class, 'index'])->setName('admin.shift.index');
             $shift->post('', [ShiftController::class, 'store'])->setName('admin.shift.store');
-            $shift->get('{id}/edit', [ShiftController::class, 'edit'])->setName('admin.shift.edit');
-            $shift->get('{id}/delete', [ShiftController::class, 'delete'])->setName('admin.shift.delete');
-            $shift->post('{id}', [ShiftController::class, 'update'])->setName('admin.shift.update');
+            $shift->get('/edit/{id}', [ShiftController::class, 'edit'])->setName('admin.shift.edit');
+            $shift->get('/delete/{id}', [ShiftController::class, 'showDelete'])->setName('admin.shift.delete.show');
+            $shift->get('/delete/{id}/do', [ShiftController::class, 'delete'])->setName('admin.shift.delete');
+            $shift->post('/edit/{id}', [ShiftController::class, 'update'])->setName('admin.shift.update');
         });
-    });
+    })//->add(AdminAuthMiddleware::class)
+    ;
 
     // Ping Route
     $app->get('/ping', function (Request $request, Response $response, $args) {
@@ -184,7 +289,7 @@ return static function (App $app): void {
         ];
         $response->getBody()->write(json_encode($payload, JSON_UNESCAPED_SLASHES | JSON_PARTIAL_OUTPUT_ON_ERROR));
         return $response->withHeader('Content-Type', 'application/json');
-        return $response->withHeader('Content-Type', 'application/json');
+
     });
 
     // Error Route

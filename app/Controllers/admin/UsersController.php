@@ -64,6 +64,49 @@ class UsersController extends BaseController
 
         return $this->redirect($request, $response, 'admin.index');
     }
+
+    public function showDelete(Request $request, Response $response, array $args): Response {
+        $user_id = $args['id'];
+
+        $user = $this->userModel->getUserById($user_id);
+
+        $data = [
+                'contentView' => APP_VIEWS_PATH . '/pages/adminView.php',
+                'isSideBarShown' => true,
+                'isAdmin' => UserContext::isAdmin(),
+                'show_user_delete' => true,
+                'data' => array_merge($this->adminDataHelper->adminPageData(),
+                        ['user_to_delete' => $user,]),
+            ];
+        return $this->render($response, 'admin/databaseView.php', $data);
+    }
+
+    public function search(Request $request, Response $response, array $args): Response
+    {
+        $data = $request->getQueryParams();
+        $q = $data['q'] ?? "";
+        $role = $data['user_role'] ?? null;
+        $status = $data['user_status'] ?? null;
+
+        if (strlen($q) > 100){
+            $q = substr($q, 100);
+        }
+
+        $users = $this->userModel->search($q, $role, $status);
+
+        $data = [
+            'success' => true,
+            'count' => count($users),
+            'query' => $q,
+            'users' => $users,
+        ];
+
+        $payload = json_encode($data, JSON_UNESCAPED_UNICODE);
+
+        $response->getBody()->write($payload);
+
+        return $response->withHeader('Content-Type', 'application/json')->withStatus(200);
+    }
 }
 
 ?>

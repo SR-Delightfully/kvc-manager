@@ -7,6 +7,8 @@ namespace App\Controllers;
 use DI\Container;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
+use App\Helpers\UserContext;
+
 
 class ReportsController extends BaseController
 {
@@ -21,6 +23,7 @@ class ReportsController extends BaseController
             'page_title' => 'Welcome to KVC Manager',
             'contentView' => APP_VIEWS_PATH . '/pages/reportsView.php',
             'isSideBarShown' => true,
+            'isAdmin' => UserContext::isAdmin(),
             'data' => [
                 'title' => 'Reports',
                 'message' => 'Reports Page',

@@ -97,7 +97,7 @@ class ProductTypeController extends BaseController
                 'data' => array_merge($this->adminDataHelper->adminPageData(),
                         ['product_type_to_edit' => $product_type]),
             ];
-        return $this->render($response, 'pages/adminView.php', $data);
+        return $this->render($response, 'admin/databaseView.php', $data);
     }
 
     public function update(Request $request, Response $response, array $args): Response {
@@ -118,7 +118,7 @@ class ProductTypeController extends BaseController
             return $this->redirect($request, $response, 'admin.index');
         } catch (\Throwable $th) {
             FlashMessage::error("Update failed. Please try again");
-            return $this->redirect($request, $response, 'pages/adminView.php');
+            return $this->redirect($request, $response, 'admin.index');
         }
     }
 
@@ -129,6 +129,22 @@ class ProductTypeController extends BaseController
         FlashMessage::success("Successfully Deleted Product Type With ID: $id");
 
         return $this->redirect($request, $response, 'admin.index');
+    }
+
+    public function showDelete(Request $request, Response $response, array $args): Response {
+        $type_id = $args['id'];
+
+        $type = $this->productModel->getProductTypeById($type_id);
+
+        $data = [
+                'contentView' => APP_VIEWS_PATH . '/pages/adminView.php',
+                'isSideBarShown' => true,
+                'isAdmin' => UserContext::isAdmin(),
+                'show_type_delete' => true,
+                'data' => array_merge($this->adminDataHelper->adminPageData(),
+                        ['type_to_delete' => $type,]),
+            ];
+        return $this->render($response, 'admin/databaseView.php', $data);
     }
 }
 

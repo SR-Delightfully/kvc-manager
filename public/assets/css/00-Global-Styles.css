@@ -161,6 +161,9 @@
     --transition-fast: 150ms ease;
     --transition-medium: 250ms ease;
     --transition-slow: 400ms ease;
+
+    --background-gradient: 45deg, var(--tone-01) 0%, var(--tone-03) 50%, var(--tone-07) 100%;
+;
 }
 
 
@@ -180,6 +183,8 @@
     --h6-color: var(--tone-04);
 
     --hr-color: var(--tone-10);
+    --background-gradient: 45deg, var(--tone-01) 0%, var(--tone-03) 50%, var(--tone-07) 100%;
+
 }
 
 /* Light Mode Theme          */
@@ -195,6 +200,8 @@
     --h6-color: var(--tone-08);
 
     --hr-color: var(--tone-10);
+    --background-gradient: 45deg, var(--tone-01) 0%, var(--tone-07) 50%, var(--color-blue-04) 100%;
+    
 }
 
 /* BLUE THEME                */
@@ -214,6 +221,8 @@
     --button-bg: var(--color-blue-04);
     --button-bg-hover: var(--color-blue-05);
     --button-bg-active: var(--color-blue-03);
+    --background-gradient: 45deg, var(--color-blue-01) 0%, var(--color-blue-02) 50%, var(--color-blue-04) 100%;
+
 }
 
 /* RED THEME                 */
@@ -233,6 +242,7 @@
     --button-bg: var(--color-red-04);
     --button-bg-hover: var(--color-red-05);
     --button-bg-active: var(--color-red-03);
+    --background-gradient: 45deg, var(--color-red-01) 0%, var(--color-red-02) 50%, var(--color-red-04) 100%;
 }
 
 /* GREEN THEME               */
@@ -252,6 +262,7 @@
     --button-bg: var(--color-green-04);
     --button-bg-hover: var(--color-green-05);
     --button-bg-active: var(--color-green-03);
+    --background-gradient: 45deg, var(--color-green-01) 0%, var(--color-green-02) 50%, var(--color-green-04) 100%;
 }
 
 /* Page Reset                */
@@ -284,7 +295,7 @@ body {
     font-family: var(--font-family-body);
     font-size: var(--font-size-body);
     color: var(--tone-10);
-    background: linear-gradient(45deg, var(--tone-01) 0%, var(--tone-07) 50%, var(--color-blue-04) 100%);
+    background: linear-gradient(var(--background-gradient));
     overflow:hidden;
 }
 
@@ -520,10 +531,10 @@ box-shadow: inset 0px 2px 0px var(--tone-03), inset 0px -3px 0px var(--color-blu
 @media screen and (min-width: 1921px) {
 
     :root {
-        --font-size-h1: 3rem;
-        --font-size-h2: 2.4rem;
-        --font-size-h3: 1.8rem;
-        --font-size-body: 1.1rem;
+        --font-size-h1: 1.75rem;
+        --font-size-h2: 1.5rem;
+        --font-size-h3: 1.2rem;
+        --font-size-body: 1rem;
     }
 
     body {

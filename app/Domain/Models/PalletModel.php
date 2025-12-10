@@ -28,6 +28,12 @@ class PalletModel extends BaseModel
         return $pallets;
     }
 
+    public function getAllPalletsClean() {
+        $stmt = "SELECT p.pallet_id, v.variant_description AS variant_description, t.batch_number AS tote_id, s.station_name AS station_id, l.start_time, l.end_time, l.units, l.break_time, l.mess, l.notes FROM pallet p LEFT JOIN tote t ON p.tote_id = t.tote_id LEFT JOIN product_variant v ON v.variant_id = t.variant_id LEFT JOIN station s ON s.station_id = p.station_id LEFT JOIN palletize_session l ON l.pallet_id = p.pallet_id";
+        $pallets = $this->selectAll($stmt);
+        return $pallets;
+    }
+
     public function getAllPalletsSimple(): ?array
     {
         $stmt = "SELECT * FROM pallet";
@@ -74,9 +80,36 @@ class PalletModel extends BaseModel
         $this->execute($stmt, $params);
     }
 
+    public function updatePalletize(int $id, array $data): void
+    {
+        $stmt = "UPDATE palletize_session SET start_time = :start_time,
+                                end_time = :end_time,
+                                units = :units,
+                                break_time = :break_time,
+                                mess = :mess,
+                                notes = :notes WHERE pallet_id = :id";
+        $params = [
+            ':id' => $id,
+            ':start_time' => $data['start_time'],
+            ':end_time' =>$data['end_time'],
+            ':units' => $data['units'],
+            ':break_time' => $data['break_time'],
+            ':mess' => $data['mess'],
+            ':notes' => $data['notes']
+        ];
+        $this->execute($stmt, $params);
+    }
+
     public function delete(int $id): void
     {
         $stmt = "DELETE FROM pallet WHERE pallet_id = :id";
         $this->execute($stmt, [':id' => $id]);
+    }
+
+    public function getAllTotes(): ?array
+    {
+        $stmt = "SELECT * FROM tote";
+        $tote = $this->selectAll($stmt);
+        return $tote;
     }
 }
