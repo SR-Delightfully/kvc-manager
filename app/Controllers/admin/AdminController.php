@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Controllers\admin;
 
+namespace App\Controllers\admin;
+
 
 use App\Controllers\BaseController;
 use DI\Container;

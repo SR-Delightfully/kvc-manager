@@ -2,6 +2,7 @@
 
 namespace App\Helpers;
 
+use App\Helpers\Core\AppSettings;
 use Twilio\Rest\Client;
 use Twilio\Exceptions\RestException;
 
@@ -11,15 +12,22 @@ class AuthHelper
     private string $fromNumber;
     private string $verifyServiceSid;
 
-    public function __construct()
+    public function __construct(private AppSettings $appSettings)
     {
-        $config = $settings['twilio'] ?? [];
+        $twilio = $this->appSettings->get('twilio');
 
-        //load credentials from env.php
-        $sid               = $config['sid'] ?? '';
-        $token             = $config['token'] ?? '';
-        $this->fromNumber  = $config['from'] ?? '';
-        $this->verifyServiceSid = $config['verify_sid'] ?? '';
+        $sid         = $twilio['sid'];
+        $token       = $twilio['token'];
+        $from        = $twilio['from'];
+        $verify_sid  = $twilio['verify_sid'];
+
+        if ($sid === '' || $token === '') {
+            throw new \RuntimeException('Twilio SID/token not configured.');
+        }
+
+        $this->fromNumber = $from;
+
+        $this->verifyServiceSid = $verify_sid;
 
         $this->client = new Client($sid, $token);
     }

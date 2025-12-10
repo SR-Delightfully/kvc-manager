@@ -5,6 +5,14 @@ $page_title = 'Registration Page';
 ViewHelper::loadHeader($page_title, false);
 ?>
 
+<!-- tips on how to html / csss -->
+
+ <!-- > Don't hesitate to use styles/classes writting in te Global-Styles.css, these are intended to be used all throughout the project. -->
+
+<!-- > If there is only one single copy of the element, then give it an Id with its identifying name (instead of a class) -->
+
+<!-- > Ids should be specific, Classes can be generic -->
+
 <div id="registration-page-wrapper" class="page">
     <div id="registration-page-content" class="display-flex-row">
 

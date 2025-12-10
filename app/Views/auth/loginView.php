@@ -58,7 +58,7 @@ ViewHelper::loadHeader($page_title, false);
                 </div>
             </div>
         </div>
-        <!-- <form method="POST" action="</?= APP_BASE_URL ?>/login">
+        <form method="POST" action="">
             <label for="email">Email Address</label>
             <input type="text" name="email" id="email" required style="color:white;">
             <a href="</?= APP_BASE_URL ?>/login/forgot-email">Forgot Email?</a>
@@ -72,7 +72,7 @@ ViewHelper::loadHeader($page_title, false);
                 <a class='btn btn-success' href="</?= APP_BASE_URL ?>/register">Sign in</a>
                 <button type="submit" class="signin-btn">Sign In</button>
             </div>
-        </form> -->
+        </form>
     </div>
 </div>
 

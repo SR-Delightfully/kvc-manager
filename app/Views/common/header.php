@@ -33,6 +33,18 @@ function e($value)
     <link rel="stylesheet" href="<?= APP_BASE_URL ?>/public/assets/css/08-Settings-Styles.css">
     <link rel="stylesheet" href="<?= APP_BASE_URL ?>/public/assets/css/09-Reports-Styles.css">
 
+    <title><?= $page_title ?></title>
+    <link rel="stylesheet" href="<?= APP_BASE_URL ?>/public/assets/css/00-Global-Styles.css">
+    <link rel="stylesheet" href="<?= APP_BASE_URL ?>/public/assets/css/01-Navbar-Styles.css">
+    <link rel="stylesheet" href="<?= APP_BASE_URL ?>/public/assets/css/02-Header-Styles.css">
+    <link rel="stylesheet" href="<?= APP_BASE_URL ?>/public/assets/css/03-Dashboard-Styles.css">
+    <link rel="stylesheet" href="<?= APP_BASE_URL ?>/public/assets/css/04-Login-Styles.css">
+    <link rel="stylesheet" href="<?= APP_BASE_URL ?>/public/assets/css/05-TwoFactor-Styles.css">
+    <link rel="stylesheet" href="<?= APP_BASE_URL ?>/public/assets/css/06-Reset-Styles.css">
+    <link rel="stylesheet" href="<?= APP_BASE_URL ?>/public/assets/css/07-Register-Styles.css">
+    <link rel="stylesheet" href="<?= APP_BASE_URL ?>/public/assets/css/08-Settings-Styles.css">
+    <link rel="stylesheet" href="<?= APP_BASE_URL ?>/public/assets/css/09-Reports-Styles.css">
+
     <title><?= isset($page_title) ? e($page_title) : 'KVC Manager' ?></title>
     <link rel="stylesheet" href="./public/assets/css/00-Global-Styles.css">
     <link rel="stylesheet" href="./public/assets/css/01-Element-Styles.css">

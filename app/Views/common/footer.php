@@ -1,8 +1,12 @@
 <!-- <h6> this is the footer </h6> -->
 </body>
+<!-- <h6> this is the footer </h6> -->
+</body>
 <?php
 use App\Domain\Models\UserModel;
 
+// $userModel = $container->get(UserModel::class);
+// $userCount = $userModel->countUsers();
 // $userModel = $container->get(UserModel::class);
 // $userCount = $userModel->countUsers();
 ?>

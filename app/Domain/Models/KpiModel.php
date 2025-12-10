@@ -655,4 +655,3 @@ class KpiModel extends BaseModel
     }
 
 }
-
