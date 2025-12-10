@@ -1,6 +1,7 @@
 <?php
 
 use App\Helpers\ViewHelper;
+
 var_dump($data);
 //* DYNAMIC POPUPS
 $show2fa_login = $data['show2fa_login'] ?? false;
@@ -13,7 +14,7 @@ $show_forgot_email = $data['show_forgot_email'] ?? false;
 $show_forgot_email_2fa = $data['show_forgot_email_2fa'] ?? false;
 $show_new_email = $data['show_new_email'] ?? false;
 echo $show2fa_login;
-$page_title ='Login page';
+$page_title = 'Login page';
 ViewHelper::loadHeader($page_title);
 
 ?>
@@ -21,7 +22,7 @@ ViewHelper::loadHeader($page_title);
 <div><?= $show2fa_login ?></div>
 <div class="login-container">
 
-<?= App\Helpers\FlashMessage::render() ?>
+    <?= App\Helpers\FlashMessage::render() ?>
     <div class="left-panel">
         <h1>VKC</h1>
         <h4>[If VKC is short for something, update with the full company name]</h4>
@@ -35,12 +36,9 @@ ViewHelper::loadHeader($page_title);
         </div>
     </div>
 
-<<<<<<< HEAD
-<?= App\Helpers\FlashMessage::render() ?>
+    <?= App\Helpers\FlashMessage::render() ?>
 
 
-=======
->>>>>>> ce6db419c33c5ef13caef49eb8242292f2e05051
     <div class="form-panel">
 
         <div class="center-logo">
@@ -66,14 +64,14 @@ ViewHelper::loadHeader($page_title);
 
 </div>
 <!-- FORGOT PASSWORD POPUP -->
- <?php
- if ($show_forgot_password):?>
-<div id="forgotPasswordModal" class="forgot-modal-overlay">
-    <div class="forgot-modal-box">
-        <span class="close-forgot">X</span>
+<?php
+if ($show_forgot_password): ?>
+    <div id="forgotPasswordModal" class="forgot-modal-overlay">
+        <div class="forgot-modal-box">
+            <span class="close-forgot">X</span>
 
-        <h2>Forgot Password</h2>
-        <p>Please enter the 6-digit code sent to your phone number to confirm your account.</p>
+            <h2>Forgot Password</h2>
+            <p>Please enter the 6-digit code sent to your phone number to confirm your account.</p>
             <form method="POST" action="<?= APP_BASE_URL ?>/login/forgot-password">
                 <label for="phone">Phone Number</label>
                 <input type="text" id="phone" name="phone" placeholder="5141231234">
@@ -92,142 +90,142 @@ ViewHelper::loadHeader($page_title);
                 </div>
             </form>
 
+        </div>
     </div>
-</div>
 <?php endif; ?>
 <!--  New Password MODAL -->
 <?php
-if ($show_new_password):?>
-<div id="new-password-modal" class="forgot-modal-overlay">
-    <div class="forgot-modal-box">
+if ($show_new_password): ?>
+    <div id="new-password-modal" class="forgot-modal-overlay">
+        <div class="forgot-modal-box">
 
-        <!-- Use same close button class -->
-        <span class="close-forgot" onclick="closeNewPasswordModal()">X</span>
+            <!-- Use same close button class -->
+            <span class="close-forgot" onclick="closeNewPasswordModal()">X</span>
 
-        <h2>New Password</h2>
-        <p>Please enter a new password.</p>
+            <h2>New Password</h2>
+            <p>Please enter a new password.</p>
 
-        <form id="newPasswordForm" method="POST" action="<?= APP_BASE_URL ?>/login/new-password">
+            <form id="newPasswordForm" method="POST" action="<?= APP_BASE_URL ?>/login/new-password">
 
-            <label>New Password:</label>
-            <input type="password" name="password" placeholder="Enter new password" required>
+                <label>New Password:</label>
+                <input type="password" name="password" placeholder="Enter new password" required>
 
-            <label>Confirm New Password:</label>
-            <input type="password" name="conf_password" placeholder="Confirm new password" required>
+                <label>Confirm New Password:</label>
+                <input type="password" name="conf_password" placeholder="Confirm new password" required>
 
-            <div class="forgot-btn-row">
-                <!-- Use same button styles -->
-                <button type="submit" class="forgot-send">Send</button>
-                <button type="button" class="forgot-change" onclick="closeNewPasswordModal()">Cancel</button>
-            </div>
-        </form>
+                <div class="forgot-btn-row">
+                    <!-- Use same button styles -->
+                    <button type="submit" class="forgot-send">Send</button>
+                    <button type="button" class="forgot-change" onclick="closeNewPasswordModal()">Cancel</button>
+                </div>
+            </form>
+        </div>
     </div>
-</div>
 <?php endif; ?>
 <!-- FORGOT EMAIL MODAL -->
 <?php
-if ($show_forgot_email):?>
-<div id="forgotEmailModal" class="forgot-modal-overlay">
-    <div class="forgot-modal-box">
+if ($show_forgot_email): ?>
+    <div id="forgotEmailModal" class="forgot-modal-overlay">
+        <div class="forgot-modal-box">
 
-        <span class="close-forgot" onclick="closeForgotEmailModal()">X</span>
+            <span class="close-forgot" onclick="closeForgotEmailModal()">X</span>
 
-        <h2>Forgot Email</h2>
-        <p>Please enter your name and mobile number.<br>
-        If there is an account with information you input here, you will receive a SMS message to regain access to your account.</p>
+            <h2>Forgot Email</h2>
+            <p>Please enter your name and mobile number.<br>
+                If there is an account with information you input here, you will receive a SMS message to regain access to your account.</p>
 
-        <form id="forgotEmailForm" method="POST" action="<?= APP_BASE_URL ?>/login/forgot-email">
-            <label>First Name:</label>
-            <input type="text" placeholder="Enter first name" required>
+            <form id="forgotEmailForm" method="POST" action="<?= APP_BASE_URL ?>/login/forgot-email">
+                <label>First Name:</label>
+                <input type="text" placeholder="Enter first name" required>
 
-            <label>Last Name:</label>
-            <input type="text" placeholder="Enter last name" required>
+                <label>Last Name:</label>
+                <input type="text" placeholder="Enter last name" required>
 
-            <label>Mobile Number:</label>
-            <input type="text" name="phone" placeholder="000-000-0000" required>
+                <label>Mobile Number:</label>
+                <input type="text" name="phone" placeholder="000-000-0000" required>
 
-            <div class="forgot-btn-row">
-                <button type="button" class="forgot-change" onclick="closeForgotEmailModal()">Cancel</button>
-                <button type="submit" class="forgot-send" onclick="sendForgotEmail()">Send Message</button>
-            </div>
-        </form>
+                <div class="forgot-btn-row">
+                    <button type="button" class="forgot-change" onclick="closeForgotEmailModal()">Cancel</button>
+                    <button type="submit" class="forgot-send" onclick="sendForgotEmail()">Send Message</button>
+                </div>
+            </form>
 
+        </div>
     </div>
-</div>
 <?php endif; ?>
 <!-- LOGIN_2FA -->
 <?php if ($show2fa_login): ?>
-<div class="twofa-modal-overlay">
-  <div class="twofactor-container">
-    <span class="close-btn" onclick="close2FAModal()">X</span>
+    <div class="twofa-modal-overlay">
+        <div class="twofactor-container">
+            <span class="close-btn" onclick="close2FAModal()">X</span>
 
-    <h1>Two-Factor Authentication</h1>
-    <p>Please enter the 6-digit code sent to your phone.</p>
+            <h1>Two-Factor Authentication</h1>
+            <p>Please enter the 6-digit code sent to your phone.</p>
 
-    <form method="POST" action="<?= APP_BASE_URL ?>/login/2fa">
-      <input type="text" name="code" id="code" maxlength="6" placeholder="XXXXXX" required style="color:white;">
+            <form method="POST" action="<?= APP_BASE_URL ?>/login/2fa">
+                <input type="text" name="code" id="code" maxlength="6" placeholder="XXXXXX" required style="color:white;">
 
-      <div>
-        <button type="submit" class="verify">Verify</button>
-        <button type="button" class="resend" onclick="resend2FACode()">Resend Code</button>
-      </div>
-    </form>
-  </div>
-</div>
+                <div>
+                    <button type="submit" class="verify">Verify</button>
+                    <button type="button" class="resend" onclick="resend2FACode()">Resend Code</button>
+                </div>
+            </form>
+        </div>
+    </div>
 <?php endif; ?>
 <!-- New Email MODAL -->
 <?php
-if ($show_new_email):?>
-<div id="new-email-modal" class="forgot-modal-overlay">
-    <div class="forgot-modal-box">
+if ($show_new_email): ?>
+    <div id="new-email-modal" class="forgot-modal-overlay">
+        <div class="forgot-modal-box">
 
-        <!-- Use same close button class -->
-        <span class="close-forgot" onclick="closeNewEmailModal()">X</span>
+            <!-- Use same close button class -->
+            <span class="close-forgot" onclick="closeNewEmailModal()">X</span>
 
-        <h2>New Email</h2>
-        <p>Please enter a new email.</p>
+            <h2>New Email</h2>
+            <p>Please enter a new email.</p>
 
-        <form id="newEmailForm">
+            <form id="newEmailForm">
 
-            <label>New Email:</label>
-            <input type="password" placeholder="Enter new email" required>
+                <label>New Email:</label>
+                <input type="password" placeholder="Enter new email" required>
 
-            <label>Confirm New Email:</label>
-            <input type="password" placeholder="Confirm new email" required>
+                <label>Confirm New Email:</label>
+                <input type="password" placeholder="Confirm new email" required>
 
-            <div class="forgot-btn-row">
-                <!-- Use same button styles -->
-                <button type="button" class="forgot-send" onclick="submitNewEmail()">Send</button>
-                <button type="button" class="forgot-change" onclick="closeNewEmailModal()">Cancel</button>
-            </div>
-        </form>
+                <div class="forgot-btn-row">
+                    <!-- Use same button styles -->
+                    <button type="button" class="forgot-send" onclick="submitNewEmail()">Send</button>
+                    <button type="button" class="forgot-change" onclick="closeNewEmailModal()">Cancel</button>
+                </div>
+            </form>
 
+        </div>
     </div>
-</div>
 <?php endif; ?>
 <!-- 2-factor MODAL -->
 <?php if ($show2fa_login): ?>
-<div id="two-factor-modal" class="forgot-modal-overlay">
-    <div class="forgot-modal-box">
+    <div id="two-factor-modal" class="forgot-modal-overlay">
+        <div class="forgot-modal-box">
 
-        <!-- Use same close button class -->
-        <span class="close-forgot" onclick="">X</span>
+            <!-- Use same close button class -->
+            <span class="close-forgot" onclick="">X</span>
 
-        <h2>Two Factor Authentification</h2>
-        <p>Please enter the 6-digit code generated by your application to confirm your login.</p>
+            <h2>Two Factor Authentification</h2>
+            <p>Please enter the 6-digit code generated by your application to confirm your login.</p>
 
 
-    <form method="POST" action="<?= APP_BASE_URL ?>/login/2fa">
-      <input type="text" name="code" id="code" maxlength="6" placeholder="XXXXXX" required style="color:white;">
+            <form method="POST" action="<?= APP_BASE_URL ?>/login/2fa">
+                <input type="text" name="code" id="code" maxlength="6" placeholder="XXXXXX" required style="color:white;">
 
-      <div class="forgot-btn-row">
-        <button type="submit" class="verify">Verify</button>
-        <button type="button" class="resend" onclick="resend2FACode()">Resend Code</button>
-      </div>
-    </form>
+                <div class="forgot-btn-row">
+                    <button type="submit" class="verify">Verify</button>
+                    <button type="button" class="resend" onclick="resend2FACode()">Resend Code</button>
+                </div>
+            </form>
 
+        </div>
     </div>
-</div>
 <?php endif; ?>
 <!-- FOOTER BAR BUT only for the login page so idk if we should have a separate file/footer for it -->
 
@@ -238,12 +236,12 @@ ViewHelper::loadFooter();
 ?>
 
 <script>
-function close2FAModal() {
-  document.querySelector('.twofa-modal-overlay').style.display = 'none';
-}
+    function close2FAModal() {
+        document.querySelector('.twofa-modal-overlay').style.display = 'none';
+    }
 
-function resend2FACode() {
-  // TODO: AJAX request to resend
-  alert("Code resent!");
-}
+    function resend2FACode() {
+        // TODO: AJAX request to resend
+        alert("Code resent!");
+    }
 </script>
