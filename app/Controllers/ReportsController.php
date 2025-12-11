@@ -19,40 +19,17 @@ class ReportsController extends BaseController
     {
         $data = [
             'page_title' => 'Welcome to KVC Manager',
-            'contentView' => APP_VIEWS_PATH . '\admin\reportsView.php',
+            'contentView' => APP_VIEWS_PATH . '/pages/reportsView.php',
             'isSideBarShown' => true,
             'data' => [
                 'title' => 'Reports',
                 'message' => 'Reports Page',
-            ],
+            ]
         ];
-
-        // 'data' => $this->adminDataHelper->adminPageData(),
 
         return $this->render($response, 'common/layout.php', $data);
     }
-/*
-    public function __construct(Container $container,
-    private AdminDataHelper $adminDataHelper
-    )
-    {
-        parent::__construct($container);
-    }
 
-    public function index(Request $request, Response $response, array $args): Response
-    {
-        $data = [
-            'title' => "Admin",
-            'message' => "Welcome to the admin page",
-            'contentView' => APP_VIEWS_PATH . '/pages/adminView.php',
-            'isSideBarShown' => true,
-            'isAdmin' => UserContext::isAdmin(),
-            'data' => $this->adminDataHelper->adminPageData(),
-        ];
-
-        return $this->render($response, 'admin/databaseView.php', $data);
-    }
-*/
     public function today(Request $request, Response $response, array $args): Response
 
     {
