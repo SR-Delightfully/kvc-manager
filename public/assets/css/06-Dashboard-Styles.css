@@ -304,5 +304,16 @@
     max-width: 46%;
     background-color: var(--tone-07) !important;
 }
+.wide-widget {
+    min-width: 100%;
+    max-height: 46%;
+    background-color: var(--tone-07) !important;
+}
 
 .big-widget {}
+
+#dashboard .reports-view {
+    & > li > div {
+        max-width: 45%;
+    }
+}
