@@ -68,15 +68,17 @@ $currentPath = $_SERVER['REQUEST_URI'];
                             <span class="tab-dropdown-btn"><i class="bi bi-chevron-down"></i></span>
                         <?php endif; ?>
                     </a>
-                    <?php if (isset($tab['subtabs'])): ?>
-                        <ul class="submenu">
-                            <?php foreach ($tab['subtabs'] as $sub): ?>
-                                <li class="subtab-item">
-                                    <a href="<?= $sub['url'] ?>"><?= $sub['label'] ?></a>
-                                </li>
-                            <?php endforeach; ?>
-                        </ul>
-                    <?php endif; ?>
+                    <?php /*  --------- SUBTABS DISABLED ---------
+                        <?php if (isset($tab['subtabs'])): ?>
+                            <ul class="submenu">
+                                <?php foreach ($tab['subtabs'] as $sub): ?>
+                                    <li class="subtab-item">
+                                        <a href="<?= $sub['url'] ?>"><?= $sub['label'] ?></a>
+                                    </li>
+                                <?php endforeach; ?>
+                            </ul>
+                        <?php endif; ?>
+                        */ ?>
                 </li>
                 <?php } ?>
                 <li class="btn btn-wide btn-secondary flex-row"><a href="<?= APP_BASE_URL ?>/logout">Sign Out</a></li>

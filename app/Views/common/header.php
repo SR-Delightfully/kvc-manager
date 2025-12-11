@@ -42,7 +42,7 @@ function e($value)
 </head>
 
 <body>
-    <?php if (!isset($GLOBALS['SHOW_HEADER']) || $GLOBALS['SHOW_HEADER'] === true): ?>
+    <?php if (!isset($GLOBALS['SHOW_HEADER']) || $GLOBALS['SHOW_HEADER'] === true && UserContext::isLoggedIn()): ?>
     <div id="header-wrapper">
         <header id="header">
             <h1>VKC Manager</h1>

@@ -4,20 +4,25 @@ use App\Helpers\ViewHelper;
 
 $page_title = 'Database Overview';
 ViewHelper::loadHeader($page_title, true);
+ViewHelper::loadSideBar();
 ?>
 
 <div id="rpt-dashboard-container">
 
 
     <div id="rpt-top-tabs">
-        <a href="" class="rpt-tab rpt-active">Daily Progress</a>
+        <a href="<?= APP_BASE_URL ?>/reports" class="rpt-tab rpt-active">Daily Progress</a>
         <a href="" class="rpt-tab">All Time Progress</a>
     </div>
 
 
-    <div id="rpt-chart-filters">
+    <div id="atp-chart-filters">
 
-
+        <!-- PRODUCT SELECT -->
+        <form action="" method="GET">
+            <select name="" id=""></select>
+            <select name="" id=""></select>
+        </form>
         <div class="rpt-select" onclick="rpt_toggleSelect(this)">
             <div class="rpt-select-header">
                 <span id="rpt-product-label">Solution A</span>
@@ -32,7 +37,7 @@ ViewHelper::loadHeader($page_title, true);
             </div>
         </div>
 
-
+        <!-- METRIC SELECT -->
         <div class="rpt-select" onclick="rpt_toggleSelect(this)">
             <div class="rpt-select-header">
                 <span id="rpt-metric-label">Units Produced</span>
@@ -46,6 +51,7 @@ ViewHelper::loadHeader($page_title, true);
                 <div onclick="">Breaks</div>
             </div>
         </div>
+
     </div>
 
 
@@ -54,10 +60,10 @@ ViewHelper::loadHeader($page_title, true);
     </div>
 
 
-    <div class="time-filters">
-        <button class="time-btn">1D</button>
-        <button class="time-btn">1W</button>
-        <button class="time-btn">1M</button>
+    <div class="atp-time-filters">
+        <button class="atp-time-btn">1D</button>
+        <button class="atp-time-btn">1W</button>
+        <button class="atp-time-btn">1M</button>
     </div>
 
 </div>

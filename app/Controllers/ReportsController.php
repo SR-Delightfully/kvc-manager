@@ -31,7 +31,7 @@ class ReportsController extends BaseController
 
         return $this->render($response, 'common/layout.php', $data);
     }
-    
+
 /*
     public function __construct(Container $container,
     private AdminDataHelper $adminDataHelper
@@ -57,13 +57,14 @@ class ReportsController extends BaseController
 
     public function today(Request $request, Response $response, array $args): Response
 
+
     {
         return $this->render($response, 'admin/orderIndexView.php');
     }
 
     public function allTime(Request $request, Response $response, array $args): Response
     {
-        return $this->render($response, 'admin/orderShowView.php');
+        return $this->render($response, 'admin/allTimeReportsView.php');
     }
 
 

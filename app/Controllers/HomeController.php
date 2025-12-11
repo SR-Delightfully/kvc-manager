@@ -36,7 +36,7 @@ class HomeController extends BaseController
 
         //dd($data);
         //var_dump($this->session); exit;
-        return $this->render($response, 'common/layout.php', $data);
+        return $this->render($response, 'admin/dashboardView.php', $data);
     }
 
     public function error(Request $request, Response $response, array $args): Response
