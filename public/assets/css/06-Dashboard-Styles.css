@@ -299,6 +299,10 @@
 
 }
 
-.tall-widget {}
+.tall-widget {
+    min-height: 96%;
+    max-width: 46%;
+    background-color: var(--tone-07) !important;
+}
 
 .big-widget {}
