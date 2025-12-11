@@ -1,11 +1,13 @@
 #dashboard {
-    background-color: #00ff0080;
-    height: 80vh;
-    width: 72vw;
-    position: absolute;
-    right: 3vw;
-    margin-top: 5rem;
+    /* keep dashboard in normal flow so it aligns with the page wrapper */
+    background-color: transparent; /* adjust as needed */
+    width: 100%;
+    min-height: 60vh;
+    position: relative;
+    margin: 5rem 3vw 2rem 0; /* left = 0 because .page/main already leaves room for sidebar */
+    box-sizing: border-box;
 }
+
 /* Work Overview title */
 .page-title {
     text-align: center;
@@ -297,8 +299,27 @@ body {
 }
 
 .page {
-    max-width: 900px;
-    margin: auto;
+    position: relative;
+    z-index: 2;
+
+    /* FULL WIDTH RIGHT OF SIDEBAR */
+    width: calc(100% - 21rem);
+    margin-left: 21rem;
+
+    /* Make background fill entire content area */
+    min-height: 100vh;
+    background: linear-gradient(
+        45deg,
+        var(--tone-01) 0%,
+        var(--tone-07) 50%,
+        var(--color-blue-04) 100%
+    );
+
+    /* Padding for header area */
+    padding-top: 1rem;
+
+    /* REMOVE all width limits */
+    max-width: none !important;
 }
 
 /* TITLE */
@@ -705,4 +726,26 @@ input {
     color: #fff;
     font-size: 14px;
     resize: vertical;
+}
+
+
+.triple-widget-row {
+    display: flex;
+    flex-direction: row;
+    gap: 25px;
+    width: 100%;
+    align-items: flex-start;
+    margin-bottom: 40px;
+}
+
+/* Make all three cards equal width */
+.triple-widget-row > div {
+    flex: 1;
+    min-width: 0; /* prevents overflow */
+}
+
+/* Optional: limit max width so they stay balanced */
+.triple-widget-row .pallet-card,
+.triple-widget-row .products-left {
+    width: 100%;
 }

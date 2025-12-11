@@ -70,6 +70,10 @@ $team_to_delete = $data['team_to_delete'] ?? null;
 
 $page_title = 'Database Overview';
 ViewHelper::loadHeader($page_title, true);
+ViewHelper::loadSideBar();
+?>
+<main class="page">
+<?php
 ?>
 <!-- products section -->
  <div class="products-page">
@@ -248,71 +252,64 @@ ViewHelper::loadHeader($page_title, true);
 </div>
 </div>
 <br><br>
-<!-- PRODUCT TYPE section -->
-<div class="pallet-card">
+<div class="triple-widget-row">
+    <!--  PRODUCT TYPES WIDGET -->
+    <div class="pallet-card">
 
-    <div class="pallet-header">
-        <h2>Product Types</h2>
-        <button class="jump-btn">Jump To ↪</button>
-    </div>
-
-    <div class="form-grid">
-
-        <!-- LEFT SIDE -->
-        <div class="employees-table-card">
-            <form id="product-type-form" action="" method=""></form>
-            <table>
-                <thead>
-                <tr>
-                    <th></th>
-                    <th>ID</th>
-                    <th>Name</th>
-                </tr>
-                </thead>
-
-                <tbody>
-                    <?php foreach ($product_types as $key => $type): //<span class="dot green">
-                        ?>
-                        <tr class="product-type-row">
-                            <td>
-                            <input type="radio" name="product_type_id"
-                                value="<?= $type['product_type_id']?>"
-                                class="type-radio">
-                            </td>
-                            <td><?= $type['product_type_id']?></td>
-                            <td><?= $type['product_type_name']?></td>
-
-                        </tr>
-                    <?php endforeach; ?>
-                </tbody>
-            </table>
+        <div class="pallet-header">
+            <h2>Product Types</h2>
+            <button class="jump-btn">Jump To ↪</button>
         </div>
-            <!-- RIGHT SIDE -->
+        <div class="form-grid">
+            <div class="employees-table-card">
+                <form id="product-type-form" action="" method=""></form>
+                <table>
+                    <thead>
+                    <tr>
+                        <th></th>
+                        <th>ID</th>
+                        <th>Name</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                        <?php foreach ($product_types as $type): ?>
+                            <tr class="product-type-row">
+                                <td>
+                                    <input type="radio"
+                                           name="product_type_id"
+                                           value="<?= $type['product_type_id'] ?>"
+                                           class="type-radio">
+                                </td>
+                                <td><?= $type['product_type_id'] ?></td>
+                                <td><?= $type['product_type_name'] ?></td>
+                            </tr>
+                        <?php endforeach; ?>
+                    </tbody>
+                </table>
+            </div>
             <div class="left-side">
                 <div class="quick-title">Quick Add :</div>
                 <form action="<?= APP_BASE_URL ?>/admin/type" method="POST">
                     <label>Enter Product Type:</label>
-                    <input type="text" name="product_type_name" class="form-control" id="inputName">
-
+                    <input type="text" name="product_type_name" class="form-control">
                     <div class="button-row">
                         <button type="submit" class="save-btn">Save Product Type</button>
                     </div>
                 </form>
-
                 <div class="actions-title">Actions :</div>
-
-                <button id="edit-type" class="yellow-btn">Edit Variant Details</button>
-                <button id="delete-type" class="red-btn">Delete Variant</button>
+                <button id="edit-type" class="yellow-btn">Edit Product Type</button>
+                <button id="delete-type" class="red-btn">Delete Product Type</button>
             </div>
+
         </div>
-</div>
- </div>
-<!-- PRODUCTS section -->
-<div class="products-left">
-<div class="table-card">
-    <form id="product-form" action="" method=""></form>
-        <table>
-            <thead>
+    </div>
+    <!--      PRODUCTS WIDGET   -->
+    <div class="products-left">
+
+        <div class="table-card">
+            <form id="product-form" action="" method=""></form>
+            <table>
+                <thead>
                 <tr>
                     <th></th>
                     <th>ID</th>
@@ -320,122 +317,108 @@ ViewHelper::loadHeader($page_title, true);
                     <th>Type</th>
                     <th>Code</th>
                 </tr>
-            </thead>
-            <tbody id="productBody">
-                <template id="defaultProductsTemplate">
-                    <?php foreach ($products as $key => $product): ?>
-                        <tr class="product-row">
-                            <td>
-                            <input type="radio" name="product_id"
-                                value="<?= $product['product_id']?>"
-                                class="product-radio">
-                            </td>
-                            <td><?= $product['product_id']?></td>
-                            <td><?= $product['product_name']?></td>
-                            <td><?= $product['product_type_id']?></td>
-                            <td><?= $product['product_code']?></td>
-                        </tr>
-                    <?php endforeach; ?>
-                </template>
-                <template id="variantsResult"></template>
-            </tbody>
-        </table>
-
-<div class="bottom-card">
-
-    <div class="left-side">
-
-        <div class="quick-add-title">Quick Add :</div>
-            <form action="<?= APP_BASE_URL ?>/admin/product" method="POST">
-                <label for="">Product Type</label>
-                <select name="product_type_id" class="form-select" id="product_type">
-                    <option value="">Select Product Type</option>
-                    <?php foreach ($product_types as $types): ?>
-                        <option value="<?= $types['product_type_id'] ?>">
-                            <?= $types['product_type_name'] ?>
-                        </option>
-                    <?php endforeach; ?>
-                </select>
-                <input type="text" name="product_code" placeholder="Enter Product Code">
-                <input type="text" name="product_name" placeholder="Enter Product Name">
-                <button type="submit">Add Product</button>
-            </form>
-        <button class="jump-btn">Jump To ↪</button>
+                </thead>
+                <tbody id="productBody">
+                    <template id="defaultProductsTemplate">
+                        <?php foreach ($products as $product): ?>
+                            <tr class="product-row">
+                                <td>
+                                    <input type="radio"
+                                           name="product_id"
+                                           value="<?= $product['product_id'] ?>"
+                                           class="product-radio">
+                                </td>
+                                <td><?= $product['product_id'] ?></td>
+                                <td><?= $product['product_name'] ?></td>
+                                <td><?= $product['product_type_id'] ?></td>
+                                <td><?= $product['product_code'] ?></td>
+                            </tr>
+                        <?php endforeach; ?>
+                    </template>
+                </tbody>
+            </table>
+            <div class="bottom-card">
+                <div class="left-side">
+                    <div class="quick-add-title">Quick Add :</div>
+                    <form action="<?= APP_BASE_URL ?>/admin/product" method="POST">
+                        <label>Product Type</label>
+                        <select name="product_type_id">
+                            <option value="">Select Product Type</option>
+                            <?php foreach ($product_types as $types): ?>
+                                <option value="<?= $types['product_type_id'] ?>">
+                                    <?= $types['product_type_name'] ?>
+                                </option>
+                            <?php endforeach; ?>
+                        </select>
+                        <input type="text" name="product_code" placeholder="Enter Product Code">
+                        <input type="text" name="product_name" placeholder="Enter Product Name">
+                        <button type="submit">Add Product</button>
+                    </form>
+                    <button class="jump-btn">Jump To ↪</button>
+                </div>
+                <div class="right-side">
+                    <label>Search . .</label>
+                    <input id="productSearchInput" type="text" placeholder="Search . .">
+                    <div class="actions-title">Actions :</div>
+                    <button id="edit-product" class="yellow-btn">Edit Product</button>
+                    <button id="delete-product" class="red-btn">Delete Product</button>
+                </div>
+            </div>
+        </div>
     </div>
+    <!--      COLOURS WIDGET    -->
+    <div class="products-left">
 
-    <div class="right-side">
-        <label>Search . .</label>
-        <input id="productSearchInput" type="text" placeholder="Search . .">
-
-        <div class="actions-title">Actions :</div>
-
-        <!-- <button id="view-product" class="blue-btn">View Product Details</button> -->
-        <button id="edit-product" class="yellow-btn">Edit Product Details</button>
-        <button id="delete-product" class="red-btn">Delete Product</button>
+        <div class="table-card">
+            <form id="colour-form" action="" method=""></form>
+            <table>
+                <thead>
+                <tr>
+                    <th></th>
+                    <th>ID</th>
+                    <th>Colour Code</th>
+                    <th>Colour Name</th>
+                </tr>
+                </thead>
+                <tbody id="colourBody">
+                    <template id="defaultColoursTemplate">
+                        <?php foreach ($colours as $colour): ?>
+                            <tr class="colour-row">
+                                <td>
+                                    <input type="radio"
+                                           name="colour_id"
+                                           value="<?= $colour['colour_id'] ?>"
+                                           class="colour-radio">
+                                </td>
+                                <td><?= $colour['colour_id'] ?></td>
+                                <td><?= $colour['colour_code'] ?></td>
+                                <td><?= $colour['colour_name'] ?></td>
+                            </tr>
+                        <?php endforeach; ?>
+                    </template>
+                </tbody>
+            </table>
+            <div class="bottom-card">
+                <div class="left-side">
+                    <div class="quick-add-title">Quick Add :</div>
+                    <form action="<?= APP_BASE_URL ?>/admin/colour" method="POST">
+                        <input type="text" name="colour_code" placeholder="Enter Colour Code">
+                        <input type="text" name="colour_name" placeholder="Enter Colour Name">
+                        <button type="submit">Add Colour</button>
+                    </form>
+                    <button class="jump-btn">Jump To ↪</button>
+                </div>
+                <div class="right-side">
+                    <label>Search . .</label>
+                    <input id="colourSearchInput" type="text" placeholder="Search . .">
+                    <div class="actions-title">Actions :</div>
+                    <button id="edit-colour" class="yellow-btn">Edit Colour</button>
+                    <button id="delete-colour" class="red-btn">Delete Colour</button>
+                </div>
+            </div>
+        </div>
     </div>
-
 </div>
-</div>
-
-<!-- COLOURS section -->
-<div class="products-left">
-<div class="table-card">
-    <form id="colour-form" action="" method=""></form>
-    <table>
-        <thead>
-            <tr>
-                <th></th>
-                <th>ID</th>
-                <th>Colour Code</th>
-                <th>Colour Name</th>
-            </tr>
-        </thead>
-        <tbody id="colourBody">
-            <template id="defaultColoursTemplate">
-                <?php foreach ($colours as $key => $colour): ?>
-                    <tr class="colour-row">
-                        <td>
-                        <input type="radio" name="colour_id"
-                            value="<?= $colour['colour_id']?>"
-                            class="colour-radio">
-                        </td>
-                        <td><?= $colour['colour_id']?></td>
-                        <td><?= $colour['colour_code']?></td>
-                        <td><?= $colour['colour_name']?></td>
-                    </tr>
-                <?php endforeach; ?>
-            </template>
-        </tbody>
-    </table>
-
-<div class="bottom-card">
-
-    <div class="left-side">
-        <form action="<?= APP_BASE_URL ?>/admin/colour" method="POST">
-            <div class="quick-add-title">Quick Add :</div>
-
-            <input type="text" name="colour_code" placeholder="Enter Colour Code">
-            <input type="text" name="colour_name" placeholder="Enter Colour Name">
-
-            <button type="submit">Add Colour</button>
-        </form>
-        <button class="jump-btn">Jump To ↪</button>
-    </div>
-
-    <div class="right-side">
-        <label>Search . .</label>
-        <input id="colourSearchInput" type="text" placeholder="Search . .">
-
-        <div class="actions-title">Actions :</div>
-
-        <!-- <button id="view-colour" class="blue-btn">View Product Details</button> -->
-        <button id="edit-colour" class="yellow-btn">Edit Colour Details</button>
-        <button id="delete-colour" class="red-btn">Delete Colour</button>
-    </div>
-
-</div>
-</div>
-
 
 <!-- BIG_TABLES SECTION -->
 
