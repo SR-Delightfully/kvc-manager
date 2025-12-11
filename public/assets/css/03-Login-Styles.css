@@ -52,7 +52,7 @@
     align-items: center;
     padding-top: 4rem;
     text-align: center;
-    border-right: 3px solid var(--tone-00); 
+    border-right: 3px solid var(--tone-00);
     z-index: 9;
 }
 
@@ -119,6 +119,11 @@
         min-width: calc(100% - 8rem);
     }
 }
+#login-form a {
+    position: relative;
+    z-index: 999999;
+    pointer-events: auto;
+}
 
 #login-form h1 {
     text-align: center;
@@ -131,7 +136,7 @@
     flex-flow: row nowrap;
     justify-content: space-between;
 }
-#login-form-names > span, 
+#login-form-names > span,
 #login-form-password > span {
     min-width: calc(49% - 1.5rem);
 }

@@ -26,14 +26,14 @@ ViewHelper::loadHeader($page_title, false);
                     <div class="logo-circle">VKC</div>
                 </div> -->
                 <form id="login-form" method="POST" action="<?= APP_BASE_URL ?>/login">
-                    <?= App\Helpers\FlashMessage::render() ?>   
+                    <?= App\Helpers\FlashMessage::render() ?>
                     <label for="email">Email Address</label>
                     <input type="text" name="email" id="email" required>
-                    <a href="#">Forgot Email?</a>
+                    <a href="<?= APP_BASE_URL ?>/login/forgot-email">Forgot Email?</a>
                     <br>
                     <label for="password">Password</label>
                     <input type="password" name="password" id="password" required>
-                    <a href="#">Forgot Password?</a>
+                    <a href="<?= APP_BASE_URL ?>/login/forgot-password">Forgot Password?</a>
                     <br>
                     <br>
 
@@ -47,32 +47,17 @@ ViewHelper::loadHeader($page_title, false);
         <div id="login-page-about" class="display-flex-col flex-center">
             <div class="login-page-info">
                 <h1>VKC</h1>
-                <h4>[If VKC is short for something, update with the full company name]</h4>
-                <h2>[Insert Subtitle Here (a short hook/summary of the company)]</h2>
+                <h4>Kian - Vito - Colton</h4>
+                <h2>Co-Packaging Service</h2>
 
                 <div class="description-box">
-                    <p>[INSERT Description - Summary of who/what/where is the company...]</p>
-                    <p>BLALALALALALALALALALALALALALLALALALALALA</p>
-                    <p>LALALALALALALALALALA</p>
-                    <p>Socials:<br>[insert social media links here]</p>
+                    <p>VKC Packaging is a business-to-business company specializing in the packaging of resin products for the flooring industry.</p>
+
+                    <p>Phone number:<br>+1 (514) 513-7900</p>
                 </div>
             </div>
         </div>
-        <form method="POST" action="">
-            <label for="email">Email Address</label>
-            <input type="text" name="email" id="email" required style="color:white;">
-            <a href="</?= APP_BASE_URL ?>/login/forgot-email">Forgot Email?</a>
-            <br>
-            <br>
-            <label for="password">Password</label>
-            <input type="password" name="password" id="password" required style="color:white;">
-            <a href="</?= APP_BASE_URL ?>/login/forgot-password">Forgot Password?</a>
 
-            <div class="button-row">
-                <a class='btn btn-success' href="</?= APP_BASE_URL ?>/register">Sign in</a>
-                <button type="submit" class="signin-btn">Sign In</button>
-            </div>
-        </form>
     </div>
 </div>
 

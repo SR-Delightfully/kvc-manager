@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 use App\Helpers\LocalizationHelper;
 use App\Helpers\UserContext;
@@ -20,26 +20,8 @@ $tabs = [];
 $tabs['tab1'] = [
     "key" => "admin",
     "icon" => "<i class='bi bi-person-gear'></i>",
-    "subtabs" => [
-        ["label" => "Dashboard", "url" => "./admin"],
-        ["label" => "Employee Management", "url" => "./admin/users"],
-        ["label" => "<sup>Employees</sup>", "url" => "./admin/type"],
-        ["label" => "<sup>Schedule</sup>", "url" => "./admin/type"],
-        ["label" => "<sup>Shifts</sup>", "url" => "./admin/type"],
-        ["label" => "Station Management", "url" => "./admin/product"],
-        ["label" => "<sup>Stations</sup>", "url" => "./admin/product"],
-        ["label" => "<sup>Teams</sup>", "url" => "./admin/product"],
-        ["label" => "<sup>Team Members</sup>", "url" => "./admin/product"],
-        ["label" => "Products Management", "url" => "./admin/colour"],
-        ["label" => "<sup>Products</sup>", "url" => "./admin/product"],
-        ["label" => "<sup>Product Types</sup>", "url" => "./admin/product"],
-        ["label" => "<sup>Product Variants</sup>", "url" => "./admin/product"],
-        ["label" => "<sup>Product Colours</sup>", "url" => "./admin/product"],
-        ["label" => "Storage Management", "url" => "./admin/type"],
-        ["label" => "<sup>Pallets</sup>", "url" => "./admin/product"],
-        ["label" => "<sup>Totes</sup>", "url" => "./admin/product"],
-    ]
 ];
+
 
 $tabs['tab2'] = ["key" => "home", "icon" => "<i class='bi bi-columns-gap'></i>"];
 $tabs['tab4'] = ["key" => "schedule", "icon" => "<i class='bi bi-calendar-week'></i>"];
