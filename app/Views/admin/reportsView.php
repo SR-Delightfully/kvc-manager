@@ -4,6 +4,7 @@ use App\Helpers\ViewHelper;
 
 $page_title = 'Reports - Admin';
 ViewHelper::loadHeader($page_title, true);
+ViewHelper::loadSideBar();
 ?>
 
 
@@ -30,7 +31,7 @@ ViewHelper::loadHeader($page_title, true);
 
         </div>
 
-        <a href="" class="rpt-tab rpt-active">All Time Progress</a>
+        <a href="<?= APP_BASE_URL ?>/reports/all-time" class="rpt-tab rpt-active">All Time Progress</a>
 
     </div>
 
@@ -124,56 +125,54 @@ ViewHelper::loadHeader($page_title, true);
         </div>
     </div>
 
-</div>
 
+        <!-- Summary -->
+        <div id="summary-card">
+            <h2>Summary:</h2>
 
-    <!-- Summary -->
-    <div id="summary-card">
-        <h2>Summary:</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Product</th>
+                        <th>Total Units Today</th>
+                        <th>Avg Rate</th>
+                        <th>vs Last Week</th>
+                        <th>vs Global avg</th>
+                    </tr>
+                </thead>
 
-        <table>
-            <thead>
-                <tr>
-                    <th>Product</th>
-                    <th>Total Units Today</th>
-                    <th>Avg Rate</th>
-                    <th>vs Last Week</th>
-                    <th>vs Global avg</th>
-                </tr>
-            </thead>
+                <tbody>
+                    <tr>
+                        <td>Solution A</td>
+                        <td>2913</td>
+                        <td>323</td>
+                        <td>328 (-5%)</td>
+                        <td>318 (+2%)</td>
+                    </tr>
 
-            <tbody>
-                <tr>
-                    <td>Solution A</td>
-                    <td>2913</td>
-                    <td>323</td>
-                    <td>328 (-5%)</td>
-                    <td>318 (+2%)</td>
-                </tr>
+                    <tr>
+                        <td>Solution B</td>
+                        <td>1544</td>
+                        <td>223</td>
+                        <td>227 (+2%)</td>
+                        <td>210 (-6%)</td>
+                    </tr>
 
-                <tr>
-                    <td>Solution B</td>
-                    <td>1544</td>
-                    <td>223</td>
-                    <td>227 (+2%)</td>
-                    <td>210 (-6%)</td>
-                </tr>
+                    <tr>
+                        <td>Pods</td>
+                        <td>2010</td>
+                        <td>286</td>
+                        <td>275 (+3%)</td>
+                        <td>300 (-4%)</td>
+                    </tr>
+                </tbody>
 
-                <tr>
-                    <td>Pods</td>
-                    <td>2010</td>
-                    <td>286</td>
-                    <td>275 (+3%)</td>
-                    <td>300 (-4%)</td>
-                </tr>
-            </tbody>
+            </table>
+        </div>
 
-        </table>
     </div>
 
 </div>
-
-
 
 <?php
 ViewHelper::loadJsScripts();

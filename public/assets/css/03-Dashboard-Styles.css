@@ -17,11 +17,60 @@
     letter-spacing: 5px;
 }
 
-/* Layout for leaderboard + chart */
 .dashboard-grid {
-    display: flex;
+    display: grid;
+    grid-template-columns: 2fr 1fr; /* big | small */
+    grid-template-rows: 1fr 1fr;    /* top row | bottom row */
     gap: 30px;
-    align-items: flex-start;
+    width: calc(100% - 21rem); /* sidebar offset */
+    margin-left: 21rem;
+    padding: 2rem;
+    box-sizing: border-box;
+    position: relative;
+    z-index: 2;
+}
+
+/* widgets */
+.widget {
+    background: #1a1f29;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 0 12px #00000080;
+    color: white;
+}
+
+/* big widgets */
+.widget-large {
+    min-height: 420px;
+}
+
+/* small widgets */
+.widget-small {
+    min-height: 260px;
+}
+
+/* Top-left big widget */
+.widget:nth-child(1) {
+    grid-column: 1 / 2;
+    grid-row: 1 / 2;
+}
+
+/* Top-right small widget */
+.widget:nth-child(2) {
+    grid-column: 2 / 3;
+    grid-row: 1 / 2;
+}
+
+/* Bottom-left small widget */
+.widget:nth-child(3) {
+    grid-column: 1 / 2;
+    grid-row: 2 / 3;
+}
+
+/* Bottom-right big widget */
+.widget:nth-child(4) {
+    grid-column: 2 / 3;
+    grid-row: 2 / 3;
 }
 
 /* Left column */

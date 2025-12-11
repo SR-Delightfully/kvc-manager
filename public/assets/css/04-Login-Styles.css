@@ -35,10 +35,60 @@
 
 
 .left-panel {
-  width: 40%;
-  padding: 40px;
-  color: white;
+    width: 20%;
+    padding: 40px;
+    background: rgba(10, 15, 22, 0.85);
+    border-right: 2px solid #000;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
 
+/* Center the info */
+.left-info-box {
+    max-width: 420px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+/* VKC title */
+.brand-title {
+    font-size: 56px;
+    font-weight: 800;
+    color: #ffffff;
+    margin-bottom: 5px;
+}
+
+/* Kian - Vito - Colton */
+.brand-sub {
+    font-size: 20px;
+    letter-spacing: 1px;
+    color: #d6d6d6;
+    margin-top: 0;
+}
+
+/* Co-Packaging Service */
+.brand-service {
+    font-size: 34px;
+    font-weight: 700;
+    margin: 20px 0;
+    color: #ffffff;
+}
+
+/* Description paragraph */
+.brand-desc {
+    font-size: 16px;
+    color: #cccccc;
+    margin-bottom: 30px;
+    line-height: 1.5;
+}
+
+/* Contact info */
+.brand-phone {
+    font-size: 18px;
+    color: #ffffff;
+    font-weight: 500;
+    line-height: 1.5;
 }
 
 .description-box {
@@ -271,4 +321,27 @@ body {
 @keyframes fadeDown {
     from { opacity: 0; transform: translateY(-25px); }
     to   { opacity: 1; transform: translateY(0); }
+}
+
+.signin-btn {
+    background: #252525;
+    padding: 10px 25px;
+    border-radius: 6px;
+    color: white;
+    border: 2px solid #000;
+    width: auto;           /* stops stretching */
+    min-width: 120px;      /* optional: keeps it neat */
+}
+
+/* Same for the Sign Up link button */
+.button-row a.btn-success {
+    width: auto;
+    min-width: 120px;
+}
+
+/* Reduce spacing between buttons */
+.button-row {
+    display: flex;
+    gap: 15px;             /* replaces space-between */
+    justify-content: center;
 }

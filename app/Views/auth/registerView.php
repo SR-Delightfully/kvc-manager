@@ -13,114 +13,67 @@ ViewHelper::loadHeader($page_title,false);
 
 <!-- > Ids should be specific, Classes can be generic -->
 
-<div id="registration-page-wrapper" class="page">
-  <div id="registration-page-content" class="display-flex-row">
-    <div id="registration-page-about" class="display-flex-row flex-center">
-        <div id="registration-page-info">
-          <h1>VKC - Manager</h1>
-          <h2>Join [insert company legal name] today</h2>
-          <p>Registering for an account will grant you access extensive data displays, easy work log process and access to your work schedule all in one place.<p>
-          <p>This web application is intended to be used only by employees of the company. If you are not an existing employee, or a new hire then see below.</p> 
-          <p>
-            VKC is a new company with an ever expanding work force.
-            For information on how to join the team,<br>please contact us
-            <a href="#">here</a><br>or<br> check out our <a href="#">job postings</a>.
-          </p>
-        </div>
-        <div id="registration-page-socials">
-          <!-- [insert social media links here] -->
+<div class="login-container">
+
+    <!-- LEFT PANEL (same as login) -->
+    <div class="left-panel">
+        <div class="left-info-box">
+            <h1 class="brand-title">VKC</h1>
+            <h3 class="brand-sub">Kian · Vito · Colton</h3>
+
+            <h2 class="brand-service">Co-Packaging Service</h2>
+
+            <p class="brand-desc">
+                VKC Packaging is a business-to-business company specializing in
+                the packaging of resin products for the flooring industry.
+            </p>
+
+            <p class="brand-phone">
+                Phone number:<br>
+                +1 (514) 513-7900
+            </p>
         </div>
     </div>
-    <div id="register">
-    <div id="registration-form-wrapper" class="auth-form-wrapper metallic">
-      <form id="registration-form" method="POST" action="<?= APP_BASE_URL ?>/register">
-          <!-- <h1>Register</h1> -->
-          <!-- Any user signing up should be an employee role. -->
-          <!-- Only admins can edit a user's role to make them also an admin. -->
 
-          <!-- <label for="user_role">User Role</label>
-          <select id="user_role" name="role" required>
-              <option value="">-- Select Role --</option>
-              <option value="admin">Admin</option>
-              <option value="user">Employee</option>
-          </select> -->
-<<<<<<< HEAD
+    <!-- RIGHT PANEL (registration form) -->
+    <div class="form-panel">
+
+        <div class="center-logo">
+            <div class="logo-circle">VKC</div>
+        </div>
+
+        <form method="POST" action="<?= APP_BASE_URL ?>/register">
+
             <?= App\Helpers\FlashMessage::render() ?>
-=======
-<h2>Registration intended for employees only.</h2>
->>>>>>> ce6db419c33c5ef13caef49eb8242292f2e05051
-          <div id="registration-form-names">
-            <span>
-              <label for="first_name">First Name:</label>
-              <input type="text" id="first_name" name="first_name" placeholder="Enter first name" required style="color:white;">
-            </span>
-            <span>
-              <label for="last_name">Last Name:</label>
-            <input type="text" id="last_name" name="last_name" placeholder="Enter last name" required style="color:white;">
-            </span>
-          </div>
 
-          <div id="registration-form-contact">
-            <span>
-              <label for="email">Email:</label>
-              <input type="email" id="email" name="email" placeholder="Enter email address" required style="color:white;">
-            </span>
-            <span>
-              <label for="phone">Phone</label>
-              <input type="tel" id="phone" name="phone" placeholder="Enter phone number" required style="color:white;">
-            </span>
-          </div>
+            <label for="first_name">First Name</label>
+            <input type="text" name="first_name" id="first_name" required style="color:white;">
 
-          <div id="registration-form-password">
-            <span>
-              <label for="password">Password:</label>
-              <input type="password" id="password" name="password" placeholder="Enter password" required style="color:white;">
-            </span>
-            <!-- When Registering a user, it is important to ensure that the user -->
-            <!-- did not make any mistakes in their password, to do so a password -->
-            <!-- confirmation is required to verify that the user will remember it -->
-            <span>
-              <label for="password-confirm">Password Confirmation:</label>
-              <input type="password" id="password-confirm" name="password-confirm" placeholder="Re-enter password" required style="color:white;">
-            </span>
-          </div>
+            <label for="last_name">Last Name</label>
+            <input type="text" name="last_name" id="last_name" required style="color:white;">
 
-          <!-- Date created is an attribute that we will automatically generate -->
+            <label for="email">Email Address</label>
+            <input type="email" name="email" id="email" required style="color:white;">
 
-          <!-- <label for="user_dc">Date Created</label>
-          <input type="date" id="user_dc" name="user_dc" required> -->
+            <label for="phone">Phone Number</label>
+            <input type="tel" name="phone" id="phone" required style="color:white;">
 
-          <!-- Can be replaced with the users birthday instead? -->
-          <!-- Con: We would have to add another attribute to the user table -->
-          <!-- Pro: Highlighting birthdays can increase work moral and team spirit -->
-          <!-- <label for="user_dc">Birth Date</label>
-          <input type="date" id="user_bday" name="user_bday" required> -->
+            <label for="password">Password</label>
+            <input type="password" name="password" id="password" required style="color:white;">
 
-          <!-- User Status would also be autogenerated. -->
-          <!-- The user should not be allowed to manipulate this attribute at all -->
+            <label for="password-confirm">Confirm Password</label>
+            <input type="password" name="password-confirm" id="password-confirm" required style="color:white;">
 
-          <!-- <label for="user_status">User Status</label>
-          <select id="user_status" name="user_status" required>
-              <option value="">-- Select Status --</option>
-              <option value="active">Active</option>
-              <option value="inactive">Inactive</option>
-              <option value="suspended">Suspended</option>
-          </select> -->
-          <div id="registration-form-code">
-            <span>
-              <label for="code">Registration Code:</label>
-              <input type="text" id="code" name="code" placeholder="Enter Code" required style="color:white;">
-            </span>
-          </div>
+            <label for="code">Registration Code</label>
+            <input type="text" name="code" id="code" required style="color:white;">
 
-          <div id="registration-form-buttons">
-              <button type="submit">Register</button>
-              <button type="reset">Clear</button>
-          </div>
-      </form>
+            <div class="button-row">
+                <a class="btn btn-success" href="<?= APP_BASE_URL ?>/login">Login</a>
+                <button type="submit" class="signin-btn">Register</button>
+            </div>
+        </form>
+
     </div>
-    </div>
-  </div>
 </div>
 <?php
 ViewHelper::loadJsScripts();

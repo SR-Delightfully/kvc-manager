@@ -1,12 +1,23 @@
-
-
 #rpt-dashboard-container {
-    width: 100%;
-    padding: 2rem;
-    box-sizing: border-box;
-    color: var(--tone-10);
-    font-family: "Inter", sans-serif;
+    margin-left: 21rem;                  /* shift right of sidebar */
+    padding-top: calc(9vh + 1rem);       /* push below header */
+    position: relative;
+    z-index: 1;
 }
+
+/* When sidebar collapses */
+@media screen and (max-width: 1023px) {
+    #rpt-dashboard-container {
+        margin-left: 4rem;
+    }
+}
+
+@media screen and (max-width: 719px) {
+    #rpt-dashboard-container {
+        margin-left: 0;
+    }
+}
+
 
 
 #rpt-top-tabs {
@@ -204,4 +215,86 @@
 
 .rpt-select-options div:hover {
     background: var(--tone-08);
+}
+
+.atp-select {                           /* same container style as rpt-select */
+    position: relative;
+    width: 220px;
+    user-select: none;
+    font-family: Inter, sans-serif;
+    z-index: 10;
+}
+
+.atp-select-header {                    /* same style as rpt-select-header */
+    background: var(--tone-09);
+    padding: 0.9rem 1rem;
+    border-radius: 0.6rem;
+    border: 2px solid var(--tone-08);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    color: var(--tone-01);
+    font-size: 1.25rem;
+}
+
+.atp-arrow {
+    font-size: 1.4rem;
+    transition: 0.2s;
+}
+
+.atp-select.open .atp-arrow {
+    transform: rotate(180deg);
+}
+
+.atp-options {
+    display: none;
+    flex-direction: column;
+    background: var(--tone-09);
+    border: 2px solid var(--tone-08);
+    border-radius: 0 0 0.6rem 0.6rem;
+    width: 100%;
+    margin-top: -2px;
+}
+
+.atp-options div {
+    padding: 0.9rem 1rem;
+    font-size: 1.2rem;
+    cursor: pointer;
+    color: var(--tone-01);
+    border-bottom: 2px solid var(--tone-08);
+}
+
+.atp-options div:last-child {
+    border-bottom: none;
+}
+
+.atp-options div:hover {
+    background: var(--tone-08);
+}
+
+.atp-time-filters {
+    display: flex;
+    gap: 0.75rem;
+    margin-top: 1rem;
+    justify-content: center;
+}
+
+.atp-time-btn {
+    width: auto;              /* shrink to fit content */
+    min-width: 80px;          /* small but readable */
+    text-align: center;
+    padding: 0.3rem 0.6rem;   /* smaller padding */
+    font-size: 1rem;       /* even smaller text */
+}
+
+.atp-time-btn:hover {
+    background: var(--tone-08);
+}
+
+#atp-chart-filters {
+    display: flex;
+    gap: 1.5rem;
+    align-items: center;
+    margin-bottom: 1.5rem;
 }
