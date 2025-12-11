@@ -160,7 +160,7 @@ $isEmployee = UserContext::isEmployee();
         <!-- This is the employee's view -->              
         <?php elseif ($isEmployee): ?>
             <ul id="dashboard" class="center-v">
-                <li>
+                <li class="metallic-bg">
                     <h2> Leaderboard </h2>
                     <h3> [Component SubTitle] (a quick explanation of the contents) </h3>
                     <div>
@@ -188,7 +188,7 @@ $isEmployee = UserContext::isEmployee();
                         <!-- List of team drop downs -->
                     </div>
                 </li>
-                <li>
+                <li class="metallic-bg">
                     <h2> Work Overview </h2>
                     <h3> [Component SubTitle] (a quick explanation of the contents) </h3>
                     <div>

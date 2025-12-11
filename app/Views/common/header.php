@@ -23,6 +23,10 @@ function e($value)
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title><?= isset($page_title) ? e($page_title) : 'KVC Manager' ?></title>
+
+    <!-- bootstrap -->
+     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+
     <link rel="stylesheet" href="./public/assets/css/00-Global-Styles.css">
     <link rel="stylesheet" href="./public/assets/css/01-Element-Styles.css">
     <link rel="stylesheet" href="./public/assets/css/02-Register-Styles.css">
@@ -35,8 +39,7 @@ function e($value)
     <link rel="stylesheet" href="./public/assets/css/09-Twofactor-Styles.css">
 
    
-    <!-- bootstrap -->
-     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+
 </head>
 
 <body>
