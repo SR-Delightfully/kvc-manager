@@ -414,3 +414,14 @@ main,
         width: calc(100% - 4rem);
     }
 }
+
+/* Fix input fields inside work table */
+#work-table input,
+#work-table select,
+#work-table textarea {
+    width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
+    margin-top: 0; /* optional: prevents vertical overflow */
+    padding: 0.4rem 0.6rem;
+}

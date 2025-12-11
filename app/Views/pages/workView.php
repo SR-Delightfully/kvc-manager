@@ -62,15 +62,15 @@ function fmt_time(?string $ts): string {
     <?php endif; ?>
 
     <section id="work-header">
-        <h1>
+        <h1 style="color: white;">
             <?= !empty($station['station_name'])
                 ? htmlspecialchars($station['station_name'])
                 : 'No station selected' ?>
         </h1>
 
         <div id="team-members">
-            <strong>Team Members:</strong>
-            <span>
+            <strong style="font-size: 30px;">Team Members:</strong>
+            <span style="font-size: 25px;">
                 <?php foreach ($team_members as $key => $member): ?>
                     <?php echo $member['first_name'] ?>
                 <?php endforeach; ?>

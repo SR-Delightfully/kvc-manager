@@ -19,7 +19,7 @@ ViewHelper::loadHeader($page_title,false);
     <div class="left-panel">
         <div class="left-info-box">
             <h1 class="brand-title">VKC</h1>
-            <h3 class="brand-sub">Kian · Vito · Colton</h3>
+            <h3 class="brand-sub">Vito · Kian · Colton</h3>
 
             <h2 class="brand-service">Co-Packaging Service</h2>
 

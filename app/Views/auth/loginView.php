@@ -25,7 +25,7 @@ ViewHelper::loadHeader($page_title);
 
         <div class="left-info-box">
             <h1 class="brand-title">VKC</h1>
-            <h3 class="brand-sub">Kian · Vito · Colton</h3>
+            <h3 class="brand-sub">Vito · Kian · Colton</h3>
 
             <h2 class="brand-service">Co-Packaging Service</h2>
 
@@ -62,7 +62,7 @@ ViewHelper::loadHeader($page_title);
             <a href="<?= APP_BASE_URL ?>/login/forgot-password">Forgot Password?</a>
 
             <div class="button-row">
-                <a class='btn btn-success' href="<?= APP_BASE_URL ?>/register">Sign in</a>
+                <a class='btn btn-success' href="<?= APP_BASE_URL ?>/register">Create New Account</a>
                 <button type="submit" class="signin-btn">Sign In</button>
             </div>
         </form>
