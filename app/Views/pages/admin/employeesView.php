@@ -3,7 +3,10 @@
 <!-- TODO: move big users table to this file -->
 <!-- TODO: move big schedules to this file -->
 <!-- TODO: move big shifts table to this file -->
- <div class="dashboard-section"> 
+ <div class="dashboard-section"
+ 
+ 
+ > 
     <!-- Users Table -->
 <h2 style="color: white;">Users</h2>
 <div class="table-responsive small">

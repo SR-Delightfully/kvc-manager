@@ -404,6 +404,9 @@ $is_variant_dlt_open = $is_variant_dlt_open ?? null;
                                     <tr class="variant-row">
                                         <td> 
                                         </td>
+                                                                                <td> 
+                                        </td>
+                                        
                                         <td> 
                                             <button class="btn btn-wide btn-primary">View Full Table</button>
                                         </td>
@@ -481,7 +484,7 @@ $is_variant_dlt_open = $is_variant_dlt_open ?? null;
                 </li>
                 <!-- // * Suggestion, instead of schedule, display stations (station_id, station_name, team_num, team_members (a dropdown?))   -->
                 <!-- Schedule Component -->
-                <li class="mini-widget">
+                <li id="schedule-mini-widget" class="mini-widget">
                     <div class="header">
                         <h2>S C H E D U L E S</h2><button class="btn btn-thin btn-secondary">↪ View Table</button>
                     </div>  
@@ -606,6 +609,39 @@ $is_variant_dlt_open = $is_variant_dlt_open ?? null;
                                         <td><?= $user['user_dc']?></td>
                                     </tr>
                                 <?php endforeach; ?>
+                                                                    <tr class="variant-row">
+                                        <td> 
+                                        </td>
+                                                                                <td> 
+                                        </td>
+                                                                                <td> 
+                                        </td>
+                                                                                <td> 
+                                        </td>
+                                        <td> 
+                                            <button class="btn btn-wide btn-primary">View Full Table</button>
+                                        </td>
+                                        <td> 
+                                        </td>
+                                        <td> 
+                                        </td>
+                                                                                <td> 
+                                        </td>
+                                    </tr>
+                                    <tr class="variant-row">
+                                        <td> 
+                                        </td>
+                                    </tr>
+                                    <tr class="variant-row">
+                                        <td> 
+                                        </td>
+                                    </tr>
+                                    <tr class="variant-row">
+                                        <td> 
+                                        </td>
+                                        
+                                    </tr>
+                                    
                             </tbody>
                         </table>
 
@@ -646,10 +682,9 @@ $is_variant_dlt_open = $is_variant_dlt_open ?? null;
 
                                 <!-- <div class="actions-title">Actions :</div> -->
 
-                                <button class="btn btn-wide btn-okay">View Employee</button>
+                                <button class="btn btn-wider btn-okay">View Employee</button>
                                 <button class="btn btn-thin btn-warning">Edit Employee</button>
                                 <button class="btn btn-thin btn-danger">Delete Employee</button>
-                                <button class="btn btn-wide btn-primary">↪ view Table</button>
                             </div>
                         </form>
                 </li>
@@ -658,30 +693,18 @@ $is_variant_dlt_open = $is_variant_dlt_open ?? null;
                 <li>
                     <?php include __DIR__ . '/admin/employeesView.php'; ?>
                     <!-- TODO: create admin/employees overview -->
-                    <!-- TODO: move big employees table to this file -->
-                    <!-- TODO: move big schedules to this file -->
-                    <!-- TODO: move big shifts table to this file -->
                 </li>
                 <li>
                     <?php include __DIR__ . '/admin/stationsView.php'; ?>
                     <!-- TODO: create admin/stations overview -->
-                    <!-- TODO: move big stations table to this file -->
-                    <!-- TODO: move big team table to this file -->
-                    <!-- TODO: move big team members table to this file -->
                 </li>
                 <li>
                     <?php include __DIR__ . '/admin/storageView.php'; ?>
                     <!-- TODO: call admin/storage view -->
-                    <!-- TODO: create admin/storage overview -->
-                    <!-- TODO: move big pallets table to this file -->
-                    <!-- TODO: move big totes table to this file -->
                 </li>
                 <li>
                     <?php include __DIR__ . '/admin/productsView.php'; ?>
                     <!-- TODO: create admin/products overview -->
-                    <!-- TODO: move big products table to this file -->
-                    <!-- TODO: move big product_type table to this file -->
-                    <!-- TODO: move big product_variant table to this file -->
                 </li>
             </ul>
         <?php endif; ?>

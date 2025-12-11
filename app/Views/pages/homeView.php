@@ -66,29 +66,29 @@ $isEmployee = UserContext::isEmployee();
                             <!-- TEAM TEMPLATE (repeat for each team) -->
                             <div class="team-group">
                                 <div class="team-header" onclick="toggleTeam(this)">
-                                    <span class="team-label">Team 1 :</span>
+                                    <h3 class="team-label">Team 1 :</h3>
                                     <span class="team-arrow">▼</span>
                                 </div>
                                 <!-- MEMBER ROW TEMPLATE -->
                                 <div class="team-members">
                                     <div class="member">
-                                        <div class="avatar"></div>
-                                        <span class="fname">First_Name1</span>
-                                        <span class="lname">Last_Name1</span>
+                                        <img href="/" class="avatar"></img>
+                                        <p class="fname">First_Name1</p>
+                                        <p class="lname">Last_Name1</p>
                                         <button class="btn btn-thin btn-danger">Remove</button>
                                         <button class="btn btn-thin btn-okay">Contact</button>
                                     </div>
                                     <div class="member">
-                                        <div class="avatar"></div>
-                                        <span class="fname">First_Name2</span>
-                                        <span class="lname">Last_Name2</span>
+                                        <img href="/" class="avatar"></img>
+                                        <p class="fname">First_Name2</p>
+                                        <p class="lname">Last_Name2</p>
                                         <button class="btn btn-thin btn-danger">Remove</button>
                                         <button class="btn btn-thin btn-okay">Contact</button>
                                     </div>
                                 <div class="member">
-                                    <div class="avatar"></div>
-                                    <span class="fname">First_Name3</span>
-                                    <span class="lname">Last_Name3</span>
+                                    <img href="/" class="avatar"></img>
+                                    <p class="fname">First_Name3</p>
+                                    <p class="lname">Last_Name3</p>
                                     <button class="btn btn-thin btn-danger">Remove</button>
                                     <button class="btn btn-thin btn-okay">Contact</button>
                                 </div>
@@ -101,9 +101,9 @@ $isEmployee = UserContext::isEmployee();
                                 </div>
                                 <div class="team-members">
                                     <div class="member">
-                                        <div class="avatar"></div>
-                                        <span class="fname">First_Name4</span>
-                                        <span class="lname">Last_Name4</span>
+                                        <img href="/" class="avatar"></img>
+                                        <p class="fname">First_Name4</p>
+                                        <p class="lname">Last_Name4</p>
                                         <button class="btn btn-thin btn-danger">Remove</button>
                                         <button class="btn btn-thin btn-okay">Contact</button>
                                     </div>
@@ -117,9 +117,9 @@ $isEmployee = UserContext::isEmployee();
                                 </div>
                                 <div class="team-members">
                                     <div class="member">
-                                        <div class="avatar"></div>
-                                        <span class="fname">First_Name5</span>
-                                        <span class="lname">Last_Name5</span>
+                                        <img href="/" class="avatar"></img>
+                                        <p class="fname">First_Name5</p>
+                                        <p class="lname">Last_Name5</p>
                                         <button class="btn btn-thin btn-danger">Remove</button>
                                         <button class="btn btn-thin btn-okay">Contact</button>
                                     </div>
@@ -133,9 +133,9 @@ $isEmployee = UserContext::isEmployee();
                                 </div>
                                 <div class="team-members">
                                     <div class="member">
-                                        <div class="avatar"></div>
-                                        <span class="fname">First_Name6</span>
-                                        <span class="lname">Last_Name6</span>
+                                        <img href="/" class="avatar"></img>
+                                        <p class="fname">First_Name6</p>
+                                        <p class="lname">Last_Name6</p>
                                         <button class="btn btn-thin btn-danger">Remove</button>
                                         <button class="btn btn-thin btn-okay">Contact</button>
                                     </div>
@@ -206,10 +206,10 @@ $isEmployee = UserContext::isEmployee();
             <!-- <p>You are not logged in.</p> -->
             <ul id="dashboard" class="center-v">
                 <!-- Leaderboard Component -->
-                <li class="metallic-bg">
+                <li id="leaderboard-card-admin" class="metallic small-widget">
                     <h2> Leaderboard </h2>
-                    <h3> [Component SubTitle] (a quick explanation of the contents) </h3>
-                    <div class="bars">
+                    <h3> Our teams ranked by their packaging speeds</h3>
+                    <div class="bars metallic-bg">
                         <div class="bar bar1" style="height: 70%">
                             <span class="rank">1</span>
                         </div>
@@ -220,7 +220,7 @@ $isEmployee = UserContext::isEmployee();
                             <span class="rank">3</span>
                         </div>
                     </div>
-                    <div>
+                    <div id="leaderboard-table-wrapper">
                         <table class="leaderboard-table">
                             <tr>
                                 <th>Team Name</th>
@@ -235,16 +235,18 @@ $isEmployee = UserContext::isEmployee();
                     </div>
                 </li>
                 <!-- Team Assignment Component -->
-                <li>
-                    <h2> Team Assignment </h2>
-                    <h3> [Component SubTitle] (a quick explanation of the contents) </h3>
+                <li id="teamAssignment-card-admin" class="mini-widget">
+                    <div class="header">            
+                        <h2> Team Assignment </h2>
+                    </div>  
+                    <h3> Decide who is on what team today! </h3>
                     <div>
                         <div class="team-assignment-date">
                             <span>Date:</span>
                             <input type="text" value="2025/11/08" readonly>
                         </div>
                         <!-- TODO: clean up code, use php to create a loop to dynamically render data -->
-                        <div class="team-assignment-card">
+                        <div id="team-assignment-card">
                             <!-- TEAM TEMPLATE (repeat for each team) -->
                             <div class="team-group">
                                 <div class="team-header" onclick="toggleTeam(this)">
@@ -254,23 +256,23 @@ $isEmployee = UserContext::isEmployee();
                                 <!-- MEMBER ROW TEMPLATE -->
                                 <div class="team-members">
                                     <div class="member">
-                                        <div class="avatar"></div>
-                                        <span class="fname">First_Name1</span>
-                                        <span class="lname">Last_Name1</span>
+                                        <img href="/" class="avatar"></img>
+                                        <p class="fname">First_Name1</span>
+                                        <p class="lname">Last_Name1</span>
                                         <button class="btn btn-thin btn-danger">Remove</button>
                                         <button class="btn btn-thin btn-okay">Contact</button>
                                     </div>
                                     <div class="member">
-                                        <div class="avatar"></div>
-                                        <span class="fname">First_Name2</span>
-                                        <span class="lname">Last_Name2</span>
+                                        <img href="/" class="avatar"></img>
+                                        <p class="fname">First_Name2</span>
+                                        <p class="lname">Last_Name2</span>
                                         <button class="btn btn-thin btn-danger">Remove</button>
                                         <button class="btn btn-thin btn-okay">Contact</button>
                                     </div>
                                 <div class="member">
-                                    <div class="avatar"></div>
-                                    <span class="fname">First_Name3</span>
-                                    <span class="lname">Last_Name3</span>
+                                    <img href="/" class="avatar"></img>
+                                    <p class="fname">First_Name3</span>
+                                    <p class="lname">Last_Name3</span>
                                     <button class="btn btn-thin btn-danger">Remove</button>
                                     <button class="btn btn-thin btn-okay">Contact</button>
                                 </div>
@@ -283,9 +285,9 @@ $isEmployee = UserContext::isEmployee();
                                 </div>
                                 <div class="team-members">
                                     <div class="member">
-                                        <div class="avatar"></div>
-                                        <span class="fname">First_Name4</span>
-                                        <span class="lname">Last_Name4</span>
+                                        <img href="/" class="avatar"></img>
+                                        <p class="fname">First_Name4</span>
+                                        <p class="lname">Last_Name4</span>
                                         <button class="btn btn-thin btn-danger">Remove</button>
                                         <button class="btn btn-thin btn-okay">Contact</button>
                                     </div>
@@ -299,9 +301,9 @@ $isEmployee = UserContext::isEmployee();
                                 </div>
                                 <div class="team-members">
                                     <div class="member">
-                                        <div class="avatar"></div>
-                                        <span class="fname">First_Name5</span>
-                                        <span class="lname">Last_Name5</span>
+                                        <img href="/" class="avatar"></img>
+                                        <p class="fname">First_Name5</span>
+                                        <p class="lname">Last_Name5</span>
                                         <button class="btn btn-thin btn-danger">Remove</button>
                                         <button class="btn btn-thin btn-okay">Contact</button>
                                     </div>
@@ -315,9 +317,9 @@ $isEmployee = UserContext::isEmployee();
                                 </div>
                                 <div class="team-members">
                                     <div class="member">
-                                        <div class="avatar"></div>
-                                        <span class="fname">First_Name6</span>
-                                        <span class="lname">Last_Name6</span>
+                                        <img href="/" class="avatar"></img>
+                                        <p class="fname">First_Name6</span>
+                                        <p class="lname">Last_Name6</span>
                                         <button class="btn btn-thin btn-danger">Remove</button>
                                         <button class="btn btn-thin btn-okay">Contact</button>
                                     </div>
@@ -327,22 +329,27 @@ $isEmployee = UserContext::isEmployee();
                     </div>
                 </li>
                 <!-- Schedule Component -->
-                <li>
-                    <h2> Schedule </h2>
-                    <h3> [Component SubTitle] (a quick explanation of the contents) </h3>
-                    <div>
+                <li id="Schedule-card-admin" class="mini-widget">
+                    <div class="header">
+                        <h2> Schedule </h2>
+                    </div>  
+
+                    <h3> Future implementation:</h3>
+                        <form>
                         <!-- Quick view of data -->
                         <!-- Calendar -->
-                    </div>  
-                </li>
+                         <p>Here you would find a calendar</p>
+                         <p> and a list of employees your schedules</p>
+                        </form>
+                </li >
                 <!-- Work Overview Component -->
-                <li class="metallic-bg">
-                    <h2> Work Overview </h2>
+                <li id="teamProgress-card-admin" class="metallic small-widget">
+                    <h2> Team Progress </h2>
                     <h3> [Component SubTitle] (a quick explanation of the contents) </h3>
-                    <div>
+                    <div class="metallic-bg">
                         <canvas id="teamsProgressChart"></canvas>
                     </div>
-                    <div class="team-summary-list">
+                    <div id="team-summary-list-wrapper">
                         <div class="team-summary-row best">
                             <span class="team-name">Best Team</span>
                             <span class="summary-item">Date: <span class="value">2025/11/08</span></span>
