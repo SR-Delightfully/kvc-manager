@@ -58,21 +58,6 @@ ViewHelper::loadHeader($page_title, false);
                 </div>
             </div>
         </div>
-        <form method="POST" action="">
-            <label for="email">Email Address</label>
-            <input type="text" name="email" id="email" required style="color:white;">
-            <a href="</?= APP_BASE_URL ?>/login/forgot-email">Forgot Email?</a>
-            <br>
-            <br>
-            <label for="password">Password</label>
-            <input type="password" name="password" id="password" required style="color:white;">
-            <a href="</?= APP_BASE_URL ?>/login/forgot-password">Forgot Password?</a>
-
-            <div class="button-row">
-                <a class='btn btn-success' href="</?= APP_BASE_URL ?>/register">Sign in</a>
-                <button type="submit" class="signin-btn">Sign In</button>
-            </div>
-        </form>
     </div>
 </div>
 
