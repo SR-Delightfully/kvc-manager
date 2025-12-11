@@ -246,7 +246,7 @@ $isEmployee = UserContext::isEmployee();
                             <input type="text" value="2025/11/08" readonly>
                         </div>
                         <!-- TODO: clean up code, use php to create a loop to dynamically render data -->
-                        <div class="team-assignment-card">
+                        <div id="team-assignment-card">
                             <!-- TEAM TEMPLATE (repeat for each team) -->
                             <div class="team-group">
                                 <div class="team-header" onclick="toggleTeam(this)">
