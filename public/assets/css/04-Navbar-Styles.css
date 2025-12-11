@@ -323,9 +323,12 @@
 } */
 
 /* ---------- SUBMENU SYSTEM ---------- */
+.subtab-item > a {
+    cursor: not-allowed !important;
+}
 
 .tab-with-submenu {
-    width: 100%;
+    width: calc(100%-2rem);
     position: relative;
 }
 
@@ -347,7 +350,7 @@
     padding: 0;
 
     position: absolute;
-    top: 4rem;         
+    top: 4rem !important;         
     left: 0;
     border-radius: 0 0 1.2rem 1.2rem;
     overflow: hidden;

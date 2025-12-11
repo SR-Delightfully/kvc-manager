@@ -101,7 +101,7 @@
         background-image: none !important;  
     }
     & > div {
-        background-color: hotpink;
+        /* background-color: hotpink; */
         position: relative;
         top: 2rem;
         height: 80%;

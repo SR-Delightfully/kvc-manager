@@ -61,7 +61,7 @@
         height: calc(44% - 4rem);
     }
     & > li:nth-child(3n - 2) {
-        background-color: hotpink;
+        /* background-color: hotpink; */
         height: calc(59% - 2rem);
     }
 }
@@ -121,7 +121,7 @@
         margin-top: -5rem;
     }
     & > div {
-        border: 2px solid red;
+        /* border: 2px solid red; */
         width: calc(100% - 3rem);
         height: 45%;
         overflow: scroll;
@@ -135,7 +135,7 @@
         max-height: 1rem !important;
     }
     & > form { 
-        background: yellow; 
+        /* background: yellow;  */
         max-height: 40%;
         width: 100%;
         border-top-left-radius: 1.5rem;
@@ -146,13 +146,13 @@
 
 .mini-widget{
     & > div {
-        background: hotpink;
+        /* background: hotpink; */
     }
     & > h3 {
-        background: lime;
+        /* background: lime; */
     }
     & > form {
-        background: cyan;
+        /* background: cyan; */
     }
 }
 

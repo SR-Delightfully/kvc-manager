@@ -1,6 +1,5 @@
 /* BUTTONS */
-
-button,  .btn {
+button, .btn {
     border-radius: 0.3rem;
     width: 12rem;
     height: 3rem;
@@ -176,9 +175,14 @@ input, select, textarea {
     
     min-height: 2rem;
     max-height: 2rem;
-    min-width:  19.75rem !important;
+    min-width:  20rem !important;
     max-width:  42rem !important;
 
+}
+input[type="radio"] {
+    min-width:  2rem !important;
+    max-width:  2rem !important;
+    margin-right: 2rem;
 }
 
 input:focus, select:focus, textarea:focus {
