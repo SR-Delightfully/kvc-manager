@@ -44,7 +44,7 @@ ViewHelper::loadHeader($page_title, false);
         <div id="register">
             <div id="registration-form-wrapper" class="auth-form-wrapper metallic">
                 <form id="registration-form" method="POST" action="<?= APP_BASE_URL ?>/register">
-
+                    <?= App\Helpers\FlashMessage::render() ?>
                     <h2>Registration intended for employees only.</h2>
 
                     <div id="registration-form-names" class="form-grid-2">

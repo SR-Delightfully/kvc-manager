@@ -200,7 +200,7 @@ if ($show_forgot_email_2fa):?>
         </form>
 
     </div>
-</div>
+</div>  
 <?php endif; ?>
 <!-- New Email MODAL -->
 <?php
