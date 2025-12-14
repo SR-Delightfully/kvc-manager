@@ -263,13 +263,13 @@ body {
 }
 /* Border styles */
 .border-3 {
-    border: 3px solid hotpink;
+    /* border: 3px solid hotpink; */
 }
 .border-2 {
-    border: 2px solid hotpink;
+    /* border: 2px solid hotpink; */
 }
 .border-1 {
-    border: 1dvi solid hotpink;
+    /* border: 1dvi solid hotpink; */
 }
 
 .page {
