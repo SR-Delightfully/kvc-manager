@@ -19,8 +19,8 @@ ViewHelper::loadHeader($page_title, false);
         <!-- Left Info Panel -->
         <div id="registration-page-about" class="display-flex-col flex-center">
             <div id="registration-page-info">
-                <h1>VKC - Manager</h1>
-                <h2>Join [insert company legal name] today</h2>
+                <h1>VKC</h1>
+                <h2>Vito - Kian - Colton</h2>
                 <p>
                     Registering for an account will grant you access to extensive data displays, easy work log process,
                     and access to your work schedule all in one place.

@@ -482,7 +482,7 @@ class AuthController extends BaseController
 
             if (!$ok) {
                 FlashMessage::error("Invalid or expired verification code.");
-                return $this->render($response, 'pages/loginView.php', ['show_forgot_email_2fa' => true]);
+                return $this->redirect($request, $response, 'login.forgot-email.2fa');
             }
 
             //Verified -> allow email change; store in a descriptive session key
@@ -493,7 +493,7 @@ class AuthController extends BaseController
         } catch (\Throwable $e) {
             error_log("2FA verify error: " . $e->getMessage());
             FlashMessage::error("There was a problem verifying your code. Try again.");
-            return $this->redirect($request, $response, 'login.forgot-email');
+            return $this->redirect($request, $response, 'login.forgot-email.2fa');
         }
     }
 
@@ -501,10 +501,10 @@ class AuthController extends BaseController
     {
         $session = SessionManager::get('change_email');
         if (!$session || empty($session['user'])) {
-            return $this->render($response, 'pages/loginView.php');
+            return $this->render($response, 'auth/loginView.php');
         }
 
-        return $this->render($response, 'pages/loginView.php', ['show_new_email' => true]);
+        return $this->render($response, 'auth/loginView.php', ['show_new_email' => true]);
     }
 
     public function verifyNewEmail(Request $request, Response $response, array $args): Response

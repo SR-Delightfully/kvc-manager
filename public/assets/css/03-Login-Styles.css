@@ -52,7 +52,7 @@
     align-items: center;
     padding-top: 4rem;
     text-align: center;
-    border-right: 3px solid var(--tone-00); 
+    border-right: 3px solid var(--tone-00);
     z-index: 9;
 }
 
@@ -131,7 +131,7 @@
     flex-flow: row nowrap;
     justify-content: space-between;
 }
-#login-form-names > span, 
+#login-form-names > span,
 #login-form-password > span {
     min-width: calc(49% - 1.5rem);
 }
@@ -193,7 +193,7 @@
 
 /* OVERLAY (dark blur) */
 .forgot-modal-overlay {
-    display: none;
+    display: flex;
     position: fixed;
     inset: 0;
     background: rgba(0,0,0,0.65);
