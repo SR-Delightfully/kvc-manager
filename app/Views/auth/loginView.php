@@ -1,12 +1,8 @@
 <?php
 
 use App\Helpers\ViewHelper;
-<<<<<<< HEAD
-// var_dump($   data);
-=======
 
 //var_dump($data);
->>>>>>> 62b90d5e1f8f537185acf34ffea13b2c07c213f4
 //* DYNAMIC POPUPS
 $show2fa_login = $data['show2fa_login'] ?? false;
 $show_forgot_password = $data['show_forgot_password'] ?? false;
@@ -17,53 +13,6 @@ $show_new_password = $data['show_new_password'] ?? false;
 $show_forgot_email = $data['show_forgot_email'] ?? false;
 $show_forgot_email_2fa = $data['show_forgot_email_2fa'] ?? false;
 $show_new_email = $data['show_new_email'] ?? false;
-<<<<<<< HEAD
-echo $show2fa_login;
-$page_title ='Login page';
-ViewHelper::loadHeader($page_title, false);
-
-?>
-
-<div id="login-page-wrapper" class="page">
-    <div id="login-page-content" class="display-flex-row">
-        <div id="login">
-            <div id="login-form-wrapper" class="auth-form-wrapper metallic">
-                <!-- <div class="center-logo">
-                    <div class="logo-circle">VKC</div>
-                </div> -->
-                <form id="login-form" method="POST" action="<?= APP_BASE_URL ?>/login">
-                    <?= App\Helpers\FlashMessage::render() ?>   
-                    <label for="email">Email Address</label>
-                    <input type="text" name="email" id="email" required>
-                    <a href="#">Forgot Email?</a>
-                    <br>
-                    <label for="password">Password</label>
-                    <input type="password" name="password" id="password" required>
-                    <a href="#">Forgot Password?</a>
-                    <br>
-                    <br>
-
-                    <div class="button-row">
-                        <a href="./register"><button type="button" class="signup-btn btn btn-wide btn-secondary">Sign Up</button></a>
-                        <button type="submit" class="signin-btn btn btn-wide btn-primary">Sign In</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-        <div id="login-page-about" class="display-flex-col flex-center">
-            <div class="login-page-info">
-                <h1>VKC</h1>
-                <h4>[If VKC is short for something, update with the full company name]</h4>
-                <h2>[Insert Subtitle Here (a short hook/summary of the company)]</h2>
-
-                <div class="description-box">
-                    <p>[INSERT Description - Summary of who/what/where is the company...]</p>
-                    <p>BLALALALALALALALALALALALALALLALALALALALA</p>
-                    <p>LALALALALALALALALALA</p>
-                    <p>Socials:<br>[insert social media links here]</p>
-                </div>
-            </div>
-=======
 //echo $show2fa_login;
 $page_title = 'Login page';
 ViewHelper::loadHeader($page_title);
@@ -100,7 +49,6 @@ ViewHelper::loadHeader($page_title);
 
         <div class="center-logo">
             <div class="logo-circle">VKC</div>
->>>>>>> 62b90d5e1f8f537185acf34ffea13b2c07c213f4
         </div>
         <form method="POST" action="">
             <label for="email">Email Address</label>
@@ -113,11 +61,7 @@ ViewHelper::loadHeader($page_title);
             <a href="</?= APP_BASE_URL ?>/login/forgot-password">Forgot Password?</a>
 
             <div class="button-row">
-<<<<<<< HEAD
-                <a class='btn btn-success' href="</?= APP_BASE_URL ?>/register">Sign in</a>
-=======
                 <a class='btn btn-success' href="<?= APP_BASE_URL ?>/register">Create New Account</a>
->>>>>>> 5cf569f45382940b981c9e3e2abe932d0a835d98
                 <button type="submit" class="signin-btn">Sign In</button>
             </div>
         </form>
@@ -146,17 +90,11 @@ if ($show_forgot_password): ?>
                 <label for="code">Verification code:</label>
                 <input type="text" id="code" name="code" maxlength="6" placeholder="000000">
 
-<<<<<<< HEAD
-        <div class="forgot-btn-row">
-            <button class="forgot-send btn btn-wide btn-okay">Send Email</button>
-            <button type="button" class="forgot-change"onclick="openNewPasswordModal()">Change Password</button>
-=======
                 <div class="forgot-btn-row">
                     <button type="submit" class="forgot-change">Change Password</button>
                 </div>
             </form>
 
->>>>>>> 62b90d5e1f8f537185acf34ffea13b2c07c213f4
         </div>
     </div>
 <?php endif; ?>
@@ -180,14 +118,6 @@ if ($show_new_password): ?>
                 <label>Confirm New Password:</label>
                 <input type="password" name="conf_password" placeholder="Confirm new password" required>
 
-<<<<<<< HEAD
-            <div class="forgot-btn-row">
-                <!-- Use same button styles -->
-                <button type="button" class="forgot-send btn btn-wide btn-okay" onclick="submitNewPassword()">Send</button>
-                <button type="button" class="forgot-change btn btn-wide btn-danger" onclick="closeNewPasswordModal()">Cancel</button>
-            </div>
-        </form>
-=======
                 <div class="forgot-btn-row">
                     <!-- Use same button styles -->
                     <button type="submit" class="forgot-send">Send</button>
@@ -195,7 +125,6 @@ if ($show_new_password): ?>
                 </div>
             </form>
         </div>
->>>>>>> 62b90d5e1f8f537185acf34ffea13b2c07c213f4
     </div>
 <?php endif; ?>
 <!-- FORGOT EMAIL MODAL -->

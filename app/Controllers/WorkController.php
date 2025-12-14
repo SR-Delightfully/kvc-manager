@@ -198,17 +198,8 @@ class WorkController extends BaseController {
         if ($id) {
             $log = $this->palletModel->find($id);
 
-<<<<<<< HEAD
-            if (!UserContext::isAdmin() && $log!=null) {
-                if ($log['user_id'] !== $userId) {
-
-                    return $response->withStatus(403, 'Forbidden');
-
-                }
-=======
             if (!UserContext::isAdmin() && $log['user_id'] !== $userId) {
                 return $response->withStatus(403, 'Forbidden');
->>>>>>> 5cf569f45382940b981c9e3e2abe932d0a835d98
             }
 
             $this->palletModel->update($id, $data);
