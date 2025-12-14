@@ -4,6 +4,9 @@ use App\Helpers\ViewHelper;
 //TODO: set the page title dynamically based on the view being rendered in the controller.
 $page_title = 'Welcome to KVC Manager!';
 ViewHelper::loadHeader($page_title);
+ViewHelper::loadHeader($page_title, true);
+ViewHelper::loadSideBar();
+
 $user = UserContext::getCurrentUser();
 
 $isAdmin = $data['isAdmin'] ?? false;
@@ -76,7 +79,6 @@ function fmt_time(?string $ts): string {
 
         <?= App\Helpers\FlashMessage::render() ?>
     </section>
-
 
     <section id="work-table-section">
         <table id="work-table" border="1" cellpadding="6" cellspacing="0">

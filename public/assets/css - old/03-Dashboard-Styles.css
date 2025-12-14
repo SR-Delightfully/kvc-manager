@@ -1,3 +1,4 @@
+<<<<<<< HEAD:public/assets/css - old/03-Dashboard-Styles.css
 /* Okay this file is really frustrating to read/work with */
 /* Please do not define styles for html elements unless specified */
 /* Please do not redefine classes that already exist. */
@@ -158,6 +159,18 @@
 
 /* TODO: figure out how to add a small padding to the bottom of backend-senctions */
 
+=======
+#dashboard {
+    /* keep dashboard in normal flow so it aligns with the page wrapper */
+    background-color: transparent; /* adjust as needed */
+    width: 100%;
+    min-height: 60vh;
+    position: relative;
+    margin: 5rem 3vw 2rem 0; /* left = 0 because .page/main already leaves room for sidebar */
+    box-sizing: border-box;
+}
+
+>>>>>>> 62b90d5e1f8f537185acf34ffea13b2c07c213f4:public/assets/css/03-Dashboard-Styles.css
 /* Work Overview title */
 /* .page-title {
     text-align: center;
@@ -167,12 +180,70 @@
     letter-spacing: 5px;
 } */
 
+<<<<<<< HEAD:public/assets/css - old/03-Dashboard-Styles.css
 /* Layout for leaderboard + chart */
 /* .dashboard-grid {
     display: flex;
     gap: 30px;
     align-items: flex-start;
 } */
+=======
+.dashboard-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr; /* big | small */
+    grid-template-rows: 1fr 1fr;    /* top row | bottom row */
+    gap: 30px;
+    width: calc(100% - 21rem); /* sidebar offset */
+    margin-left: 21rem;
+    padding: 2rem;
+    box-sizing: border-box;
+    position: relative;
+    z-index: 2;
+}
+
+/* widgets */
+.widget {
+    background: #1a1f29;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 0 12px #00000080;
+    color: white;
+}
+
+/* big widgets */
+.widget-large {
+    min-height: 420px;
+}
+
+/* small widgets */
+.widget-small {
+    min-height: 260px;
+}
+
+/* Top-left big widget */
+.widget:nth-child(1) {
+    grid-column: 1 / 2;
+    grid-row: 1 / 2;
+}
+
+/* Top-right small widget */
+.widget:nth-child(2) {
+    grid-column: 2 / 3;
+    grid-row: 1 / 2;
+}
+
+/* Bottom-left small widget */
+.widget:nth-child(3) {
+    grid-column: 1 / 2;
+    grid-row: 2 / 3;
+}
+
+/* Bottom-right big widget */
+.widget:nth-child(4) {
+    grid-column: 2 / 3;
+    grid-row: 2 / 3;
+}
+>>>>>>> 62b90d5e1f8f537185acf34ffea13b2c07c213f4:public/assets/css/03-Dashboard-Styles.css
 
 /* Left column */
 /* .dashboard-left {
@@ -451,9 +522,34 @@
 }
 
 .page {
+<<<<<<< HEAD:public/assets/css - old/03-Dashboard-Styles.css
     max-width: 900px;
     margin: auto;
 } */
+=======
+    position: relative;
+    z-index: 2;
+
+    /* FULL WIDTH RIGHT OF SIDEBAR */
+    width: calc(100% - 21rem);
+    margin-left: 21rem;
+
+    /* Make background fill entire content area */
+    min-height: 100vh;
+    background: linear-gradient(
+        45deg,
+        var(--tone-01) 0%,
+        var(--tone-07) 50%,
+        var(--color-blue-04) 100%
+    );
+
+    /* Padding for header area */
+    padding-top: 1rem;
+
+    /* REMOVE all width limits */
+    max-width: none !important;
+}
+>>>>>>> 62b90d5e1f8f537185acf34ffea13b2c07c213f4:public/assets/css/03-Dashboard-Styles.css
 
 /* TITLE */
 /* .title {
@@ -821,4 +917,68 @@ input {
     width: 100%;
     border-radius: 6px;
     border: none;
+<<<<<<< HEAD:public/assets/css - old/03-Dashboard-Styles.css
 } */
+=======
+}
+.recipient-list {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 12px;
+    border-radius: 6px;
+    background: #2a3142;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    max-height: 140px;
+    overflow-y: auto;
+}
+
+.recipient-option {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    color: #fff;
+}
+
+.recipient-option input[type="checkbox"] {
+    cursor: pointer;
+}
+
+/* textarea dans la modal */
+.modal-textarea {
+    width: 100%;
+    min-height: 130px;
+    padding: 10px;
+    margin-bottom: 12px;
+    border-radius: 6px;
+    border: none;
+    background: #2a3142;
+    color: #fff;
+    font-size: 14px;
+    resize: vertical;
+}
+
+
+.triple-widget-row {
+    display: flex;
+    flex-direction: row;
+    gap: 25px;
+    width: 100%;
+    align-items: flex-start;
+    margin-bottom: 40px;
+}
+
+/* Make all three cards equal width */
+.triple-widget-row > div {
+    flex: 1;
+    min-width: 0; /* prevents overflow */
+}
+
+/* Optional: limit max width so they stay balanced */
+.triple-widget-row .pallet-card,
+.triple-widget-row .products-left {
+    width: 100%;
+}
+>>>>>>> 62b90d5e1f8f537185acf34ffea13b2c07c213f4:public/assets/css/03-Dashboard-Styles.css

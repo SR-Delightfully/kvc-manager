@@ -8,33 +8,41 @@
     /* Tones - Shades of Grey */
     --tone-00: #000000;
     --tone-01: #020303;
-    --tone-02: #0A0D10;
-    --tone-03: #11161A;
-    --tone-04: #181F28;
-    --tone-05: #1B242C;
-    --tone-06: #242E3A;
-    --tone-07: #313F4F;
-    --tone-08: #99A0AC;
-    --tone-09: #D9D9D9;
-    --tone-10: #FFFFFF;
+    --tone-02: #0a0d10;
+    --tone-03: #11161a;
+    --tone-04: #181f28;
+    --tone-05: #1b242c;
+    --tone-06: #242e3a;
+    --tone-07: #313f4f;
+    --tone-08: #99a0ac;
+    --tone-09: #d9d9d9;
+    --tone-10: #ffffff;
 
     /* Colors - Varying hues and shades */
     /* Shades of red: */
     --color-red-01: #1b0105;
     --color-red-02: #370303;
+<<<<<<< HEAD
     --color-red-03: #8D000E;
     --color-red-04: #c40d0d;
     --color-red-05: #e74438;
     --color-red-06: #FF8C69;
+=======
+    --color-red-03: #8d000e;
+    --color-red-03: #c40d0d;
+    --color-red-04: #e74438;
+    --color-red-05: #ff8c69;
+>>>>>>> 62b90d5e1f8f537185acf34ffea13b2c07c213f4
 
     /* Shades of blue: */
     --color-blue-01: #000832;
-    --color-blue-02: #002E55;
-    --color-blue-03: #20547F;
-    --color-blue-04: #456DAB;
-    --color-blue-05: #69A6FF;
-    --color-blue-06: #99BCD4;
+    --color-blue-02: #002e55;
+    --color-blue-03: #20547f;
+    --color-blue-04: #456dab;
+    --color-blue-05: #69a6ff;
+    --color-blue-06: #99bcd4;
 
+<<<<<<< HEAD
     /* Shades of green: */
     --color-green-01: #001d17;
     --color-green-02: #00200f;
@@ -42,17 +50,32 @@
     --color-green-04: #005515;
     --color-green-05: #0B861D;
     --color-green-06: #3EC731;
+=======
+    /* Colors - Varying hues and shades */
+    /* Shades of red: */
+    --color-green-01: #001d17;
+    --color-green-02: #00200f;
+    --color-green-03: #002a18;
+    --color-green-03: #005515;
+    --color-green-04: #0b861d;
+    --color-green-05: #3ec731;
+>>>>>>> 62b90d5e1f8f537185acf34ffea13b2c07c213f4
 
     /* Shades of yellow: */
     --color-yellow-01: #191f00;
     --color-yellow-02: #353600;
     --color-yellow-03: #685800;
     --color-yellow-04: #a28400;
+<<<<<<< HEAD
     --color-yellow-05: #DEB11E;
     --color-yellow-06: #DFD241;
 
     /* Component Variables                      */
     /* ? used to allow theme switching */
+=======
+    --color-yellow-05: #deb11e;
+    --color-yellow-06: #dfd241;
+>>>>>>> 62b90d5e1f8f537185acf34ffea13b2c07c213f4
 
     --background-color: var(--tone-05);
     --body-color: var(--tone-05);
@@ -244,6 +267,7 @@
     --button-bg-active: var(--color-red-03);
     --background-gradient: 45deg, var(--color-red-01) 0%, var(--color-red-02) 50%, var(--color-red-04) 100%;
 }
+<<<<<<< HEAD
 
 /* GREEN THEME               */
 :root[data-theme="green-mode"] {
@@ -271,6 +295,24 @@ html, body {
     min-width: 100%;
     min-height: 100vh;
     max-height: 100%;
+=======
+/* * Setting colors for website elements */
+/* ! to change color of element, please change color in the themes ⬆ ABOVE ⬆ */
+body::before {
+    content: "";
+    /* background-color: hotpink; */
+    background-image: linear-gradient(
+        255deg,
+        #9fa7bc 33%,
+        #495a74 67%,
+        #313e4f 77%,
+        #181f28 87%,
+        #11161a 100%
+    );
+    opacity: 50%;
+    height: 100vh;
+    width: min(100%, 100vw);
+>>>>>>> 62b90d5e1f8f537185acf34ffea13b2c07c213f4
     position: absolute;
     top: 0; bottom: 0;
     left: 0; right: 0;
@@ -279,9 +321,89 @@ html, body {
 html, html > * {
     margin: 0;
     padding: 0;
+<<<<<<< HEAD
     border: 0;
     vertical-align: baseline;
 }
+=======
+    box-sizing: border-box;
+    background-color: var(--body-color);
+    background-color: #20262b;
+    /* TODO: update body-color  */
+    overflow-x: hidden;
+    overflow-y: auto; /* allow normal vertical scrolling */
+    min-height: 100vh;
+    position: relative;
+    top: -1.5rem;
+    overflow: hidden;
+    & h1 {
+        color: var(--h1-color);
+    }
+    & h2 {
+        color: var(--h2-color);
+    }
+    & h3 {
+        color: var(--h3-color);
+    }
+    & h4 {
+        color: var(--h4-color);
+    }
+    & h5 {
+        color: var(--h5-color);
+    }
+    & h6 {
+        color: var(--h6-color);
+    }
+    & input {
+        min-height: 2.5rem;
+        min-width: calc(100% - 2rem);
+        border: 2px solid var(--tone-07);
+        background-color: var(--tone-00);
+        padding: 0rem 1rem;
+        margin-top: 0.5rem;
+        border-radius: 0.5rem;
+        color: var(--tone-08);
+    }
+}
+
+/* Ensure layout flows top -> content -> footer so footer is at the end of the page */
+html,
+body {
+    height: 100%;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh; /* full viewport height */
+}
+
+/* main content area should expand to fill available space so footer is pushed to bottom */
+main,
+.page,
+.products-page,
+#content-wrapper {
+    flex: 1 0 auto; /* allow grow, don't force shrink */
+    /* keep existing offsets */
+    margin-left: 21rem;
+    padding-top: calc(9vh + 1rem);
+    box-sizing: border-box;
+}
+
+/* footer stays after content */
+#footer {
+    margin-top: auto; /* push footer to bottom */
+    position: relative; /* not fixed — sits after content */
+    bottom: 0;
+    width: 100%;
+    box-sizing: border-box;
+    z-index: 20;
+    padding: 1rem 2rem;
+    background: transparent; /* keep existing look; change if you want a solid bg */
+}
+
+/* ? Useful classes to reduce code repetition */
+>>>>>>> 62b90d5e1f8f537185acf34ffea13b2c07c213f4
 
 footer, header, nav, menu, section {
     display: block;
@@ -366,6 +488,7 @@ body {
 }
 
 .page {
+<<<<<<< HEAD
     min-height: 100vh;
     max-height: 100%;
     min-width: 100vw;
@@ -548,5 +671,111 @@ box-shadow: inset 0px 2px 0px var(--tone-03), inset 0px -3px 0px var(--color-blu
         max-width: 1800px;
         margin: 0 auto;
         padding: 3rem;
+=======
+    /* main content area to the right of fixed navbar */
+    background: linear-gradient(
+        45deg,
+        var(--tone-01) 0%,
+        var(--tone-07) 50%,
+        var(--color-blue-04) 100%
+    );
+    width: calc(
+        100% - 21rem
+    ); /* take remaining viewport width next to navbar */
+    min-height: 100vh; /* fill full viewport height */
+    margin-left: 21rem; /* leave room for fixed navbar */
+    padding: calc(9vh + 1rem) 2rem 2rem 2rem; /* account for header + inner gutter */
+    box-sizing: border-box;
+    position: relative;
+    z-index: 2; /* below the navbar which has higher z-index */
+}
+
+/* Layout offsets for fixed sidebar and header */
+main,
+.page,
+.products-page,
+#content-wrapper {
+    /* these keep legacy compatibility but .page already defines the main offsets */
+    box-sizing: border-box;
+}
+
+/* Small / medium screens: account for collapsed sidebar (4rem) */
+@media screen and (max-width: 1023px) {
+    main,
+    .page,
+    .products-page,
+    #content-wrapper {
+        margin-left: 4rem;
+        padding-top: calc(9vh + 0.75rem);
+    }
+}
+
+/* Very small screens remove left offset */
+@media screen and (max-width: 719px) {
+    main,
+    .page,
+    .products-page,
+    #content-wrapper {
+        margin-left: 0;
+        padding-top: calc(9vh + 0.75rem);
+    }
+
+    #nav-bar {
+        position: fixed;
+        height: auto;
+        bottom: 0;
+        top: auto;
+        width: 100%;
+    }
+}
+
+/* Extra Small Screens */
+@media screen and (max-width: 720px) {
+}
+
+/* Small Screens */
+@media screen and (min-width: 721px) and (max-width: 1280px) {
+}
+
+/* Medium Screens */
+@media screen and (min-width: 1281px) and (max-width: 1440px) {
+}
+
+/* Large Screens */
+@media screen and (min-width: 1441px) and (max-width: 1920px) {
+}
+
+/* Extra Large Screens */
+@media screen and (min-width: 1921px) {
+}
+
+/* Ensure main card widgets participate in normal flow and align to right of fixed navbar */
+.table-card,
+.pallet-card,
+.employees-card,
+.team-assignment-container,
+.products-left,
+.products-page > .table-card {
+    position: relative;
+    margin-left: 0; /* they already live inside .page/main which has the left offset */
+    box-sizing: border-box;
+}
+
+/* Make sure wide content wraps correctly and doesn't overflow under the navbar */
+.products-page {
+    display: flex;
+    gap: 25px;
+    align-items: flex-start;
+    padding-right: 2rem;
+    width: auto; /* let container sizing be driven by parent (.page/main) */
+    margin-left: 0; /* don't add a second left offset */
+}
+
+/* Small screens keep previous responsive behavior */
+@media screen and (max-width: 1023px) {
+    .products-page {
+        margin-left: 4rem;
+        width: calc(100% - 4rem);
+>>>>>>> 62b90d5e1f8f537185acf34ffea13b2c07c213f4
     }
 }

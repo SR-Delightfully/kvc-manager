@@ -23,7 +23,6 @@ class AdminDashboardController extends BaseController
         return $this->render($response, 'admin/orderIndexView.php');
     }
    
-
     public function show(Request $request, Response $response, array $args): Response
     {
         return $this->render($response, 'admin/orderShowView.php');

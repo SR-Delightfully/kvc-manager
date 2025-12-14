@@ -4,164 +4,140 @@ use App\Helpers\ViewHelper;
 
 $page_title ='Dashboard Admin';
 ViewHelper::loadHeader($page_title,true);
+ViewHelper::loadSideBar();
 ?>
 <div class="dashboard-grid">
 
-    <!-- LEFT: Leaderboard -->
-    <div class="dashboard-left">
-        <div class="leaderboard-container">
-    <h2>Leaderboard</h2>
+    <!-- BIG TOP-LEFT -->
+    <div class="widget widget-large">
+        <?php /* Leaderboard */ ?>
+        <h2>Leaderboard</h2>
+        <div class="bars">
+            <div class="bar bar1" style="height: 70%"><span class="rank">1</span></div>
+            <div class="bar bar2" style="height: 55%"><span class="rank">2</span></div>
+            <div class="bar bar3" style="height: 35%"><span class="rank">3</span></div>
+        </div>
+        <table class="leaderboard-table">
+            <tr><th>Team Name</th><th>Units</th><th>Speed</th></tr>
+            <tr><td>Team_1</td><td>384</td><td>4u/min</td></tr>
+            <tr><td>Team_2</td><td>284</td><td>3.5u/min</td></tr>
+            <tr><td>Team_3</td><td>181</td><td>3u/min</td></tr>
+            <tr><td>Team_4</td><td>145</td><td>2u/min</td></tr>
+        </table>
+    </div>
 
-    <div class="bars">
-        <div class="bar bar1" style="height: 70%">
-            <span class="rank">1</span>
+    <!-- SMALL TOP-RIGHT -->
+    <div class="widget widget-small">
+            <h2>Schedule</h2>
+            <p>[Component SubTitle] (a quick explanation of the contents)</p>
         </div>
-        <div class="bar bar2" style="height: 55%">
-            <span class="rank">2</span>
+
+        <!-- SMALL BOTTOM-LEFT -->
+        <div class="widget widget-small team-assignment-widget">
+
+        <h2>Team Assignment</h2>
+
+        <div class="team-assignment-date">
+            <span>Date:</span>
+            <input type="text" value="2025/11/08" readonly>
         </div>
-        <div class="bar bar3" style="height: 35%">
-            <span class="rank">3</span>
+
+        <div class="team-assignment-card">
+
+            <!-- TEAM TEMPLATE -->
+            <div class="team-group">
+                <div class="team-header" onclick="toggleTeam(this)">
+                    <span class="team-label">Team 1 :</span>
+                    <span class="team-arrow">▼</span>
+                </div>
+
+                <div class="team-members">
+                    <div class="member">
+                        <div class="avatar"></div>
+                        <span class="fname">First_Name1</span>
+                        <span class="lname">Last_Name1</span>
+                        <button class="remove-btn">Remove</button>
+                        <button class="contact-btn" onclick="openMessageModal()">Contact</button>
+                    </div>
+
+                    <div class="member">
+                        <div class="avatar"></div>
+                        <span class="fname">First_Name2</span>
+                        <span class="lname">Last_Name2</span>
+                        <button class="remove-btn">Remove</button>
+                        <button class="contact-btn" onclick="openMessageModal()">Contact</button>
+                    </div>
+
+                    <div class="member">
+                        <div class="avatar"></div>
+                        <span class="fname">First_Name3</span>
+                        <span class="lname">Last_Name3</span>
+                        <button class="remove-btn">Remove</button>
+                        <button class="contact-btn" onclick="openMessageModal()">Contact</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Repeat for Team 2 -->
+            <div class="team-group">
+                <div class="team-header" onclick="toggleTeam(this)">
+                    <span class="team-label">Team 2 :</span>
+                    <span class="team-arrow">▼</span>
+                </div>
+                <div class="team-members">
+                    <div class="member">
+                        <div class="avatar"></div>
+                        <span class="fname">First_Name4</span>
+                        <span class="lname">Last_Name4</span>
+                        <button class="remove-btn">Remove</button>
+                        <button class="contact-btn" onclick="openMessageModal()">Contact</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Team 3 -->
+            <div class="team-group">
+                <div class="team-header" onclick="toggleTeam(this)">
+                    <span class="team-label">Team 3 :</span>
+                    <span class="team-arrow">▼</span>
+                </div>
+                <div class="team-members">
+                    <div class="member">
+                        <div class="avatar"></div>
+                        <span class="fname">First_Name5</span>
+                        <span class="lname">Last_Name5</span>
+                        <button class="remove-btn">Remove</button>
+                        <button class="contact-btn" onclick="openMessageModal()">Contact</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Team 4 -->
+            <div class="team-group">
+                <div class="team-header" onclick="toggleTeam(this)">
+                    <span class="team-label">Team 4 :</span>
+                    <span class="team-arrow">▼</span>
+                </div>
+                <div class="team-members">
+                    <div class="member">
+                        <div class="avatar"></div>
+                        <span class="fname">First_Name6</span>
+                        <span class="lname">Last_Name6</span>
+                        <button class="remove-btn">Remove</button>
+                        <button class="contact-btn" onclick="openMessageModal()">Contact</button>
+                    </div>
+                </div>
+            </div>
+
         </div>
     </div>
 
-    <table class="leaderboard-table">
-        <tr>
-            <th>Team Name</th>
-            <th>Units</th>
-            <th>Speed</th>
-        </tr>
-        <tr><td>Team_1</td><td>384</td><td>4u/min</td></tr>
-        <tr><td>Team_2</td><td>284</td><td>3.5u/min</td></tr>
-        <tr><td>Team_3</td><td>181</td><td>3u/min</td></tr>
-        <tr><td>Team_4</td><td>145</td><td>2u/min</td></tr>
-    </table>
-</div>
-</div>
-<!-- charts -->
- <!-- RIGHT: Teams Progress -->
-    <div class="dashboard-right">
-        <div class="team-progress-container">
-    <h1 class="page-title">Work Overview</h1>
-
-    <h2>Teams Progress</h2>
-    <canvas id="teamsProgressChart"></canvas>
-    <!-- Summary rows under the chart -->
-    <div class="team-summary-list">
-        <div class="team-summary-row best">
-            <span class="team-name">Best Team</span>
-            <span class="summary-item">Date: <span class="value">2025/11/08</span></span>
-            <span class="summary-item">Number of Units: <span class="value">74</span></span>
-            <span class="summary-item">Speed: <span class="value">3.5/min</span></span>
-        </div>
-
-        <div class="team-summary-row">
-            <span class="team-name">Team 1</span>
-            <span class="summary-item">Date: <span class="value">2025/11/13</span></span>
-            <span class="summary-item">Number of Units: <span class="value">48</span></span>
-            <span class="summary-item">Speed: <span class="value">2/min</span></span>
-        </div>
-
-        <div class="team-summary-row">
-            <span class="team-name">Team 2</span>
-            <span class="summary-item">Date: <span class="value">2025/11/13</span></span>
-            <span class="summary-item">Number of Units: <span class="value">26</span></span>
-            <span class="summary-item">Speed: <span class="value">1.25/min</span></span>
-        </div>
-    </div>
-</div>
-</div>
-<div class="team-assignment-container">
-    <h2>Team Assignment</h2>
-
-    <div class="team-assignment-date">
-        <span>Date:</span>
-        <input type="text" value="2025/11/08" readonly>
-    </div>
-
-
-<div class="team-assignment-card">
-
-    <!-- TEAM TEMPLATE (repeat for each team) -->
-    <div class="team-group">
-        <div class="team-header" onclick="toggleTeam(this)">
-            <span class="team-label">Team 1 :</span>
-            <span class="team-arrow">▼</span>
-        </div>
-
-        <div class="team-members">
-            <!-- MEMBER ROW TEMPLATE -->
-            <div class="member">
-                <div class="avatar"></div>
-                <span class="fname">First_Name1</span>
-                <span class="lname">Last_Name1</span>
-                <button class="remove-btn">Remove</button>
-                <button class="contact-btn"onclick="openMessageModal()">Contact</button>
-            </div>
-
-            <div class="member">
-                <div class="avatar"></div>
-                <span class="fname">First_Name2</span>
-                <span class="lname">Last_Name2</span>
-                <button class="remove-btn">Remove</button>
-                <button class="contact-btn"onclick="openMessageModal()">Contact</button>
-            </div>
-            <div class="member">
-                <div class="avatar"></div>
-                <span class="fname">First_Name3</span>
-                <span class="lname">Last_Name3</span>
-                <button class="remove-btn">Remove</button>
-                <button class="contact-btn"onclick="openMessageModal()">Contact</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Repeat for Team 2, Team 3, Team 4 -->
-    <div class="team-group">
-        <div class="team-header" onclick="toggleTeam(this)">
-            <span class="team-label">Team 2 :</span>
-            <span class="team-arrow">▼</span>
-        </div>
-        <div class="team-members">
-            <div class="member">
-                <div class="avatar"></div>
-                <span class="fname">First_Name4</span>
-                <span class="lname">Last_Name4</span>
-                <button class="remove-btn">Remove</button>
-                <button class="contact-btn"onclick="openMessageModal()">Contact</button>
-            </div>
-        </div>
-    </div>
-
-    <div class="team-group">
-        <div class="team-header" onclick="toggleTeam(this)">
-            <span class="team-label">Team 3 :</span>
-            <span class="team-arrow">▼</span>
-        </div>
-          <div class="team-members">
-            <div class="member">
-                <div class="avatar"></div>
-                <span class="fname">First_Name5</span>
-                <span class="lname">Last_Name5</span>
-                <button class="remove-btn">Remove</button>
-                <button class="contact-btn"onclick="openMessageModal()">Contact</button>
-            </div>
-        </div>
-    </div>
-
-    <div class="team-group">
-        <div class="team-header" onclick="toggleTeam(this)">
-            <span class="team-label">Team 4 :</span>
-            <span class="team-arrow">▼</span>
-        </div>
-        <div class="team-members">
-            <div class="member">
-                <div class="avatar"></div>
-                <span class="fname">First_Name6</span>
-                <span class="lname">Last_Name6</span>
-                <button class="remove-btn">Remove</button>
-                <button class="contact-btn" onclick="openMessageModal()">Contact</button>
-            </div>
-        </div>
+    <!-- BIG BOTTOM-RIGHT -->
+    <div class="widget widget-large">
+        <?php /* Chart container */ ?>
+        <h1 class="page-title">Work Overview</h1>
+        <h2>Teams Progress</h2>
+        <canvas id="teamsProgressChart"></canvas>
     </div>
 
 </div>
