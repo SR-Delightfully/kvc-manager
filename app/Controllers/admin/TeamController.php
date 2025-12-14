@@ -52,7 +52,7 @@ class TeamController extends BaseController
                 'data' => array_merge($this->adminDataHelper->adminPageData(),
                         ['team_to_edit' => $team]),
             ];
-        return $this->render($response, 'admin/databaseView.php', $data);
+        return $this->render($response, 'common/layout.php', $data);
     }
 
     public function update(Request $request, Response $response, array $args): Response {
@@ -99,7 +99,7 @@ class TeamController extends BaseController
                 'data' => array_merge($this->adminDataHelper->adminPageData(),
                         ['team_to_delete' => $team,]),
             ];
-        return $this->render($response, 'admin/databaseView.php', $data);
+        return $this->render($response, 'common/layout.php', $data);
     }
 }
 

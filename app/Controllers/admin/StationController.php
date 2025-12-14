@@ -64,7 +64,7 @@ class StationController extends BaseController
         $product = $this->stationModel->getStationById($product_id);
 
         $data = [
-                'contentView' => APP_VIEWS_PATH . '/admin/databaseView.php',
+                'contentView' => APP_VIEWS_PATH . '/pages/adminView.php',
                 'isSideBarShown' => true,
                 'isAdmin' => UserContext::isAdmin(),
                 'show_station_edit' => true,
@@ -118,7 +118,7 @@ class StationController extends BaseController
                 'data' => array_merge($this->adminDataHelper->adminPageData(),
                         ['station_to_delete' => $station,]),
             ];
-        return $this->render($response, 'admin/databaseView.php', $data);
+        return $this->render($response, 'common/layout.php', $data);
     }
 }
 

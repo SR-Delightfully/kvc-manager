@@ -1,6 +1,7 @@
-function submitBtn(formElement, buttonId, action, method='GET', name='item', inputName='id') {
+function submitBtn(formElement, buttonId, action, method, name, inputName) {
     const form = document.getElementById(formElement);
     const button = document.getElementById(buttonId);
+
     if (!button) return;
 
     button.addEventListener('click', (e) => {
@@ -13,50 +14,28 @@ function submitBtn(formElement, buttonId, action, method='GET', name='item', inp
         }
 
         const id = selected.value;
-        // build absolute URL
-        const cleanedAction = String(action).replace(/^\/+/, '');
-        const url = `${window.APP_BASE_URL}/${cleanedAction}${encodeURIComponent(id)}`;
 
-        if ((method || 'GET').toUpperCase() === 'GET') {
-            // navigate with GET
+        const url = `${window.APP_BASE_URL}/${action}${id}`;
+
+        if (method.toUpperCase() === 'GET') {
             window.location.href = url;
             return;
         }
 
-        // for POST or other methods, use the provided form if available
         if (form) {
             form.action = url;
             form.method = method.toUpperCase();
             form.submit();
-            return;
         }
-
-        // fallback: send a fetch POST (optional)
-        fetch(url, { method: method.toUpperCase(), credentials: 'same-origin' })
-            .then(r => {
-                if (r.redirected) window.location.href = r.url;
-                else return r.text();
-            })
-            .catch(err => console.error('Action failed', err));
     });
 }
 
 //submitBtn('variant-form', 'view-variant', 'admin/variant/', 'GET', 'variant', 'variant_id');
-
+submitBtn('variant-form', 'edit-variant', 'admin/variant/edit/', 'GET', 'variant', 'variant_id');
+submitBtn('variant-form', 'delete-variant', 'admin/variant/delete/', 'GET', 'variant', 'variant_id');
 
 //submitBtn('user-form', 'view-user', 'admin/users/', 'GET', 'user', 'user_id');
-
-
-//submitBtn('product-type-form', 'edit-type', 'admin/type/edit/', 'GET', 'product type', 'product_type_id');
-//submitBtn('product-type-form', 'delete-type', 'admin/type/delete/', 'GET', 'product type', 'product_type_id');
-
-//submitBtn('product-form', 'view-product', 'admin/product/', 'GET', 'product', 'product_id');
-//submitBtn('product-form', 'edit-product', 'admin/product/edit/', 'GET', 'product', 'product_id');
-//submitBtn('product-form', 'delete-product', 'admin/product/delete/', 'GET', 'product', 'product_id');
-
-//submitBtn('colour-form', 'view-colour', 'admin/colour/', 'GET', 'colour', 'colour_id');
-//submitBtn('colour-form', 'edit-colour', 'admin/colour/edit/', 'GET', 'colour', 'colour_id');
-//submitBtn('colour-form', 'delete-colour', 'admin/colour/delete/', 'GET', 'colour', 'colour_id');
+submitBtn('user-form', 'delete-user', 'admin/users/delete/', 'GET', 'user', 'user_id');
 
 
 function debounce(func, delay) {
@@ -193,51 +172,47 @@ function createUserRow(user) {
 
 
 document.addEventListener('DOMContentLoaded', function () {
-    console.log("Binding edit-variant");
-    submitBtn('variant-form', 'edit-variant', 'admin/variant/edit/', 'GET', 'variant', 'variant_id');
-    submitBtn('variant-form', 'delete-variant', 'admin/variant/delete/', 'GET', 'variant', 'variant_id');
-    // other tables (example)
-    submitBtn('user-form', 'delete-user', 'admin/users/delete/', 'GET', 'user', 'user_id');
-
-    // VARIANTS TABLE (guard nodes)
+    // VARIANTS TABLE
     const tbody = document.getElementById('variantBody');
     const template = document.getElementById('defaultVariantsTemplate');
-    if (tbody && template && template.content) {
+
+    if (tbody && template) {
+        tbody.innerHTML = '';
         tbody.appendChild(template.content.cloneNode(true));
-
-        const searchInput = document.getElementById('searchInput');
-
-        async function performSearch() {
-            const searchTerm = searchInput.value.trim();
-            if (searchTerm === '') {
-                tbody.innerHTML = '';
-                tbody.appendChild(template.content.cloneNode(true));
-                return;
-            }
-            const products = await fetchVariants(searchTerm);
-            renderVariants(products);
-        }
-
-        if (searchInput) {
-            const debouncedSearch = debounce(performSearch, 300);
-            searchInput.addEventListener('input', debouncedSearch);
-            searchInput.addEventListener('keydown', e => {
-                if (e.key === 'Escape') {
-                    searchInput.value = '';
-                    performSearch();
-                }
-            });
-        }
     }
 
-    // USERS TABLE (guard nodes)
-    const userSearchInput = document.querySelector('.employees-bottom .search');
+    const searchInput = document.getElementById('searchInput');
+
+    async function performSearch() {
+        const searchTerm = searchInput.value.trim();
+        if (searchTerm === '') {
+            tbody.innerHTML = '';
+            tbody.appendChild(template.content.cloneNode(true));
+            return;
+        }
+        const products = await fetchVariants(searchTerm);
+        renderVariants(products);
+    }
+
+    const debouncedSearch = debounce(performSearch, 300);
+    searchInput.addEventListener('input', debouncedSearch);
+    searchInput.addEventListener('keydown', e => {
+        if (e.key === 'Escape') {
+            searchInput.value = '';
+            performSearch();
+        }
+    });
+
+    const userSearchInput = document.getElementById('userSearchInput');
     const userTbody = document.getElementById('employeeBody');
     const userTemplate = document.getElementById('defaultUsersTemplate');
 
-    if (userTbody && userTemplate && userTemplate.content) {
+    if (userTbody && userTemplate) {
+        userTbody.innerHTML = '';
         userTbody.appendChild(userTemplate.content.cloneNode(true));
     }
+
+    userTbody.appendChild(userTemplate.content.cloneNode(true));
 
     const userStatusSelect = document.getElementById('userStatusFilter');
 
@@ -246,8 +221,6 @@ document.addEventListener('DOMContentLoaded', function () {
         const role = (userStatusSelect && userStatusSelect.value && userStatusSelect.value !== 'Employee Status')
             ? userStatusSelect.value
             : '';
-
-        if (!userTbody || !userTemplate) return;
 
         if (term === '' && role === '') {
             userTbody.innerHTML = '';
@@ -314,7 +287,3 @@ function enableRowSelectDelegated(containerOrSelector, rowSelector, radioSelecto
 
 enableRowSelectDelegated(document, ".variant-row", '.variant-radio');
 enableRowSelectDelegated(document, '.user-row', '.user-radio');
-//enableRowSelectDelegated(document, '.product-type-row', '.type-radio');
-//enableRowSelectDelegated(document, '.product-row', '.product-radio');
-//enableRowSelectDelegated(document, '.colour-row', '.colour-radio');
-

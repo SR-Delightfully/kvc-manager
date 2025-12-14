@@ -4,10 +4,9 @@
 <!-- TODO: move big product_type table to this file -->
 <!-- TODO: move big product_variant table to this file -->
 <div class="dashboard-section">
-    
+
 
 <!-- Product_Types Table -->
-<h2 style="color: white;">Product Types</h2>
 <!-- Products Table -->
 <h2 style="color: white;">Products</h2>
 <div class="table-responsive small">
@@ -38,6 +37,8 @@
     </table>
 </div>
 
+
+<h2 style="color: white;">Product Types</h2>
 <!-- Types Table -->
 <div class="table-responsive small">
     <table class="table table-striped table-sm">
@@ -56,6 +57,33 @@
                     <td>
                         <a class="btn btn-secondary" href="admin/type/edit/<?=$type['product_type_id']?>">Edit</a>
                         <a class="btn btn-danger" href="admin/type/delete/<?=$type['product_type_id']?>">Delete</a>
+                    </td>
+                </tr>
+            <?php endforeach; ?>
+        </tbody>
+    </table>
+</div>
+
+
+<h2 style="color: white;">Colours</h2>
+<!-- Colours Table -->
+<div class="table-responsive small">
+    <table class="table table-striped table-sm">
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Colour Code</th>
+                <th scope="col">Colour Name</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php foreach ($colours as $key => $colour): ?>
+                <tr>
+                    <td><?= $colour['colour_code']?></td>
+                    <td><?= $colour['colour_name']?></td>
+                    <td>
+                        <a class="btn btn-secondary" href="admin/colour/edit/<?=$colour['colour_id']?>">Edit</a>
+                        <a class="btn btn-danger" href="admin/colour/delete/<?=$colour['colour_id']?>">Delete</a>
                     </td>
                 </tr>
             <?php endforeach; ?>
@@ -94,4 +122,6 @@
         </tbody>
     </table>
 </div>
+
+
 </div>

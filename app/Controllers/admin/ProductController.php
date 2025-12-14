@@ -102,7 +102,7 @@ class ProductController extends BaseController
                 'data' => array_merge($this->adminDataHelper->adminPageData(),
                         ['product_to_edit' => $product]),
             ];
-        return $this->render($response, 'admin/databaseView.php', $data);
+        return $this->render($response, 'common/layout.php', $data);
     }
 
     //post method for updating specified product
@@ -151,7 +151,7 @@ class ProductController extends BaseController
                 'data' => array_merge($this->adminDataHelper->adminPageData(),
                         ['product_to_delete' => $variant,]),
             ];
-        return $this->render($response, 'admin/databaseView.php', $data);
+        return $this->render($response, 'common/layout.php', $data);
     }
 
     public function search(Request $request, Response $response, array $args): Response

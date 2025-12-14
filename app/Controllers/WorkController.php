@@ -58,12 +58,14 @@ class WorkController extends BaseController {
                 }
             }
 
-            return $this->render($response, 'pages/workView.php', [
+            return $this->render($response, 'common/layout.php', [
                 'pallets'            => $pallets,
                 'stations'           => $stations,
                 'station'            => $station,
                 'selectedStationId'  => $station_id,
                 'isAdmin'            => true,
+                'isSideBarShown' => true,
+                'contentView' => APP_VIEWS_PATH . '/pages/workView.php',
                 'show_form_end'      => $show_form_end,
                 'show_break_continue'=> $show_break_continue,
                 'team_members'       => $this->teamModel->getTodayTeamMembersForStation($station_id),
@@ -94,13 +96,15 @@ class WorkController extends BaseController {
                 $show_form_end = false;
             }
 
-            return $this->render($response, 'pages/workView.php', [
-                'pallets' => $pallets,
-                'team_members' => $team_members,
-                'show_form_end' => $show_form_end,
-                'station' => $station,
-                'isAdmin' => false,
-                'show_break_continue' => $show_break_continue,
+            return $this->render($response, 'common/layout.php', [
+                'pallets'            => $pallets,
+                'station'            => $station,
+                'isAdmin'            => false,
+                'isSideBarShown' => true,
+                'contentView' => APP_VIEWS_PATH . '/pages/workView.php',
+                'show_form_end'      => $show_form_end,
+                'show_break_continue'=> $show_break_continue,
+                'team_members'       => $team_members,
             ]);
         }
 
@@ -159,16 +163,15 @@ class WorkController extends BaseController {
                 $show_form_end = false;
             }
 
-            return $this->render($response, 'pages/workView.php', [
-                'pallets' => $pallets,
-                'team_members' => $team_members,
-                'show_form_end' => $show_form_end,
-                'totes' => $totes,
-                'stations' => $stations,
+            return $this->render($response, 'common/layout.php', [
+                'pallets'            => $pallets,
+                'station'            => $station,
+                'isAdmin'            => false,
+                'isSideBarShown' => true,
+                'contentView' => APP_VIEWS_PATH . '/pages/workView.php',
+                'show_form_end'      => $show_form_end,
                 'show_pallet_edit' => true,
-                'pallet' => $pallet,
-                'station' => $station,
-                'isAdmin' => false,
+                'team_members'       => $team_members,
             ]);
         }
 
@@ -270,13 +273,14 @@ class WorkController extends BaseController {
             $team_members = $this->teamModel->getTodayTeamMembersForUser($currentUser['user_id']);
             $station = $this->stationModel->getStationByUserId($currentUser['user_id']);
 
-            return $this->render($response, 'pages/workView.php', [
-                'pallets' => $pallets,
+            return $this->render($response, 'common/layout.php', [
+                'pallets'            => $pallets,
                 'team_members' => $team_members,
                 'variants' => $variants,
-                'station' => $station,
+                'station'            => $station,
                 'show_variant_search' => true,
-                'isAdmin' => false,
+                'isSideBarShown' => true,
+                'contentView' => APP_VIEWS_PATH . '/pages/workView.php',
             ]);
         }
 

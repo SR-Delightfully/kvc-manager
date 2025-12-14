@@ -97,7 +97,7 @@ class ProductTypeController extends BaseController
                 'data' => array_merge($this->adminDataHelper->adminPageData(),
                         ['product_type_to_edit' => $product_type]),
             ];
-        return $this->render($response, 'admin/databaseView.php', $data);
+        return $this->render($response, 'common/layout.php', $data);
     }
 
     public function update(Request $request, Response $response, array $args): Response {
@@ -144,7 +144,7 @@ class ProductTypeController extends BaseController
                 'data' => array_merge($this->adminDataHelper->adminPageData(),
                         ['type_to_delete' => $type,]),
             ];
-        return $this->render($response, 'admin/databaseView.php', $data);
+        return $this->render($response, 'common/layout.php', $data);
     }
 }
 

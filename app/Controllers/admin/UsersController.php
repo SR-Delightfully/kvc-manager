@@ -78,7 +78,7 @@ class UsersController extends BaseController
                 'data' => array_merge($this->adminDataHelper->adminPageData(),
                         ['user_to_delete' => $user,]),
             ];
-        return $this->render($response, 'admin/databaseView.php', $data);
+        return $this->render($response, 'common/layout.php', $data);
     }
 
     public function search(Request $request, Response $response, array $args): Response

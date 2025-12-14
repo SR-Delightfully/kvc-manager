@@ -1,5 +1,5 @@
 /* This is the Dashboard Styles page */
-/* This file contains all of the styles relevant to the layout of the dashboard, 
+/* This file contains all of the styles relevant to the layout of the dashboard,
    and its children such as the widgets of various sizes. */
 
 #page-wrapper{
@@ -14,10 +14,10 @@
 #page-content {
     width: calc(100% - 14.25%);
     height: calc(100vh - 12%);
-    
+
     overflow-x: hidden;
     overflow-y: scroll;
-    
+
     position: absolute;
     right: 0;
     top: 12%;
@@ -44,7 +44,7 @@
     gap: 1.5rem;
 
     position: relative;
-    
+
     left: 50%;
     top: 48%;
     transform: translate(-50%, -50%);
@@ -82,7 +82,7 @@
     gap: 1.5rem;
 
     position:    absolute;
-    
+
     top: 100vh;
     left: 50%;
     transform: translate(-50%, -3.5%);
@@ -107,7 +107,7 @@
     align-items: center;
     background-color: var(--tone-06 ) !important;
     border-bottom: 2px solid var(--color-blue-03);
-    & > h2 { 
+    & > h2 {
         background-color: var(--color-blue-04);
         border-bottom: 3px solid var(--tone-08);
         width: 100%;
@@ -138,7 +138,7 @@
         border-top-left-radius: var(--radius-xl);
         border-top-right-radius: var(--radius-xl);
         width: 95%;
-        min-height: 55%;  
+        min-height: 55%;
         overflow: hidden;
         position: relative;
         top: -5rem;
@@ -213,13 +213,13 @@
         margin-top: -1.5rem;
 
     } */
-    /* & > div > table { 
+    /* & > div > table {
         overflow-x: hidden;
         overflow-y: scroll;
         max-height: 1rem !important;
     } */
-    /* & > form { 
-        background: yellow; 
+    /* & > form {
+        background: yellow;
         max-height: 40%;
         width: 100%;
         border-top-left-radius: 1.5rem;
@@ -303,7 +303,7 @@
         display: flex;
         flex-flow: column nowrap;
         justify-content: center;
-        align-items: flex-start;        
+        align-items: flex-start;
         gap: 1rem;
     }
 
@@ -390,6 +390,22 @@
     background: var(--color-blue-05);
 }
 
+.dot {
+    height: 12px;
+    width: 12px;
+    border-radius: 50%;
+    display: inline-block;
+}
+.green {
+    background: #35c94a;
+}
+.yellow {
+    background: #dfae34;
+}
+.red {
+    background: #c43a3a;
+}
+
 .rank {
     position: absolute;
     top: -25px;
@@ -397,7 +413,7 @@
     transform: translateX(-50%);
     font-size: 20px;
     font-weight: bold;
-} 
+}
 
 /* Team Progress widget styles by Aya */
 .team-progress-container {
@@ -485,7 +501,7 @@
     border-radius: 12px;
     padding: 15px;
     box-shadow: inset 0 0 10px #00000060;
-} 
+}
 
 .team-header {
     max-width: 80%;
@@ -523,7 +539,7 @@
 }
 
 .team-members {
-    display: none; 
+    display: none;
     padding: 12px;
     background: #1b202a;
     border-radius: 0 0 8px 8px;
@@ -547,7 +563,7 @@
     background: #000;
     border-radius: 50%;
     margin-right: 10px;
-} 
+}
 
 .status-dot {
     height: 12px;

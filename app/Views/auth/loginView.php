@@ -182,24 +182,24 @@ if ($show_forgot_email_2fa):?>
 <?php endif; ?>
 <!-- LOGIN_2FA -->
 <?php if ($show2fa_login): ?>
-<div class="twofa-modal-overlay">
-  <div class="twofactor-container">
+<div id="forgotEmailModal" class="forgot-modal-overlay">
+    <div class="forgot-modal-box">
         <a class="close-forgot" href="<?=APP_BASE_URL?>/login">X</a>
 
-    <h1>Two-Factor Authentication</h1>
+        <h2>Two-Factor Authentication</h2>
+        <?= App\Helpers\FlashMessage::render() ?>
+        <p>Please enter the 6-digit code sent to your phone.<br><br>
 
-    <?= App\Helpers\FlashMessage::render() ?>
-    <p>Please enter the 6-digit code sent to your phone.</p>
+        <form method="POST" action="<?= APP_BASE_URL ?>/login/2fa">
+            <input type="text" name="code" id="code" maxlength="6" placeholder="XXXXXX" required style="color:white;">
 
-    <form method="POST" action="<?= APP_BASE_URL ?>/login/2fa">
-      <input type="text" name="code" id="code" maxlength="6" placeholder="XXXXXX" required style="color:white;">
+            <div>
+                <button type="submit" class="verify">Verify</button>
+                <button type="button" class="resend">Resend Code</button>
+            </div>
+        </form>
 
-      <div>
-        <button type="submit" class="verify">Verify</button>
-        <button type="button" class="resend">Resend Code</button>
-      </div>
-    </form>
-  </div>
+    </div>
 </div>
 <?php endif; ?>
 <!-- New Email MODAL -->

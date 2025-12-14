@@ -102,14 +102,14 @@ class ColourController extends BaseController
 
         $data = [
                 'page_title' => 'Welcome to KVC Manager',
-                'contentView' => APP_VIEWS_PATH . '/pages/admin/colours.php',
+                'contentView' => APP_VIEWS_PATH . '/pages/adminView.php',
                 'isSideBarShown' => true,
                 'isAdmin' => UserContext::isAdmin(),
                 'show_colour_edit' => true,
                 'data' => array_merge($this->adminDataHelper->adminPageData(),
                         ['colour_to_edit' => $colour]),
             ];
-        return $this->render($response, 'admin/databaseView.php', $data);
+        return $this->render($response, 'common/layout.php', $data);
     }
 
     //post method for updating specified product
@@ -166,7 +166,7 @@ class ColourController extends BaseController
                 'data' => array_merge($this->adminDataHelper->adminPageData(),
                         ['colour_to_delete' => $variant,]),
             ];
-        return $this->render($response, 'admin/databaseView.php', $data);
+        return $this->render($response, 'common/layout.php', $data);
     }
 
     public function search(Request $request, Response $response, array $args): Response

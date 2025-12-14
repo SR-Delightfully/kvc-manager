@@ -77,7 +77,7 @@ class ProductVariantController extends BaseController
                 'data' => array_merge($this->adminDataHelper->adminPageData(),
                         ['variant_to_edit' => $variant,]),
             ];
-        return $this->render($response, 'admin/databaseView.php', $data);
+        return $this->render($response, 'common/layout.php', $data);
     }
 
     public function update(Request $request, Response $response, array $args): Response {
@@ -125,7 +125,7 @@ class ProductVariantController extends BaseController
                 'data' => array_merge($this->adminDataHelper->adminPageData(),
                         ['variant_to_delete' => $variant,]),
             ];
-        return $this->render($response, 'admin/databaseView.php', $data);
+        return $this->render($response, 'common/layout.php', $data);
     }
 
 

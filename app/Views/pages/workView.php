@@ -43,7 +43,7 @@ function fmt_time(?string $ts): string {
 
 ?>
 <main id="work-page">
-
+    <br><br><br><br>
     <?php if ($isAdmin): ?>
         <form method="GET" action="<?= APP_BASE_URL ?>/work">
             <label for="station_id">Station:</label>

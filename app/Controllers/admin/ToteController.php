@@ -89,7 +89,7 @@ class ToteController extends BaseController
                 'data' => array_merge($this->adminDataHelper->adminPageData(),
                         ['tote_to_edit' => $tote]),
             ];
-        return $this->render($response, 'admin/databaseView.php', $data);
+        return $this->render($response, 'common/layout.php', $data);
     }
 
     //post method for updating specified product
@@ -138,7 +138,7 @@ class ToteController extends BaseController
                 'data' => array_merge($this->adminDataHelper->adminPageData(),
                         ['tote_to_delete' => $tote,]),
             ];
-        return $this->render($response, 'admin/databaseView.php', $data);
+        return $this->render($response, 'common/layout.php', $data);
     }
 }
 

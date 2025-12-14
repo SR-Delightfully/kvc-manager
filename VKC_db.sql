@@ -1,32 +1,34 @@
-
-
 CREATE TABLE users(
-	user_id INT PRIMARY KEY AUTO_INCREMENT,
-	user_role ENUM('employee', 'admin') DEFAULT 'employee',
-	first_name VARCHAR(50) NOT NULL,
-	last_name VARCHAR(50) NOT NULL,
-	email VARCHAR(50) NOT NULL UNIQUE,
-	phone CHAR(10) NOT NULL UNIQUE,
-	password VARCHAR(255) NOT NULL,
-	user_dc DATETIME DEFAULT CURRENT_TIMESTAMP,
-	user_status ENUM('active', 'leave', 'terminated') DEFAULT 'active'
+    user_id INT PRIMARY KEY AUTO_INCREMENT,
+    user_role ENUM('employee', 'admin') DEFAULT 'employee',
+    first_name VARCHAR(50) NOT NULL,
+    last_name VARCHAR(50) NOT NULL,
+    email VARCHAR(50) NOT NULL UNIQUE,
+    phone CHAR(10) NOT NULL UNIQUE,
+    password VARCHAR(255) NOT NULL,
+    user_dc DATETIME DEFAULT CURRENT_TIMESTAMP,
+    user_status ENUM('active', 'leave', 'terminated') DEFAULT 'active'
 );
 
 CREATE TABLE schedule(
     schedule_id INT PRIMARY KEY AUTO_INCREMENT,
-    user_id INT NOT NULL,
+    user_id INT NULL,
     start_time DATETIME NOT NULL,
     end_time DATETIME NOT NULL,
-    schedule_status ENUM('pending','confirmed','rejected') NOT NULL DEFAULT 'pending',
-    FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE
+    schedule_status ENUM('pending','confirmed','rejected') DEFAULT 'pending',
+    FOREIGN KEY (user_id)
+        REFERENCES users(user_id)
+        ON DELETE SET NULL
 );
 
 CREATE TABLE shift(
     shift_id INT PRIMARY KEY AUTO_INCREMENT,
-    schedule_id INT NOT NULL,
+    schedule_id INT NULL,
     shift_start DATETIME NOT NULL,
     shift_end DATETIME NULL,
-    FOREIGN KEY (schedule_id) REFERENCES schedule(schedule_id) ON DELETE CASCADE
+    FOREIGN KEY (schedule_id)
+        REFERENCES schedule(schedule_id)
+        ON DELETE SET NULL
 );
 
 CREATE TABLE station(
@@ -36,16 +38,22 @@ CREATE TABLE station(
 
 CREATE TABLE team(
     team_id INT PRIMARY KEY AUTO_INCREMENT,
-    station_id INT NOT NULL,
+    station_id INT NULL,
     team_date DATE NOT NULL,
-    FOREIGN KEY (station_id) REFERENCES station(station_id) ON DELETE CASCADE
+    FOREIGN KEY (station_id)
+        REFERENCES station(station_id)
+        ON DELETE SET NULL
 );
 
 CREATE TABLE team_members(
-    team_id INT NOT NULL,
-    user_id INT NOT NULL,
-    FOREIGN KEY (team_id) REFERENCES team(team_id) ON DELETE CASCADE,
-    FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE
+    team_id INT NULL,
+    user_id INT NULL,
+    FOREIGN KEY (team_id)
+        REFERENCES team(team_id)
+        ON DELETE SET NULL,
+    FOREIGN KEY (user_id)
+        REFERENCES users(user_id)
+        ON DELETE SET NULL
 );
 
 CREATE TABLE product_type(
@@ -55,10 +63,12 @@ CREATE TABLE product_type(
 
 CREATE TABLE product(
     product_id INT PRIMARY KEY AUTO_INCREMENT,
-    product_type_id INT NOT NULL,
+    product_type_id INT NULL,
     product_code VARCHAR(20) NULL,
     product_name VARCHAR(50) NOT NULL,
-    FOREIGN KEY (product_type_id) REFERENCES product_type(product_type_id) ON DELETE RESTRICT
+    FOREIGN KEY (product_type_id)
+        REFERENCES product_type(product_type_id)
+        ON DELETE SET NULL
 );
 
 CREATE TABLE colour(
@@ -69,32 +79,42 @@ CREATE TABLE colour(
 
 CREATE TABLE product_variant(
     variant_id INT PRIMARY KEY AUTO_INCREMENT,
-    product_id INT NOT NULL,
+    product_id INT NULL,
     colour_id INT NULL,
     unit_size ENUM('0.5L', '1L', '2L', '4L', '8L'),
     variant_description VARCHAR(50) NOT NULL,
-    FOREIGN KEY (product_id) REFERENCES product(product_id) ON DELETE RESTRICT,
-    FOREIGN KEY (colour_id) REFERENCES colour(colour_id) ON DELETE SET NULL
+    FOREIGN KEY (product_id)
+        REFERENCES product(product_id)
+        ON DELETE SET NULL,
+    FOREIGN KEY (colour_id)
+        REFERENCES colour(colour_id)
+        ON DELETE SET NULL
 );
 
 CREATE TABLE tote(
     tote_id INT PRIMARY KEY AUTO_INCREMENT,
-    variant_id INT NOT NULL,
+    variant_id INT NULL,
     batch_number INT UNIQUE,
-    FOREIGN KEY (variant_id) REFERENCES product_variant(variant_id) ON DELETE RESTRICT
+    FOREIGN KEY (variant_id)
+        REFERENCES product_variant(variant_id)
+        ON DELETE SET NULL
 );
 
 CREATE TABLE pallet(
     pallet_id INT PRIMARY KEY AUTO_INCREMENT,
-    tote_id INT NOT NULL,
-    station_id INT NOT NULL,
-    FOREIGN KEY (tote_id) REFERENCES tote(tote_id) ON DELETE RESTRICT,
-    FOREIGN KEY (station_id) REFERENCES station(station_id) ON DELETE SET NULL
+    tote_id INT NULL,
+    station_id INT NULL,
+    FOREIGN KEY (tote_id)
+        REFERENCES tote(tote_id)
+        ON DELETE SET NULL,
+    FOREIGN KEY (station_id)
+        REFERENCES station(station_id)
+        ON DELETE SET NULL
 );
 
 CREATE TABLE palletize_session(
     session_id INT PRIMARY KEY AUTO_INCREMENT,
-    pallet_id INT NOT NULL,
+    pallet_id INT NULL,
     start_time DATETIME NOT NULL,
     end_time DATETIME NULL,
     units INT NULL,
@@ -102,7 +122,9 @@ CREATE TABLE palletize_session(
     break_time INT NULL,
     mess BOOLEAN NULL,
     notes VARCHAR(100) NULL,
-    FOREIGN KEY (pallet_id) REFERENCES pallet(pallet_id) ON DELETE CASCADE
+    FOREIGN KEY (pallet_id)
+        REFERENCES pallet(pallet_id)
+        ON DELETE SET NULL
 );
 
 

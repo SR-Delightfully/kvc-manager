@@ -74,14 +74,14 @@ class PalletController extends BaseController
 
         $data = [
                 'page_title' => 'Welcome to KVC Manager',
-                'contentView' => APP_VIEWS_PATH . '/pages/admin/colours.php',
+                'contentView' => APP_VIEWS_PATH . '/pages/adminView.php',
                 'isSideBarShown' => true,
                 'isAdmin' => UserContext::isAdmin(),
                 'show_pallet_edit' => true,
                 'data' => array_merge($this->adminDataHelper->adminPageData(),
                         ['pallet_to_edit' => $pallet]),
             ];
-        return $this->render($response, 'admin/databaseView.php', $data);
+        return $this->render($response, 'common/layout.php', $data);
     }
 
     public function update(Request $request, Response $response, array $args): Response {
@@ -133,7 +133,7 @@ class PalletController extends BaseController
                 'data' => array_merge($this->adminDataHelper->adminPageData(),
                         ['pallet_to_delete' => $variant,]),
             ];
-        return $this->render($response, 'admin/databaseView.php', $data);
+        return $this->render($response, 'common/layout.php', $data);
     }
 }
 
