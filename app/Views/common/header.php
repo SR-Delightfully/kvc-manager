@@ -73,7 +73,7 @@ function e($value)
             <div class="display-flex-row ribbon">
                 <h2>Welcome back,</h2>
                 <h3 >
-                    <?= e($currentUser['user_fname'] ?? 'Unidentified User') ?><?= e($currentUser['user_lname'] ?? '') ?>
+                    <?= e($currentUser['first_name'] ?? 'Unidentified User') ?> <?= e($currentUser['last_name'] ?? '') ?>
                 </h3>
                 <h3><?= date('F j, Y') ?></h3>
             </div>

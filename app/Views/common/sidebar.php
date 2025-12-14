@@ -21,7 +21,7 @@ $tabs['tab1'] = [
     "key" => "admin",
     "icon" => "<i class='bi bi-person-gear'></i>",
     "subtabs" => [
-        ["label" => "Dashboard", "url" => "./admin"],
+        ["label" => "Dashboard", "url" => APP_BASE_URL . "/admin"],
         ["label" => "Employee Management", "url" => "./admin/users"],
         ["label" => "<sup>Employees</sup>", "url" => "./admin/type"],
         ["label" => "<sup>Schedule</sup>", "url" => "./admin/type"],
@@ -52,14 +52,14 @@ $currentPath = $_SERVER['REQUEST_URI'];
 ?>
 
 <nav id="nav-bar">
-    <div id="sidebar-toggle"><i class="bi bi-list"></i></div>
+    <!-- <div id="sidebar-toggle"><i class="bi bi-list"></i></div> -->
     <div id="logo" class="expanded metallic-bg"><p>KVC</p></div>
 
     <div id="nav-bar-inner">
         <ul id="tabs">
             <?php foreach ($tabs as $key => $tab) { ?>
                 <li id="<?= $key ?>" class="tab <?= isset($tab['subtabs']) ? 'tab-with-submenu' : '' ?> expanded">
-                    <a href="./<?= $tab['key'] ?>" class="tab-main-btn">
+                    <a href="<?= APP_BASE_URL ?>/<?= $tab['key'] ?>" class="tab-main-btn">
                         <span class="tab-icon"><?= $tab['icon'] ?></span>
                         <span class="tab-label"><?= LocalizationHelper::get("sidebar_content." . $tab['key']) ?></span>
                         <?php if (isset($tab['subtabs'])): ?>

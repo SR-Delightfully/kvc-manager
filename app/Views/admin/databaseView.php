@@ -15,6 +15,7 @@ $pallets = $data['pallets'] ?? null;
 $teams = $data['teams'] ?? null;
 $team_members = $data['team_members'] ?? null;
 $totes = $data['totes'] ?? null;
+$code = $data['code'] ?? null;
 
 $show_variant_edit = $show_variant_edit ?? null;
 $variant_to_edit = $data['variant_to_edit'] ?? null;
@@ -237,7 +238,7 @@ ViewHelper::loadSideBar();
         </select>
 
         <div class="reg-label">Registration Code :</div>
-        <input type="text" value="XJ8M32N" readonly>
+        <input type="text" value="<?= $code ?>" readonly>
 
         <button class="jump-btn">Jump To ↪</button>
     </div>
@@ -730,7 +731,6 @@ ViewHelper::loadSideBar();
     <div class="forgot-modal-box">
         <a href="<?=APP_BASE_URL ?>/admin" class="close-forgot">X</a>
 
-        <?= var_dump($variant_to_edit) ?>
         <h2>Edit Variant</h2>
         <form action="<?= APP_BASE_URL ?>/admin/variant/edit/<?= $variant_to_edit['variant_id'] ?>" method="POST">
             <input type="hidden" value="<?= $variant_to_edit['variant_id'] ?>" name="variant_id">

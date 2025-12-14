@@ -32,7 +32,7 @@ class AuthController extends BaseController
         parent::__construct($container);
     }
 
-        public function registrationCode(Request $request, Response $response, array $args): Response
+    public function registrationCode(Request $request, Response $response, array $args): Response
         {
             $code = RegistrationCodeHelper::getWeeklyCode();
             // $this->authHelper->sendVerificationCode("+15149920406");

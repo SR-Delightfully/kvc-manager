@@ -87,7 +87,7 @@ CREATE TABLE tote(
 CREATE TABLE pallet(
     pallet_id INT PRIMARY KEY AUTO_INCREMENT,
     tote_id INT NOT NULL,
-    station_id INT NOT NULL,
+    station_id INT NULL,
     FOREIGN KEY (tote_id) REFERENCES tote(tote_id) ON DELETE RESTRICT,
     FOREIGN KEY (station_id) REFERENCES station(station_id) ON DELETE SET NULL
 );

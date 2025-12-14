@@ -6,6 +6,7 @@ namespace App\Controllers;
 
 use App\Domain\Models\UserModel;
 use App\Helpers\FlashMessage;
+use App\Helpers\UserContext;
 use DI\Container;
 use Exception;
 use Psr\Http\Message\ResponseInterface as Response;
@@ -22,15 +23,30 @@ class SettingsController extends BaseController
     {
         $data = [
             'page_title' => 'Welcome to KVC Manager',
-            'contentView' => APP_VIEWS_PATH . '/pages/settingsView.php',
+            'contentView' => APP_VIEWS_PATH . '/admin/settingsView.php',
             'isSideBarShown' => true,
             'data' => [
                 'title' => 'Settings',
                 'message' => 'settings Page',
+                'defaultUser' => $this->getCurrentUserOrDefault()
             ]
         ];
 
         return $this->render($response, 'common/layout.php', $data);
+    }
+
+    public function getCurrentUserOrDefault()
+    {
+        $user = UserContext::getCurrentUser();
+        $userId = $user['user_id'] ?? null;
+
+        if ($userId) {
+            return $this->userModel->getUserById($userId);
+        }
+
+        $admins = $this->userModel->getAdmins();
+
+        return $admins[0] ?? null;
     }
 
     public function error(Request $request, Response $response, array $args): Response

@@ -17,41 +17,21 @@ ViewHelper::loadSideBar();
 
 
     <div id="atp-chart-filters">
-
         <!-- PRODUCT SELECT -->
         <form action="" method="GET">
-            <select name="" id=""></select>
-            <select name="" id=""></select>
+            <select name="" id="">
+                <option value="solution_a">Solution A</option>
+                <option value="solution_b">Solution B</option>
+                <option value="100_base_pods">100-Base Pods</option>
+                <option value="u_base_pods">U-Base Pods</option>
+            </select>
+            <select name="" id="">
+                <option value="">Units Produced</option>
+                <option value="">Units/Hr</option>
+                <option value="">Pallets Completed</option>
+                <option value="">Breaks</option>
+            </select>
         </form>
-        <div class="rpt-select" onclick="rpt_toggleSelect(this)">
-            <div class="rpt-select-header">
-                <span id="rpt-product-label">Solution A</span>
-                <span class="rpt-arrow">⌄</span>
-            </div>
-
-            <div class="rpt-select-options">
-                <div onclick="rpt_setProduct('Solution A')">Solution A</div>
-                <div onclick="rpt_setProduct('Solution B')">Solution B</div>
-                <div onclick="rpt_setProduct('100-Base Pods')">100-Base Pods</div>
-                <div onclick="rpt_setProduct('U-Base Pods')">U-Base Pods</div>
-            </div>
-        </div>
-
-        <!-- METRIC SELECT -->
-        <div class="rpt-select" onclick="rpt_toggleSelect(this)">
-            <div class="rpt-select-header">
-                <span id="rpt-metric-label">Units Produced</span>
-                <span class="rpt-arrow">⌄</span>
-            </div>
-
-            <div class="rpt-select-options">
-                <div onclick="">Units Produced</div>
-                <div onclick="">Units/hr</div>
-                <div onclick="">Pallets</div>
-                <div onclick="">Breaks</div>
-            </div>
-        </div>
-
     </div>
 
 

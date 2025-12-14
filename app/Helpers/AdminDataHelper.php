@@ -11,6 +11,7 @@ use App\Domain\Models\StationModel;
 use App\Domain\Models\PalletModel;
 use App\Domain\Models\TeamModel;
 use App\Domain\Models\ToteModel;
+use App\Helpers\RegistrationCodeHelper;
 
 
 class AdminDataHelper
@@ -44,6 +45,7 @@ class AdminDataHelper
             'teams' => $this->teamModel->getAllTeamsClean(),
             'team_members' => $this->teamModel->getAllTeamMembersClean(),
             'totes' => $this->toteModel->getAllTotesClean(),
+            'code' => RegistrationCodeHelper::getWeeklyCode(),
         ];
     }
 }
