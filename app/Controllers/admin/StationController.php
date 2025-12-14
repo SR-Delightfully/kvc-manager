@@ -64,14 +64,14 @@ class StationController extends BaseController
         $product = $this->stationModel->getStationById($product_id);
 
         $data = [
-                'contentView' => APP_VIEWS_PATH . '/pages/adminView.php',
+                'contentView' => APP_VIEWS_PATH . '/admin/databaseView.php',
                 'isSideBarShown' => true,
                 'isAdmin' => UserContext::isAdmin(),
                 'show_station_edit' => true,
                 'data' => array_merge($this->adminDataHelper->adminPageData(),
                         ['station_to_edit' => $product]),
             ];
-        return $this->render($response, 'admin/databaseView.php', $data);
+        return $this->render($response, 'common/layout.php', $data);
     }
 
     public function update(Request $request, Response $response, array $args): Response {

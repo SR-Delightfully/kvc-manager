@@ -7,7 +7,6 @@ $currentUser = null;
     if (session_status() === PHP_SESSION_NONE) {
         session_start();
     }
-    $currentUser = $_SESSION['currentUser'] ?? null;
 
 function e($value)
 {
@@ -27,18 +26,18 @@ function e($value)
     <!-- bootstrap -->
      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
 
-    <link rel="stylesheet" href="./public/assets/css/00-Global-Styles.css">
-    <link rel="stylesheet" href="./public/assets/css/01-Element-Styles.css">
-    <link rel="stylesheet" href="./public/assets/css/02-Register-Styles.css">
-    <link rel="stylesheet" href="./public/assets/css/03-Login-Styles.css">
-    <link rel="stylesheet" href="./public/assets/css/04-NavBar-Styles.css">
-    <link rel="stylesheet" href="./public/assets/css/05-Header-Styles.css">
-    <link rel="stylesheet" href="./public/assets/css/06-Dashboard-Styles.css">
-    <link rel="stylesheet" href="./public/assets/css/07-Settings-Styles.css">
-    <link rel="stylesheet" href="./public/assets/css/08-Reports-Styles.css">
-    <link rel="stylesheet" href="./public/assets/css/09-Twofactor-Styles.css">
+    <link rel="stylesheet" href="<?= APP_BASE_URL ?>/public/assets/css/00-Global-Styles.css">
+    <link rel="stylesheet" href="<?= APP_BASE_URL ?>/public/assets/css/01-Element-Styles.css">
+    <link rel="stylesheet" href="<?= APP_BASE_URL ?>/public/assets/css/02-Register-Styles.css">
+    <link rel="stylesheet" href="<?= APP_BASE_URL ?>/public/assets/css/03-Login-Styles.css">
+    <link rel="stylesheet" href="<?= APP_BASE_URL ?>/public/assets/css/04-NavBar-Styles.css">
+    <link rel="stylesheet" href="<?= APP_BASE_URL ?>/public/assets/css/05-Header-Styles.css">
+    <link rel="stylesheet" href="<?= APP_BASE_URL ?>/public/assets/css/06-Dashboard-Styles.css">
+    <link rel="stylesheet" href="<?= APP_BASE_URL ?>/public/assets/css/07-Settings-Styles.css">
+    <link rel="stylesheet" href="<?= APP_BASE_URL ?>/public/assets/css/08-Reports-Styles.css">
+    <link rel="stylesheet" href="<?= APP_BASE_URL ?>/public/assets/css/09-Twofactor-Styles.css">
 
-   
+
 
 </head>
 
@@ -51,7 +50,7 @@ function e($value)
             <div class="display-flex-row ribbon">
                 <h2>Welcome back,</h2>
                 <h3 >
-                    <?= e($currentUser['user_fname'] ?? 'Unidentified User') ?><?= e($currentUser['user_lname'] ?? '') ?>
+                    <?= e($currentUser['first_name'] ?? 'Unidentified User') ?> <?= e($currentUser['last_name'] ?? '') ?>
                 </h3>
                 <h3><?= date('F j, Y') ?></h3>
             </div>

@@ -75,11 +75,10 @@ ViewHelper::loadHeader($page_title, true);
 ?>
 <!-- products section -->
  <div class="products-page">
-            <?= App\Helpers\FlashMessage::render() ?>
     <!-- LEFT — PRODUCTS VARIANTS TABLE -->
     <div class="products-left">
 <div class="table-card">
-    <form id="variant-form" action="" method=""></form>
+    <form id="variant-form" action="" method="GET"></form>
     <table>
         <thead>
             <tr>
@@ -153,8 +152,8 @@ ViewHelper::loadHeader($page_title, true);
         <div class="actions-title">Actions :</div>
 
         <!-- <button id="view-variant" class="blue-btn">View Variant Details</button> -->
-        <button id="edit-variant" class="yellow-btn">Edit Variant Details</button>
-        <button id="delete-variant" class="red-btn">Delete Variant</button>
+        <button type="button" id="edit-variant" class="yellow-btn">Edit Variant Details</button>
+        <button type="button" id="delete-variant" class="red-btn">Delete Variant</button>
         <button class="jump-btn">Jump To ↪</button>
     </div>
 
@@ -439,6 +438,7 @@ ViewHelper::loadHeader($page_title, true);
 </div>
 
 
+<?= App\Helpers\FlashMessage::render() ?>
 <!-- BIG_TABLES SECTION -->
 
 
@@ -1203,9 +1203,10 @@ ViewHelper::loadHeader($page_title, true);
     </div>
 </div>
 <?php endif; ?>
-<script src="/kvc-manager/public/assets/js/admin-page.js"></script>
+<script src="<?= APP_BASE_URL ?>/public/assets/js/admin-page.js"></script>
 <?php
 ViewHelper::loadFooter();
+ViewHelper::loadJsScripts();
 ?>
 
 

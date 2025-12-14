@@ -1,41 +1,62 @@
-
-function submitBtn(formElement, buttonId, action, method, name, inputName) {
+function submitBtn(formElement, buttonId, action, method='GET', name='item', inputName='id') {
     const form = document.getElementById(formElement);
     const button = document.getElementById(buttonId);
+    if (!button) return;
 
-    button.addEventListener('click', () => {
-        const selected = document.querySelector('input[name='+ inputName +']:checked');
+    button.addEventListener('click', (e) => {
+        e.preventDefault();
+
+        const selected = document.querySelector(`input[name="${inputName}"]:checked`);
         if (!selected) {
-            alert('Select a '+ name +' in the table.');
+            alert('Select a ' + name + ' in the table.');
             return;
         }
 
-        const variantId = selected.value;
+        const id = selected.value;
+        // build absolute URL
+        const cleanedAction = String(action).replace(/^\/+/, '');
+        const url = `${window.APP_BASE_URL}/${cleanedAction}${encodeURIComponent(id)}`;
 
-        form.action = action + variantId;
-        form.method = method.toUpperCase();
+        if ((method || 'GET').toUpperCase() === 'GET') {
+            // navigate with GET
+            window.location.href = url;
+            return;
+        }
 
-        form.submit();
+        // for POST or other methods, use the provided form if available
+        if (form) {
+            form.action = url;
+            form.method = method.toUpperCase();
+            form.submit();
+            return;
+        }
+
+        // fallback: send a fetch POST (optional)
+        fetch(url, { method: method.toUpperCase(), credentials: 'same-origin' })
+            .then(r => {
+                if (r.redirected) window.location.href = r.url;
+                else return r.text();
+            })
+            .catch(err => console.error('Action failed', err));
     });
 }
 
 //submitBtn('variant-form', 'view-variant', 'admin/variant/', 'GET', 'variant', 'variant_id');
-submitBtn('variant-form', 'edit-variant', 'admin/variant/edit/', 'GET', 'variant', 'variant_id');
-submitBtn('variant-form', 'delete-variant', 'admin/variant/delete/', 'GET', 'variant', 'variant_id');
+
 
 //submitBtn('user-form', 'view-user', 'admin/users/', 'GET', 'user', 'user_id');
-submitBtn('user-form', 'delete-user', 'admin/users/delete/', 'GET', 'user', 'user_id');
 
-submitBtn('product-type-form', 'edit-type', 'admin/type/edit/', 'GET', 'product type', 'product_type_id');
-submitBtn('product-type-form', 'delete-type', 'admin/type/delete/', 'GET', 'product type', 'product_type_id');
+
+//submitBtn('product-type-form', 'edit-type', 'admin/type/edit/', 'GET', 'product type', 'product_type_id');
+//submitBtn('product-type-form', 'delete-type', 'admin/type/delete/', 'GET', 'product type', 'product_type_id');
 
 //submitBtn('product-form', 'view-product', 'admin/product/', 'GET', 'product', 'product_id');
-submitBtn('product-form', 'edit-product', 'admin/product/edit/', 'GET', 'product', 'product_id');
-submitBtn('product-form', 'delete-product', 'admin/product/delete/', 'GET', 'product', 'product_id');
+//submitBtn('product-form', 'edit-product', 'admin/product/edit/', 'GET', 'product', 'product_id');
+//submitBtn('product-form', 'delete-product', 'admin/product/delete/', 'GET', 'product', 'product_id');
 
 //submitBtn('colour-form', 'view-colour', 'admin/colour/', 'GET', 'colour', 'colour_id');
-submitBtn('colour-form', 'edit-colour', 'admin/colour/edit/', 'GET', 'colour', 'colour_id');
-submitBtn('colour-form', 'delete-colour', 'admin/colour/delete/', 'GET', 'colour', 'colour_id');
+//submitBtn('colour-form', 'edit-colour', 'admin/colour/edit/', 'GET', 'colour', 'colour_id');
+//submitBtn('colour-form', 'delete-colour', 'admin/colour/delete/', 'GET', 'colour', 'colour_id');
 
 
 function debounce(func, delay) {
@@ -44,103 +65,6 @@ function debounce(func, delay) {
         clearTimeout(timeoutId);
         timeoutId = setTimeout(() => func.apply(this, args), delay);
     };
-}
-
-async function fetchProducts(searchTerm) {
-    try {
-        const params = new URLSearchParams();
-        if (searchTerm) params.append('q', searchTerm);
-
-        const response = await fetch(`${window.APP_BASE_URL}/api/products/search?${params.toString()}`);
-
-        if (!response.ok) {
-            throw new Error(`HTTP Error: ${response.status}`);
-        }
-
-        const data = await response.json();
-        return data.products || [];
-
-    } catch (error) {
-        console.error('Fetch error (products):', error);
-        return [];
-    }
-}
-
-async function fetchColours(searchTerm) {
-    try {
-        const params = new URLSearchParams();
-        if (searchTerm) params.append('q', searchTerm);
-
-        const response = await fetch(`${window.APP_BASE_URL}/api/colours/search?${params.toString()}`);
-
-        if (!response.ok) {
-            throw new Error(`HTTP Error: ${response.status}`);
-        }
-
-        const data = await response.json();
-        return data.colours || [];
-
-    } catch (error) {
-        console.error('Fetch error (colours):', error);
-        return [];
-    }
-}
-
-function createColourRow(colour) {
-    const tr = document.createElement('tr');
-    tr.className = "colour-row";
-
-    tr.innerHTML = `
-        <td>
-            <input type="radio" name="colour_id"
-                   value="${colour.colour_id}"
-                   class="colour-radio">
-        </td>
-        <td>${escapeHtml(colour.colour_id)}</td>
-        <td>${escapeHtml(colour.colour_code)}</td>
-        <td>${escapeHtml(colour.colour_name)}</td>
-    `;
-
-    return tr;
-}
-
-function renderColourTable(colours) {
-    const tbody = document.getElementById('colourBody');
-    tbody.innerHTML = '';
-
-    if (!colours || colours.length === 0) {
-        tbody.innerHTML = `
-            <tr>
-                <td colspan="4">
-                    <div class="alert alert-info m-0">
-                        <i class="bi bi-info-circle"></i> No colours found.
-                    </div>
-                </td>
-            </tr>
-        `;
-        return;
-    }
-
-    colours.forEach(c => tbody.appendChild(createColourRow(c)));
-}
-
-function createProductRow(product) {
-    const tr = document.createElement('tr');
-    tr.className = "product-row";
-
-    tr.innerHTML = `
-        <td>
-            <input type="radio" name="product_id"
-                   value="${product.product_id}"
-                   class="product-radio">
-        </td>
-        <td>${product.product_id}</td>
-        <td>${escapeHtml(product.product_name)}</td>
-        <td>${escapeHtml(product.product_type_id)}</td>
-        <td>${escapeHtml(product.product_code)}</td>
-    `;
-
-    return tr;
 }
 
 async function fetchVariants(searchTerm) {
@@ -174,26 +98,6 @@ function showError(message) {
     `;
 }
 
-function renderProductTable(products) {
-    const tbody = document.getElementById('productBody');
-
-    tbody.innerHTML = '';
-
-    if (!products || products.length === 0) {
-        tbody.innerHTML = `
-            <tr>
-                <td colspan="5">
-                    <div class="alert alert-info m-0">
-                        <i class="bi bi-info-circle"></i> No products found.
-                    </div>
-                </td>
-            </tr>
-        `;
-        return;
-    }
-
-    products.forEach(p => tbody.appendChild(createProductRow(p)));
-}
 
 function renderVariants(products) {
     const tbody = document.getElementById('variantBody');
@@ -289,39 +193,51 @@ function createUserRow(user) {
 
 
 document.addEventListener('DOMContentLoaded', function () {
+    console.log("Binding edit-variant");
+    submitBtn('variant-form', 'edit-variant', 'admin/variant/edit/', 'GET', 'variant', 'variant_id');
+    submitBtn('variant-form', 'delete-variant', 'admin/variant/delete/', 'GET', 'variant', 'variant_id');
+    // other tables (example)
+    submitBtn('user-form', 'delete-user', 'admin/users/delete/', 'GET', 'user', 'user_id');
 
-    // VARIANTS TABLE
+    // VARIANTS TABLE (guard nodes)
     const tbody = document.getElementById('variantBody');
     const template = document.getElementById('defaultVariantsTemplate');
-    tbody.appendChild(template.content.cloneNode(true));
+    if (tbody && template && template.content) {
+        tbody.appendChild(template.content.cloneNode(true));
 
-    const searchInput = document.getElementById('searchInput');
+        const searchInput = document.getElementById('searchInput');
 
-    async function performSearch() {
-        const searchTerm = searchInput.value.trim();
-        if (searchTerm === '') {
-            tbody.innerHTML = '';
-            tbody.appendChild(template.content.cloneNode(true));
-            return;
+        async function performSearch() {
+            const searchTerm = searchInput.value.trim();
+            if (searchTerm === '') {
+                tbody.innerHTML = '';
+                tbody.appendChild(template.content.cloneNode(true));
+                return;
+            }
+            const products = await fetchVariants(searchTerm);
+            renderVariants(products);
         }
-        const products = await fetchVariants(searchTerm);
-        renderVariants(products);
+
+        if (searchInput) {
+            const debouncedSearch = debounce(performSearch, 300);
+            searchInput.addEventListener('input', debouncedSearch);
+            searchInput.addEventListener('keydown', e => {
+                if (e.key === 'Escape') {
+                    searchInput.value = '';
+                    performSearch();
+                }
+            });
+        }
     }
 
-    const debouncedSearch = debounce(performSearch, 300);
-    searchInput.addEventListener('input', debouncedSearch);
-    searchInput.addEventListener('keydown', e => {
-        if (e.key === 'Escape') {
-            searchInput.value = '';
-            performSearch();
-        }
-    });
-
-        const userSearchInput = document.querySelector('.employees-bottom .search');
+    // USERS TABLE (guard nodes)
+    const userSearchInput = document.querySelector('.employees-bottom .search');
     const userTbody = document.getElementById('employeeBody');
     const userTemplate = document.getElementById('defaultUsersTemplate');
 
-    userTbody.appendChild(userTemplate.content.cloneNode(true));
+    if (userTbody && userTemplate && userTemplate.content) {
+        userTbody.appendChild(userTemplate.content.cloneNode(true));
+    }
 
     const userStatusSelect = document.getElementById('userStatusFilter');
 
@@ -330,6 +246,8 @@ document.addEventListener('DOMContentLoaded', function () {
         const role = (userStatusSelect && userStatusSelect.value && userStatusSelect.value !== 'Employee Status')
             ? userStatusSelect.value
             : '';
+
+        if (!userTbody || !userTemplate) return;
 
         if (term === '' && role === '') {
             userTbody.innerHTML = '';
@@ -364,73 +282,6 @@ document.addEventListener('DOMContentLoaded', function () {
             performUserSearch();
         });
     }
-
-    // PRODUCTS TABLE
-
-    const productSearchInput = document.getElementById('productSearchInput');
-    const productTbody = document.getElementById('productBody');
-    const productTemplate = document.getElementById('defaultProductsTemplate');
-
-    if (productTbody && productTemplate) {
-        productTbody.appendChild(productTemplate.content.cloneNode(true));
-    }
-
-    if (productSearchInput) {
-        async function performProductSearch() {
-            const term = productSearchInput.value.trim();
-
-            if (term === '') {
-                productTbody.innerHTML = '';
-                if (productTemplate) productTbody.appendChild(productTemplate.content.cloneNode(true));
-                return;
-            }
-
-            const products = await fetchProducts(term);
-            renderProductTable(products);
-        }
-
-        const debouncedProductSearch = debounce(performProductSearch, 300);
-        productSearchInput.addEventListener('input', debouncedProductSearch);
-        productSearchInput.addEventListener('keydown', e => {
-            if (e.key === 'Escape') {
-                productSearchInput.value = '';
-                performProductSearch();
-            }
-        });
-    }
-
-    // COLOURS TABLE
-    const colourSearchInput = document.getElementById('colourSearchInput');
-    const colourTbody = document.getElementById('colourBody');
-    const colourTemplate = document.getElementById('defaultColoursTemplate');
-
-    if (colourTbody && colourTemplate) {
-        colourTbody.appendChild(colourTemplate.content.cloneNode(true));
-    }
-
-    if (colourSearchInput) {
-        async function performColourSearch() {
-            const term = colourSearchInput.value.trim();
-
-            if (term === '') {
-                colourTbody.innerHTML = '';
-                if (colourTemplate) colourTbody.appendChild(colourTemplate.content.cloneNode(true));
-                return;
-            }
-
-            const colours = await fetchColours(term);
-            renderColourTable(colours);
-        }
-
-        const debouncedColourSearch = debounce(performColourSearch, 300);
-        colourSearchInput.addEventListener('input', debouncedColourSearch);
-        colourSearchInput.addEventListener('keydown', e => {
-            if (e.key === 'Escape') {
-                colourSearchInput.value = '';
-                performColourSearch();
-            }
-        });
-    }
 });
 
 
@@ -454,7 +305,7 @@ function enableRowSelectDelegated(containerOrSelector, rowSelector, radioSelecto
         if (!e.target.matches(radioSelector)) {
             radio.checked = true;
         }
-        
+
         container.querySelectorAll(rowSelector).forEach(r => r.classList.remove("selected-row"));
         row.classList.add("selected-row");
     });
@@ -463,7 +314,7 @@ function enableRowSelectDelegated(containerOrSelector, rowSelector, radioSelecto
 
 enableRowSelectDelegated(document, ".variant-row", '.variant-radio');
 enableRowSelectDelegated(document, '.user-row', '.user-radio');
-enableRowSelectDelegated(document, '.product-type-row', '.type-radio');
-enableRowSelectDelegated(document, '.product-row', '.product-radio');
-enableRowSelectDelegated(document, '.colour-row', '.colour-radio');
+//enableRowSelectDelegated(document, '.product-type-row', '.type-radio');
+//enableRowSelectDelegated(document, '.product-row', '.product-radio');
+//enableRowSelectDelegated(document, '.colour-row', '.colour-radio');
 

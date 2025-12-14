@@ -1,7 +1,4 @@
-<!-- <h6> this is the footer </h6> -->
-</body>
-<!-- <h6> this is the footer </h6> -->
-</body>
+
 <?php
 use App\Domain\Models\UserModel;
 
@@ -27,7 +24,9 @@ use App\Domain\Models\UserModel;
 </div>
 <?php endif; ?>
 
-<script src="./public/assets/js/04-Login-Script.js"></script>
+
+<script src="<?= APP_BASE_URL ?>/public/assets/js/admin-page.js"></script>
+<script src="<?= APP_BASE_URL ?>/public/assets/js/04-Login-Script.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
     const ctx = document.getElementById('teamsProgressChart').getContext('2d');
@@ -91,7 +90,7 @@ use App\Domain\Models\UserModel;
 </script>
 <script>
 document.addEventListener("DOMContentLoaded", () => {
-    const currentPath = "<?= $currentPath ?>";
+    const currentPath = "<?= $currentPath ?? '' ?>";
     const sidebar = document.getElementById("nav-bar");
     const toggle = document.getElementById("sidebar-toggle");
 
