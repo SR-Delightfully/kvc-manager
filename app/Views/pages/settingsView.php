@@ -14,6 +14,7 @@ $currentUser = UserContext::getCurrentUser() ?? $defaultUser;
 $isAdmin = UserContext::isAdmin();
 $isEmployee = UserContext::isEmployee();
 
+
 ?>
 <div id="page-wrapper" class="page">
     <div id="page-content">
@@ -26,19 +27,19 @@ $isEmployee = UserContext::isEmployee();
                             alt="employee image placeholder, to be replaced with the logged-in user's image">
                     </div>
                     <span>
-                        <h5 class="user-fname"><?= e($defaultUser['user_fname'] ?? $defaultUser['first_name']) ?></h5>
-                        <h5 class="user-lname"><?= e($currentUser['user_lname'] ??  $defaultUser['last_name']) ?></h5>
+                        <h5 class="user-fname"><?= e($defaultUser['user_fname'] ?? "undefined") ?></h5>
+                        <h5 class="user-lname"><?= e($currentUser['user_lname'] ??  "undefined") ?></h5>
                     </span>
-                    <h6 class="user-email"><?= e($currentUser['user_email'] ?? $defaultUser['email']) ?></h6>
+                    <h6 class="user-email"><?= e($currentUser['user_email'] ?? "undefined") ?></h6>
 
                     <div class="user-role-tag">
                         <p>user's role:</p>
-                        <?= e($currentUser['user_role'] ?? 'admin') ?>
+                        <?= e($currentUser['user_role'] ?? "undefined") ?>
                     </div>
 
                     <br>
 
-                    <div class="user-status-tag status-<?= strtolower($currentUser['user_status'] ?? 'active') ?>">
+                    <div class="user-status-tag status-<?= strtolower($currentUser['user_status'] ?? "undefined") ?>">
                         <p>user's employment status:</p>
                         <?= e($currentUser['user_status'] ?? 'active') ?>
                     </div>
@@ -48,34 +49,34 @@ $isEmployee = UserContext::isEmployee();
             <li id="user-details-card" class="small-widget">
                 <h2 class="metallic settings-heading">Personal Information</h2>
                 <div class="user-details card">
-                    <form id="user-details-form" method="POST" action="/update-user">
+                    <form id="user-details-form" method="POST" action="/settings/edit" >
                         <div class="form-group">
                             <label>First Name</label>
                             <input type="text" name="first_name"
-                                value="<?= e($currentUser['user_fname'] ?? $defaultUser['first_name']) ?>">
+                                value="<?= e($currentUser['user_fname'] ?? "undefined") ?>">
                         </div>
 
                         <div class="form-group">
-                            <label>Last Name</label>
+                             <label>Last Name</label>
                             <input type="text" name="last_name"
-                                value="<?= e($currentUser['user_lname'] ?? $defaultUser['last_name']) ?>">
+                                value="<?= e($currentUser['user_lname'] ?? "undefined") ?>">
                         </div>
 
                         <div class="form-group">
                             <label>Email</label>
                             <input type="email" name="email"
-                                value="<?= e($currentUser['user_email']  ?? $defaultUser['email']) ?>">
+                                value="<?= e($currentUser['user_email']  ?? "undefined") ?>">
                         </div>
 
                         <div class="form-group">
                             <label>Phone</label>
                             <input type="text" name="phone"
-                                value="<?= e($currentUser['user_phone'] ?? $defaultUser['phone']) ?>">
+                                value="<?= e($currentUser['user_phone'] ?? "undefined") ?>">
                         </div>
 
                         <div class="form-group">
                             <label>Role</label>
-                            <input type="text" value="<?= e($currentUser['user_role']) ?? $defaultUser['user_role'] ?>" disabled>
+                            <input type="text" value="<?= e($currentUser['user_role']) ?? "undefined" ?>" disabled>
                         </div>
 
                         <div class="form-group">

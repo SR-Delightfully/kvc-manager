@@ -42,6 +42,27 @@ class SettingsController extends BaseController
         return $this->render($response, 'errorView.php');
     }
 
+
+    public function updateGeneralInfo(Request $request, Response $response, array $args): Response
+    {
+
+        $defaultUser = $this->userModel->getFirstAdmin() ?? null;
+
+        $data = [
+            'page_title' => 'Welcome to KVC Manager',
+            'contentView' => APP_VIEWS_PATH . '/pages/settingsView.php',
+            'isSideBarShown' => true,
+            'data' => [
+                'title' => 'Settings',
+                'message' => 'settings Page',
+                'defaultUser' => $defaultUser
+            ]
+        ];
+
+        return $this->render($response, 'common/layout.php', $data);
+    }
+
+    
     /**
      * Creates a new user in the database. if they do not exist.
      * The input form data will have the fields for the new user record, which will be validated

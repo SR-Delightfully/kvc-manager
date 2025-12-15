@@ -392,11 +392,22 @@ class UserModel extends BaseModel
 
         $admin = $this->selectOne($sql);
 
+        $adminAsDefault = [
+            'user_id' => $admin['user_id'],
+    'user_fname' => $admin['first_name'],
+    'user_lname' => $admin['last_name'],
+    'user_email' =>$admin['email'],
+    'user_phone' => $admin['phone'],
+    'user_role' => "admin",
+    'user_status' => "active"
+
+        ];
+
         if (!$admin || empty($admin)) {
             return null;
         }
 
-        return $admin;
+        return $adminAsDefault;
     }
 
 }
