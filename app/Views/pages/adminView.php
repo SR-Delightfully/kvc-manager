@@ -614,7 +614,6 @@ $is_variant_dlt_open = $is_variant_dlt_open ?? null;
     <div class="forgot-modal-box">
         <a href="<?=APP_BASE_URL ?>/admin" class="close-forgot">X</a>
 
-        <?= var_dump($variant_to_edit) ?>
         <h2>Edit Variant</h2>
         <form action="<?= APP_BASE_URL ?>/admin/variant/edit/<?= $variant_to_edit['variant_id'] ?>" method="POST">
             <input type="hidden" value="<?= $variant_to_edit['variant_id'] ?>" name="variant_id">

@@ -17,14 +17,14 @@ $isEmployee = UserContext::isEmployee();
                 <h2 class="metallic">User Profile</h2>
                 <div class="user-profile">
                     <div class="user-avatar avatar2">
-                        <img src="https://i.imgur.com/9BPfl0c.png" 
+                        <img src="https://i.imgur.com/9BPfl0c.png"
                              alt="employee image placeholder, to be replaced with the logged-in user's image">
                     </div>
                     <span>
-                        <h5 class="user-fname"><?= e($currentUser['user_fname'] ?? 'FirstName') ?></h5>
-                        <h5 class="user-lname"><?= e($currentUser['user_lname'] ??  'LastName') ?></h5>
+                        <h5 class="user-fname"><?= e($currentUser['fist_name'] ?? 'FirstName') ?></h5>
+                        <h5 class="user-lname"><?= e($currentUser['last_name'] ??  'LastName') ?></h5>
                     </span>
-                    <h6 class="user-email"><?= e($currentUser['user_email'] ?? 'example@email.ca') ?></h6>
+                    <h6 class="user-email"><?= e($currentUser['email'] ?? 'example@email.ca') ?></h6>
 
                     <div class="user-role-tag">
                         <p>user's role:</p>
@@ -37,33 +37,33 @@ $isEmployee = UserContext::isEmployee();
                     </div>
                 </div>
             </li>
-            
+
             <li id="user-details-card" class="small-widget">
                 <h2 class="metallic settings-heading">Personal Information</h2>
                 <div class="user-details card">
                     <form id="user-details-form" method="POST" action="/update-user">
                         <div class="form-group">
                             <label>First Name</label>
-                            <input type="text" name="first_name" 
-                                   value="<?= e($currentUser['user_fname']) ?>">
+                            <input type="text" name="first_name"
+                                   value="<?= e($currentUser['first_name']) ?>">
                         </div>
 
                         <div class="form-group">
                             <label>Last Name</label>
-                            <input type="text" name="last_name" 
-                                   value="<?= e($currentUser['user_lname']) ?>">
+                            <input type="text" name="last_name"
+                                   value="<?= e($currentUser['last_name']) ?>">
                         </div>
 
                         <div class="form-group">
                             <label>Email</label>
-                            <input type="email" name="email" 
-                                   value="<?= e($currentUser['user_email']) ?>">
+                            <input type="email" name="email"
+                                   value="<?= e($currentUser['email']) ?>">
                         </div>
 
                         <div class="form-group">
                             <label>Phone</label>
-                            <input type="text" name="phone" 
-                                   value="<?= e($currentUser['user_phone'] ?? '') ?>">
+                            <input type="text" name="phone"
+                                   value="<?= e($currentUser['phone'] ?? '') ?>">
                         </div>
 
                         <div class="form-group">
