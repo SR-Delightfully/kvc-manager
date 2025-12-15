@@ -20,6 +20,9 @@ class SettingsController extends BaseController
 
     public function index(Request $request, Response $response, array $args): Response
     {
+
+        $defaultUser = $this->userModel->getFirstAdmin() ?? null;
+
         $data = [
             'page_title' => 'Welcome to KVC Manager',
             'contentView' => APP_VIEWS_PATH . '/pages/settingsView.php',
@@ -27,6 +30,7 @@ class SettingsController extends BaseController
             'data' => [
                 'title' => 'Settings',
                 'message' => 'settings Page',
+                'defaultUser' => $defaultUser
             ]
         ];
 

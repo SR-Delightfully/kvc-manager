@@ -5,10 +5,15 @@ use App\Helpers\UserContext;
 
 $page_title = 'Settings Page';
 
-$currentUser = UserContext::getCurrentUser();
+$defaultUser = $data['defaultUser'];
+
+//TODO the default user is only for testing
+
+$currentUser = UserContext::getCurrentUser() ?? $defaultUser;
 
 $isAdmin = UserContext::isAdmin();
 $isEmployee = UserContext::isEmployee();
+
 ?>
 <div id="page-wrapper" class="page">
     <div id="page-content">
@@ -17,19 +22,21 @@ $isEmployee = UserContext::isEmployee();
                 <h2 class="metallic">User Profile</h2>
                 <div class="user-profile">
                     <div class="user-avatar avatar2">
-                        <img src="https://i.imgur.com/9BPfl0c.png" 
-                             alt="employee image placeholder, to be replaced with the logged-in user's image">
+                        <img src="https://i.imgur.com/9BPfl0c.png"
+                            alt="employee image placeholder, to be replaced with the logged-in user's image">
                     </div>
                     <span>
-                        <h5 class="user-fname"><?= e($currentUser['user_fname'] ?? 'FirstName') ?></h5>
-                        <h5 class="user-lname"><?= e($currentUser['user_lname'] ??  'LastName') ?></h5>
+                        <h5 class="user-fname"><?= e($defaultUser['user_fname'] ?? $defaultUser['first_name']) ?></h5>
+                        <h5 class="user-lname"><?= e($currentUser['user_lname'] ??  $defaultUser['last_name']) ?></h5>
                     </span>
-                    <h6 class="user-email"><?= e($currentUser['user_email'] ?? 'example@email.ca') ?></h6>
+                    <h6 class="user-email"><?= e($currentUser['user_email'] ?? $defaultUser['email']) ?></h6>
 
                     <div class="user-role-tag">
                         <p>user's role:</p>
-                        <?= e($currentUser['user_role'] ?? 'employee') ?>
+                        <?= e($currentUser['user_role'] ?? 'admin') ?>
                     </div>
+
+                    <br>
 
                     <div class="user-status-tag status-<?= strtolower($currentUser['user_status'] ?? 'active') ?>">
                         <p>user's employment status:</p>
@@ -37,38 +44,38 @@ $isEmployee = UserContext::isEmployee();
                     </div>
                 </div>
             </li>
-            
+
             <li id="user-details-card" class="small-widget">
                 <h2 class="metallic settings-heading">Personal Information</h2>
                 <div class="user-details card">
                     <form id="user-details-form" method="POST" action="/update-user">
                         <div class="form-group">
                             <label>First Name</label>
-                            <input type="text" name="first_name" 
-                                   value="<?= e($currentUser['user_fname']) ?>">
+                            <input type="text" name="first_name"
+                                value="<?= e($currentUser['user_fname'] ?? $defaultUser['first_name']) ?>">
                         </div>
 
                         <div class="form-group">
                             <label>Last Name</label>
-                            <input type="text" name="last_name" 
-                                   value="<?= e($currentUser['user_lname']) ?>">
+                            <input type="text" name="last_name"
+                                value="<?= e($currentUser['user_lname'] ?? $defaultUser['last_name']) ?>">
                         </div>
 
                         <div class="form-group">
                             <label>Email</label>
-                            <input type="email" name="email" 
-                                   value="<?= e($currentUser['user_email']) ?>">
+                            <input type="email" name="email"
+                                value="<?= e($currentUser['user_email']  ?? $defaultUser['email']) ?>">
                         </div>
 
                         <div class="form-group">
                             <label>Phone</label>
-                            <input type="text" name="phone" 
-                                   value="<?= e($currentUser['user_phone'] ?? '') ?>">
+                            <input type="text" name="phone"
+                                value="<?= e($currentUser['user_phone'] ?? $defaultUser['phone']) ?>">
                         </div>
 
                         <div class="form-group">
                             <label>Role</label>
-                            <input type="text" value="<?= e($currentUser['user_role']) ?>" disabled>
+                            <input type="text" value="<?= e($currentUser['user_role']) ?? $defaultUser['user_role'] ?>" disabled>
                         </div>
 
                         <div class="form-group">

@@ -377,4 +377,29 @@ class UserModel extends BaseModel
             throw new Exception("Could not update the email of this user: id: $userId", 1);
         }
     }
+
+
+    /**
+     * For testing purposes, we fetch an admin from the db.
+     * @return array the first admin user in the db
+     */
+    public function getFirstAdmin()
+    {
+        $sql = "SELECT *
+        FROM users
+        WHERE user_role = 'admin'
+        LIMIT 1";
+
+        $admin = $this->selectOne($sql);
+
+        if (!$admin || empty($admin)) {
+            return null;
+        }
+
+        return $admin;
+    }
+
 }
+
+
+
