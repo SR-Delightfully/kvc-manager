@@ -125,7 +125,7 @@ return static function (App $app): void {
             $settings->post('', [SettingsController::class, 'store']);
             $settings->get('/edit', [SettingsController::class, 'edit'])->setName('settings.edit');
             // $settings->post('/edit', [SettingsController::class, 'updateGeneralInfo'])->setName('user.update');
-            $settings->post('/edit', [SettingsController::class, 'updateGeneralInfo']);
+            $settings->post('/edit', [SettingsController::class, 'updateGeneralInfo'])->setName('settings.update');
         });
     }) //->add(AuthMiddleware::class)
     ;

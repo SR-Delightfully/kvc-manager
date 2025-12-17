@@ -112,8 +112,8 @@ class UserModel extends BaseModel
     public function getUserField(string $fieldName, $userId)
     {
         try {
-            $stmt = "SELECT :field FROM users WHERE user_id = :userId";
-            $params = [':field' => $fieldName, ':userId' => $userId];
+            $stmt = "SELECT $fieldName FROM users WHERE user_id = :userId";
+            $params = [':userId' => $userId];
             $info = $this->selectOne($stmt, $params);
 
             return $info == false ? null : $info;
@@ -180,17 +180,14 @@ class UserModel extends BaseModel
         $this->execute($stmt, $params);
     }
 
-    public function updateInformation($user_id, $data): void
+    public function updateInformation($user_id, $data): int
     {
-
-        $passwordHash = password_hash($data['password'], PASSWORD_BCRYPT);
-
+        // $passwordHash = password_hash($data['password'], PASSWORD_BCRYPT);
         $stmt = "UPDATE users SET
                     first_name = :first_name,
                     last_name  = :last_name,
                     email      = :email,
                     phone      = :phone,
-                    password   = :password
                  WHERE user_id = :user_id";
 
         $params = [
@@ -198,23 +195,11 @@ class UserModel extends BaseModel
             'last_name'  => $data['last_name'],
             'email'      => $data['email'],
             'phone'      => $data['phone'],
-            'password'   => $passwordHash,
             'user_id'    => $user_id
         ];
 
-        try {
 
-            $update = $this->execute($stmt, $params);
-
-            if($update <= 0)
-            {
-                throw new Exception("Employee(ID: $user_id) update failed.", 1);
-
-            }
-
-        } catch (Exception $e) {
-            print($e->getMessage());
-        }
+          return $this->execute($stmt, $params);
     }
 
     public function createUser($data): int
@@ -394,12 +379,12 @@ class UserModel extends BaseModel
 
         $adminAsDefault = [
             'user_id' => $admin['user_id'],
-    'user_fname' => $admin['first_name'],
-    'user_lname' => $admin['last_name'],
-    'user_email' =>$admin['email'],
-    'user_phone' => $admin['phone'],
-    'user_role' => "admin",
-    'user_status' => "active"
+            'user_fname' => $admin['first_name'],
+            'user_lname' => $admin['last_name'],
+            'user_email' =>$admin['email'],
+            'user_phone' => $admin['phone'],
+            'user_role' => "admin",
+            'user_status' => "active"
 
         ];
 

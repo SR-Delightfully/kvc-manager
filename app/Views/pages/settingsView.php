@@ -85,6 +85,8 @@ $isEmployee = UserContext::isEmployee();
                             <input type="text" value="<?= e($currentUser['user_status']) ?>" disabled>
                         </div>
 
+                        <input type="hidden" name="user_id" value="<?= e($currentUser['user_id']) ?>">
+
                         <button class="btn btn-primary" type="submit">Save Changes</button>
                     </form>
                 </div>
