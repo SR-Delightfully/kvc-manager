@@ -175,7 +175,7 @@ ViewHelper::loadHeader($page_title, true);
             </li>
         </ul>
     </div>
-</div>  
+</div>
 
 
 <?php

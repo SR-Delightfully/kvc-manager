@@ -7,6 +7,7 @@ $page_title = 'Settings Page';
 
 $defaultUser = $data['defaultUser'];
 
+
 //TODO the default user is only for testing
 
 $currentUser = UserContext::getCurrentUser() ?? $defaultUser;
@@ -49,7 +50,7 @@ $isEmployee = UserContext::isEmployee();
             <li id="user-details-card" class="small-widget">
                 <h2 class="metallic settings-heading">Personal Information</h2>
                 <div class="user-details card">
-                    <form id="user-details-form" method="POST" action="/settings/edit" >
+                    <form id="user-details-form" method="POST" action="<?= APP_BASE_URL ?>/settings/edit" >
                         <div class="form-group">
                             <label>First Name</label>
                             <input type="text" name="first_name"
