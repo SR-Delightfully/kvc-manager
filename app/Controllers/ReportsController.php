@@ -22,9 +22,6 @@ class ReportsController extends BaseController
     public function index(Request $request, Response $response, array $args): Response
     {
         $today = date('Y-m-d');
-
-        
-
         $data = [
             'page_title' => 'Welcome to KVC Manager',
             'contentView' => APP_VIEWS_PATH . '/pages/reportsView.php',
