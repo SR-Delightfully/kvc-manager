@@ -136,7 +136,7 @@
         }
 
         /**
-         * Undocumented function
+         * Highest above median sorted
          *
          * @param [type] $a
          * @param [type] $b
@@ -144,7 +144,7 @@
          */
         function aboveMedianSorter($a, $b)
         {
-            return $a['percent_above_median'] <=> $b['percent_above_median'];
+            return $b['percent_above_median'] <=> $a['percent_above_median'];
         }
 
         /**
@@ -165,6 +165,7 @@
             JOIN pallet p ON ps.pallet_id = p.pallet_id
             JOIN tote t ON t.tote_id = p.tote_id
             JOIN team te ON te.station_id = p.station_id
+            AND (te.team_date) = DATE(ps.start_time)
             WHERE t.variant_id = :variant
             AND ps.start_time BETWEEN :start AND :end";
 
@@ -190,9 +191,11 @@
                 $rate = $session['units'] / $session['duration'];
 
                 $best[] = [
-                    "session_id" => $session['session_id'],
-                    "team_id" => $session['team_id'],
-                    "rate" => $rate
+                        "session_id" => $session['session_id'],
+                        "team_id" => $session['team_id'],
+                        "rate" => $rate,
+                        "units" => $session['units'],
+                        "duration" => $session['duration'],
                 ];
             }
 
@@ -217,7 +220,7 @@
             //$stmt = $this->execute(;)
             $sessions = $this->getSessionsForVariant($startDate, $endDate, $variant_id);
 
-            if(empty($session))
+            if(empty($sessions))
             {
                 return null;
             }
@@ -248,7 +251,7 @@
         {
             $sessions = $this->getSessionsForVariant($startDate, $endDate, $variant_id);
 
-            if(empty($session))
+            if(empty($sessions))
             {
                 return 0;
             }
@@ -283,7 +286,7 @@
         {
             $sessions = $this->getSessionsForVariant($startDate, $endDate, $variant_id);
 
-            if(empty($session))
+            if(empty($sessions))
             {
                 return null;
             }
@@ -294,7 +297,7 @@
             {
                 $team = $session['team_id'];
 
-                if(isset($teams[$team])) //Make sure the team has sessions
+                if(!isset($teams[$team])) //Make sure the team has sessions
                 {
                     $teams[$team] = [
                         'team_id' => $team,
@@ -356,7 +359,7 @@
         {
             $sessions = $this->getSessionsForVariant($startDate, $endDate, $variant_id);
 
-            if(empty($session))
+            if(empty($sessions))
             {
                 return null;
             }
@@ -367,7 +370,7 @@
             {
                 $team = $session['team_id'];
 
-                if(isset($teams[$team])) //Make sure the team has sessions
+                if(!isset($teams[$team])) //Make sure the team has sessions
                 {
                     $teams[$team] = [
                         'team_id' => $team,
@@ -440,7 +443,9 @@
             $sql = "SELECT TIMESTAMPDIFF(MINUTE, ps.start_time, ps.end_time) as duration, ps.units, t.team_id
             FROM palletize_session ps
             JOIN pallet p ON p.pallet_id = ps.pallet_id
-            JOIN team t ON p.station_id = t.station_id
+            JOIN team t
+            ON p.station_id = t.station_id
+            AND t.team_date = DATE(ps.start_time)
             WHERE t.team_id = :team
             AND ps.start_time BETWEEN :start AND :end
             ORDER BY ps.start_time ASC";
@@ -469,11 +474,11 @@
          */
         public function getTeamsAvgProgress($startDate, $endDate): array
         {
-
+//TODO
             $teamsProgress = [];
 
-            $teamsSql = "SELECT team_id, station_id FROM team";
-            $teams = $this->selectAll($teamsSql);
+            $teamsSql = "SELECT DISTINCT team_id, station_id FROM team WHERE team_date BETWEEN :start AND :end"; //in debugging only distinct worked???
+            $teams = $this->selectAll($teamsSql, ['start' => substr($startDate, 0, 10),'end'   => substr($endDate, 0, 10),]);
 
             foreach ($teams as  $team) {
 
@@ -597,7 +602,7 @@
         public function getProductSummary(int $variant_id, string $date): array
         {
             $startTime = $date. ' 00:00:00';
-            $endTime = $date. ' 00:00:00';
+            $endTime = $date. ' 23:59:59';
 
             $sql = "SELECT
                     COALESCE(SUM(ps.units),0) AS total_units,
@@ -634,10 +639,11 @@
          */
         public function getTeamForSessionDay(int $station_id, string $start_time): array
         {
+            $sessionDate = date('Y-m-d', strtotime($start_time));
 
-            $sql = "SELECT team_id FROM team WHERE station_id = :station AND DATE(team_date) = DATE(:start) LIMIT 1"; //Remove limit after testing maybe
+            $sql = "SELECT team_id FROM team WHERE station_id = :station AND (team_date) = :date LIMIT 1"; //Remove limit after testing maybe
 
-            $team = $this->selectOne($sql, ["station" => $station_id, "start" => $start_time]);
+            $team = $this->selectOne($sql, ["station" => $station_id, "date" => $sessionDate]);
 
             return $team['team_id'] ?? null;
         }
@@ -666,10 +672,11 @@
         FROM palletize_session ps
          JOIN pallet p ON p.pallet_id = ps.pallet_id
          JOIN tote t
-         ON t.tote_is = p.tote_id
+         ON t.tote_id = p.tote_id
          JOIN product_variant pv
          ON t.variant_id = pv.variant_id
          WHERE p.station_id = :stationId
+         AND ps.end_time IS NOT NULL
          AND ps.start_time BETWEEN
          :start AND :end
          GROUP BY pv.variant_id
@@ -691,7 +698,7 @@
         $sql = "SELECT team_id
         FROM team
         WHERE station_id = :stationId
-        AND team_date = :date
+        AND (team_date) = :date
         ORDER BY team_id DESC
         LIMIT 1";
 
@@ -703,7 +710,7 @@
      }
 
 
-    public function getTeamMembers(int $teamId)
+    public function getTeamMembers(int $teamId): string
     {
         $sql = "SELECT u.last_name
         FROM team_members tm
@@ -712,13 +719,29 @@
 
         $result = $this->selectAll($sql, ["teamId"=>$teamId]);
 
-        $members = [];
+        $members = "";
         foreach ($result as $key => $r) {
-            $members[] = $r['last_name'];
+            $members .= $r['last_name'].", ";
         }
         return $members;
     }
 
+    public function getStations()
+    {
+        $sql = "SELECT * FROM station";
+
+        $stations = $this->selectAll($sql);
+
+        return $stations;
+    }
+
+
+    public function allTimeProgressDateRange() {
+        return [
+            'start' => '2025-01-01 00:00:00',
+            'end'   => date('Y-m-d H:i:s')
+        ];
+    }
 
     public function getStationTodayKPI(int $stationId, string $date)
     {
@@ -737,7 +760,8 @@
         }
 
         $sationNameSQL = "SELECT station_name FROM station WHERE station_id = :id";
-        $stationName = $this->selectOne($sationNameSQL, ["id" => $stationId]);
+        $stationNameRow = $this->selectOne($sationNameSQL, ["id" => $stationId]);
+        $stationName = $stationNameRow['station_name'] ?? 'Unknown';
 
         $totalUnist = 0;
 
@@ -749,7 +773,7 @@
 
         $teamId = $this->getLatestTeamForStation($stationId, $date);
 
-        $teamMembers = $teamId ? $this->getTeamMembers($teamId) : [];
+        $teamMembers = $teamId ? $this->getTeamMembers($teamId) : "";
 
         return [
             'station_id' => $stationId,
@@ -760,6 +784,96 @@
             'team_members' => $teamMembers
         ];
     }
+
+    public function getStationAllTimeKPI(int $stationId)
+    {
+        $range = $this->allTimeProgressDateRange();
+        $start = $range['start'];
+        $end = $range['end'];
+
+        $variant = $this->getMostUsedVariantForStationRange($stationId, $start, $end);
+
+        $rates = $this->getStationPerformance($stationId, $start, $end);
+
+        if(!count($rates))
+        {
+            $avgRate = 0;
+        } else {
+             $avgRate = array_sum($rates) / count($rates);
+        }
+
+        $sationNameSQL = "SELECT station_name FROM station WHERE station_id = :id";
+        $stationNameRow = $this->selectOne($sationNameSQL, ["id" => $stationId]);
+        $stationName = $stationNameRow['station_name'] ?? 'Unknown';
+
+        $totalUnist = 0;
+
+        if($variant)
+        {
+            $summary = $this->getProductSummaryRange($variant['variant_id'], $start, $end);
+            $totalUnist = $summary['total_units'];
+        }
+
+        $teamId = $this->getLatestTeamForStationAllTime($stationId);
+
+        $teamMembers = $teamId ? $this->getTeamMembers($teamId) : "";
+
+        return [
+            'station_id' => $stationId,
+            'station_name' => $stationName,
+            'variant_name' => $variant['variant_description'] ?? 'N/A',
+            'units'        => $totalUnist,
+            'avg_rate'     => round($avgRate, 2),
+            'team_members' => $teamMembers
+        ];
+    }
+
+    public function getMostUsedVariantForStationRange($stationId, $start, $end)
+    {
+        $sql = "SELECT pv.variant_id, pv.variant_description, SUM(ps.units) AS total_units
+                FROM palletize_session ps
+                JOIN pallet p ON p.pallet_id = ps.pallet_id
+                JOIN tote t ON t.tote_id = p.tote_id
+                JOIN product_variant pv ON pv.variant_id = t.variant_id
+                WHERE p.station_id = :station
+                AND ps.end_time IS NOT NULL
+                AND ps.start_time BETWEEN :start AND :end
+                GROUP BY pv.variant_id
+                ORDER BY total_units DESC
+                LIMIT 1";
+
+        return $this->selectOne($sql, [
+            'station' => $stationId,
+            'start'   => $start,
+            'end'     => $end
+        ]);
+    }
+    public function getProductSummaryRange($variant_id,$start,$end) {
+        $sql = "SELECT
+                SUM(ps.units) AS total_units,
+                SUM(TIMESTAMPDIFF(MINUTE, ps.start_time, ps.end_time)) AS total_minutes
+                FROM palletize_session ps
+                JOIN pallet p ON ps.pallet_id = p.pallet_id
+                JOIN tote t ON t.tote_id = p.tote_id
+                WHERE t.variant_id = :variant
+                AND ps.start_time BETWEEN :start AND :end
+                AND ps.end_time IS NOT NULL";
+
+        return $this->selectOne($sql, ["variant" => $variant_id, "start" => $start, "end" => $end]);
+    }
+    public function getLatestTeamForStationAllTime(int $stationId)
+    {
+        $sql = "SELECT team_id
+                FROM team
+                WHERE station_id = :station
+                ORDER BY team_date DESC
+                LIMIT 1";
+
+        $row = $this->selectOne($sql, ['station' => $stationId]);
+
+        return $row['team_id'] ?? null;
+    }
+
 
  }
 

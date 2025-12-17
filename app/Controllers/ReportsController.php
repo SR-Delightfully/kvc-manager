@@ -21,7 +21,18 @@ class ReportsController extends BaseController
 
     public function index(Request $request, Response $response, array $args): Response
     {
+        $stationsSummary = [];
+
         $today = date('Y-m-d');
+
+        $stations = $this->kpiModel->getStations();
+
+        foreach ($stations as $station) {
+            // $stationsSummary[] = $this->kpiModel->getStationTodayKPI((int)$station['station_id'], $today);
+            $stationsSummary[] = $this->kpiModel->getStationAllTimeKPI((int)$station['station_id']);
+        }
+
+
         $data = [
             'page_title' => 'Welcome to KVC Manager',
             'contentView' => APP_VIEWS_PATH . '/pages/reportsView.php',
@@ -30,6 +41,8 @@ class ReportsController extends BaseController
             'data' => [
                 'title' => 'Reports',
                 'message' => 'Reports Page',
+                'date' =>$today,
+                'stations' => $stationsSummary
             ]
         ];
 
