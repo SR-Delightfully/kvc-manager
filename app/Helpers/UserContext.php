@@ -11,6 +11,9 @@ class UserContext
 
         if (!isset($_SESSION['currentUser'])) {
             $_SESSION['currentUser'] = null;
+            // $_SESSION['currentUser'] =
+            // UserContext::getFirstAdmin();
+            // //TODO remove this after testing, set to null instead
         }
     }
 
@@ -18,6 +21,16 @@ class UserContext
     {
         return $_SESSION['currentUser'] ?? null;
     }
+
+    /**
+     * Undocumented function
+     *
+     * @return void
+     */
+    // public static function getFirstAdmin()
+    // {
+    //     return null;
+    // }
 
     public static function login(array $userData): void
     {

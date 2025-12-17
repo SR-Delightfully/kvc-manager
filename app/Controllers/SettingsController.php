@@ -10,6 +10,7 @@ use DI\Container;
 use Exception;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
+use App\Helpers\UserContext;
 
 class SettingsController extends BaseController
 {
@@ -20,6 +21,11 @@ class SettingsController extends BaseController
 
     public function index(Request $request, Response $response, array $args): Response
     {
+
+        // $defaultUser = $this->userModel->getFirstAdmin() ?? null;
+        $current = UserContext::getCurrentUser();
+        $defaultUser = $this->userModel->getUserById($current['user_id']) ??  $this->userModel->getFirstAdmin();
+
         $data = [
             'page_title' => 'Welcome to KVC Manager',
             'contentView' => APP_VIEWS_PATH . '/pages/settingsView.php',
@@ -27,6 +33,7 @@ class SettingsController extends BaseController
             'data' => [
                 'title' => 'Settings',
                 'message' => 'settings Page',
+                'defaultUser' => $defaultUser
             ]
         ];
 
@@ -37,6 +44,27 @@ class SettingsController extends BaseController
     {
         return $this->render($response, 'errorView.php');
     }
+
+
+    // public function updateGeneralInfo(Request $request, Response $response, array $args): Response
+    // {
+
+    //     $defaultUser = $this->userModel->getFirstAdmin() ?? null;
+
+    //     $data = [
+    //         'page_title' => 'Welcome to KVC Manager',
+    //         'contentView' => APP_VIEWS_PATH . '/pages/settingsView.php',
+    //         'isSideBarShown' => true,
+    //         'data' => [
+    //             'title' => 'Settings',
+    //             'message' => 'settings Page',
+    //             'defaultUser' => $defaultUser
+    //         ]
+    //     ];
+
+    //     return $this->render($response, 'common/layout.php', $data);
+    // }
+
 
     /**
      * Creates a new user in the database. if they do not exist.
@@ -84,6 +112,7 @@ class SettingsController extends BaseController
     {
         //? 1) Parse the request and 2) Verify what needs to be updated
         //? 3) Validate
+        //TODO fix!
 
         $errors = [];
         $phoneRegex1 = '/^\d{3}-\d{3}-\d{4}$/';
@@ -160,7 +189,7 @@ class SettingsController extends BaseController
      * @param array $args
      * @return Response
      */
-    public function updateUserFields(Request $request, Response $response, array $args): Response
+    public function updateGeneralInfo(Request $request, Response $response, array $args): Response
     {
         //? 1) Parse the request and 2) Verify what needs to be updated
         //? 3) Validate
@@ -178,36 +207,36 @@ class SettingsController extends BaseController
                 throw new Exception("User ID not set in the user update form; ID: $userId", 1);
             }
 
-            if (isset($formData["first_name"]) && !empty($firstName)) {
+            if (!empty($formData["first_name"])) {
                 $firstName = trim($formData["first_name"]);
             } else {
-                $firstName = $this->userModel->getUserField("first_name", $userId);
+                $firstName = $this->userModel->getUserField("first_name", $userId)['first_name'];
             }
 
-            if (isset($formData["last_name"]) && !empty($lastName)) {
+            if (!empty($formData["last_name"])) {
                 $lastName = trim($formData["last_name"]);
             } else {
-                $lastName = $this->userModel->getUserField("last_name", $userId);
+                $lastName = $this->userModel->getUserField("last_name", $userId)['last_name'];
             }
 
-            if (isset($formData["email"]) && !empty($email)) {
+            if (!empty($formData["email"])) {
                 $email = trim($formData["email"]);
 
                 if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
                     $errors[] = "Please enter valid email address like abc@example.com.";
                 }
             } else {
-                $email = $this->userModel->getUserField("email", $userId);
+                $email = $this->userModel->getUserField("email", $userId)['email'];
             }
 
-            if (isset($formData["phone"]) && !empty($phone)) {
+            if (!empty($formData["phone"])) {
                 $phone = trim($formData["phone"]);
 
                 if (!preg_match($phoneRegex1, $phone) && !preg_match($phoneRegex2, $phone)) {
                     $errors[] = "Please enter valid phone number like 1231231234 or 123-123-1234";
                 }
             } else {
-                $phone = $this->userModel->getUserField("phone", $userId);
+                $phone = $this->userModel->getUserField("phone", $userId)['phone'];
             }
         } catch (Exception $e) {
             print($e->getMessage());
@@ -220,7 +249,7 @@ class SettingsController extends BaseController
         //TODO Update Flash messages if needed
         if (!empty($errors)) {
             FlashMessage::error($errors[0]);
-            return $this->redirect($request, $response, 'auth.register'); //TODO redirect to settings
+            return $this->redirect($request, $response, 'settings.index'); //TODO redirect to settings
         } else {
             try {
                 $userData = [
@@ -233,10 +262,10 @@ class SettingsController extends BaseController
 
                 $this->userModel->updateInformation($userId, $userData);
                 FlashMessage::success("Update successful!");
-                return $this->redirect($request, $response, 'auth.login');//TODO redirect to settings
+                return $this->redirect($request, $response, 'settings.index');//TODO redirect to settings
             } catch (\Exception $e) {
                 FlashMessage::error("Update failed. Please try again.");
-                return $this->redirect($request, $response, 'auth.register');//TODO redirect to settings
+                return $this->redirect($request, $response, 'settings.index');//TODO redirect to settings
             }
         }
     }

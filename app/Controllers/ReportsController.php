@@ -8,17 +8,31 @@ use DI\Container;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use App\Helpers\UserContext;
+use App\Domain\Models\KpiModel;
+use App\Helpers\Core\PDOService;
 
 
 class ReportsController extends BaseController
 {
-    public function __construct(Container $container)
+    public function __construct(Container $container, private KpiModel $kpiModel)
     {
         parent::__construct($container);
     }
 
     public function index(Request $request, Response $response, array $args): Response
     {
+        $stationsSummary = [];
+
+        $today = date('Y-m-d');
+
+        $stations = $this->kpiModel->getStations();
+
+        foreach ($stations as $station) {
+            // $stationsSummary[] = $this->kpiModel->getStationTodayKPI((int)$station['station_id'], $today);
+            $stationsSummary[] = $this->kpiModel->getStationAllTimeKPI((int)$station['station_id']);
+        }
+
+
         $data = [
             'page_title' => 'Welcome to KVC Manager',
             'contentView' => APP_VIEWS_PATH . '/pages/reportsView.php',
@@ -27,6 +41,8 @@ class ReportsController extends BaseController
             'data' => [
                 'title' => 'Reports',
                 'message' => 'Reports Page',
+                'date' =>$today,
+                'stations' => $stationsSummary
             ]
         ];
 
@@ -34,7 +50,7 @@ class ReportsController extends BaseController
     }
 
     public function today(Request $request, Response $response, array $args): Response
-   
+
     {
         return $this->render($response, 'admin/orderIndexView.php');
     }

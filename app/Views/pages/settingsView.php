@@ -5,10 +5,17 @@ use App\Helpers\UserContext;
 
 $page_title = 'Settings Page';
 
-$currentUser = UserContext::getCurrentUser();
+$defaultUser = $data['defaultUser'];
+
+
+//TODO the default user is only for testing
+
+$currentUser = UserContext::getCurrentUser() ?? $defaultUser;
 
 $isAdmin = UserContext::isAdmin();
 $isEmployee = UserContext::isEmployee();
+
+
 ?>
 <div id="page-wrapper" class="page">
     <div id="page-content">
@@ -18,20 +25,22 @@ $isEmployee = UserContext::isEmployee();
                 <div class="user-profile">
                     <div class="user-avatar avatar2">
                         <img src="https://i.imgur.com/9BPfl0c.png"
-                             alt="employee image placeholder, to be replaced with the logged-in user's image">
+                            alt="employee image placeholder, to be replaced with the logged-in user's image">
                     </div>
                     <span>
-                        <h5 class="user-fname"><?= e($currentUser['fist_name'] ?? 'FirstName') ?></h5>
-                        <h5 class="user-lname"><?= e($currentUser['last_name'] ??  'LastName') ?></h5>
+                        <h5 class="user-fname"><?= e($defaultUser['user_fname'] ?? "undefined") ?></h5>
+                        <h5 class="user-lname"><?= e($currentUser['user_lname'] ??  "undefined") ?></h5>
                     </span>
-                    <h6 class="user-email"><?= e($currentUser['email'] ?? 'example@email.ca') ?></h6>
+                    <h6 class="user-email"><?= e($currentUser['user_email'] ?? "undefined") ?></h6>
 
                     <div class="user-role-tag">
                         <p>user's role:</p>
-                        <?= e($currentUser['user_role'] ?? 'employee') ?>
+                        <?= e($currentUser['user_role'] ?? "undefined") ?>
                     </div>
 
-                    <div class="user-status-tag status-<?= strtolower($currentUser['user_status'] ?? 'active') ?>">
+                    <br>
+
+                    <div class="user-status-tag status-<?= strtolower($currentUser['user_status'] ?? "undefined") ?>">
                         <p>user's employment status:</p>
                         <?= e($currentUser['user_status'] ?? 'active') ?>
                     </div>
@@ -41,40 +50,42 @@ $isEmployee = UserContext::isEmployee();
             <li id="user-details-card" class="small-widget">
                 <h2 class="metallic settings-heading">Personal Information</h2>
                 <div class="user-details card">
-                    <form id="user-details-form" method="POST" action="/update-user">
+                    <form id="user-details-form" method="POST" action="<?= APP_BASE_URL ?>/settings/edit" >
                         <div class="form-group">
                             <label>First Name</label>
                             <input type="text" name="first_name"
-                                   value="<?= e($currentUser['first_name']) ?>">
+                                value="<?= e($currentUser['user_fname'] ?? "undefined") ?>">
                         </div>
 
                         <div class="form-group">
-                            <label>Last Name</label>
+                             <label>Last Name</label>
                             <input type="text" name="last_name"
-                                   value="<?= e($currentUser['last_name']) ?>">
+                                value="<?= e($currentUser['user_lname'] ?? "undefined") ?>">
                         </div>
 
                         <div class="form-group">
                             <label>Email</label>
                             <input type="email" name="email"
-                                   value="<?= e($currentUser['email']) ?>">
+                                value="<?= e($currentUser['user_email']  ?? "undefined") ?>">
                         </div>
 
                         <div class="form-group">
                             <label>Phone</label>
                             <input type="text" name="phone"
-                                   value="<?= e($currentUser['phone'] ?? '') ?>">
+                                value="<?= e($currentUser['user_phone'] ?? "undefined") ?>">
                         </div>
 
                         <div class="form-group">
                             <label>Role</label>
-                            <input type="text" value="<?= e($currentUser['user_role']) ?>" disabled>
+                            <input type="text" value="<?= e($currentUser['user_role']) ?? "undefined" ?>" disabled>
                         </div>
 
                         <div class="form-group">
                             <label>Account Status</label>
                             <input type="text" value="<?= e($currentUser['user_status']) ?>" disabled>
                         </div>
+
+                        <input type="hidden" name="user_id" value="<?= e($currentUser['user_id']) ?>">
 
                         <button class="btn btn-primary" type="submit">Save Changes</button>
                     </form>

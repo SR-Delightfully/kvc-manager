@@ -226,3 +226,43 @@ INSERT INTO palletize_session(pallet_id, start_time, end_time, units, break_star
 (11,'2025-11-06 09:07:00','2025-11-06 09:57:00',108,NULL,NULL,FALSE,NULL),
 (12,'2025-11-06 10:00:00','2025-11-06 10:45:00',108,NULL,NULL,FALSE,NULL),
 (13,'2025-11-06 10:48:00','2025-11-06 11:33:00',108,NULL,NULL,FALSE,NULL);
+
+
+
+
+
+INSERT INTO team (station_id, team_date) VALUES
+(1, '2025-11-16'),
+(2, '2025-11-16'),
+(3, '2025-11-16');
+
+INSERT INTO team_members (team_id, user_id) VALUES
+(6, 2),
+(6, 3),
+(7, 4),
+(7, 5),
+(8, 2);
+
+INSERT INTO pallet (tote_id, station_id) VALUES
+(1, 1),
+(2, 1),
+(3, 2),
+(4, 2),
+(5, 3),
+(6, 3);
+
+INSERT INTO palletize_session
+(pallet_id, start_time, end_time, units, mess)
+VALUES
+-- Station 1 (Solution A dominant)
+(14, '2025-11-16 08:00:00', '2025-11-16 08:45:00', 500, FALSE),
+(15, '2025-11-16 09:00:00', '2025-11-16 09:40:00', 520, FALSE),
+
+-- Station 2 (Solution B dominant)
+(16, '2025-11-16 08:10:00', '2025-11-16 08:55:00', 300, FALSE),
+(17, '2025-11-16 09:05:00', '2025-11-16 09:50:00', 310, FALSE),
+
+-- Station 3 (Pods)
+(18, '2025-11-16 08:20:00', '2025-11-16 09:10:00', 120, FALSE),
+(19, '2025-11-16 09:15:00', '2025-11-16 10:00:00', 130, FALSE);
+

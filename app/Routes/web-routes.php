@@ -70,8 +70,7 @@ return static function (App $app): void {
 
         $auth->get('/login/2fa', [AuthController::class, 'showTwoFactorForm'])->setName('auth.2fa');
         $auth->post('/login/2fa', [AuthController::class, 'verifyTwoFactor']);
-
-    })//->add(GuestAuthMiddleware::class)
+    }) //->add(GuestAuthMiddleware::class)
     ;
 
     $app->get('/logout', [AuthController::class, 'logout'])->setName('auth.logout');
@@ -125,9 +124,10 @@ return static function (App $app): void {
             $settings->get('', [SettingsController::class, 'index'])->setName('settings.index');
             $settings->post('', [SettingsController::class, 'store']);
             $settings->get('/edit', [SettingsController::class, 'edit'])->setName('settings.edit');
-            $settings->post('/edit', [SettingsController::class, 'update']);
+            // $settings->post('/edit', [SettingsController::class, 'updateGeneralInfo'])->setName('user.update');
+            $settings->post('/edit', [SettingsController::class, 'updateGeneralInfo'])->setName('settings.update');
         });
-    })//->add(AuthMiddleware::class)
+    }) //->add(AuthMiddleware::class)
     ;
 
     // Admin Routes:
@@ -278,7 +278,7 @@ return static function (App $app): void {
             $shift->get('/delete/{id}/do', [ShiftController::class, 'delete'])->setName('admin.shift.delete');
             $shift->post('/edit/{id}', [ShiftController::class, 'update'])->setName('admin.shift.update');
         });
-    })//->add(AdminAuthMiddleware::class)
+    }) //->add(AdminAuthMiddleware::class)
     ;
 
     // Ping Route
@@ -289,7 +289,6 @@ return static function (App $app): void {
         ];
         $response->getBody()->write(json_encode($payload, JSON_UNESCAPED_SLASHES | JSON_PARTIAL_OUTPUT_ON_ERROR));
         return $response->withHeader('Content-Type', 'application/json');
-
     });
 
     // Error Route

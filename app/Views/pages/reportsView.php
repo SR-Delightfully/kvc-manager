@@ -4,6 +4,10 @@ use App\Helpers\ViewHelper;
 
 $page_title = 'Reports - Admin';
 ViewHelper::loadHeader($page_title, true);
+
+$station1 = $data['stations'][0] ?? [];
+$station2 = $data['stations'][1] ?? [];
+$station3 = $data['stations'][2] ?? [];
 ?>
 
 
@@ -40,7 +44,7 @@ ViewHelper::loadHeader($page_title, true);
                 <div class="rpt-station">
 
                     <div class="rpt-station-header" onclick="rpt_toggleStation(this)">
-                        <span>Station 1: Solution A, Team members</span>
+                        <span><?= $station1['station_name'] ?? "undefined" ?>: <?= ($station1['variant_name']) ?? "undefined" ?>, <?= ($station1['team_members']) ?? "undefined" ?></span>
                         <span class="rpt-arrow">∨</span>
                     </div>
 
@@ -51,10 +55,18 @@ ViewHelper::loadHeader($page_title, true);
                             <div class="rpt-metric-title">Value</div>
                             <div class="rpt-metric-title">Comparison</div>
 
-                            <div>Units Made</div><div>1028</div><div>+20% vs Last Week</div>
-                            <div>Pallets Completed</div><div>6</div><div>+20% vs Last Week</div>
-                            <div>Rate (units/hr)</div><div>352</div><div>+13% vs Avg</div>
-                            <div>DownTime</div><div>32 min</div><div>-6% vs Last Week</div>
+                            <div>Units Made</div>
+                            <div>1028</div>
+                            <div>+20% vs Last Week</div>
+                            <div>Pallets Completed</div>
+                            <div>6</div>
+                            <div>+20% vs Last Week</div>
+                            <div>Rate (units/hr)</div>
+                            <div>352</div>
+                            <div>+13% vs Avg</div>
+                            <div>DownTime</div>
+                            <div>32 min</div>
+                            <div>-6% vs Last Week</div>
                         </div>
 
                         <div class="rpt-progress-bar">
@@ -70,7 +82,7 @@ ViewHelper::loadHeader($page_title, true);
                 <div class="rpt-station">
 
                     <div class="rpt-station-header" onclick="rpt_toggleStation(this)">
-                        <span>Station 2: Solution B, Team members</span>
+                        <span><?= $station2['station_name'] ?? "undefined" ?>: <?= ($station1['variant_name']) ?? "undefined" ?>, <?= ($station1['team_members']) ?? "undefined" ?></span>
                         <span class="rpt-arrow">∨</span>
                     </div>
 
@@ -81,10 +93,18 @@ ViewHelper::loadHeader($page_title, true);
                             <div class="rpt-metric-title">Value</div>
                             <div class="rpt-metric-title">Comparison</div>
 
-                            <div>Units Made</div><div>1544</div><div>+12% vs Last Week</div>
-                            <div>Pallets Completed</div><div>4</div><div>+5% vs Last Week</div>
-                            <div>Rate (units/hr)</div><div>223</div><div>+2% vs Avg</div>
-                            <div>DownTime</div><div>41 min</div><div>-3% vs Last Week</div>
+                            <div>Units Made</div>
+                            <div>1544</div>
+                            <div>+12% vs Last Week</div>
+                            <div>Pallets Completed</div>
+                            <div>4</div>
+                            <div>+5% vs Last Week</div>
+                            <div>Rate (units/hr)</div>
+                            <div>223</div>
+                            <div>+2% vs Avg</div>
+                            <div>DownTime</div>
+                            <div>41 min</div>
+                            <div>-3% vs Last Week</div>
                         </div>
 
                         <div class="rpt-progress-bar">
@@ -100,7 +120,7 @@ ViewHelper::loadHeader($page_title, true);
                 <div class="rpt-station">
 
                     <div class="rpt-station-header" onclick="rpt_toggleStation(this)">
-                        <span>Station 3: Pods, Team members</span>
+                        <span><?= $station3['station_name'] ?? "undefined" ?>: Pods, Team members</span>
                         <span class="rpt-arrow">∨</span>
                     </div>
 
@@ -111,10 +131,18 @@ ViewHelper::loadHeader($page_title, true);
                             <div class="rpt-metric-title">Value</div>
                             <div class="rpt-metric-title">Comparison</div>
 
-                            <div>Units Made</div><div>2010</div><div>+8% vs Last Week</div>
-                            <div>Pallets Completed</div><div>7</div><div>+10% vs Last Week</div>
-                            <div>Rate (units/hr)</div><div>286</div><div>+3% vs Avg</div>
-                            <div>DownTime</div><div>22 min</div><div>-4% vs Last Week</div>
+                            <div>Units Made</div>
+                            <div>2010</div>
+                            <div>+8% vs Last Week</div>
+                            <div>Pallets Completed</div>
+                            <div>7</div>
+                            <div>+10% vs Last Week</div>
+                            <div>Rate (units/hr)</div>
+                            <div>286</div>
+                            <div>+3% vs Avg</div>
+                            <div>DownTime</div>
+                            <div>22 min</div>
+                            <div>-4% vs Last Week</div>
                         </div>
 
                         <div class="rpt-progress-bar">
@@ -128,7 +156,7 @@ ViewHelper::loadHeader($page_title, true);
 
             </li>
 
-    <!-- Summary -->
+            <!-- Summary -->
             <li class="wide-widget">
                 <div id="summary-card">
                     <h2>Summary:</h2>
@@ -146,25 +174,25 @@ ViewHelper::loadHeader($page_title, true);
 
                         <tbody>
                             <tr>
-                                <td>Solution A</td>
-                                <td>2913</td>
-                                <td>323</td>
+                                <td><?= $station1['station_name'] ?? "undefined" ?></td>
+                                <td><?= ($station1['units']) ?? "undefined" ?></td>
+                                <td><?= ($station1['avg_rate']) ?? "undefined" ?></td>
                                 <td>328 (-5%)</td>
                                 <td>318 (+2%)</td>
                             </tr>
 
                             <tr>
-                                <td>Solution B</td>
-                                <td>1544</td>
-                                <td>223</td>
+                                <td><?= $station2['station_name'] ?? "undefined" ?></td>
+                                <td><?= ($station2['units']) ?? "undefined" ?></td>
+                                <td><?= ($station2['avg_rate']) ?? "undefined" ?></td>
                                 <td>227 (+2%)</td>
                                 <td>210 (-6%)</td>
                             </tr>
 
                             <tr>
-                                <td>Pods</td>
-                                <td>2010</td>
-                                <td>286</td>
+                                <td><?= $station3['station_name'] ?? "undefined" ?></td>
+                                <td><?= ($station3['units']) ?? "undefined" ?></td>
+                                <td><?= ($station3['avg_rate']) ?? "undefined" ?></td>
                                 <td>275 (+3%)</td>
                                 <td>300 (-4%)</td>
                             </tr>
@@ -175,7 +203,7 @@ ViewHelper::loadHeader($page_title, true);
             </li>
         </ul>
     </div>
-</div>  
+</div>
 
 
 <?php
